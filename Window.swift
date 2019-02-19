@@ -21,7 +21,15 @@ extension WindowDelegate {
 }
 
 public struct Window {
-  public var delegate: WindowDelegate?
+  public var delegate: WindowDelegate? {
+    willSet(value) {
+      if let value = value {
+        SetWindowLongPtrW(self.hWnd, GWLP_USERDATA, unsafeBitCast(value, to: LONG_PTR.self))
+      } else {
+        SetWindowLongPtrW(self.hWnd, GWLP_USERDATA, 0)
+      }
+    }
+  }
   private var `class`: WindowClass
   private var hWnd: HWND?
 
@@ -34,6 +42,28 @@ public struct Window {
                           WS_OVERLAPPEDWINDOW, /*CW_USEDEFAULT*/-1, /*CW_USEDEFAULT*/-1,
                           640, 480, hWndParent, nil, hInstance, nil)
     }
+
+    let WndProc: @convention(c) (HWND, UINT, WPARAM, LPARAM) -> LRESULT = {
+      var delegate: WindowDelegate?
+
+      let pointer = GetWindowLongPtrW($0, GWLP_USERDATA)
+      if pointer != 0 {
+        delegate = unsafeBitCast(pointer, to: WindowDelegate.self)
+      }
+
+      if let delegate = delegate {
+        switch $1 {
+        case UINT(WM_DESTROY):
+          return delegate.OnDestroy($0, $2, $3)
+        default:
+          return DefWindowProcW($0, $1, $2, $3)
+        }
+      } else {
+        return DefWindowProcW($0, $1, $2, $3)
+      }
+    }
+
+    SetWindowLongPtrW(hWnd, GWLP_WNDPROC, unsafeBitCast(WndProc, to: LONG_PTR.self))
   }
 
   public func show() {
