@@ -30,17 +30,19 @@ public struct Window {
   private var `class`: WindowClass
   private var hWnd: HWND?
 
-  public init(`class`: WindowClass, title: String) {
+  public init(`class`: WindowClass, title: String, hInstance: HINSTANCE? = nil,
+              hWndParent: HWND? = nil) {
     self.class = `class`
     title.withCString(encodedAs: UTF16.self) {
       self.hWnd =
           CreateWindowExW(0, self.class.wszClassName.baseAddress, $0,
-      WS_OVERLAPPEDWINDOW, -1, -1, 640, 480, nil, nil, nil, nil)
+                          WS_OVERLAPPEDWINDOW, /*CW_USEDEFAULT*/-1, /*CW_USEDEFAULT*/-1,
+                          640, 480, hWndParent, nil, hInstance, nil)
     }
   }
 
   public func show() {
-    ShowWindow(self.hWnd, 1)
+    ShowWindow(self.hWnd, SW_SHOW)
   }
 
   public func _runMessageLoop() {
