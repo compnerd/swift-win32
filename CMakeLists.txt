@@ -5,7 +5,7 @@ project(SwiftWin32 LANGUAGES Swift)
 add_library(SwiftWin32 SHARED
   Window.swift
   WindowClass.swift)
-target_link_libraries(SwiftWin32 PRIVATE User32)
+target_link_libraries(SwiftWin32 PUBLIC User32)
 
 add_executable(HelloSwift
   HelloSwift.swift)
