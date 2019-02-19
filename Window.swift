@@ -5,23 +5,18 @@ let WS_OVERLAPPEDWINDOW: UINT =
     UINT(WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
 
 public protocol WindowDelegate: class {
-  func OnDestroy(hWnd: HWND, wParam: WPARAM, lParam: LPARAM) -> LRESULT
-  func OnPaint(hWnd: HWND, wParam: WPARAM, lParam: LPARAM) -> LRESULT
+  func OnDestroy(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
+  func OnPaint(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
 }
 
 extension WindowDelegate {
-  func OnDestroy(hWnd: HWND, wParam: WPARAM, lParam: LPARAM) -> LRESULT {
+  func OnDestroy(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
     PostQuitMessage(0)
     return 0
   }
 
-  func OnPaint(hWnd: HWND, wParam: WPARAM, lParam: LPARAM) -> LRESULT {
-    var psPaint: PAINTSTRUCT = PAINTSTRUCT()
-
-    let hDC: HDC = BeginPaint(hWnd, &psPaint)
-    FillRect(hDC, &psPaint.rcPaint, nil)
-    EndPaint(hWnd, &psPaint)
-    return 0
+  func OnPaint(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
+    return DefWindowProcW(hWnd, UINT(WM_PAINT), wParam, lParam)
   }
 }
 
