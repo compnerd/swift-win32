@@ -41,7 +41,7 @@ public struct Window {
               hWndParent: HWND? = nil) {
     self.class = `class`
     title.withCString(encodedAs: UTF16.self) {
-      self.hWnd = CreateWindowExW(0, self.class.wszClassName.baseAddress, $0,
+      self.hWnd = CreateWindowExW(0, self.class.name.baseAddress, $0,
                                   WS_OVERLAPPEDWINDOW, /*CW_USEDEFAULT*/-1,
                                   /*CW_USEDEFAULT*/-1, 640, 480, hWndParent,
                                   nil, hInstance, nil)

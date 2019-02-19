@@ -2,9 +2,8 @@
 import WinSDK
 
 public class WindowClass {
-  private var `class`: WNDCLASSEXW
-  private var atom: ATOM?
-  private var name: UnsafeMutableBufferPointer<WCHAR>
+  internal var `class`: WNDCLASSEXW
+  internal var name: UnsafeMutableBufferPointer<WCHAR>
 
   public init(hInst hInstance: HINSTANCE, name: String) {
     let duplicate = name.withCString(encodedAs: UTF16.self) { return _wcsdup($0) }
@@ -21,7 +20,7 @@ public class WindowClass {
                              hCursor: nil,
                              hbrBackground: nil,
                              lpszMenuName: nil,
-                             lpszClassName: name.baseAddress,
+                             lpszClassName: self.name.baseAddress,
                              hIconSm: nil)
   }
 
@@ -30,7 +29,7 @@ public class WindowClass {
   }
 
   public func register() -> Bool {
-    return (self.atom = RegisterClassExW(&self.class))
+    return RegisterClassExW(&self.class) != 0
   }
 }
 
