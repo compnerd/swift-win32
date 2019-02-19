@@ -28,7 +28,7 @@ public class WindowClass {
     wszClassName.deallocate()
   }
 
-  public func register() -> Bool {
+  @discardableResult public func register() -> Bool {
     if RegisterClassExW(&wcClass) == FALSE {
       print("RegisterClassExW: \(GetLastError())")
       return false
