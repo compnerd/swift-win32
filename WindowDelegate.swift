@@ -8,8 +8,7 @@ public protocol WindowDelegate: class {
 
 public extension WindowDelegate {
   func OnDestroy(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
-    PostQuitMessage(0)
-    return 0
+    return DefWindowProcW(hWnd, UINT(WM_DESTROY), wParam, lParam)
   }
 
   func OnPaint(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
