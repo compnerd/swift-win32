@@ -6,7 +6,7 @@ public protocol WindowDelegate: class {
   func OnPaint(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
 }
 
-extension WindowDelegate {
+public extension WindowDelegate {
   func OnDestroy(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
     PostQuitMessage(0)
     return 0
