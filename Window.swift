@@ -10,7 +10,8 @@ let WndProc: WindowProc = { (hWnd, uMsg, wParam, lParam) in
   let pointer = GetWindowLongPtrW(hWnd, GWLP_USERDATA)
   if pointer == 0 { return DefWindowProcW(hWnd, uMsg, wParam, lParam) }
 
-  let delegate: WindowDelegate = unsafeBitCast(pointer, to: WindowDelegate.self)
+  let delegate: WindowDelegate =
+      unsafeBitCast(pointer, to: AnyObject.self) as! WindowDelegate
   switch uMsg {
   case UINT(WM_DESTROY):
     return delegate.OnDestroy(hWnd, wParam, lParam)
@@ -27,7 +28,7 @@ public struct Window {
     willSet(value) {
       if let value = value {
         SetWindowLongPtrW(self.hWnd, GWLP_USERDATA,
-                          unsafeBitCast(value, to: LONG_PTR.self))
+                          unsafeBitCast(value as AnyObject, to: LONG_PTR.self))
       } else {
         SetWindowLongPtrW(self.hWnd, GWLP_USERDATA, 0)
       }
