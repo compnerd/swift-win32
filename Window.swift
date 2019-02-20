@@ -1,9 +1,6 @@
 
 import WinSDK
 
-let WS_OVERLAPPEDWINDOW: UINT =
-    UINT(WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
-
 
 typealias WindowProc = @convention(c) (HWND, UINT, WPARAM, LPARAM) -> LRESULT
 let WndProc: WindowProc = { (hWnd, uMsg, wParam, lParam) in
