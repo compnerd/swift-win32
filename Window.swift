@@ -10,10 +10,14 @@ let WndProc: WindowProc = { (hWnd, uMsg, wParam, lParam) in
   let delegate: WindowDelegate =
       unsafeBitCast(pointer, to: AnyObject.self) as! WindowDelegate
   switch uMsg {
+  case UINT(WM_CREATE):
+    return delegate.OnCreate(hWnd, wParam, lParam)
   case UINT(WM_DESTROY):
     return delegate.OnDestroy(hWnd, wParam, lParam)
   case UINT(WM_PAINT):
     return delegate.OnPaint(hWnd, wParam, lParam)
+  case UINT(WM_QUIT):
+    return delegate.OnQuit(hWnd, wParam, lParam)
   default:
     return DefWindowProcW(hWnd, uMsg, wParam, lParam)
   }
