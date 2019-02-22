@@ -15,5 +15,6 @@ class SwiftWindowDelegate: WindowDelegate {
 var window = Window(class: SwiftWindowClass, title: "Swift Window")
 window.delegate = SwiftWindowDelegate()
 window.show()
-window._runMessageLoop()
+
+_ = ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil, nil)
 

@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.14)
 project(SwiftWin32 LANGUAGES Swift)
 
 add_library(SwiftWin32 SHARED
+  Application.swift
+  ApplicationDelegate.swift
+  ApplicationMain.swift
   Window.swift
   WindowClass.swift
   WindowDelegate.swift)
