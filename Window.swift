@@ -56,13 +56,5 @@ public struct Window {
   public func show() {
     ShowWindow(self.hWnd, SW_SHOW)
   }
-
-  public func _runMessageLoop() {
-    var msgMessage: MSG = MSG()
-    while GetMessageW(&msgMessage, self.hWnd, 0, 0) != FALSE {
-      TranslateMessage(&msgMessage)
-      DispatchMessageW(&msgMessage)
-    }
-  }
 }
 
