@@ -15,6 +15,24 @@ class SwiftApplicationDelegate: ApplicationDelegate {
       func OnDestroy(_: HWND, _: WPARAM, _: LPARAM) -> LRESULT {
         exit(EXIT_SUCCESS)
       }
+
+      func OnPaint(_ hWnd: HWND, _: WPARAM, _: LPARAM) -> LRESULT {
+        let red: Color = #colorLiteral(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+
+        var rctRect: RECT = RECT()
+
+        GetClientRect(hWnd, &rctRect)
+
+        var psPaint: PAINTSTRUCT = PAINTSTRUCT()
+        let hDC: HDC = BeginPaint(hWnd, &psPaint)
+          SelectObject(hDC, GetStockObject(NULL_PEN))
+          SelectObject(hDC, GetStockObject(DC_BRUSH))
+          SetDCBrushColor(hDC, red.COLORREF)
+          Rectangle(hDC, rctRect.left, rctRect.top, rctRect.right, rctRect.bottom)
+        EndPaint(hWnd, &psPaint)
+
+        return 0
+      }
     }
 
     self.window = Window(class: SwiftWindowClass, title: "Swift Window")

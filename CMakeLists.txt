@@ -6,6 +6,7 @@ add_library(SwiftWin32 SHARED
   Application.swift
   ApplicationDelegate.swift
   ApplicationMain.swift
+  Color.swift
   Window.swift
   WindowClass.swift
   WindowDelegate.swift)
@@ -14,5 +15,5 @@ target_link_libraries(SwiftWin32 PUBLIC User32)
 add_executable(HelloSwift
   HelloSwift.swift)
 target_compile_options(HelloSwift PRIVATE -I${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries(HelloSwift PRIVATE SwiftWin32)
+target_link_libraries(HelloSwift PRIVATE SwiftWin32 Gdi32)
 
