@@ -6,9 +6,7 @@ public class WindowClass {
   internal var name: UnsafeMutableBufferPointer<WCHAR>
 
   public init(hInst hInstance: HINSTANCE, name: String) {
-    let duplicate = name.withCString(encodedAs: UTF16.self) { return _wcsdup($0) }
-    self.name = UnsafeMutableBufferPointer<WCHAR>(start: duplicate,
-                                                  count: name.utf16.count)
+    self.name = name.LPWSTR
 
     self.class = WNDCLASSEXW(cbSize: UINT(MemoryLayout<WNDCLASSEXW>.size),
                              style: 0,

@@ -10,6 +10,8 @@ add_library(SwiftWin32 SHARED
   Window.swift
   WindowClass.swift
   WindowDelegate.swift)
+target_sources(SwiftWin32 PRIVATE
+  String.swift)
 target_link_libraries(SwiftWin32 PUBLIC User32)
 
 add_executable(HelloSwift
