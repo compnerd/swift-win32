@@ -12,7 +12,7 @@ https://github.com/compnerd/cmake-swift.
 Assuming you are building in `S:`, you can build with:
 
 ```cmd
-cmake -G Ninja -DCMAKE_MODULES_PATH=S:/cmake-swift/Modules -DCMAKE_Swift_COMPILER=C:/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swiftc.exe S:/swift-win32
+cmake -G Ninja -DCMAKE_MODULE_PATH=S:/cmake-swift/Modules S:/swift-win32
 ninja SwiftWin32
 ninja HelloSwift
 .\HelloSwift
