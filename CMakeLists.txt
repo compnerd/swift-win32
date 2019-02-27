@@ -11,6 +11,10 @@ add_library(SwiftWin32 SHARED
   WindowClass.swift
   WindowDelegate.swift)
 target_sources(SwiftWin32 PRIVATE
+  Point.swift
+  Rect.swift
+  Size.swift)
+target_sources(SwiftWin32 PRIVATE
   String.swift)
 target_link_libraries(SwiftWin32 PUBLIC User32)
 
