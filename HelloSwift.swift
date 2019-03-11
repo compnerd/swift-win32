@@ -12,8 +12,14 @@ class SwiftApplicationDelegate: ApplicationDelegate {
     _ = SwiftWindowClass.register()
 
     class SwiftWindowDelegate: WindowDelegate {
+      func OnClose(hWnd: HWND, _: WPARAM, _: LPARAM) -> LRESULT {
+        DestroyWindow(hWnd)
+        return 0
+      }
+
       func OnDestroy(_: HWND, _: WPARAM, _: LPARAM) -> LRESULT {
-        exit(EXIT_SUCCESS)
+        PostQuitMessage(0)
+        return 0
       }
 
       func OnPaint(_ hWnd: HWND, _: WPARAM, _: LPARAM) -> LRESULT {
