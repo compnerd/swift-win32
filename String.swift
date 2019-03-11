@@ -2,10 +2,13 @@
 import ucrt
 
 public extension String {
-  var LPWSTR: UnsafeMutableBufferPointer<UInt16> {
-    let duplicate = self.withCString(encodedAs: UTF16.self) { _wcsdup($0) }
-    return UnsafeMutableBufferPointer<UInt16>(start: duplicate,
-                                              count: self.utf16.count)
+  var LPCWSTR: [UInt16] {
+    var array: [UInt16] =
+        Array<UInt16>(repeating: 0, count: self.utf16.count + 1)
+    _ = self.withCString(encodedAs: UTF16.self) {
+      wcscpy_s(&array, array.count, $0)
+    }
+    return array
   }
 }
 

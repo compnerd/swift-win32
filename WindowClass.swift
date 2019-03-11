@@ -3,10 +3,10 @@ import WinSDK
 
 public class WindowClass {
   internal var `class`: WNDCLASSEXW
-  internal var name: UnsafeMutableBufferPointer<WCHAR>
+  internal var name: [WCHAR]
 
   public init(hInst hInstance: HINSTANCE, name: String) {
-    self.name = name.LPWSTR
+    self.name = name.LPCWSTR
 
     self.class = WNDCLASSEXW(cbSize: UINT(MemoryLayout<WNDCLASSEXW>.size),
                              style: 0,
@@ -18,12 +18,8 @@ public class WindowClass {
                              hCursor: nil,
                              hbrBackground: nil,
                              lpszMenuName: nil,
-                             lpszClassName: self.name.baseAddress,
+                             lpszClassName: self.name,
                              hIconSm: nil)
-  }
-
-  deinit {
-    name.deallocate()
   }
 
   public func register() -> Bool {
