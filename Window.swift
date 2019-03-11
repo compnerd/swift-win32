@@ -44,9 +44,10 @@ public struct Window {
     self.class = `class`
     title.withCString(encodedAs: UTF16.self) {
       self.hWnd = CreateWindowExW(0, self.class.name.baseAddress, $0,
-                                  WS_OVERLAPPEDWINDOW, /*CW_USEDEFAULT*/-1,
-                                  /*CW_USEDEFAULT*/-1, 640, 480, hWndParent,
-                                  nil, hInstance, nil)
+                                  WS_OVERLAPPEDWINDOW,
+                                  CW_USEDEFAULT, CW_USEDEFAULT,
+                                  CW_USEDEFAULT, CW_USEDEFAULT,
+                                  hWndParent, nil, hInstance, nil)
     }
 
     SetWindowLongPtrW(hWnd, GWLP_WNDPROC,
