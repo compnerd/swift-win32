@@ -50,6 +50,6 @@ class SwiftApplicationDelegate: ApplicationDelegate {
 }
 
 
-_ = ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
-                    SwiftApplicationDelegate())
+ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
+                SwiftApplicationDelegate())
 
