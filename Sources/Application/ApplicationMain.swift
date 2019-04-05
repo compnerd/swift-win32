@@ -1,6 +1,7 @@
 
 import WinSDK
 
+@discardableResult
 public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
                             _ application: Application?,
