@@ -18,7 +18,7 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   var msg: MSG = MSG()
-  while GetMessageW(&msg, nil, 0, 0) != FALSE {
+  while GetMessageW(&msg, nil, 0, 0) {
     TranslateMessage(&msg)
     DispatchMessageW(&msg)
   }
