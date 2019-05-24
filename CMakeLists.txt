@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.14.20190522)
 
 project(SwiftWin32 LANGUAGES Swift)
+
+set(CMAKE_Swift_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/swift)
 
 add_library(SwiftWin32 SHARED
   Sources/Application/Application.swift
@@ -17,9 +19,11 @@ target_sources(SwiftWin32 PRIVATE
 target_sources(SwiftWin32 PRIVATE
   Sources/Support/String.swift)
 target_link_libraries(SwiftWin32 PUBLIC User32)
+set_target_properties(SwiftWin32 PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_BINARY_DIR}/swift
+  INTERFACE_LINK_DIRECTORIES $<TARGET_LINKER_FILE_DIR:SwiftWin32>)
 
 add_executable(HelloSwift
   Sources/Examples/HelloSwift.swift)
-target_compile_options(HelloSwift PRIVATE -I${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(HelloSwift PRIVATE SwiftWin32 Gdi32)
 
