@@ -1,6 +1,23 @@
 
 import WinSDK
 
+open class LabelDelegate: DefaultDelegate {
+  open override func OnPaint(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
+    if let view = self.view {
+      let rc = RenderContext(hWnd)
+      let label = view as! Label
+      let bg = label.backgroundColor
+      let bc = label.borderColor
+      let fg = label.textColor
+
+      rc.fillBackground(color: bg)
+      rc.drawBorder(thickness: label.borderThickness, color: bc)
+      rc.drawText(text: label.text, color: fg)
+    }
+    return 0
+  }
+}
+
 public class Label: View {
   public var textColor: Color = #colorLiteral(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0) {
     didSet(value) {
@@ -30,5 +47,6 @@ public class Label: View {
                        `class`: WindowClass = defaultWindowClass,
                        style: Int32 = WS_TABSTOP | WS_VISIBLE) {
     super.init(frame: frame, class: `class`, style: style)
+    self.delegate = LabelDelegate()
   }
 }

@@ -18,6 +18,8 @@ let WndProc: WindowProc = { (hWnd, uMsg, wParam, lParam) in
     return delegate.OnPaint(hWnd, wParam, lParam)
   case UINT(WM_QUIT):
     return delegate.OnQuit(hWnd, wParam, lParam)
+  case UINT(WM_LBUTTONDOWN):
+    return delegate.OnLeftButtonDown(hWnd, wParam, lParam)
   default:
     return DefWindowProcW(hWnd, uMsg, wParam, lParam)
   }
@@ -35,14 +37,11 @@ public class View {
   public private(set) var superview: View? = nil
   public private(set) var frame: Rect
   
-  public var delegate: ViewDelegate? {
+  public var delegate: ViewDelegate {
     willSet(value) {
-      if let value = value {
-        SetWindowLongPtrW(self.hWnd, GWLP_USERDATA,
-                          unsafeBitCast(value as AnyObject, to: LONG_PTR.self))
-      } else {
-        SetWindowLongPtrW(self.hWnd, GWLP_USERDATA, 0)
-      }
+      SetWindowLongPtrW(self.hWnd, GWLP_USERDATA,
+                        unsafeBitCast(value as AnyObject, to: LONG_PTR.self))
+      value.view = self
     }
   }
 
@@ -66,7 +65,9 @@ public class View {
                                 Int32(self.frame.x), Int32(self.frame.y),
                                 Int32(self.frame.width), Int32(self.frame.height),
                                 nil, nil, GetModuleHandleW(nil), nil)
-    
+    self.delegate = DefaultDelegate()
+    SetWindowLongPtrW(self.hWnd, GWLP_USERDATA,
+                      unsafeBitCast(self.delegate as AnyObject, to: LONG_PTR.self))
     SetWindowLongPtrW(hWnd, GWLP_WNDPROC,
                       unsafeBitCast(WndProc, to: LONG_PTR.self))
   }
