@@ -9,9 +9,9 @@ add_library(SwiftWin32 SHARED
   Sources/Application/ApplicationDelegate.swift
   Sources/Application/ApplicationMain.swift
   Sources/UI/Color.swift
-  Sources/UI/Window.swift
-  Sources/UI/WindowClass.swift
-  Sources/UI/WindowDelegate.swift)
+  Sources/UI/View.swift
+  Sources/UI/ViewDelegate.swift
+  Sources/UI/WindowClass.swift) 
 target_sources(SwiftWin32 PRIVATE
   Sources/CG/Point.swift
   Sources/CG/Rect.swift

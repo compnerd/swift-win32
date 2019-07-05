@@ -3,7 +3,7 @@ import WinSDK
 import SwiftWin32
 
 class SwiftApplicationDelegate: ApplicationDelegate {
-  var window: Window?
+  var window: View?
 
   func application(_: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
@@ -11,7 +11,7 @@ class SwiftApplicationDelegate: ApplicationDelegate {
     WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Window")
     _ = SwiftWindowClass.register()
 
-    class SwiftWindowDelegate: WindowDelegate {
+    class SwiftWindowDelegate: ViewDelegate {
       func OnClose(hWnd: HWND, _: WPARAM, _: LPARAM) -> LRESULT {
         DestroyWindow(hWnd)
         return 0
@@ -41,7 +41,7 @@ class SwiftApplicationDelegate: ApplicationDelegate {
       }
     }
 
-    self.window = Window(class: SwiftWindowClass, title: "Swift Window")
+    self.window = View(class: SwiftWindowClass, title: "Swift Window")
     self.window?.delegate = SwiftWindowDelegate()
     self.window?.show()
 
