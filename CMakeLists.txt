@@ -8,7 +8,9 @@ add_library(SwiftWin32 SHARED
   Sources/Application/Application.swift
   Sources/Application/ApplicationDelegate.swift
   Sources/Application/ApplicationMain.swift
+  Sources/UI/Button.swift
   Sources/UI/Color.swift
+  Sources/UI/Label.swift
   Sources/UI/View.swift
   Sources/UI/ViewDelegate.swift
   Sources/UI/Window.swift

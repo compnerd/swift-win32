@@ -4,12 +4,11 @@ import SwiftWin32
 
 class SwiftApplicationDelegate: ApplicationDelegate {
   var window: Window?
-
+  var btn: Button?
+  var label: Label?
+  
   func application(_: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
-    let SwiftWindowClass: WindowClass =
-    WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Window")
-    _ = SwiftWindowClass.register()
 
     class SwiftWindowDelegate: ViewDelegate {
       func OnClose(hWnd: HWND, _: WPARAM, _: LPARAM) -> LRESULT {
@@ -41,10 +40,19 @@ class SwiftApplicationDelegate: ApplicationDelegate {
       }
     }
 
-    self.window = Window(class: SwiftWindowClass, title: "Swift Window")
-    self.window?.delegate = SwiftWindowDelegate()
-    self.window?.show()
+    self.window = Window(title: "Swift Window")
+    self.btn = Button(frame: Rect(x: 100, y: 100, width: 100, height: 100))
+    self.label = Label(frame: Rect(x: 0, y: 0, width: 100, height: 100))
 
+    self.window?.addSubview(self.btn!)
+    self.window?.addSubview(self.label!)
+    
+    self.window?.delegate = SwiftWindowDelegate()
+    
+    self.window?.show()
+    self.btn?.show()
+    self.label?.show()
+    
     return true
   }
 }
