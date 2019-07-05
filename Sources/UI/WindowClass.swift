@@ -6,6 +6,8 @@ public class WindowClass {
   internal var `class`: WNDCLASSEXW
   internal var hInstance: HINSTANCE
 
+  private var registered: Bool = false
+  
   public init(hInst hInstance: HINSTANCE, name: String) {
     self.name = name.LPCWSTR
     self.class = WNDCLASSEXW(cbSize: UINT(MemoryLayout<WNDCLASSEXW>.size),
@@ -24,11 +26,17 @@ public class WindowClass {
   }
 
   public func register() -> Bool {
-    return RegisterClassExW(&self.class) != 0
+    if !self.registered {
+      self.registered = (RegisterClassExW(&self.class) != 0)
+    }
+    return self.registered
   }
 
   public func unregister() -> Bool {
-    return UnregisterClassW(&name, self.hInstance)
+    if self.registered {
+      self.registered = !UnregisterClassW(self.name, self.hInstance)
+    }
+    return self.registered
   }
 }
 
