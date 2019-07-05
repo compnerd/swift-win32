@@ -3,7 +3,7 @@ import WinSDK
 import SwiftWin32
 
 class SwiftApplicationDelegate: ApplicationDelegate {
-  var window: View?
+  var window: Window?
 
   func application(_: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
@@ -41,7 +41,7 @@ class SwiftApplicationDelegate: ApplicationDelegate {
       }
     }
 
-    self.window = View(class: SwiftWindowClass, title: "Swift Window")
+    self.window = Window(class: SwiftWindowClass, title: "Swift Window")
     self.window?.delegate = SwiftWindowDelegate()
     self.window?.show()
 
