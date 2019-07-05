@@ -23,8 +23,18 @@ let WndProc: WindowProc = { (hWnd, uMsg, wParam, lParam) in
   }
 }
 
+extension Rect {
+  public static let `default`: Rect = Rect(x:      Double(CW_USEDEFAULT),
+                                           y:      Double(CW_USEDEFAULT),
+                                           width:  Double(CW_USEDEFAULT),
+                                           height: Double(CW_USEDEFAULT))
+}
 
-public struct View {
+public class View {
+  public private(set) var subviews = [View]()
+  public private(set) var superview: View? = nil
+  public private(set) var frame: Rect
+  
   public var delegate: ViewDelegate? {
     willSet(value) {
       if let value = value {
@@ -36,22 +46,47 @@ public struct View {
     }
   }
 
-  private var `class`: WindowClass
-  private var hWnd: HWND?
-
-  public init(`class`: WindowClass, title: String, hInstance: HINSTANCE? = nil,
-              hWndParent: HWND? = nil) {
-    self.class = `class`
-    title.withCString(encodedAs: UTF16.self) {
-      self.hWnd = CreateWindowExW(0, self.class.name, $0,
-                                  WS_OVERLAPPEDWINDOW,
-                                  CW_USEDEFAULT, CW_USEDEFAULT,
-                                  CW_USEDEFAULT, CW_USEDEFAULT,
-                                  hWndParent, nil, hInstance, nil)
+  public var backgroundColor: Color = #colorLiteral(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0) {
+    didSet(value) {
+        self.invalidate()
     }
+  }
 
+  internal var hWnd: HWND?
+  internal var `class`: WindowClass
+  internal var style: Int32
+  
+  public init(frame: Rect = .default, `class`: WindowClass, style: Int32 = 0) {
+    self.frame = frame
+    self.class = `class`
+    _ = self.class.register()
+    self.style = style
+    self.hWnd = CreateWindowExW(0, self.class.name, "".LPCWSTR,
+                                DWORD(self.style),
+                                Int32(self.frame.x), Int32(self.frame.y),
+                                Int32(self.frame.width), Int32(self.frame.height),
+                                nil, nil, GetModuleHandleW(nil), nil)
+    
     SetWindowLongPtrW(hWnd, GWLP_WNDPROC,
                       unsafeBitCast(WndProc, to: LONG_PTR.self))
+  }
+
+  public func addSubview(_ view: View) {
+    view.superview = self
+    view.style |= WS_CHILD
+    SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.style))
+    SetParent(view.hWnd, self.hWnd)
+    subviews.append(view)
+  }
+
+  public func addSubviews(_ views: [View]) {
+    for v in views {
+      addSubview(v)
+    }
+  }
+
+  public func invalidate() {
+      RedrawWindow(self.hWnd, nil, nil, UINT(RDW_INVALIDATE))
   }
 
   public func show() {
