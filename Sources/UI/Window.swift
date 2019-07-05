@@ -3,9 +3,9 @@ import WinSDK
 
 public class Window: View {
   public var title: String = "" {
-      didSet(value) {
-          SetWindowTextW(self.hWnd, value.LPCWSTR)
-      }
+    didSet(value) {
+      SetWindowTextW(self.hWnd, value.LPCWSTR)
+    }
   }
 
   private var usedDefaultClass: Bool
