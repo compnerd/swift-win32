@@ -95,3 +95,8 @@ public class View {
   }
 }
 
+public extension View {
+  var _handle: HWND? {
+    return hWnd
+  }
+}
