@@ -51,7 +51,7 @@ public class View {
     }
   }
 
-  internal var hWnd: HWND?
+  internal var hWnd: HWND
   internal var `class`: WindowClass
   internal var style: Int32
   
