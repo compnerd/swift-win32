@@ -32,3 +32,4 @@ add_executable(HelloSwift
   Sources/Examples/HelloSwift.swift)
 target_link_libraries(HelloSwift PRIVATE SwiftWin32 Gdi32)
 
+export(TARGETS SwiftWin32 FILE SwiftWin32Config.cmake)
