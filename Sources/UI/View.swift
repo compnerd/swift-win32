@@ -32,7 +32,7 @@ extension Rect {
                                            height: Double(CW_USEDEFAULT))
 }
 
-public class View {
+open class View {
   public private(set) var subviews = [View]()
   public private(set) var superview: View? = nil
   public private(set) var frame: Rect
