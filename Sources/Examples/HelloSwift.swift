@@ -13,10 +13,10 @@ class SwiftApplicationDelegate: ApplicationDelegate {
       return 0
     }
   }
-  
+
   class MyBtnDelegate: ButtonDelegate {
     var red: Bool = true
-    
+
     override func OnLeftButtonDown(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
       red = !red
       if red {
@@ -27,7 +27,7 @@ class SwiftApplicationDelegate: ApplicationDelegate {
       return 0
     }
   }
-  
+
   func application(_: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
     self.window = Window(title: "Swift Window")
@@ -35,7 +35,7 @@ class SwiftApplicationDelegate: ApplicationDelegate {
     self.label = Label(frame: Rect(x: 0, y: 0, width: 100, height: 100))
 
     self.btn?.backgroundColor = #colorLiteral(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-    
+
     self.btn?.text = "BUTTON HI"
     self.label?.text = "LABEL HI"
     self.label?.textColor = #colorLiteral(red: 0.0, green: 1.0, blue: 0.0, alpha: 1.0)
@@ -48,7 +48,7 @@ class SwiftApplicationDelegate: ApplicationDelegate {
 
     self.window?.delegate = HelloSwiftDelegate()
     self.btn?.delegate = MyBtnDelegate()
-    
+
     self.btn?.show()
     self.label?.show()
     self.window?.show()
