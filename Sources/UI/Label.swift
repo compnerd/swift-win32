@@ -44,7 +44,7 @@ public class Label: View {
     WindowClass(hInst: GetModuleHandleW(nil), name: "UI.Label")
 
   override public init(frame: Rect = .default, `class`: WindowClass = Label.class,
-                       style: Int32 = WS_TABSTOP | WS_VISIBLE) {
+                       style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE)) {
     super.init(frame: frame, class: `class`, style: style)
     self.delegate = LabelDelegate()
   }

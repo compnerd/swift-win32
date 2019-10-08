@@ -53,9 +53,9 @@ open class View {
 
   internal var hWnd: HWND
   internal var `class`: WindowClass
-  internal var style: Int32
+  internal var style: DWORD
   
-  public init(frame: Rect = .default, `class`: WindowClass, style: Int32 = 0) {
+  public init(frame: Rect = .default, `class`: WindowClass, style: DWORD = 0) {
     self.frame = frame
     self.class = `class`
     _ = self.class.register()
@@ -74,7 +74,7 @@ open class View {
 
   public func addSubview(_ view: View) {
     view.superview = self
-    view.style |= WS_CHILD
+    view.style |= DWORD(WS_CHILD)
     SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.style))
     SetParent(view.hWnd, self.hWnd)
     subviews.append(view)

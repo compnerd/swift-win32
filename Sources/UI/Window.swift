@@ -1,4 +1,4 @@
-	
+
 import WinSDK
 
 open class WindowDelegate: DefaultDelegate {
@@ -20,7 +20,7 @@ public class Window: View {
 
   private var usedDefaultClass: Bool
   public init(frame: Rect = .default, `class`: WindowClass? = nil,
-              style: UInt32 = WS_OVERLAPPEDWINDOW, title: String = "") {
+              style: DWORD = WS_OVERLAPPEDWINDOW, title: String = "") {
     struct Counter {
       static var value: UInt64 = 0
     }
@@ -28,7 +28,7 @@ public class Window: View {
     self.title = title
     let wnd = `class` ?? WindowClass(hInst: GetModuleHandleW(nil),
                                      name: "w\(Counter.value)")
-    super.init(frame: frame, class: wnd, style: Int32(WS_OVERLAPPEDWINDOW))
+    super.init(frame: frame, class: wnd, style: DWORD(WS_OVERLAPPEDWINDOW))
     self.title = title
     SetWindowTextW(self.hWnd, title.LPCWSTR)
     self.delegate = WindowDelegate()
