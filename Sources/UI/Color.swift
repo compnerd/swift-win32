@@ -28,14 +28,14 @@ public func ==(lhs: Color, rhs: Color) -> Bool {
 }
 
 extension Color {
-  static class var blue: Color = Color(red: 0.0, green: 0.0, blue: 1.0)
-  static class var brown: Color = Color(red: 0.6, green: 0.4, blue: 0.2)
-  static class var cyan: Color = Color(red: 0.0, green: 1.0, blue: 1.0)
-  static class var green: Color = Color(red: 0.0, green: 1.0, blue: 0.0)
-  static class var magenta: Color = Color(red: 1.0, green: 0.0, blue: 1.0)
-  static class var orange: Color = Color(red: 1.0, green: 0.5, blue: 0.0)
-  static class var purple: Color = Color(red: 0.5, green: 0.0, blue: 0.5)
-  static class var red: Color = Color(red: 1.0, green: 0.0, blue: 0.0)
-  static class var yellow: Color = Color(red: 1.0, green: 1.0, blue: 0.0)
+  static var blue: Color = Color(red: 0.0, green: 0.0, blue: 1.0)
+  static var brown: Color = Color(red: 0.6, green: 0.4, blue: 0.2)
+  static var cyan: Color = Color(red: 0.0, green: 1.0, blue: 1.0)
+  static var green: Color = Color(red: 0.0, green: 1.0, blue: 0.0)
+  static var magenta: Color = Color(red: 1.0, green: 0.0, blue: 1.0)
+  static var orange: Color = Color(red: 1.0, green: 0.5, blue: 0.0)
+  static var purple: Color = Color(red: 0.5, green: 0.0, blue: 0.5)
+  static var red: Color = Color(red: 1.0, green: 0.0, blue: 0.0)
+  static var yellow: Color = Color(red: 1.0, green: 1.0, blue: 0.0)
 }
 
