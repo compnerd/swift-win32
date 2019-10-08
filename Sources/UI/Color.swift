@@ -27,7 +27,7 @@ public func ==(lhs: Color, rhs: Color) -> Bool {
   return lhs.rawValue == rhs.rawValue
 }
 
-extension Color {
+public extension Color {
   static var blue: Color = Color(red: 0.0, green: 0.0, blue: 1.0)
   static var brown: Color = Color(red: 0.6, green: 0.4, blue: 0.2)
   static var cyan: Color = Color(red: 0.0, green: 1.0, blue: 1.0)
