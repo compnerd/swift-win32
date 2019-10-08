@@ -21,11 +21,10 @@ public class Button: View {
     }
   }
   
-  public private(set) static var defaultWindowClass: WindowClass =
+  public private(set) static var `class`: WindowClass =
     WindowClass(hInst: GetModuleHandleW(nil), name: "UI.Button")
   
-  override public init(frame: Rect = .default,
-                       `class`: WindowClass = defaultWindowClass,
+  override public init(frame: Rect = .default, `class`: WindowClass = .class,
                        style: Int32 = WS_TABSTOP | WS_VISIBLE) {
     super.init(frame: frame, class: `class`, style: style)
     self.delegate = ButtonDelegate()
