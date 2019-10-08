@@ -4,7 +4,7 @@ import WinSDK
 open class ButtonDelegate: DefaultDelegate {
   open override func OnPaint(_ hWnd: HWND, _ wParam: WPARAM, _ lParam: LPARAM)
       -> LRESULT {
-    if let button = view as? Button else {
+    if let button = view as? Button {
       let context = RenderContext(hWnd)
       context.fillBackground(color: button.backgroundColor)
       context.drawText(text: button.text, color: button.textColor)
