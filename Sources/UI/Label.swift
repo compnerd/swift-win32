@@ -39,10 +39,10 @@ public class Label: View {
       self.invalidate()
     }
   }
-  
+
   public private(set) static var defaultWindowClass: WindowClass =
     WindowClass(hInst: GetModuleHandleW(nil), name: "UI.Label")
-  
+
   override public init(frame: Rect = .default,
                        `class`: WindowClass = defaultWindowClass,
                        style: Int32 = WS_TABSTOP | WS_VISIBLE) {
