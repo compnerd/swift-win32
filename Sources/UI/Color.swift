@@ -38,4 +38,3 @@ public extension Color {
   static var red: Color = Color(red: 1.0, green: 0.0, blue: 0.0)
   static var yellow: Color = Color(red: 1.0, green: 1.0, blue: 0.0)
 }
-

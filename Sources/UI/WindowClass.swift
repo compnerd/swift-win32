@@ -1,18 +1,24 @@
 
 import WinSDK
 
+public typealias WindowProc =
+    @convention(c) (HWND?, UINT, WPARAM, LPARAM) -> LRESULT
+
 public class WindowClass {
   internal var name: [WCHAR]
-  internal var `class`: WNDCLASSEXW
-  internal var hInstance: HINSTANCE
 
-  private var registered: Bool = false
+  internal var hInstance: HINSTANCE?
+  internal var value: WNDCLASSEXW?
+  internal var atom: ATOM?
 
-  public init(hInst hInstance: HINSTANCE, name: String) {
+  public init(hInst hInstance: HINSTANCE, name: String,
+              WindowProc lpfnWindowProc: WindowProc? = DefWindowProcW) {
     self.name = name.LPCWSTR
-    self.class = WNDCLASSEXW(cbSize: UINT(MemoryLayout<WNDCLASSEXW>.size),
+
+    self.hInstance = hInstance
+    self.value = WNDCLASSEXW(cbSize: UINT(MemoryLayout<WNDCLASSEXW>.size),
                              style: 0,
-                             lpfnWndProc: DefWindowProcW,
+                             lpfnWndProc: lpfnWindowProc,
                              cbClsExtra: 0,
                              cbWndExtra: 0,
                              hInstance: hInstance,
@@ -22,20 +28,23 @@ public class WindowClass {
                              lpszMenuName: nil,
                              lpszClassName: self.name,
                              hIconSm: nil)
-    self.hInstance = hInstance
+  }
+
+  public init(named: String) {
+    self.name = named.LPCWSTR
   }
 
   public func register() -> Bool {
-    if !self.registered {
-      self.registered = (RegisterClassExW(&self.class) != 0)
-    }
-    return self.registered
+    guard value != nil, atom == nil else { return true }
+    self.atom = RegisterClassExW(&value!)
+    return self.atom != nil
   }
 
   public func unregister() -> Bool {
-    if self.registered {
-      self.registered = !UnregisterClassW(self.name, self.hInstance)
+    guard value != nil, atom != nil else { return false }
+    if UnregisterClassW(self.name, self.hInstance) {
+      self.atom = nil
     }
-    return self.registered
+    return self.atom == nil
   }
 }
