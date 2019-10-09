@@ -7,7 +7,7 @@ public class WindowClass {
   internal var hInstance: HINSTANCE
 
   private var registered: Bool = false
-  
+
   public init(hInst hInstance: HINSTANCE, name: String) {
     self.name = name.LPCWSTR
     self.class = WNDCLASSEXW(cbSize: UINT(MemoryLayout<WNDCLASSEXW>.size),
@@ -39,4 +39,3 @@ public class WindowClass {
     return self.registered
   }
 }
-
