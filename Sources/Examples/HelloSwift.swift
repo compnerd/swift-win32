@@ -17,12 +17,17 @@ class EventHandler: WindowDelegate {
 }
 
 class SwiftApplicationDelegate: ApplicationDelegate {
-  lazy var window = Window(title: "Swift/Win32 Window")
-  lazy var button = Button(frame: .zero, title: "Press Me!")
+  lazy var window: Window =
+      Window(frame: .default, title: "Swift/Win32 Window")
+  lazy var button: Button =
+      Button(frame: Rect(x: 64, y: 0, width: 64, height: 32), title: "Press Me!")
+  lazy var label: Label =
+      Label(frame: Rect(x: 0, y: 0, width: 64, height: 8), title: "Read Me:")
   lazy var delegate = EventHandler()
 
   func application(_: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
+    window.addSubview(self.label)
     window.addSubview(self.button)
     window.delegate = delegate
     return true
