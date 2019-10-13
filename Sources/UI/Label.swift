@@ -8,4 +8,11 @@ public class Label: View {
                        style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE)) {
     super.init(frame: frame, class: `class`, style: style)
   }
+
+  public convenience init(frame: Rect = .zero, `class`: WindowClass = Label.class,
+                          style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE),
+                          title: String) {
+    self.init(frame: frame, class: `class`, style: style)
+    SetWindowTextW(hWnd, title.LPCWSTR)
+  }
 }
