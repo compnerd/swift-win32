@@ -28,43 +28,19 @@
  **/
 
 import WinSDK
-import SwiftWin32
 
-class EventHandler: WindowDelegate {
-  func OnDestroy(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM)
-      -> LRESULT {
-    PostQuitMessage(0)
-    return 0
+public class ProgressView: View {
+  public static let `class`: WindowClass = WindowClass(named: PROGRESS_CLASS)
+
+  public override init(frame: Rect, `class`: WindowClass = ProgressView.class,
+                       style: DWORD = DWORD(WS_VISIBLE)) {
+    self.progressViewStyle = .default
+    super.init(frame: frame, class: `class`, style: style)
+    SendMessageW(hWnd, UINT(PBM_SETRANGE32), 0, 100)
+    SendMessageW(hWnd, UINT(PBM_SETPOS), 0, 0)
   }
 
-  func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM)
-      -> LRESULT {
-    MessageBoxW(nil, "Swift/Win32 Demo!".LPCWSTR,
-                "Swift/Win32 MessageBox!".LPCWSTR, UINT(MB_OK))
-    return 0
-  }
-}
-
-class SwiftApplicationDelegate: ApplicationDelegate {
-  lazy var window: Window =
-      Window(frame: .default, title: "Swift/Win32 Window")
-  lazy var button: Button =
-      Button(frame: Rect(x: 64, y: 0, width: 64, height: 32), title: "Press Me!")
-  lazy var label: Label =
-      Label(frame: Rect(x: 0, y: 0, width: 64, height: 8), title: "Read Me:")
-  lazy var progress: ProgressView =
-      ProgressView(frame: Rect(x: 0, y: 48, width: 256, height: 32))
-  lazy var delegate = EventHandler()
-
-  func application(_: Application,
-                   didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
-    window.addSubview(self.label)
-    window.addSubview(self.button)
-    window.addSubview(self.progress)
-    window.delegate = delegate
-    self.progress.setProgress(0.5, animated: false)
-    return true
+  public func setProgress(_ progress: Float, animated: Bool) {
+    SendMessageW(hWnd, UINT(PBM_SETPOS), WPARAM(100 * progress), 0)
   }
 }
-
-ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil, SwiftApplicationDelegate())
