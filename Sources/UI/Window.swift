@@ -78,7 +78,7 @@ public class Window: View {
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
-  public convenience init(frame: Rect = .default, `class`: WindowClass = Window.class,
+  public convenience init(frame: Rect = .zero, `class`: WindowClass = Window.class,
                           style: DWORD = WS_OVERLAPPEDWINDOW | DWORD(WS_VISIBLE),
                           title: String) {
     self.init(frame: frame, class: `class`, style: style)
