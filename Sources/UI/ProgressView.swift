@@ -34,7 +34,6 @@ public class ProgressView: View {
 
   public override init(frame: Rect, `class`: WindowClass = ProgressView.class,
                        style: DWORD = DWORD(WS_VISIBLE)) {
-    self.progressViewStyle = .default
     super.init(frame: frame, class: `class`, style: style)
     SendMessageW(hWnd, UINT(PBM_SETRANGE32), 0, 100)
     SendMessageW(hWnd, UINT(PBM_SETPOS), 0, 0)
