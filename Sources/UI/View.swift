@@ -30,7 +30,7 @@
 import WinSDK
 
 public class View {
-  internal var hWnd: HWND
+  public private(set) var hWnd: HWND
   internal var `class`: WindowClass
   internal var style: DWORD
 
@@ -45,6 +45,18 @@ public class View {
     self.style = style
 
     self.frame = frame
+    if(self.frame.width != Double(CW_USEDEFAULT)) {
+      var r = RECT(left:   Int32(self.frame.x), 
+                   top:    Int32(self.frame.y),
+                   right:  Int32(self.frame.width),
+                   bottom: Int32(self.frame.height))
+              
+      AdjustWindowRect(&r, self.style, false)
+      self.frame.x = Double(r.left)
+      self.frame.y = Double(r.top)
+      self.frame.width = Double(r.right - r.left)
+      self.frame.height = Double(r.bottom-r.top)
+    }
     self.hWnd =
         CreateWindowExW(0, self.class.name, "".LPCWSTR, self.style,
                         Int32(self.frame.x), Int32(self.frame.y),
