@@ -79,6 +79,11 @@ public class Button: Control {
                           style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON),
                           title: String) {
     self.init(frame: frame, class: `class`, style: style)
-    SetWindowTextW(hWnd, title.LPCWSTR)
+    setTitle(title, forState: .normal)
+  }
+
+  // FIXME(compnerd) handle title setting for different states
+  public func setTitle(_ title: String?, forState _: Control.State) {
+    SetWindowTextW(hWnd, title?.LPCWSTR)
   }
 }
