@@ -22,6 +22,8 @@ target_sources(SwiftWin32 PRIVATE
 target_sources(SwiftWin32 PRIVATE
   Sources/Support/Rect+UIExtensions.swift
   Sources/Support/String.swift)
+target_compile_options(SwiftWin32 PRIVATE
+  -Xcc -DCOBJMACROS)
 target_link_libraries(SwiftWin32 PUBLIC User32 Gdi32 ComCtl32)
 set_target_properties(SwiftWin32 PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY}
