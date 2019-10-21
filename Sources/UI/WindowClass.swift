@@ -40,19 +40,20 @@ public class WindowClass {
   internal var atom: ATOM?
 
   public init(hInst hInstance: HINSTANCE, name: String,
-              WindowProc lpfnWindowProc: WindowProc? = DefWindowProcW) {
+              WindowProc lpfnWindowProc: WindowProc? = DefWindowProcW,
+              style: UInt32 = 0, hbrBackground: UInt32 = 0) {
     self.name = name.LPCWSTR
 
     self.hInstance = hInstance
     self.value = WNDCLASSEXW(cbSize: UINT(MemoryLayout<WNDCLASSEXW>.size),
-                             style: 0,
+                             style: style,
                              lpfnWndProc: lpfnWindowProc,
                              cbClsExtra: 0,
                              cbWndExtra: 0,
                              hInstance: hInstance,
                              hIcon: nil,
                              hCursor: nil,
-                             hbrBackground: nil,
+                             hbrBackground: UnsafeMutablePointer<HBRUSH__>(bitPattern: UInt(hbrBackground)),
                              lpszMenuName: nil,
                              lpszClassName: self.name,
                              hIconSm: nil)
