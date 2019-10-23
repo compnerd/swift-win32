@@ -63,7 +63,7 @@ internal let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
 }
 
-public class Button: View {
+public class Button: Control {
   public static let `class`: WindowClass = WindowClass(named: "BUTTON")
 
   public weak var delegate: ButtonDelegate?

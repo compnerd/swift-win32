@@ -29,7 +29,7 @@
 
 import WinSDK
 
-public class ProgressView: View {
+public class ProgressView: Control {
   public static let `class`: WindowClass = WindowClass(named: PROGRESS_CLASS)
 
   public override init(frame: Rect, `class`: WindowClass = ProgressView.class,

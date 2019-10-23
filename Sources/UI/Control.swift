@@ -27,20 +27,21 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 
-import WinSDK
+public class Control: View {
+}
 
-public class Label: Control {
-  public static let `class`: WindowClass = WindowClass(named: "STATIC")
-
-  public override init(frame: Rect, `class`: WindowClass = Label.class,
-                       style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE)) {
-    super.init(frame: frame, class: `class`, style: style)
+public extension Control {
+  public struct State: OptionSet {
+    let rawValue: Element
   }
+}
 
-  public convenience init(frame: Rect = .zero, `class`: WindowClass = Label.class,
-                          style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE),
-                          title: String) {
-    self.init(frame: frame, class: `class`, style: style)
-    SetWindowTextW(hWnd, title.LPCWSTR)
-  }
+public extension Control.State {
+  static let normal: Control.State = Control.State(rawValue: 1 << 0)
+  static let highlighted: Control.State = Control.State(rawValue: 1 << 1)
+  static let disabled: Control.State = Control.State(rawValue: 1 << 2)
+  static let selected: Control.State = Control.State(rawValue: 1 << 3)
+  static let focused: Control.State = Control.State(rawValue: 1 << 4)
+  static let application: Control.State = Control.State(rawValue: 1 << 5)
+  static let reserved: Control.State = Control.State(rawValue: 1 << 6)
 }
