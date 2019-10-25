@@ -64,18 +64,20 @@ internal let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
 }
 
 public class Button: View {
-  public static let `class`: WindowClass = WindowClass(named: "BUTTON")
+  public static func `class`() -> WindowClass {
+    return WindowClass(named: "BUTTON")
+  }
 
   public weak var delegate: ButtonDelegate?
 
-  public override init(frame: Rect = .default, `class`: WindowClass = Button.class,
+  public override init(frame: Rect = .default, `class`: WindowClass = Button.class(),
                        style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON)) {
     super.init(frame: frame, class: `class`, style: style)
     SetWindowSubclass(hWnd, SwiftButtonProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
-  public convenience init(frame: Rect = .zero, `class`: WindowClass = Button.class,
+  public convenience init(frame: Rect = .zero, `class`: WindowClass = Button.class(),
                           style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON),
                           title: String) {
     self.init(frame: frame, class: `class`, style: style)

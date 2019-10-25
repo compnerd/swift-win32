@@ -93,20 +93,37 @@ internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
 }
 
+public enum WindowClassTypes {
+    case Redraw
+    case NoStyle
+}
+
 public class Window: View {
-  public static let `class`: WindowClass =
-      WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Window")
+  public static func `class`(type: WindowClassTypes = .Redraw, name: String) -> WindowClass {
+    let hinst : HINSTANCE = GetModuleHandleW(nil) 
+    var style : UInt32
+    var hbrBg : UInt32
+    switch type {
+      case .Redraw:
+        style = DWORD(CS_HREDRAW | CS_VREDRAW)
+        hbrBg = DWORD(COLOR_WINDOW) 
+      case .NoStyle:
+        style = 0
+        hbrBg = 0
+    }
+    return WindowClass(hInst: hinst, name: name, style : style, hbrBackground :  hbrBg)
+  }
 
   public weak var delegate: WindowDelegate?
 
-  public override init(frame: Rect, `class`: WindowClass = Window.class,
+  public override init(frame: Rect, `class`: WindowClass = Window.class(name: "Swift.Window"),
                        style: DWORD = WS_OVERLAPPEDWINDOW | DWORD(WS_VISIBLE)) {
     super.init(frame: frame, class: `class`, style: style)
     SetWindowSubclass(hWnd, SwiftWindowProc, UINT_PTR(0),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
-  public convenience init(frame: Rect = .zero, `class`: WindowClass = Window.class,
+  public convenience init(frame: Rect = .zero, `class`: WindowClass = Window.class(name: "Swift.Window"),
                           style: DWORD = WS_OVERLAPPEDWINDOW | DWORD(WS_VISIBLE),
                           title: String) {
     self.init(frame: frame, class: `class`, style: style)
