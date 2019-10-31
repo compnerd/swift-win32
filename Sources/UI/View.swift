@@ -45,6 +45,11 @@ public class View {
     self.style = style
 
     self.frame = frame
+    if !self.frame.isAnyPointDefault {
+      var r = RECT(from: self.frame);
+      AdjustWindowRect(&r, self.style, false)
+      self.frame = Rect(from: r)
+    }
     self.hWnd =
         CreateWindowExW(0, self.class.name, "".LPCWSTR, self.style,
                         Int32(self.frame.x), Int32(self.frame.y),
