@@ -31,8 +31,12 @@ public class Control: View {
 }
 
 public extension Control {
-  public struct State: OptionSet {
-    let rawValue: Element
+  struct State: OptionSet {
+    public let rawValue: Int
+
+    public init(rawValue: Int) {
+      self.rawValue = rawValue
+    }
   }
 }
 

@@ -50,8 +50,8 @@ public class EdgeInsets {
   }
 }
 
-public extension EdgeInsets: Equatable {
-  public static func == (_ lhs: EdgeInsets, _ rhs: EdgeInsets) {
+extension EdgeInsets: Equatable {
+  public static func == (_ lhs: EdgeInsets, _ rhs: EdgeInsets) -> Bool {
     return lhs.bottom == rhs.bottom &&
            lhs.left == rhs.left &&
            lhs.right == rhs.right &&
