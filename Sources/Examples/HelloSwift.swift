@@ -54,6 +54,8 @@ class SwiftApplicationDelegate: ApplicationDelegate {
       Label(frame: Rect(x: 0, y: 0, width: 64, height: 8), title: "Read Me:")
   lazy var progress: ProgressView =
       ProgressView(frame: Rect(x: 0, y: 48, width: 256, height: 32))
+  lazy var textfield: TextField =
+      TextField(frame: Rect(x: 0, y: 96, width: 256, height: 20))
   lazy var delegate = EventHandler()
 
   func application(_: Application,
@@ -61,7 +63,9 @@ class SwiftApplicationDelegate: ApplicationDelegate {
     window.addSubview(self.label)
     window.addSubview(self.button)
     window.addSubview(self.progress)
+    window.addSubview(self.textfield)
     window.delegate = delegate
+    self.textfield.text = "Introducing Swift/Win32"
     self.progress.setProgress(0.5, animated: false)
     return true
   }
