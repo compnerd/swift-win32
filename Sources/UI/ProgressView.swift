@@ -33,7 +33,8 @@ public class ProgressView: Control {
   public static let `class`: WindowClass = WindowClass(named: PROGRESS_CLASS)
 
   public override init(frame: Rect, `class`: WindowClass = ProgressView.class,
-                       style: DWORD = DWORD(WS_VISIBLE)) {
+                       style: WindowStyle = (base: DWORD(WS_VISIBLE),
+                                             extended: 0)) {
     super.init(frame: frame, class: `class`, style: style)
     SendMessageW(hWnd, UINT(PBM_SETRANGE32), 0, 100)
     SendMessageW(hWnd, UINT(PBM_SETPOS), 0, 0)

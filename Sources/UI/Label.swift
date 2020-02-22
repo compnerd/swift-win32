@@ -33,12 +33,14 @@ public class Label: Control {
   public static let `class`: WindowClass = WindowClass(named: "STATIC")
 
   public override init(frame: Rect, `class`: WindowClass = Label.class,
-                       style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE)) {
+                       style: WindowStyle = (base: DWORD(WS_TABSTOP | WS_VISIBLE),
+                                             extended: 0)) {
     super.init(frame: frame, class: `class`, style: style)
   }
 
   public convenience init(frame: Rect = .zero, `class`: WindowClass = Label.class,
-                          style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE),
+                          style: WindowStyle = (base: DWORD(WS_TABSTOP | WS_VISIBLE),
+                                                extended: 0),
                           title: String) {
     self.init(frame: frame, class: `class`, style: style)
     SetWindowTextW(hWnd, title.LPCWSTR)

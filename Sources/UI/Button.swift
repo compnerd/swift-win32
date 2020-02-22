@@ -69,14 +69,16 @@ public class Button: Control {
   public weak var delegate: ButtonDelegate?
 
   public override init(frame: Rect = .default, `class`: WindowClass = Button.class,
-                       style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON)) {
+                       style: WindowStyle = (base: DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON),
+                                             extended: 0)) {
     super.init(frame: frame, class: `class`, style: style)
     SetWindowSubclass(hWnd, SwiftButtonProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
   public convenience init(frame: Rect = .zero, `class`: WindowClass = Button.class,
-                          style: DWORD = DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON),
+                          style: WindowStyle = (base: DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON),
+                                                extended: 0),
                           title: String) {
     self.init(frame: frame, class: `class`, style: style)
     setTitle(title, forState: .normal)

@@ -29,17 +29,19 @@
 
 import WinSDK
 
+public typealias WindowStyle = (base: DWORD, extended: DWORD)
+
 public class View {
   internal var hWnd: HWND
   internal var `class`: WindowClass
-  internal var style: DWORD
+  internal var style: WindowStyle
 
   // TODO(compnerd) handle set
   public var subviews: [View] = []
   public var superview: View?
   public var frame: Rect
 
-  public init(frame: Rect, `class`: WindowClass, style: DWORD) {
+  public init(frame: Rect, `class`: WindowClass, style: WindowStyle) {
     self.class = `class`
     _ = self.class.register()
     self.style = style
@@ -47,11 +49,12 @@ public class View {
     self.frame = frame
     if !self.frame.isAnyPointDefault {
       var r = RECT(from: self.frame);
-      AdjustWindowRect(&r, self.style, false)
+      AdjustWindowRect(&r, self.style.base, false)
       self.frame = Rect(from: r)
     }
     self.hWnd =
-        CreateWindowExW(0, self.class.name, "".LPCWSTR, self.style,
+        CreateWindowExW(self.style.extended, self.class.name, "".LPCWSTR,
+                        self.style.base,
                         Int32(self.frame.x), Int32(self.frame.y),
                         Int32(self.frame.width), Int32(self.frame.height),
                         nil, nil, GetModuleHandleW(nil), nil)
@@ -62,12 +65,13 @@ public class View {
   }
 
   public func addSubview(_ view: View) {
-    if SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.style | DWORD(WS_CHILD))) == 0 {
-      SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.style))
+    if SetWindowLongPtrW(view.hWnd, GWL_STYLE,
+                         LONG_PTR(view.style.base | DWORD(WS_CHILD))) == 0 {
+      SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.style.base))
       return
     }
 
-    view.style |= DWORD(WS_CHILD)
+    view.style.base |= DWORD(WS_CHILD)
     SetParent(view.hWnd, self.hWnd)
     view.superview = self
     subviews.append(view)

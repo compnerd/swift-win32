@@ -60,7 +60,8 @@ public class TextField: Control {
   }
 
   public override init(frame: Rect = .default, `class`: WindowClass = TextField.class,
-                       style: DWORD = DWORD(WS_BORDER | WS_TABSTOP | WS_VISIBLE | ES_AUTOHSCROLL)) {
+                       style: WindowStyle = (base: DWORD(WS_BORDER | WS_TABSTOP | WS_VISIBLE | ES_AUTOHSCROLL),
+                                             extended: 0)) {
     super.init(frame: frame, class: `class`, style: style)
     SetWindowSubclass(hWnd, SwiftTextFieldProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))

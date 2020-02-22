@@ -100,14 +100,16 @@ public class Window: View {
   public weak var delegate: WindowDelegate?
 
   public override init(frame: Rect, `class`: WindowClass = Window.class,
-                       style: DWORD = WS_OVERLAPPEDWINDOW | DWORD(WS_VISIBLE)) {
+                       style: WindowStyle = (base: WS_OVERLAPPEDWINDOW | DWORD(WS_VISIBLE),
+                                             extended: 0)) {
     super.init(frame: frame, class: `class`, style: style)
     SetWindowSubclass(hWnd, SwiftWindowProc, UINT_PTR(0),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
   public convenience init(frame: Rect = .zero, `class`: WindowClass = Window.class,
-                          style: DWORD = WS_OVERLAPPEDWINDOW | DWORD(WS_VISIBLE),
+                          style: WindowStyle = (base: WS_OVERLAPPEDWINDOW | DWORD(WS_VISIBLE),
+                                                extended: 0),
                           title: String) {
     self.init(frame: frame, class: `class`, style: style)
     SetWindowTextW(hWnd, title.LPCWSTR)
