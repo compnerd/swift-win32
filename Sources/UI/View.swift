@@ -70,9 +70,15 @@ public class View {
       SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.style.base))
       return
     }
-
     view.style.base |= DWORD(WS_CHILD)
+
     SetParent(view.hWnd, self.hWnd)
+    // FIXME(compnerd) ideally we would pass along the frame to the child and
+    // let it re-compute the layout, but that causes the window to be
+    // misrendered currently.
+    SetWindowPos(view.hWnd, nil, 0, 0, 0, 0,
+                 UINT(SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED))
+
     view.superview = self
     subviews.append(view)
   }
