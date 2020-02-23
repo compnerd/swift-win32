@@ -46,22 +46,28 @@ class EventHandler: WindowDelegate {
 }
 
 class SwiftApplicationDelegate: ApplicationDelegate {
-  lazy var window: Window =
+  var window: Window =
       Window(frame: .default, title: "Swift/Win32 Window")
+
   lazy var button: Button =
-      Button(frame: Rect(x: 96.0, y: 4.0, width: 32.0, height: Double(CW_USEDEFAULT)),
+      Button(frame: Rect(x: 72.0, y: 4.0, width: 96.0, height: 32.0),
              title: "Press Me!")
   lazy var label: Label =
-      Label(frame: Rect(x: 4.0, y: 12.0, width: 32.0, height: Double(CW_USEDEFAULT)),
+      Label(frame: Rect(x: 4.0, y: 12.0, width: 72.0, height: 16.0),
             title: "Read Me:")
+
   lazy var progress: ProgressView =
-      ProgressView(frame: Rect(x: 4.0, y: 48.0, width: 256.0, height: Double(CW_USEDEFAULT)))
+      ProgressView(frame: Rect(x: 4.0, y: 40.0, width: 256.0, height: 16.0))
+
   lazy var textfield: TextField =
-      TextField(frame: Rect(x: 4.0, y: 96.0, width: 256.0, height: Double(CW_USEDEFAULT)))
+      TextField(frame: Rect(x: 4.0, y: 64.0, width: 256.0, height: 16.0))
+
   lazy var textview: TextView =
-      TextView(frame: Rect(x: 4.0, y: 128.0, width: 256.0, height: 64.0))
+      TextView(frame: Rect(x: 4.0, y: 86.0, width: 256.0, height: 64.0))
+
   lazy var slider: Slider =
-      Slider(frame: Rect(x: 4.0, y: 196.0, width: 256.0, height: Double(CW_USEDEFAULT)))
+      Slider(frame: Rect(x: 4.0, y: 156.0, width: 256.0, height: 32.0))
+
   lazy var delegate = EventHandler()
 
   func application(_: Application,
