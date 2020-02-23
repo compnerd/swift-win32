@@ -41,22 +41,25 @@ public class WindowClass {
 
   public init(hInst hInstance: HINSTANCE, name: String,
               WindowProc lpfnWindowProc: WindowProc? = DefWindowProcW,
-              style: UInt32 = 0, hbrBackground: HBRUSH? = nil) {
+              style: UInt32 = 0, hbrBackground: HBRUSH? = nil,
+              hCursor: HCURSOR? = nil) {
     self.name = name.LPCWSTR
 
     self.hInstance = hInstance
-    self.value = WNDCLASSEXW(cbSize: UINT(MemoryLayout<WNDCLASSEXW>.size),
-                             style: style,
-                             lpfnWndProc: lpfnWindowProc,
-                             cbClsExtra: 0,
-                             cbWndExtra: 0,
-                             hInstance: hInstance,
-                             hIcon: nil,
-                             hCursor: nil,
-                             hbrBackground: hbrBackground,
-                             lpszMenuName: nil,
-                             lpszClassName: self.name,
-                             hIconSm: nil)
+    self.name.withUnsafeBufferPointer {
+      self.value = WNDCLASSEXW(cbSize: UINT(MemoryLayout<WNDCLASSEXW>.size),
+                               style: style,
+                               lpfnWndProc: lpfnWindowProc,
+                               cbClsExtra: 0,
+                               cbWndExtra: 0,
+                               hInstance: hInstance,
+                               hIcon: nil,
+                               hCursor: hCursor,
+                               hbrBackground: hbrBackground,
+                               lpszMenuName: nil,
+                               lpszClassName: $0.baseAddress!,
+                               hIconSm: nil)
+    }
   }
 
   public init(named: String) {
