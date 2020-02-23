@@ -49,14 +49,17 @@ public class View {
     self.frame = frame
     if !self.frame.isAnyPointDefault {
       var r = RECT(from: self.frame);
-      AdjustWindowRect(&r, self.style.base, false)
+      // TODO(compnerd) use AdjustWindowRectExForDpi
+      AdjustWindowRectEx(&r, self.style.base, false, self.style.extended)
       self.frame = Rect(from: r)
     }
     self.hWnd =
         CreateWindowExW(self.style.extended, self.class.name, "".LPCWSTR,
                         self.style.base,
-                        Int32(self.frame.x), Int32(self.frame.y),
-                        Int32(self.frame.width), Int32(self.frame.height),
+                        Int32(self.frame.x),
+                        Int32(self.frame.y),
+                        Int32(self.frame.width),
+                        Int32(self.frame.height),
                         nil, nil, GetModuleHandleW(nil), nil)
   }
 

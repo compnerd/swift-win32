@@ -49,17 +49,17 @@ class SwiftApplicationDelegate: ApplicationDelegate {
   lazy var window: Window =
       Window(frame: .default, title: "Swift/Win32 Window")
   lazy var button: Button =
-      Button(frame: Rect(x: 96.0, y: 4.0, width: 32.0, height: 16.0),
+      Button(frame: Rect(x: 96.0, y: 4.0, width: 32.0, height: Double(CW_USEDEFAULT)),
              title: "Press Me!")
   lazy var label: Label =
-      Label(frame: Rect(x: 4.0, y: 12.0, width: 32.0, height: 8.0),
+      Label(frame: Rect(x: 4.0, y: 12.0, width: 32.0, height: Double(CW_USEDEFAULT)),
             title: "Read Me:")
   lazy var progress: ProgressView =
-      ProgressView(frame: Rect(x: 4.0, y: 48.0, width: 256.0, height: 8.0))
+      ProgressView(frame: Rect(x: 4.0, y: 48.0, width: 256.0, height: Double(CW_USEDEFAULT)))
   lazy var textfield: TextField =
-      TextField(frame: Rect(x: 4.0, y: 96.0, width: 256.0, height: 12.0))
+      TextField(frame: Rect(x: 4.0, y: 96.0, width: 256.0, height: Double(CW_USEDEFAULT)))
   lazy var textview: TextView =
-      TextView(frame: Rect(x: 4.0, y: 128.0, width: 256.0, height: 196.0))
+      TextView(frame: Rect(x: 4.0, y: 128.0, width: 256.0, height: 64.0))
   lazy var delegate = EventHandler()
 
   func application(_: Application,

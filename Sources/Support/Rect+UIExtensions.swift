@@ -44,15 +44,18 @@ public extension Rect {
   }
 
   var isAnyPointDefault: Bool {
-    return self.x == Double(CW_USEDEFAULT) || self.y == Double(CW_USEDEFAULT) ||
-           self.width == Double(CW_USEDEFAULT) || 
+    return self.x == Double(CW_USEDEFAULT) ||
+           self.y == Double(CW_USEDEFAULT) ||
+           self.width == Double(CW_USEDEFAULT) ||
            self.height == Double(CW_USEDEFAULT)
   }
 }
 
 internal extension RECT {
   init(from: Rect) {
-    self.init(left: Int32(from.x), top: Int32(from.y), right: Int32(from.width),
-              bottom: Int32(from.height))
+    self.init(left: Int32(from.x),
+              top: Int32(from.y),
+              right: Int32(from.x + from.width),
+              bottom: Int32(from.y + from.height))
   }
 }
