@@ -39,6 +39,8 @@ public func ApplicationMain(_ argc: Int32,
   }
   Application.shared.delegate = delegate
 
+  InitCommonControls()
+
   if Application.shared.delegate?
         .application(Application.shared,
                      didFinishLaunchingWithOptions: nil) == false {
