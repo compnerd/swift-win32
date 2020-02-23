@@ -31,17 +31,16 @@ import WinSDK
 
 public class Label: Control {
   public static let `class`: WindowClass = WindowClass(named: "STATIC")
+  public static let style: WindowStyle =
+      WindowStyle(base: DWORD(WS_TABSTOP | WS_VISIBLE), extended: 0)
 
   public override init(frame: Rect, `class`: WindowClass = Label.class,
-                       style: WindowStyle = (base: DWORD(WS_TABSTOP | WS_VISIBLE),
-                                             extended: 0)) {
+                       style: WindowStyle = Label.style) {
     super.init(frame: frame, class: `class`, style: style)
   }
 
   public convenience init(frame: Rect = .zero, `class`: WindowClass = Label.class,
-                          style: WindowStyle = (base: DWORD(WS_TABSTOP | WS_VISIBLE),
-                                                extended: 0),
-                          title: String) {
+                          style: WindowStyle = Label.style, title: String) {
     self.init(frame: frame, class: `class`, style: style)
     SetWindowTextW(hWnd, title.LPCWSTR)
   }

@@ -96,21 +96,21 @@ internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
 public class Window: View {
   public static let `class`: WindowClass =
       WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Window")
+  public static let style: WindowStyle =
+      WindowStyle(base: DWORD(CS_HREDRAW | CS_VREDRAW | Int32(WS_OVERLAPPEDWINDOW) | WS_VISIBLE),
+                  extended: 0)
 
   public weak var delegate: WindowDelegate?
 
   public override init(frame: Rect, `class`: WindowClass = Window.class,
-                       style: WindowStyle = (base: WS_OVERLAPPEDWINDOW | DWORD(WS_VISIBLE),
-                                             extended: 0)) {
+                       style: WindowStyle = Window.style) {
     super.init(frame: frame, class: `class`, style: style)
     SetWindowSubclass(hWnd, SwiftWindowProc, UINT_PTR(0),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
   public convenience init(frame: Rect = .zero, `class`: WindowClass = Window.class,
-                          style: WindowStyle = (base: WS_OVERLAPPEDWINDOW | DWORD(WS_VISIBLE),
-                                                extended: 0),
-                          title: String) {
+                          style: WindowStyle = Window.style, title: String) {
     self.init(frame: frame, class: `class`, style: style)
     SetWindowTextW(hWnd, title.LPCWSTR)
   }
