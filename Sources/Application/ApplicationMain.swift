@@ -39,7 +39,10 @@ public func ApplicationMain(_ argc: Int32,
   }
   Application.shared.delegate = delegate
 
-  InitCommonControls()
+  var ICCE: INITCOMMONCONTROLSEX =
+      INITCOMMONCONTROLSEX(dwSize: DWORD(MemoryLayout<INITCOMMONCONTROLSEX>.size),
+                           dwICC: DWORD(ICC_BAR_CLASSES | ICC_LISTVIEW_CLASSES | ICC_NATIVEFNTCTL_CLASS | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES))
+  InitCommonControlsEx(&ICCE)
 
   if Application.shared.delegate?
         .application(Application.shared,
