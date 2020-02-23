@@ -41,7 +41,7 @@ public class WindowClass {
 
   public init(hInst hInstance: HINSTANCE, name: String,
               WindowProc lpfnWindowProc: WindowProc? = DefWindowProcW,
-              style: UInt32 = 0, hbrBackground: UInt32 = 0) {
+              style: UInt32 = 0, hbrBackground: HBRUSH? = nil) {
     self.name = name.LPCWSTR
 
     self.hInstance = hInstance
@@ -53,7 +53,7 @@ public class WindowClass {
                              hInstance: hInstance,
                              hIcon: nil,
                              hCursor: nil,
-                             hbrBackground: UnsafeMutablePointer<HBRUSH__>(bitPattern: UInt(hbrBackground)),
+                             hbrBackground: hbrBackground,
                              lpszMenuName: nil,
                              lpszClassName: self.name,
                              hIconSm: nil)

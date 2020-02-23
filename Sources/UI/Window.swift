@@ -95,7 +95,8 @@ internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
 
 public class Window: View {
   public static let `class`: WindowClass =
-      WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Window")
+      WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Window",
+                  hbrBackground: GetSysColorBrush(COLOR_3DFACE))
   public static let style: WindowStyle =
       WindowStyle(base: DWORD(CS_HREDRAW | CS_VREDRAW | Int32(WS_OVERLAPPEDWINDOW) | WS_VISIBLE),
                   extended: 0)
