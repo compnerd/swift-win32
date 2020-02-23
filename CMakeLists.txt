@@ -15,6 +15,7 @@ add_library(SwiftWin32 SHARED
   Sources/UI/Label.swift
   Sources/UI/ProgressView.swift
   Sources/UI/TextField.swift
+  Sources/UI/TextView.swift
   Sources/UI/View.swift
   Sources/UI/Window.swift
   Sources/UI/WindowClass.swift)
