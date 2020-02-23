@@ -14,6 +14,7 @@ add_library(SwiftWin32 SHARED
   Sources/UI/EdgeInsets.swift
   Sources/UI/Label.swift
   Sources/UI/ProgressView.swift
+  Sources/UI/Slider.swift
   Sources/UI/TextField.swift
   Sources/UI/TextView.swift
   Sources/UI/View.swift

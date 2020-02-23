@@ -60,6 +60,8 @@ class SwiftApplicationDelegate: ApplicationDelegate {
       TextField(frame: Rect(x: 4.0, y: 96.0, width: 256.0, height: Double(CW_USEDEFAULT)))
   lazy var textview: TextView =
       TextView(frame: Rect(x: 4.0, y: 128.0, width: 256.0, height: 64.0))
+  lazy var slider: Slider =
+      Slider(frame: Rect(x: 4.0, y: 196.0, width: 256.0, height: Double(CW_USEDEFAULT)))
   lazy var delegate = EventHandler()
 
   func application(_: Application,
@@ -69,7 +71,10 @@ class SwiftApplicationDelegate: ApplicationDelegate {
     window.addSubview(self.progress)
     window.addSubview(self.textfield)
     window.addSubview(self.textview)
+    window.addSubview(self.slider)
+
     window.delegate = delegate
+
     self.textfield.text = "Introducing Swift/Win32"
     self.textview.text = """
 Lorem ipsum dolor sit amet, consectetur adipiscicing elit, sed do eiusmod tempor
@@ -85,6 +90,11 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
 deserunt mollit anim id est laborum.\r\n
 """
     self.progress.setProgress(0.5, animated: false)
+
+    self.slider.minimumValue = 0.0
+    self.slider.maximumValue = 100.0
+    self.slider.value = 48.0
+
     return true
   }
 }
