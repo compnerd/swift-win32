@@ -55,7 +55,7 @@ public class Font {
     let szFontSizeEM = -MulDiv(Int32(size), GetDeviceCaps(GetDC(nil), LOGPIXELSY), 72)
     self.hFont = CreateFontW(szFontSizeEM, /*cWidth=*/0,
                              /*cEscapement=*/0, /*cOrientation=*/0,
-                             FW_REGULAR,
+                             Font.Weight.regular.rawValue,
                              /*bItalic=*/DWORD(0),
                              /*bUnderline=*/DWORD(0),
                              /*bStrikeOut=*/DWORD(0),
@@ -75,8 +75,12 @@ public class Font {
 }
 
 public extension Font {
-  struct Weight {
-    private let rawValue: Int32
+  public struct Weight: Hashable, Equatable, RawRepresentable {
+    public let rawValue: Int32
+
+    public init(rawValue: Int32) {
+      self.rawValue = rawValue
+    }
   }
 }
 
