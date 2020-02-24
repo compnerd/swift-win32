@@ -86,6 +86,32 @@ public class Font {
     return Array<String>(arrFamilies)
   }
 
+  public static func fontNames(forFontFamily family: String) -> [String] {
+    let hDC: HDC = GetDC(nil)
+
+    var arrFonts: Set<String> = []
+
+    let pfnEnumerateFonts: FONTENUMPROCW = { (lplf, lptm, dwType, lpData) in
+      let parrFonts: UnsafeMutablePointer<Set<String>> =
+          UnsafeMutablePointer<Set<String>>(bitPattern: Int(lpData))!
+
+      let font: String = withUnsafePointer(to: lplf?.pointee.lfFaceName) {
+        $0.withMemoryRebound(to: UInt16.self,
+                             capacity: MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size) {
+          String(decodingCString: $0, as: UTF16.self)
+        }
+      }
+
+      parrFonts.pointee.insert(font)
+      return 1
+    }
+
+    _ = withUnsafeMutablePointer(to: &arrFonts) {
+      EnumFontsW(hDC, family.LPCWSTR, pfnEnumerateFonts, LPARAM(Int(bitPattern: $0)))
+    }
+    return Array<String>(arrFonts)
+  }
+
   public init?(name: String, size: Float) {
     let szFontSizeEM = -MulDiv(Int32(size), GetDeviceCaps(GetDC(nil), LOGPIXELSY), 72)
     self.hFont = CreateFontW(szFontSizeEM, /*cWidth=*/0,
