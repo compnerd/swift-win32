@@ -50,6 +50,41 @@ public class Font {
     }
   }
 
+  public static var familyNames: [String] {
+    let hDC: HDC = GetDC(nil)
+
+    var arrFamilies: Set<String> = []
+
+    var lfFont: LOGFONTW = LOGFONTW()
+    lfFont.lfCharSet = BYTE(DEFAULT_CHARSET)
+
+    let pfnEnumerateFontFamilies: FONTENUMPROCW = { (lpelfe, lpnt, FontType, lParam) in
+      // NOTE: '@' indicates a vertical-oriented flags; treat the enumeration
+      // as if CF_NOVERTFONTS is specified.
+      let bVerticalFont: Bool =
+        UnicodeScalar(lpelfe?.pointee.lfFaceName.0 ?? 0) == UnicodeScalar("@")
+      if bVerticalFont { return 1 }
+
+      let parrFamilies: UnsafeMutablePointer<Set<String>> =
+          UnsafeMutablePointer<Set<String>>(bitPattern: Int(lParam))!
+
+      let family: String = withUnsafePointer(to: lpelfe?.pointee.lfFaceName) {
+        $0.withMemoryRebound(to: UInt16.self,
+                             capacity: MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size) {
+          String(decodingCString: $0, as: UTF16.self)
+        }
+      }
+
+      parrFamilies.pointee.insert(family)
+      return 1
+    }
+
+    _ = withUnsafeMutablePointer(to: &arrFamilies) {
+      EnumFontFamiliesExW(hDC, &lfFont, pfnEnumerateFontFamilies,
+                          LPARAM(Int(bitPattern: $0)), 0)
+    }
+    return Array<String>(arrFamilies)
+  }
 
   public init?(name: String, size: Float) {
     let szFontSizeEM = -MulDiv(Int32(size), GetDeviceCaps(GetDC(nil), LOGPIXELSY), 72)
@@ -75,7 +110,7 @@ public class Font {
 }
 
 public extension Font {
-  public struct Weight: Hashable, Equatable, RawRepresentable {
+  struct Weight: Hashable, Equatable, RawRepresentable {
     public let rawValue: Int32
 
     public init(rawValue: Int32) {
