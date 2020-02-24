@@ -12,6 +12,7 @@ add_library(SwiftWin32 SHARED
   Sources/UI/Color.swift
   Sources/UI/Control.swift
   Sources/UI/EdgeInsets.swift
+  Sources/UI/Font.swift
   Sources/UI/Label.swift
   Sources/UI/ProgressView.swift
   Sources/UI/Slider.swift

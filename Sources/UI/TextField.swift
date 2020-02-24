@@ -43,6 +43,16 @@ public class TextField: Control {
 
   public weak var delegate: TextFieldDelegate?
 
+  public var font: Font? {
+    get {
+      Font(hFont: HFONT(bitPattern: Int(SendMessageW(hWnd, UINT(WM_GETFONT), 0, 0))))
+    }
+    set(font) {
+      SendMessageW(hWnd, UINT(WM_SETFONT),
+                   unsafeBitCast(font?.hFont, to: WPARAM.self), LPARAM(1))
+    }
+  }
+
   public var text: String? {
     get {
       let szLength: Int32 = GetWindowTextLengthW(hWnd)

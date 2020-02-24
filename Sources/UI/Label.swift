@@ -34,6 +34,16 @@ public class Label: Control {
   public static let style: WindowStyle =
       WindowStyle(base: DWORD(WS_TABSTOP | WS_VISIBLE), extended: 0)
 
+  public var font: Font! {
+    get {
+      Font(hFont: HFONT(bitPattern: Int(SendMessageW(hWnd, UINT(WM_GETFONT), 0, 0))))
+    }
+    set(font) {
+      SendMessageW(hWnd, UINT(WM_SETFONT),
+                   unsafeBitCast(font.hFont, to: WPARAM.self), LPARAM(1))
+    }
+  }
+
   public override init(frame: Rect, `class`: WindowClass = Label.class,
                        style: WindowStyle = Label.style) {
     super.init(frame: frame, class: `class`, style: style)

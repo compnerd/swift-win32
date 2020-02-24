@@ -81,7 +81,11 @@ class SwiftApplicationDelegate: ApplicationDelegate {
 
     window.delegate = delegate
 
+    self.label.font = Font(name: "Consolas", size: 10)!
+
     self.textfield.text = "Introducing Swift/Win32"
+    self.textfield.font = Font(name: "Cascadia Code", size: 10)
+
     self.textview.text = """
 Lorem ipsum dolor sit amet, consectetur adipiscicing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua.\r\n
@@ -95,6 +99,8 @@ fugiat nulla pariatur.\r\n
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
 deserunt mollit anim id est laborum.\r\n
 """
+    self.textview.font = Font(name: "MS Comic Sans", size: 10)
+
     self.progress.setProgress(0.5, animated: false)
 
     self.slider.minimumValue = 0.0

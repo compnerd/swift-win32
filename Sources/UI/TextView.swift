@@ -42,6 +42,16 @@ public class TextView: View {
       WindowStyle(base: DWORD(WS_BORDER | WS_HSCROLL | WS_TABSTOP | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE),
                   extended: 0)
 
+  public var font: Font? {
+    get {
+      Font(hFont: HFONT(bitPattern: Int(SendMessageW(hWnd, UINT(WM_GETFONT), 0, 0))))
+    }
+    set(font) {
+      SendMessageW(hWnd, UINT(WM_SETFONT),
+                   unsafeBitCast(font?.hFont, to: WPARAM.self), LPARAM(1))
+    }
+  }
+
   public var text: String? {
     get {
       let szLength: Int32 = GetWindowTextLengthW(hWnd)
