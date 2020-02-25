@@ -44,6 +44,22 @@ public class Label: Control {
     }
   }
 
+  public var text: String? {
+    get {
+      let szLength = SendMessageW(hWnd, UINT(WM_GETTEXTLENGTH), 0, 0)
+      let wszBuffer: [WCHAR] =
+          Array<WCHAR>(repeating: 0, count: Int(szLength) + 1)
+      _ = wszBuffer.withUnsafeBufferPointer {
+        SendMessageW(hWnd, UINT(WM_GETTEXT), WPARAM(wszBuffer.count),
+                     unsafeBitCast($0, to: LPARAM.self))
+      }
+      return String(decoding: wszBuffer, as: UTF16.self)
+    }
+    set(string) {
+      SetWindowTextW(hWnd, string?.LPCWSTR)
+    }
+  }
+
   public override init(frame: Rect, `class`: WindowClass = Label.class,
                        style: WindowStyle = Label.style) {
     super.init(frame: frame, class: `class`, style: style)
