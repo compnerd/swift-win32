@@ -26,6 +26,7 @@ target_sources(SwiftWin32 PRIVATE
   Sources/CG/Rect.swift
   Sources/CG/Size.swift)
 target_sources(SwiftWin32 PRIVATE
+  Sources/Support/Range.swift
   Sources/Support/Rect+UIExtensions.swift
   Sources/Support/String.swift
   Sources/Support/WinSDK+Extensions.swift)
