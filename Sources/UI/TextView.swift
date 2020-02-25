@@ -42,6 +42,15 @@ public class TextView: View {
       WindowStyle(base: DWORD(WS_BORDER | WS_HSCROLL | WS_TABSTOP | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE),
                   extended: 0)
 
+  public var editable: Bool {
+    get {
+      GetWindowLongW(hWnd, GWL_STYLE) & ES_READONLY == ES_READONLY
+    }
+    set(editable) {
+      SendMessageW(hWnd, UINT(EM_SETREADONLY), editable ? 0 : 1, 0)
+    }
+  }
+
   public var font: Font? {
     get {
       Font(hFont: HFONT(bitPattern: Int(SendMessageW(hWnd, UINT(WM_GETFONT), 0, 0))))
