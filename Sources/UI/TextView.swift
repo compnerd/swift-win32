@@ -83,4 +83,11 @@ public class TextView: View {
     SetWindowSubclass(hWnd, SwiftTextViewProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
+
+  public func scrollRangeToVisible(_ range: Range) {
+    SendMessageW(hWnd, UINT(EM_SETSEL), WPARAM(range.location),
+                 LPARAM(range.location + range.length))
+    SendMessageW(hWnd, UINT(EM_SETSEL), UInt64(bitPattern: -1), -1)
+    SendMessageW(hWnd, UINT(EM_SCROLLCARET), 0, 0)
+  }
 }
