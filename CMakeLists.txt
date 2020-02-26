@@ -2,7 +2,13 @@ cmake_minimum_required(VERSION 3.16.0)
 
 project(SwiftWin32 LANGUAGES Swift)
 
+option(ENABLE_LOGGING "Enable logging through swift-log" NO)
+
 set(CMAKE_Swift_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/swift)
+
+if(ENABLE_LOGGING)
+  find_package(swift-log CONFIG QUIET)
+endif()
 
 add_library(SwiftWin32 SHARED
   Sources/Application/Application.swift
@@ -26,6 +32,7 @@ target_sources(SwiftWin32 PRIVATE
   Sources/CG/Rect.swift
   Sources/CG/Size.swift)
 target_sources(SwiftWin32 PRIVATE
+  Sources/Support/Logging.swift
   Sources/Support/Range.swift
   Sources/Support/Rect+UIExtensions.swift
   Sources/Support/String.swift
@@ -33,6 +40,14 @@ target_sources(SwiftWin32 PRIVATE
 target_compile_options(SwiftWin32 PRIVATE
   -Xcc -DCOBJMACROS)
 target_link_libraries(SwiftWin32 PUBLIC User32 Gdi32 ComCtl32)
+if(ENABLE_LOGGING)
+  target_compile_definitions(SwiftWin32 PRIVATE
+    ENABLE_LOGGING)
+  if(TARGET SwiftLog::Logging)
+    target_link_libraries(SwiftWin32 PUBLIC
+      SwiftLog::Logging)
+  endif()
+endif()
 set_target_properties(SwiftWin32 PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY}
   INTERFACE_LINK_DIRECTORIES $<TARGET_LINKER_FILE_DIR:SwiftWin32>)
