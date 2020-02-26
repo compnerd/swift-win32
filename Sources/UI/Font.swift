@@ -64,8 +64,12 @@ public class Font {
 
   public var fontName: String {
     var lfFont: LOGFONTW = LOGFONTW()
-    if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size), &lfFont) == 0 {
-      print("GetObjectW: \(GetLastError())")
+
+    if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size),
+                  &lfFont) == 0 {
+#if ENABLE_LOGGING
+      log.error("GetObjectW: \(GetLastError())")
+#endif
       return ""
     }
     return withUnsafePointer(to: &lfFont.lfFaceName) {
