@@ -45,11 +45,12 @@ public class TextField: Control {
 
   public var font: Font? {
     get {
-      Font(hFont: HFONT(bitPattern: Int(SendMessageW(hWnd, UINT(WM_GETFONT), 0, 0))))
+      let lResult: LRESULT = SendMessageW(hWnd, UINT(WM_GETFONT), 0, 0)
+      return Font(UnownedFontHandle(hFont: HFONT(bitPattern: Int(lResult))))
     }
     set(font) {
       SendMessageW(hWnd, UINT(WM_SETFONT),
-                   unsafeBitCast(font?.hFont, to: WPARAM.self), LPARAM(1))
+                   unsafeBitCast(font?.hFont.value, to: WPARAM.self), LPARAM(1))
     }
   }
 

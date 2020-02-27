@@ -29,16 +29,42 @@
 
 import WinSDK
 
-public class Font {
-  internal var hFont: HFONT?
+internal protocol FontHandle {
+  var value: HFONT? { get }
+}
 
-  internal init(hFont: HFONT?) {
+internal class OwningFontHandle: FontHandle {
+  let value: HFONT?
+
+  init(_ hFont: HFONT?) {
+    self.value = hFont
+  }
+
+  deinit {
+    if let hFont = value {
+      DeleteObject(hFont)
+    }
+  }
+}
+
+internal struct UnownedFontHandle: FontHandle {
+  let value: HFONT?
+
+  init(hFont: HFONT?) {
+    self.value = hFont
+  }
+}
+
+public class Font {
+  internal var hFont: FontHandle
+
+  internal init(_ hFont: FontHandle) {
     self.hFont = hFont
   }
 
   public var fontName: String {
     var lfFont: LOGFONTW = LOGFONTW()
-    if GetObjectW(self.hFont, Int32(MemoryLayout<LOGFONTW>.size), &lfFont) == 0 {
+    if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size), &lfFont) == 0 {
       print("GetObjectW: \(GetLastError())")
       return ""
     }
@@ -114,24 +140,20 @@ public class Font {
 
   public init?(name: String, size: Float) {
     let szFontSizeEM = -MulDiv(Int32(size), GetDeviceCaps(GetDC(nil), LOGPIXELSY), 72)
-    self.hFont = CreateFontW(szFontSizeEM, /*cWidth=*/0,
-                             /*cEscapement=*/0, /*cOrientation=*/0,
-                             Font.Weight.regular.rawValue,
-                             /*bItalic=*/DWORD(0),
-                             /*bUnderline=*/DWORD(0),
-                             /*bStrikeOut=*/DWORD(0),
-                             DWORD(DEFAULT_CHARSET),
-                             DWORD(OUT_DEFAULT_PRECIS),
-                             DWORD(CLIP_DEFAULT_PRECIS),
-                             DWORD(DEFAULT_QUALITY),
-                             DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
-                             name.LPCWSTR)
-  }
-
-  deinit {
-    // FIXME(compnerd) we need to ensure that the object is destroyed only when
-    // the last class reference is removed
-    // DeleteObject(hFont)
+    self.hFont = OwningFontHandle(CreateFontW(szFontSizeEM,
+                                              /*cWidth=*/0,
+                                              /*cEscapement=*/0,
+                                              /*cOrientation=*/0,
+                                              Font.Weight.regular.rawValue,
+                                              /*bItalic=*/DWORD(0),
+                                              /*bUnderline=*/DWORD(0),
+                                              /*bStrikeOut=*/DWORD(0),
+                                              DWORD(DEFAULT_CHARSET),
+                                              DWORD(OUT_DEFAULT_PRECIS),
+                                              DWORD(CLIP_DEFAULT_PRECIS),
+                                              DWORD(DEFAULT_QUALITY),
+                                              DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
+                                              name.LPCWSTR))
   }
 }
 
