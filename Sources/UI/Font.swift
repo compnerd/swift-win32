@@ -29,30 +29,10 @@
 
 import WinSDK
 
-internal protocol FontHandle {
-  var value: HFONT? { get }
-}
-
-internal class OwningFontHandle: FontHandle {
-  let value: HFONT?
-
-  init(_ hFont: HFONT?) {
-    self.value = hFont
-  }
-
-  deinit {
-    if let hFont = value {
-      DeleteObject(hFont)
-    }
-  }
-}
-
-internal struct UnownedFontHandle: FontHandle {
-  let value: HFONT?
-
-  init(hFont: HFONT?) {
-    self.value = hFont
-  }
+internal typealias FontHandle = ManagedHandle<HFONT>
+extension HFONT: HandleOperations {
+  static var invalid: HFONT { HFONT(bitPattern: 0)! }
+  func release() { DeleteObject(self) }
 }
 
 public class Font {
@@ -72,9 +52,11 @@ public class Font {
 #endif
       return ""
     }
+
     return withUnsafePointer(to: &lfFont.lfFaceName) {
-      return $0.withMemoryRebound(to: UInt16.self,
-                                  capacity: MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size) {
+      let capacity: Int =
+          MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size
+      return $0.withMemoryRebound(to: UInt16.self, capacity: capacity) {
         return String(decodingCString: $0, as: UTF16.self)
       }
     }
@@ -99,8 +81,9 @@ public class Font {
           UnsafeMutablePointer<Set<String>>(bitPattern: Int(lParam))!
 
       let family: String = withUnsafePointer(to: lpelfe?.pointee.lfFaceName) {
-        $0.withMemoryRebound(to: UInt16.self,
-                             capacity: MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size) {
+        let capacity: Int =
+            MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size
+        return $0.withMemoryRebound(to: UInt16.self, capacity: capacity) {
           String(decodingCString: $0, as: UTF16.self)
         }
       }
@@ -126,8 +109,9 @@ public class Font {
           UnsafeMutablePointer<Set<String>>(bitPattern: Int(lpData))!
 
       let font: String = withUnsafePointer(to: lplf?.pointee.lfFaceName) {
-        $0.withMemoryRebound(to: UInt16.self,
-                             capacity: MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size) {
+        let capacity: Int =
+            MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size
+        return $0.withMemoryRebound(to: UInt16.self, capacity: capacity) {
           String(decodingCString: $0, as: UTF16.self)
         }
       }
@@ -137,27 +121,28 @@ public class Font {
     }
 
     _ = withUnsafeMutablePointer(to: &arrFonts) {
-      EnumFontsW(hDC, family.LPCWSTR, pfnEnumerateFonts, LPARAM(Int(bitPattern: $0)))
+      EnumFontsW(hDC, family.LPCWSTR, pfnEnumerateFonts,
+                 LPARAM(Int(bitPattern: $0)))
     }
     return Array<String>(arrFonts)
   }
 
   public init?(name: String, size: Float) {
     let szFontSizeEM = -MulDiv(Int32(size), GetDeviceCaps(GetDC(nil), LOGPIXELSY), 72)
-    self.hFont = OwningFontHandle(CreateFontW(szFontSizeEM,
-                                              /*cWidth=*/0,
-                                              /*cEscapement=*/0,
-                                              /*cOrientation=*/0,
-                                              Font.Weight.regular.rawValue,
-                                              /*bItalic=*/DWORD(0),
-                                              /*bUnderline=*/DWORD(0),
-                                              /*bStrikeOut=*/DWORD(0),
-                                              DWORD(DEFAULT_CHARSET),
-                                              DWORD(OUT_DEFAULT_PRECIS),
-                                              DWORD(CLIP_DEFAULT_PRECIS),
-                                              DWORD(DEFAULT_QUALITY),
-                                              DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
-                                              name.LPCWSTR))
+    self.hFont = FontHandle(owning: CreateFontW(szFontSizeEM,
+                                                /*cWidth=*/0,
+                                                /*cEscapement=*/0,
+                                                /*cOrientation=*/0,
+                                                Font.Weight.regular.rawValue,
+                                                /*bItalic=*/DWORD(0),
+                                                /*bUnderline=*/DWORD(0),
+                                                /*bStrikeOut=*/DWORD(0),
+                                                DWORD(DEFAULT_CHARSET),
+                                                DWORD(OUT_DEFAULT_PRECIS),
+                                                DWORD(CLIP_DEFAULT_PRECIS),
+                                                DWORD(DEFAULT_QUALITY),
+                                                DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
+                                                name.LPCWSTR))
   }
 }
 
