@@ -37,7 +37,7 @@ public class Label: Control {
   public var font: Font! {
     get {
       let lResult: LRESULT = SendMessageW(hWnd, UINT(WM_GETFONT), 0, 0)
-      return Font(UnownedFontHandle(hFont: HFONT(bitPattern: Int(lResult))))
+      return Font(FontHandle(referencing: HFONT(bitPattern: Int(lResult))))
     }
     set(font) {
       SendMessageW(hWnd, UINT(WM_SETFONT),
