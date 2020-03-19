@@ -54,10 +54,10 @@ set_target_properties(SwiftWin32 PROPERTIES
   INTERFACE_LINK_DIRECTORIES $<TARGET_LINKER_FILE_DIR:SwiftWin32>)
 
 add_executable(HelloSwift
-  Sources/Examples/HelloSwift.swift)
+  Examples/HelloSwift.swift)
 add_custom_command(TARGET HelloSwift POST_BUILD
   COMMAND
-    ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/Sources/Examples/$<TARGET_FILE_NAME:HelloSwift>.manifest $<TARGET_FILE_DIR:HelloSwift>)
+    ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/Examples/$<TARGET_FILE_NAME:HelloSwift>.manifest $<TARGET_FILE_DIR:HelloSwift>)
 target_link_libraries(HelloSwift PRIVATE SwiftWin32 Gdi32)
 
 export(TARGETS SwiftWin32 FILE SwiftWin32Config.cmake)
