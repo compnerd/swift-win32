@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-  <assemblyIdentity
+<asmv1:assembly
+  manifestVersion="1.0"
+  xmlns:asmv1="urn:schemas-microsoft-com:asm.v1"
+  xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+
+  <!-- assembly identity -->
+  <asmv1:assemblyIdentity
     name="org.compnerd.swift-win32.HelloSwift"
     processorArchitecture="*"
     type="win32"
-    version="1.0.0.0"
-  />
-  <description>Swift/Win32 Demo</description>
-  <dependency>
-    <dependentAssembly>
-      <assemblyIdentity
+    version="1.0.0.0"/>
+
+  <!-- application specific settings -->
+  <asmv3:application xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">
+    <windowsSettings>
+      <dpiAwareness xmlns="">PerMonitorV2</dpiAwareness>
+      <dpiAware>true</dpiAware>
+    </windowsSettings>
+  </asmv3:application>
+
+  <asmv1:description>Swift/Win32 Demo</asmv1:description>
+
+  <!-- Common Control Support -->
+  <asmv1:dependency>
+    <asmv1:dependentAssembly>
+      <asmv1:assemblyIdentity
         language="*"
         name="Microsoft.Windows.Common-Controls"
         processorArchitecture="*"
@@ -17,6 +32,6 @@
         type="win32"
         version="6.0.0.0"
       />
-    </dependentAssembly>
-  </dependency>
-</assembly>
+    </asmv1:dependentAssembly>
+  </asmv1:dependency>
+</asmv1:assembly>
