@@ -27,12 +27,14 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 
-internal protocol HandleOperations {
-  static var invalid: Self { get }
-  func release()
+internal protocol HandleValue {
+  associatedtype HandleType
+  static func release(_: HandleType?)
 }
 
-internal class ManagedHandle<HandleType: HandleOperations> {
+internal class ManagedHandle<Value: HandleValue> {
+  typealias HandleType = Value.HandleType
+
   private enum ValueType<HandleType> {
   case owning(HandleType?)
   case referencing(HandleType?)
@@ -60,7 +62,9 @@ internal class ManagedHandle<HandleType: HandleOperations> {
   deinit {
     switch self.handle {
     case .owning(let handle):
-      handle?.release()
+      if let handle = handle {
+        Value.release(handle)
+      }
     case .referencing(_):
       break
     }
