@@ -35,18 +35,23 @@ public extension Rect {
            width: Double(CW_USEDEFAULT), height: Double(CW_USEDEFAULT))
 }
 
-public extension Rect {
+internal extension Point {
+  var isDefault: Bool {
+    return x == Double(CW_USEDEFAULT) || y == Double(CW_USEDEFAULT)
+  }
+}
+
+internal extension Size {
+  var isDefault: Bool {
+    return width == Double(CW_USEDEFAULT) || height == Double(CW_USEDEFAULT)
+  }
+}
+
+internal extension Rect {
   init(from: RECT) {
     self.origin = Point(x: Double(from.left), y: Double(from.top))
     self.size = Size(width: Double(from.right - from.left),
                      height: Double(from.bottom - from.top))
-  }
-
-  var isAnyPointDefault: Bool {
-    return self.origin.x == Double(CW_USEDEFAULT) ||
-           self.origin.y == Double(CW_USEDEFAULT) ||
-           self.size.width == Double(CW_USEDEFAULT) ||
-           self.size.height == Double(CW_USEDEFAULT)
   }
 }
 
