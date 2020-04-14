@@ -47,7 +47,30 @@ public class View {
     self.style = style
 
     self.frame = frame
-    if !frame.origin.isDefault && !frame.size.isDefault {
+
+    // We only check `x` because if `x` is `CW_USEDEFAULT` for a
+    // `WS_OVERLAPPEDWINDOW` window, then `y` is ignored; if `y` is
+    // `CW_USEDEFAULT`, `ShowWindow` will be invoked with `SW_SHOW`.
+    if self.frame.origin.x == Double(CW_USEDEFAULT) &&
+       style.base & DWORD(WS_OVERLAPPEDWINDOW) == 0 {
+#if ENABLE_LOGGING
+      log.warning("CW_USEDEFAULT is only valid on WS_OVERLAPPEDWINDOW windows")
+#endif
+      self.frame.origin = Point(x: 0, y: 0)
+    }
+
+    // We only check `width` because if `width` is CW_USEDEFAULT` for a
+    // `WS_OVERLAPPEDWINDOW` window, `height` is ignored.
+    if self.frame.size.width == Double(CW_USEDEFAULT) &&
+       style.base & DWORD(WS_OVERLAPPEDWINDOW) == 0 {
+#if ENABLE_LOGGING
+      log.warning("CW_USEDEFAULT is only valid on WS_OVERLAPPEDWINDOW windows")
+#endif
+      self.frame.size = Size(width: 0, height: 0)
+    }
+
+    if frame.origin.x != Double(CW_USEDEFAULT) &&
+       frame.size.height != Double(CW_USEDEFAULT) {
       var r = RECT(from: self.frame);
       // TODO(compnerd) use AdjustWindowRectExForDpi
       AdjustWindowRectEx(&r, self.style.base, false, self.style.extended)
@@ -78,27 +101,19 @@ public class View {
 
     SetParent(view.hWnd, self.hWnd)
 
-    // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
-    // changes take effect.  Adjust the client rectangle and resize the view
-    // when reparenting.  This ensures that the requested size is honoured
-    // properly.
-    if view.frame.origin.isDefault || view.frame.size.isDefault {
-      // FIXME(compnerd) how do we resize the client rectangle here?
-      SetWindowPos(view.hWnd, nil,
-                   Int32(view.frame.origin.x), Int32(view.frame.origin.y),
-                   Int32(view.frame.size.width), Int32(view.frame.size.height),
-                   UINT(SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED))
-    } else {
-      var r = RECT(from: view.frame);
-      // TODO(compnerd) use AdjustWindowRectExForDpi
-      AdjustWindowRectEx(&r, view.style.base, false, view.style.extended)
-      view.frame = Rect(from: r)
+    // Adjust the client rectangle and resize the view when reparenting. This
+    // ensures that the requested size is honoured properly.
+    var r = RECT(from: view.frame);
+    // TODO(compnerd) use AdjustWindowRectExForDpi
+    AdjustWindowRectEx(&r, view.style.base, false, view.style.extended)
+    view.frame = Rect(from: r)
 
-      SetWindowPos(view.hWnd, nil,
-                   Int32(view.frame.origin.x), Int32(view.frame.origin.y),
-                   Int32(view.frame.size.width), Int32(view.frame.size.height),
-                   UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
-    }
+    // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
+    // changes take effect.
+    SetWindowPos(view.hWnd, nil,
+                  Int32(view.frame.origin.x), Int32(view.frame.origin.y),
+                  Int32(view.frame.size.width), Int32(view.frame.size.height),
+                  UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
 
     view.superview = self
     subviews.append(view)

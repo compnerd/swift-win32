@@ -35,18 +35,6 @@ public extension Rect {
            width: Double(CW_USEDEFAULT), height: Double(CW_USEDEFAULT))
 }
 
-internal extension Point {
-  var isDefault: Bool {
-    return x == Double(CW_USEDEFAULT) || y == Double(CW_USEDEFAULT)
-  }
-}
-
-internal extension Size {
-  var isDefault: Bool {
-    return width == Double(CW_USEDEFAULT) || height == Double(CW_USEDEFAULT)
-  }
-}
-
 internal extension Rect {
   init(from: RECT) {
     self.origin = Point(x: Double(from.left), y: Double(from.top))
