@@ -47,12 +47,13 @@ public class View {
     self.style = style
 
     self.frame = frame
-    if !self.frame.isAnyPointDefault {
+    if !frame.origin.isDefault && !frame.size.isDefault {
       var r = RECT(from: self.frame);
       // TODO(compnerd) use AdjustWindowRectExForDpi
       AdjustWindowRectEx(&r, self.style.base, false, self.style.extended)
       self.frame = Rect(from: r)
     }
+
     self.hWnd =
         CreateWindowExW(self.style.extended, self.class.name, "".LPCWSTR,
                         self.style.base,
@@ -81,7 +82,13 @@ public class View {
     // changes take effect.  Adjust the client rectangle and resize the view
     // when reparenting.  This ensures that the requested size is honoured
     // properly.
-    if !view.frame.isAnyPointDefault {
+    if view.frame.origin.isDefault || view.frame.size.isDefault {
+      // FIXME(compnerd) how do we resize the client rectangle here?
+      SetWindowPos(view.hWnd, nil,
+                   Int32(view.frame.origin.x), Int32(view.frame.origin.y),
+                   Int32(view.frame.size.width), Int32(view.frame.size.height),
+                   UINT(SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED))
+    } else {
       var r = RECT(from: view.frame);
       // TODO(compnerd) use AdjustWindowRectExForDpi
       AdjustWindowRectEx(&r, view.style.base, false, view.style.extended)
@@ -91,12 +98,6 @@ public class View {
                    Int32(view.frame.origin.x), Int32(view.frame.origin.y),
                    Int32(view.frame.size.width), Int32(view.frame.size.height),
                    UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
-    } else {
-      // FIXME(compnerd) how we resize the client rectangle here?
-      SetWindowPos(view.hWnd, nil,
-                   Int32(view.frame.origin.x), Int32(view.frame.origin.y),
-                   Int32(view.frame.size.width), Int32(view.frame.size.height),
-                   UINT(SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED))
     }
 
     view.superview = self
