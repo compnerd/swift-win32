@@ -33,8 +33,27 @@ public struct Rect {
   public var origin: Point
   public var size: Size
 
+  public init(origin: Point, size: Size) {
+    self.origin = origin
+    self.size = size
+  }
+
   public init(x: Double, y: Double, width: Double, height: Double) {
-    self.origin = Point(x: x, y: y)
-    self.size = Size(width: width, height: height)
+    self.init(origin: Point(x: x, y: y),
+              size: Size(width: width, height: height))
+  }
+
+  public init(x: Int, y: Int, width: Int, height: Int) {
+    self.init(origin: Point(x: Double(x), y: Double(y)),
+              size: Size(width: Double(width), height: Double(height)))
+  }
+}
+
+extension Rect: Equatable {
+}
+
+extension Rect: CustomDebugStringConvertible {
+  public var debugDescription: String {
+    return "Rect(origin: \(origin), size: \(size))"
   }
 }
