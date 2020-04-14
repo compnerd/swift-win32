@@ -29,11 +29,16 @@
 
 import WinSDK
 
-internal typealias FontHandle = ManagedHandle<HFONT>
-extension HFONT: HandleOperations {
-  static var invalid: HFONT { HFONT(bitPattern: 0)! }
-  func release() { DeleteObject(self) }
+extension HFONT__: HandleValue {
+  typealias HandleType = HFONT
+  internal static func release(_ hFont: HandleType?) {
+    if let hFont = hFont {
+      DeleteObject(hFont)
+    }
+  }
 }
+
+internal typealias FontHandle = ManagedHandle<HFONT__>
 
 public class Font {
   internal var hFont: FontHandle
