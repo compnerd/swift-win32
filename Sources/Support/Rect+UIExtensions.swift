@@ -37,25 +37,24 @@ public extension Rect {
 
 public extension Rect {
   init(from: RECT) {
-    self.x = Double(from.left)
-    self.y = Double(from.top)
-    self.width  = Double(from.right - from.left)
-    self.height = Double(from.bottom - from.top)
+    self.origin = Point(x: Double(from.left), y: Double(from.top))
+    self.size = Size(width: Double(from.right - from.left),
+                     height: Double(from.bottom - from.top))
   }
 
   var isAnyPointDefault: Bool {
-    return self.x == Double(CW_USEDEFAULT) ||
-           self.y == Double(CW_USEDEFAULT) ||
-           self.width == Double(CW_USEDEFAULT) ||
-           self.height == Double(CW_USEDEFAULT)
+    return self.origin.x == Double(CW_USEDEFAULT) ||
+           self.origin.y == Double(CW_USEDEFAULT) ||
+           self.size.width == Double(CW_USEDEFAULT) ||
+           self.size.height == Double(CW_USEDEFAULT)
   }
 }
 
 internal extension RECT {
   init(from: Rect) {
-    self.init(left: Int32(from.x),
-              top: Int32(from.y),
-              right: Int32(from.x + from.width),
-              bottom: Int32(from.y + from.height))
+    self.init(left: Int32(from.origin.x),
+              top: Int32(from.origin.y),
+              right: Int32(from.origin.x + from.size.width),
+              bottom: Int32(from.origin.y + from.size.height))
   }
 }

@@ -56,10 +56,10 @@ public class View {
     self.hWnd =
         CreateWindowExW(self.style.extended, self.class.name, "".LPCWSTR,
                         self.style.base,
-                        Int32(self.frame.x),
-                        Int32(self.frame.y),
-                        Int32(self.frame.width),
-                        Int32(self.frame.height),
+                        Int32(self.frame.origin.x),
+                        Int32(self.frame.origin.y),
+                        Int32(self.frame.size.width),
+                        Int32(self.frame.size.height),
                         nil, nil, GetModuleHandleW(nil), nil)
   }
 
@@ -88,14 +88,14 @@ public class View {
       view.frame = Rect(from: r)
 
       SetWindowPos(view.hWnd, nil,
-                   Int32(view.frame.x), Int32(view.frame.y),
-                   Int32(view.frame.width), Int32(view.frame.height),
+                   Int32(view.frame.origin.x), Int32(view.frame.origin.y),
+                   Int32(view.frame.size.width), Int32(view.frame.size.height),
                    UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
     } else {
       // FIXME(compnerd) how we resize the client rectangle here?
       SetWindowPos(view.hWnd, nil,
-                   Int32(view.frame.x), Int32(view.frame.y),
-                   Int32(view.frame.width), Int32(view.frame.height),
+                   Int32(view.frame.origin.x), Int32(view.frame.origin.y),
+                   Int32(view.frame.size.width), Int32(view.frame.size.height),
                    UINT(SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED))
     }
 
