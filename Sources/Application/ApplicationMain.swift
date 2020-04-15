@@ -39,6 +39,13 @@ public func ApplicationMain(_ argc: Int32,
   }
   Application.shared.delegate = delegate
 
+  // Enable Per Monitor DPI Awareness
+  if !SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) {
+#if ENABLE_LOGGING
+    log.error("SetProcessDpiAwarenessContext: \(GetLastError())")
+#endif
+  }
+
   var ICCE: INITCOMMONCONTROLSEX =
       INITCOMMONCONTROLSEX(dwSize: DWORD(MemoryLayout<INITCOMMONCONTROLSEX>.size),
                            dwICC: DWORD(ICC_BAR_CLASSES | ICC_LISTVIEW_CLASSES | ICC_NATIVEFNTCTL_CLASS | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES))

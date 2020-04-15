@@ -35,11 +35,12 @@ public class View {
   internal var hWnd: HWND
   internal var `class`: WindowClass
   internal var style: WindowStyle
+  internal var dpi: UINT
 
   // TODO(compnerd) handle set
-  public var subviews: [View] = []
-  public var superview: View?
-  public var frame: Rect
+  public private(set) var subviews: [View] = []
+  public private(set) var superview: View?
+  public private(set) var frame: Rect
 
   public init(frame: Rect, `class`: WindowClass, style: WindowStyle) {
     self.class = `class`
@@ -69,14 +70,6 @@ public class View {
       self.frame.size = Size(width: 0, height: 0)
     }
 
-    if frame.origin.x != Double(CW_USEDEFAULT) &&
-       frame.size.height != Double(CW_USEDEFAULT) {
-      var r = RECT(from: self.frame);
-      // TODO(compnerd) use AdjustWindowRectExForDpi
-      AdjustWindowRectEx(&r, self.style.base, false, self.style.extended)
-      self.frame = Rect(from: r)
-    }
-
     self.hWnd =
         CreateWindowExW(self.style.extended, self.class.name, "".LPCWSTR,
                         self.style.base,
@@ -85,6 +78,24 @@ public class View {
                         Int32(self.frame.size.width),
                         Int32(self.frame.size.height),
                         nil, nil, GetModuleHandleW(nil), nil)
+    self.dpi = GetDpiForWindow(self.hWnd)
+
+    if frame.origin.x == Double(CW_USEDEFAULT) ||
+       frame.size.height == Double(CW_USEDEFAULT) {
+      var r: RECT = RECT()
+      if !GetWindowRect(self.hWnd, &r) {
+#if ENABLE_LOGGING
+        log.warning("GetWindowRect: \(GetLastError())")
+#endif
+        return
+      }
+      self.frame = Rect(from: r)
+    }
+
+    let scale: Double = Double(self.dpi) / 96.0
+    var r = RECT(from: self.frame.applying(AffineTransform(scaleX: scale, y: scale)))
+    AdjustWindowRectExForDpi(&r, self.style.base, false, self.style.extended, self.dpi)
+    self.frame = Rect(from: r)
   }
 
   deinit {
@@ -98,14 +109,23 @@ public class View {
       return
     }
     view.style.base |= DWORD(WS_CHILD)
+#if ENABLE_LOGGING
+    if view.style.base & ~DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW) {
+      log.warning("child windows may not set WS_OVERLAPPEDWINDOW")
+    }
+#endif
 
     SetParent(view.hWnd, self.hWnd)
 
     // Adjust the client rectangle and resize the view when reparenting. This
     // ensures that the requested size is honoured properly.
-    var r = RECT(from: view.frame);
-    // TODO(compnerd) use AdjustWindowRectExForDpi
-    AdjustWindowRectEx(&r, view.style.base, false, view.style.extended)
+    var r = RECT(from: view.frame)
+    if !AdjustWindowRectExForDpi(&r, view.style.base, false,
+                                 view.style.extended, dpi) {
+#if ENABLE_LOGGING
+      log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
+#endif
+    }
     view.frame = Rect(from: r)
 
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the

@@ -21,6 +21,7 @@ add_library(SwiftWin32 SHARED
   Sources/UI/Font.swift
   Sources/UI/Label.swift
   Sources/UI/ProgressView.swift
+  Sources/UI/Screen.swift
   Sources/UI/Slider.swift
   Sources/UI/TextField.swift
   Sources/UI/TextView.swift
@@ -40,7 +41,8 @@ target_sources(SwiftWin32 PRIVATE
   Sources/Support/WindowsHandle.swift
   Sources/Support/WinSDK+Extensions.swift)
 target_compile_options(SwiftWin32 PRIVATE
-  -Xcc -DCOBJMACROS)
+  "SHELL:-Xcc -DNONAMELESSUNION"
+  "SHELL:-Xcc -DCOBJMACROS")
 target_link_libraries(SwiftWin32 PUBLIC User32 Gdi32 ComCtl32)
 if(ENABLE_LOGGING)
   target_compile_definitions(SwiftWin32 PRIVATE
