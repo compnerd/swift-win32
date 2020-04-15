@@ -33,9 +33,25 @@ public struct Point {
   public var x: Double
   public var y: Double
 
+  public init(x: Float, y: Float) {
+    self.init(x: Double(x), y: Double(y))
+  }
+
   public init(x: Double, y: Double) {
     self.x = x
     self.y = y
   }
+
+  public init(x: Int, y: Int) {
+    self.init(x: Double(x), y: Double(y))
+  }
 }
 
+extension Point: Equatable {
+}
+
+extension Point: CustomDebugStringConvertible {
+  public var debugDescription: String {
+    return "Point(x: \(x), y: \(y))"
+  }
+}
