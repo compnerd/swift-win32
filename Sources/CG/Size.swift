@@ -33,9 +33,25 @@ public struct Size {
   public var height: Double
   public var width: Double
 
+  public init(width: Float, height: Float) {
+    self.init(width: Double(width), height: Double(height))
+  }
+
   public init(width: Double, height: Double) {
     self.height = height
     self.width = width
   }
+
+  public init(width: Int, height: Int) {
+    self.init(width: Double(width), height: Double(height))
+  }
 }
 
+extension Size: Equatable {
+}
+
+extension Size: CustomDebugStringConvertible {
+  public var debugDescription: String {
+    return "Size(width: \(width), height: \(height))"
+  }
+}
