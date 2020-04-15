@@ -45,6 +45,11 @@ public struct Point {
   public init(x: Int, y: Int) {
     self.init(x: Double(x), y: Double(y))
   }
+
+  public func applying(_ transform: AffineTransform) -> Point {
+    return Point(x: transform.a * self.x + transform.c * self.y + transform.tx,
+                 y: transform.b * self.x + transform.d * self.y + transform.ty)
+  }
 }
 
 extension Point: Equatable {

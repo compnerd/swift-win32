@@ -28,6 +28,7 @@ add_library(SwiftWin32 SHARED
   Sources/UI/Window.swift
   Sources/UI/WindowClass.swift)
 target_sources(SwiftWin32 PRIVATE
+  Sources/CG/AffineTransform.swift
   Sources/CG/Point.swift
   Sources/CG/Rect.swift
   Sources/CG/Size.swift)

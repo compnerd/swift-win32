@@ -47,6 +47,11 @@ public struct Rect {
     self.init(origin: Point(x: Double(x), y: Double(y)),
               size: Size(width: Double(width), height: Double(height)))
   }
+
+  func applying(_ transform: AffineTransform) -> Rect {
+    return Rect(origin: self.origin.applying(transform),
+                size: self.size.applying(transform))
+  }
 }
 
 extension Rect: Equatable {

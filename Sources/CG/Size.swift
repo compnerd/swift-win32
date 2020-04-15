@@ -45,6 +45,11 @@ public struct Size {
   public init(width: Int, height: Int) {
     self.init(width: Double(width), height: Double(height))
   }
+
+  func applying(_ transform: AffineTransform) -> Size {
+    return Size(width: transform.a * self.width + transform.c * self.height,
+                height: transform.b * self.width + transform.d * self.height)
+  }
 }
 
 extension Size: Equatable {
