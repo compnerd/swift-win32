@@ -34,6 +34,13 @@ public protocol ApplicationDelegate: class {
   func application(_ application: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?)
       -> Bool
+
+  // Responding to App Life-Cycle Events
+  func applicationDidBecomeActive(_ application: Application)
+  func applicationWillResignActive(_ application: Application)
+  func applicationDidEnterBackground(_ application: Application)
+  func applicationWillEnterForeground(_ application: Application)
+  func applicationWillTerminate(_ application: Application)
 }
 
 public extension ApplicationDelegate {
@@ -48,3 +55,19 @@ public extension ApplicationDelegate {
   }
 }
 
+public extension ApplicationDelegate {
+  func applicationDidBecomeActive(_: Application) {
+  }
+
+  func applicationWillResignActive(_: Application) {
+  }
+
+  func applicationDidEnterBackground(_: Application) {
+  }
+
+  func applicationWillEnterForeground(_: Application) {
+  }
+
+  func applicationWillTerminate(_: Application) {
+  }
+}
