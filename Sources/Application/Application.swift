@@ -30,10 +30,11 @@
 public class Application {
   public static var shared: Application = Application()
   public var delegate: ApplicationDelegate?
+  public internal(set) var state: Application.State = .active
 }
 
-public extension Application {
-  struct LaunchOptionsKey: Equatable, Hashable, RawRepresentable {
+extension Application {
+  public struct LaunchOptionsKey: Equatable, Hashable, RawRepresentable {
     public typealias RawValue = String
 
     public var rawValue: RawValue
@@ -44,3 +45,13 @@ public extension Application {
   }
 }
 
+extension Application {
+  /// The running states of the application
+  public enum State: Int {
+    /// The application is running in the foreground
+    case active
+    case inactive
+    /// The application is running in the background
+    case background
+  }
+}

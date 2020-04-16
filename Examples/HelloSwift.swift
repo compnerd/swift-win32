@@ -109,6 +109,14 @@ deserunt mollit anim id est laborum.\r\n
 
     return true
   }
+
+  func applicationDidBecomeActive(_: Application) {
+    print("Good morning!")
+  }
+
+  func applicationDidEnterBackground(_: Application) {
+    print("Good night!")
+  }
 }
 
 ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil, SwiftApplicationDelegate())

@@ -29,6 +29,37 @@
 
 import WinSDK
 
+private let pApplicationWindowProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, lParam: LPARAM) -> LRESULT  in
+  guard nCode == HC_ACTION else {
+    return CallNextHookEx(nil, nCode, wParam, lParam)
+  }
+
+  if let pMessage = UnsafeMutablePointer<CWPSTRUCT>(bitPattern: UInt(lParam)) {
+    switch pMessage.pointee.message {
+    case UINT(WM_ACTIVATEAPP):
+      let application: Application = Application.shared
+      let bActivation: Bool = pMessage.pointee.wParam > 0
+      if bActivation {
+        // quiesce foreground notifications
+        if application.state == .active { break }
+        application.delegate?.applicationWillEnterForeground(application)
+        application.state = .active
+        application.delegate?.applicationDidBecomeActive(application)
+      } else {
+        // quiesce background notifications
+        if application.state == .background { break }
+        application.delegate?.applicationWillResignActive(application)
+        Application.shared.state = .background
+        application.delegate?.applicationDidEnterBackground(application)
+      }
+    default:
+      break
+    }
+  }
+
+  return CallNextHookEx(nil, nCode, wParam, lParam)
+}
+
 @discardableResult
 public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
@@ -51,6 +82,22 @@ public func ApplicationMain(_ argc: Int32,
                            dwICC: DWORD(ICC_BAR_CLASSES | ICC_LISTVIEW_CLASSES | ICC_NATIVEFNTCTL_CLASS | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES))
   InitCommonControlsEx(&ICCE)
 
+  var hSwiftWin32: HMODULE?
+  if !GetModuleHandleExW(DWORD(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT),
+                               "SwiftWin32.dll".LPCWSTR, &hSwiftWin32) {
+#if ENABLE_LOGGING
+    log.error("GetModuleHandleExW: \(GetLastError())")
+#endif
+  }
+
+  let hHook: HHOOK? =
+      SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, 0)
+  if hHook == nil {
+#if ENABLE_LOGGING
+    log.error("SetWindowsHookExW: \(GetLastError())")
+#endif
+  }
+
   if Application.shared.delegate?
         .application(Application.shared,
                      didFinishLaunchingWithOptions: nil) == false {
@@ -63,6 +110,13 @@ public func ApplicationMain(_ argc: Int32,
     DispatchMessageW(&msg)
   }
 
+  if let hHook = hHook {
+    if !UnhookWindowsHookEx(hHook) {
+#if ENABLE_LOGGING
+      log.error("UnhookWindowsHookEx: \(GetLastError())")
+#endif
+    }
+  }
+
   return EXIT_SUCCESS
 }
-
