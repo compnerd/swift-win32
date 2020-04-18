@@ -5,6 +5,7 @@ add_library(SwiftWin32 SHARED
   UI/Button.swift
   UI/Color.swift
   UI/Control.swift
+  UI/Device.swift
   UI/EdgeInsets.swift
   UI/Font.swift
   UI/Label.swift
