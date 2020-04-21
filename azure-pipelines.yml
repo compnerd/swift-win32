@@ -7,7 +7,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  toolchain.directory: $(Pipeline.Workspace)\toolchain-windows-x64\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain
+  toolchain.directory: $(Pipeline.Workspace)/toolchain-windows-x64/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain
   sdk.directory: $(Pipeline.Workspace)/sdk-windows-x64/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
 
 steps:
@@ -53,13 +53,18 @@ steps:
     curl -L "https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/winsdk.modulemap" -o "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
   displayName: Configure SDK
 
+- powershell: |
+    $SWIFTC = "$(toolchain.directory)/usr/bin/swiftc.exe" -replace "\\", "/"
+    echo "##vso[task.setvariable variable=location;isOutput=true]$SWIFTC"
+  name: swiftc
+
 - task: CMake@1
   displayName: Configure Swift/Win32
   inputs:
     cmakeArgs:
       -B $(Build.BinariesDirectory)/swift-win32
       -D CMAKE_BUILD_TYPE=Release
-      -D CMAKE_Swift_COMPILER="$(toolchain.directory)\usr\bin\swiftc.exe"
+      -D CMAKE_Swift_COMPILER="$(swiftc.location)"
       -D CMAKE_Swift_FLAGS="-sdk $(sdk.directory) -I $(sdk.directory)/usr/lib/swift -L $(sdk.directory)/usr/lib/swift/windows"
       -G Ninja
       -S $(Build.SourcesDirectory)
