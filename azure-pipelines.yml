@@ -7,8 +7,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  toolchain.directory: $(Pipeline.Workspace)/toolchain-windows-x64/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain
-  sdk.directory: $(Pipeline.Workspace)/sdk-windows-x64/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
+  toolchain.directory: $(Pipeline.Workspace)/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain
+  sdk.directory: $(Pipeline.Workspace)/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
 
 steps:
 - script: |
@@ -56,6 +56,7 @@ steps:
 - powershell: |
     $SWIFTC = "$(toolchain.directory)/usr/bin/swiftc.exe" -replace "\\", "/"
     echo "##vso[task.setvariable variable=location;isOutput=true]$SWIFTC"
+    dir $(Pipeline.Workspace)
   name: swiftc
 
 - task: CMake@1
