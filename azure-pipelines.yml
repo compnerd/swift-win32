@@ -18,6 +18,7 @@ steps:
 
 - checkout: self
   displayName: checkout compnerd/swift-win32
+  path: s/swift-win32
 
 - task: DownloadPipelineArtifact@2
   inputs:
