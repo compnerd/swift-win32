@@ -1,0 +1,73 @@
+# azure-pipelines.yml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  toolchain.directory: $(Pipeline.Workspace)/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain
+  sdk.directory: $(Pipeline.Workspace)/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
+
+steps:
+- script: |
+    git config --global --add core.autocrlf false
+    git config --global --add core.symlinks true
+  displayName: Configure GIT
+
+- checkout: self
+  displayName: checkout compnerd/swift-win32
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    buildType: 'specific'
+    project: '3133d6ab-80a8-4996-ac4f-03df25cd3224'
+    definition: '7'
+    buildVersionToDownload: 'latest'
+    allowPartiallySucceededBuilds: true
+    artifactName: 'toolchain-windows-x64'
+    targetPath: '$(Pipeline.Workspace)'
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    buildType: 'specific'
+    project: '3133d6ab-80a8-4996-ac4f-03df25cd3224'
+    definition: '7'
+    buildVersionToDownload: 'latest'
+    allowPartiallySucceededBuilds: true
+    artifactName: 'sdk-windows-x64'
+    targetPath: '$(Pipeline.Workspace)'
+
+- task: BatchScript@1
+  displayName: VsDevCmd
+  inputs:
+    filename: C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/Tools/VsDevCmd.bat
+    arguments: -no_logo -arch=x64 -host_arch=x64
+    modifyEnvironment: true
+
+- script: |
+    curl -L "https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/ucrt.modulemap" -o "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
+    curl -L "https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.modulemap" -o "%VCToolsInstallDir%\include\module.modulemap"
+    curl -L "https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.apinotes" -o "%VCToolsInstallDir%\include\visualc.apinotes"
+    curl -L "https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/winsdk.modulemap" -o "%UniversalCRTSdkDir%\Include\%UCRTVersion%\um\module.modulemap"
+  displayName: Configure SDK
+
+- script: |
+    echo ##vso[task.prependpath]$(toolchain.directory)/usr/bin
+  displayName: Update PATH
+
+- task: CMake@1
+  displayName: Configure Swift/Win32
+  inputs:
+    cmakeArgs:
+      -B $(Build.BinariesDirectory)/swift-win32
+      -D CMAKE_BUILD_TYPE=Release
+      -D CMAKE_Swift_FLAGS="-sdk $(sdk.directory) -I $(sdk.directory)/usr/lib/swift -L $(sdk.directory)/usr/lib/swift/windows"
+      -G Ninja
+      -S $(Build.SourcesDirectory)
+
+- task: CMake@1
+  displayName: Build Swift/Win32
+  inputs:
+    cmakeArgs: --build $(Build.BinariesDirectory)/swift-win32
