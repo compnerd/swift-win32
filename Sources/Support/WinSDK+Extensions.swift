@@ -32,7 +32,7 @@ import WinSDK
 internal let IDC_ARROW: UnsafePointer<WCHAR> =
     UnsafePointer<WCHAR>(bitPattern: 32512)!
 
-#if swift(<=5.3)
+#if swift(<5.3)
 // windef.h
 internal let DPI_AWARENESS_CONTEXT_UNAWARE: DPI_AWARENESS_CONTEXT =
     DPI_AWARENESS_CONTEXT(bitPattern: -1)!
