@@ -18,7 +18,6 @@ steps:
 
 - checkout: self
   displayName: checkout compnerd/swift-win32
-  path: s/swift-win32
 
 - task: DownloadPipelineArtifact@2
   inputs:
@@ -66,7 +65,7 @@ steps:
       -D CMAKE_BUILD_TYPE=Release
       -D CMAKE_Swift_FLAGS="-sdk $(sdk.directory) -I $(sdk.directory)/usr/lib/swift -L $(sdk.directory)/usr/lib/swift/windows"
       -G Ninja
-      -S $(Build.SourcesDirectory)/swift-win32
+      -S $(Build.SourcesDirectory)
 
 - task: CMake@1
   displayName: Build Swift/Win32
