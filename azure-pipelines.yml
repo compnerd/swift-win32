@@ -54,7 +54,7 @@ steps:
   displayName: Configure SDK
 
 - script: |
-    echo "##vso[task.setvariable variable=SWIFTC]$(toolchain.directory)\usr\bin\swiftc.exe" 
+    echo ##vso[task.setvariable variable=SWIFTC]$(toolchain.directory)\usr\bin\swiftc.exe
   displayName: SWIFTC
 
 - task: CMake@1
