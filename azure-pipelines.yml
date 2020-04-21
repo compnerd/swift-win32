@@ -7,7 +7,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  toolchain.directory: $(Pipeline.Workspace)/toolchain-windows-x64/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain
+  toolchain.directory: $(Pipeline.Workspace)\toolchain-windows-x64\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain
   sdk.directory: $(Pipeline.Workspace)/sdk-windows-x64/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
 
 steps:
