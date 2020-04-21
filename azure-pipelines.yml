@@ -63,6 +63,7 @@ steps:
     cmakeArgs:
       -B $(Build.BinariesDirectory)/swift-win32
       -D CMAKE_BUILD_TYPE=Release
+      -D CMAKE_Swift_COMPILER=swiftc.exe
       -D CMAKE_Swift_FLAGS="-sdk $(sdk.directory) -I $(sdk.directory)/usr/lib/swift -L $(sdk.directory)/usr/lib/swift/windows"
       -G Ninja
       -S $(Build.SourcesDirectory)
