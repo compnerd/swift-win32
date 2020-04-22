@@ -33,8 +33,8 @@ target_compile_options(SwiftWin32 PRIVATE
   "SHELL:-Xcc -DNONAMELESSUNION"
   "SHELL:-Xcc -DCOBJMACROS")
 target_link_libraries(SwiftWin32 PUBLIC
+  $<$<VERSION_LESS:${CMAKE_Swift_COMPILER_VERSION},5.3>:Gdi32>
   ComCtl32
-  Gdi32
   User32)
 if(ENABLE_LOGGING)
   target_compile_definitions(SwiftWin32 PRIVATE
