@@ -27,10 +27,15 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 
-public class Application {
+public class Application: _TriviallyConstructible {
   public static var shared: Application = Application()
+
   public var delegate: ApplicationDelegate?
-  public internal(set) var state: Application.State = .active
+  public internal(set) var state: Application.State
+
+  public required init() {
+    self.state = .active
+  }
 }
 
 extension Application {

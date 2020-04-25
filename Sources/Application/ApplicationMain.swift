@@ -60,15 +60,21 @@ private let pApplicationWindowProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, 
   return CallNextHookEx(nil, nCode, wParam, lParam)
 }
 
+private func NSClassFromString(_ string: String) -> AnyClass? {
+  return _typeByName(string) as? AnyClass
+}
+
 @discardableResult
 public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
-                            _ application: Application?,
-                            _ delegate: ApplicationDelegate?) -> Int32 {
+                            _ application: String?,
+                            _ delegate: String?) -> Int32 {
   if let application = application {
-    Application.shared = application
+    Application.shared =
+        (NSClassFromString(application)! as! Application.Type).init()
   }
-  Application.shared.delegate = delegate
+  Application.shared.delegate =
+      (NSClassFromString(delegate!)! as! ApplicationDelegate.Type).init()
 
   // Enable Per Monitor DPI Awareness
   if !SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) {

@@ -27,7 +27,11 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 
-public protocol ApplicationDelegate: class {
+public protocol _TriviallyConstructible {
+  init()
+}
+
+public protocol ApplicationDelegate: class, _TriviallyConstructible {
   @available(*, deprecated)
   func applicationDidFinishLaunching(_: Application) -> Bool
 
@@ -69,5 +73,12 @@ public extension ApplicationDelegate {
   }
 
   func applicationWillTerminate(_: Application) {
+  }
+}
+
+extension ApplicationDelegate {
+  public static func main() {
+    ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
+                    String(describing: String(reflecting: Self.self)))
   }
 }
