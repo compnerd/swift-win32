@@ -32,8 +32,6 @@ import WinSDK
 internal let IDC_ARROW: UnsafePointer<WCHAR> =
     UnsafePointer<WCHAR>(bitPattern: 32512)!
 
-internal let HKEY_LOCAL_MACHINE: HKEY = HKEY(bitPattern: 0x80000002)!
-
 #if swift(<5.3)
 // windef.h
 internal let DPI_AWARENESS_CONTEXT_UNAWARE: DPI_AWARENESS_CONTEXT =
@@ -46,4 +44,18 @@ internal let DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2: DPI_AWARENESS_CONTEXT =
     DPI_AWARENESS_CONTEXT(bitPattern: -4)!
 internal let DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED: DPI_AWARENESS_CONTEXT =
     DPI_AWARENESS_CONTEXT(bitPattern: -5)!
+#endif
+
+#if swift(<6.0)
+// winreg.h
+public let HKEY_CLASSES_ROOT: HKEY = HKEY(bitPattern: 0x80000000)!
+public let HKEY_CURRENT_USER: HKEY = HKEY(bitPattern: 0x80000001)!
+public let HKEY_LOCAL_MACHINE: HKEY = HKEY(bitPattern: 0x80000002)!
+public let HKEY_USERS: HKEY = HKEY(bitPattern: 0x80000003)!
+public let HKEY_PERFORMANCE_DATA: HKEY = HKEY(bitPattern: 0x80000004)!
+public let HKEY_PERFORMANCE_TEXT: HKEY = HKEY(bitPattern: 0x80000050)!
+public let HKEY_PERFORMANCE_NLSTEXT: HKEY = HKEY(bitPattern: 0x80000060)!
+public let HKEY_CURRENT_CONFIG: HKEY = HKEY(bitPattern: 0x80000005)!
+public let HKEY_DYN_DATA: HKEY = HKEY(bitPattern: 0x80000006)!
+public let HKEY_CURRENT_USER_LOCAL_SETTINGS: HKEY = HKEY(bitPattern: 0x80000007)!
 #endif
