@@ -45,7 +45,8 @@ class EventHandler: WindowDelegate {
   }
 }
 
-class SwiftApplicationDelegate: ApplicationDelegate {
+@main
+final class SwiftApplicationDelegate: ApplicationDelegate {
   var window: Window =
       Window(frame: .default, title: "Swift/Win32 Window")
 
@@ -118,5 +119,3 @@ deserunt mollit anim id est laborum.\r\n
     print("Good night!")
   }
 }
-
-ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil, SwiftApplicationDelegate())
