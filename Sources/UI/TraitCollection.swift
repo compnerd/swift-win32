@@ -139,9 +139,7 @@ private func GetCurrentColorScheme() -> UserInterfaceStyle {
                    DWORD(RRF_RT_REG_DWORD), nil,
                    &dwAppsUseLightTheme, &cbAppsUseLightTheme)
   guard lStatus == S_OK else {
-#if ENABLE_LOGGING
     log.error("RegGetValueW: \(lStatus)")
-#endif
     return .unspecified
   }
   return dwAppsUseLightTheme == 0 ? .dark : .light
@@ -171,9 +169,7 @@ private func GetCurrentAccessibilityContrast() -> AccessibilityContrast {
   var hcContrast: HIGHCONTRASTW = HIGHCONTRASTW()
   hcContrast.cbSize = UINT(MemoryLayout<HIGHCONTRASTW>.size)
   if !SystemParametersInfoW(UINT(SPI_GETHIGHCONTRAST), 0, &hcContrast, 0) {
-#if ENABLE_LOGGING
     log.error("SystemParametersInfoW: \(GetLastError())")
-#endif
     return .unspecified
   }
   return Int32(hcContrast.dwFlags) & HCF_HIGHCONTRASTON == HCF_HIGHCONTRASTON
@@ -183,9 +179,7 @@ private func GetCurrentAccessibilityContrast() -> AccessibilityContrast {
 private func GetCurrentLayoutDirection() -> TraitEnvironmentLayoutDirection {
   var dwDefaultLayout: DWORD = 0
   if !GetProcessDefaultLayout(&dwDefaultLayout) {
-#if ENABLE_LOGGING
     log.error("GetProcessDefaultLayout: \(GetLastError())")
-#endif
     return .unspecified
   }
   return dwDefaultLayout == LAYOUT_RTL ? .rightToLeft : .leftToRight

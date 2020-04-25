@@ -41,9 +41,7 @@ public struct Device {
         Array<WCHAR>(repeating: 0, count: Int(MAX_COMPUTERNAME_LENGTH) + 1)
     var nSize: DWORD = DWORD(szBuffer.count)
     guard GetComputerNameW(&szBuffer, &nSize) else {
-#if ENABLE_LOGGING
       log.warning("GetComputerNameW: \(GetLastError())")
-#endif
       return ""
     }
     return String(decodingCString: szBuffer, as: UTF16.self)
@@ -66,9 +64,7 @@ public struct Device {
         continue
       }
       guard lStatus == 0 else {
-#if ENABLE_LOGGING
         log.warning("RegGetValueW: \(lStatus)")
-#endif
         return ""
       }
       return String(decodingCString: szBuffer, as: UTF16.self)
@@ -91,9 +87,7 @@ public struct Device {
         continue
       }
       guard lStatus == 0 else {
-#if ENABLE_LOGGING
         log.warning("RegGetValueW: \(lStatus)")
-#endif
         return ""
       }
       return String(decodingCString: szBuffer, as: UTF16.self)

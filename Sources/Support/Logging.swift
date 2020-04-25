@@ -27,8 +27,20 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 
-#if ENABLE_LOGGING
+#if WITH_SWIFT_LOG
 import Logging
 
 internal let log: Logger = Logger(label: "org.compnerd.swift-win32")
+#else
+import WinSDK
+
+internal struct log {
+  static func error(_ message: String) {
+    OutputDebugStringW("ERROR: \(message)".LPCWSTR)
+  }
+
+  static func warning(_ message: String) {
+    OutputDebugStringW("WARNING: \(message)".LPCWSTR)
+  }
+}
 #endif
