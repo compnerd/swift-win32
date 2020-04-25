@@ -5,14 +5,14 @@ project(SwiftWin32
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/Modules)
 
-option(ENABLE_LOGGING "Enable logging through swift-log" NO)
+option(WITH_SWIFT_LOG "Enable logging through swift-log" NO)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_Swift_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/swift)
 
-if(ENABLE_LOGGING)
+if(WITH_SWIFT_LOG)
   find_package(swift-log CONFIG QUIET)
 endif()
 

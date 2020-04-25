@@ -54,9 +54,7 @@ public class View {
     // `CW_USEDEFAULT`, `ShowWindow` will be invoked with `SW_SHOW`.
     if self.frame.origin.x == Double(CW_USEDEFAULT) &&
        style.base & DWORD(WS_OVERLAPPEDWINDOW) == 0 {
-#if ENABLE_LOGGING
       log.warning("CW_USEDEFAULT is only valid on WS_OVERLAPPEDWINDOW windows")
-#endif
       self.frame.origin = Point(x: 0, y: 0)
     }
 
@@ -64,9 +62,7 @@ public class View {
     // `WS_OVERLAPPEDWINDOW` window, `height` is ignored.
     if self.frame.size.width == Double(CW_USEDEFAULT) &&
        style.base & DWORD(WS_OVERLAPPEDWINDOW) == 0 {
-#if ENABLE_LOGGING
       log.warning("CW_USEDEFAULT is only valid on WS_OVERLAPPEDWINDOW windows")
-#endif
       self.frame.size = Size(width: 0, height: 0)
     }
 
@@ -84,9 +80,7 @@ public class View {
        frame.size.height == Double(CW_USEDEFAULT) {
       var r: RECT = RECT()
       if !GetWindowRect(self.hWnd, &r) {
-#if ENABLE_LOGGING
         log.warning("GetWindowRect: \(GetLastError())")
-#endif
         return
       }
       self.frame = Rect(from: r)
@@ -109,11 +103,9 @@ public class View {
       return
     }
     view.style.base |= DWORD(WS_CHILD)
-#if ENABLE_LOGGING
     if view.style.base & ~DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW) {
       log.warning("child windows may not set WS_OVERLAPPEDWINDOW")
     }
-#endif
 
     SetParent(view.hWnd, self.hWnd)
 
@@ -122,9 +114,7 @@ public class View {
     var r = RECT(from: view.frame)
     if !AdjustWindowRectExForDpi(&r, view.style.base, false,
                                  view.style.extended, dpi) {
-#if ENABLE_LOGGING
       log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
-#endif
     }
     view.frame = Rect(from: r)
 

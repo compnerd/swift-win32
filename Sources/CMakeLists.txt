@@ -39,9 +39,9 @@ target_link_libraries(SwiftWin32 PUBLIC
   $<$<VERSION_LESS:${CMAKE_Swift_COMPILER_VERSION},5.3>:Gdi32>
   ComCtl32
   User32)
-if(ENABLE_LOGGING)
+if(WITH_SWIFT_LOG)
   target_compile_definitions(SwiftWin32 PRIVATE
-    ENABLE_LOGGING)
+    WITH_SWIFT_LOG)
   if(TARGET SwiftLog::Logging)
     target_link_libraries(SwiftWin32 PUBLIC
       SwiftLog::Logging)

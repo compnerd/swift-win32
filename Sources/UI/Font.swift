@@ -52,9 +52,7 @@ public class Font {
 
     if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size),
                   &lfFont) == 0 {
-#if ENABLE_LOGGING
       log.error("GetObjectW: \(GetLastError())")
-#endif
       return ""
     }
 

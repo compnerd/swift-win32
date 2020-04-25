@@ -78,9 +78,7 @@ public func ApplicationMain(_ argc: Int32,
 
   // Enable Per Monitor DPI Awareness
   if !SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) {
-#if ENABLE_LOGGING
     log.error("SetProcessDpiAwarenessContext: \(GetLastError())")
-#endif
   }
 
   var ICCE: INITCOMMONCONTROLSEX =
@@ -91,17 +89,13 @@ public func ApplicationMain(_ argc: Int32,
   var hSwiftWin32: HMODULE?
   if !GetModuleHandleExW(DWORD(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT),
                                "SwiftWin32.dll".LPCWSTR, &hSwiftWin32) {
-#if ENABLE_LOGGING
     log.error("GetModuleHandleExW: \(GetLastError())")
-#endif
   }
 
   let hHook: HHOOK? =
       SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, 0)
   if hHook == nil {
-#if ENABLE_LOGGING
     log.error("SetWindowsHookExW: \(GetLastError())")
-#endif
   }
 
   if Application.shared.delegate?
@@ -118,9 +112,7 @@ public func ApplicationMain(_ argc: Int32,
 
   if let hHook = hHook {
     if !UnhookWindowsHookEx(hHook) {
-#if ENABLE_LOGGING
       log.error("UnhookWindowsHookEx: \(GetLastError())")
-#endif
     }
   }
 
