@@ -1,4 +1,4 @@
-# swift-win32
+# Swift/Win32
 
 This is a thin wrapper over the Win32 APIs for graphics on Windows to make it
 easier to write Windows applications in Swift.
