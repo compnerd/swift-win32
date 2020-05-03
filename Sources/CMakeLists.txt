@@ -1,3 +1,5 @@
+add_subdirectory(CWinRT)
+
 add_library(SwiftWin32 SHARED
   Application/Application.swift
   Application/ApplicationDelegate.swift

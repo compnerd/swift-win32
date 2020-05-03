@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16.0)
 
-project(SwiftWin32 LANGUAGES Swift)
+project(SwiftWin32
+  LANGUAGES C CXX Swift)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/Modules)
 
