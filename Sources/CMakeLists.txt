@@ -16,6 +16,7 @@ add_library(SwiftWin32 SHARED
   UI/Slider.swift
   UI/TextField.swift
   UI/TextView.swift
+  UI/TraitCollection.swift
   UI/View.swift
   UI/Window.swift
   UI/WindowClass.swift)
