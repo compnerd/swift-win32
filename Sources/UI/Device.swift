@@ -29,14 +29,6 @@
 
 import WinSDK
 
-public enum UserInterfaceIdiom: Int {
-case unspecified
-case phone
-case pad
-case tv
-case carPlay
-}
-
 public struct Device {
   public static let current: Device = Device()
 
