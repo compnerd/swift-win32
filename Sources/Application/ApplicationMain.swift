@@ -77,6 +77,11 @@ public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
                             _ application: String?,
                             _ delegate: String?) -> Int32 {
+  let hRichEdit: HMODULE? = LoadLibraryW("msftedit.dll".LPCWSTR)
+  if hRichEdit == nil {
+    log.error("unable to load `msftedit.dll`: \(GetLastError())")
+  }
+
   if let application = application {
     guard let instance = NSClassFromString(application) else {
       fatalError("unable to find application class: \(application)")
