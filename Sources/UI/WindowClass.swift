@@ -62,6 +62,10 @@ public class WindowClass {
     }
   }
 
+  internal init(named: Array<WCHAR>) {
+    self.name = named
+  }
+
   public init(named: String) {
     self.name = named.LPCWSTR
   }
