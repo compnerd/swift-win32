@@ -35,7 +35,6 @@ public class View {
   internal var hWnd: HWND
   internal var `class`: WindowClass
   internal var style: WindowStyle
-  internal var dpi: UINT
 
   // TODO(compnerd) handle set
   public private(set) var subviews: [View] = []
@@ -74,7 +73,6 @@ public class View {
                         Int32(self.frame.size.width),
                         Int32(self.frame.size.height),
                         nil, nil, GetModuleHandleW(nil), nil)
-    self.dpi = GetDpiForWindow(self.hWnd)
 
     if frame.origin.x == Double(CW_USEDEFAULT) ||
        frame.size.height == Double(CW_USEDEFAULT) {
@@ -86,9 +84,10 @@ public class View {
       self.frame = Rect(from: r)
     }
 
-    let scale: Double = Double(self.dpi) / 96.0
+    let dpi: UINT = GetDpiForWindow(self.hWnd)
+    let scale: Double = Double(dpi) / 96.0
     var r = RECT(from: self.frame.applying(AffineTransform(scaleX: scale, y: scale)))
-    AdjustWindowRectExForDpi(&r, self.style.base, false, self.style.extended, self.dpi)
+    AdjustWindowRectExForDpi(&r, self.style.base, false, self.style.extended, dpi)
     self.frame = Rect(from: r)
   }
 
@@ -112,6 +111,7 @@ public class View {
     // Adjust the client rectangle and resize the view when reparenting. This
     // ensures that the requested size is honoured properly.
     var r = RECT(from: view.frame)
+    let dpi: UINT = GetDpiForWindow(view.hWnd)
     if !AdjustWindowRectExForDpi(&r, view.style.base, false,
                                  view.style.extended, dpi) {
       log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
