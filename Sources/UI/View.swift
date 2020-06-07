@@ -74,20 +74,24 @@ public class View {
                         Int32(self.frame.size.height),
                         nil, nil, GetModuleHandleW(nil), nil)
 
+    var r: RECT = RECT(from: self.frame)
+    // If `CW_USEDEFAULT` was used, query the actual allocated rect
     if frame.origin.x == Double(CW_USEDEFAULT) ||
-       frame.size.height == Double(CW_USEDEFAULT) {
-      var r: RECT = RECT()
+       frame.size.width == Double(CW_USEDEFAULT) {
       if !GetWindowRect(self.hWnd, &r) {
         log.warning("GetWindowRect: \(GetLastError())")
-        return
       }
-      self.frame = Rect(from: r)
     }
 
     let dpi: UINT = GetDpiForWindow(self.hWnd)
     let scale: Double = Double(dpi) / 96.0
-    var r = RECT(from: self.frame.applying(AffineTransform(scaleX: scale, y: scale)))
-    AdjustWindowRectExForDpi(&r, self.style.base, false, self.style.extended, dpi)
+
+    // scale the window frame for the DPI
+    r = RECT(from: Rect(from: r).applying(AffineTransform(scaleX: scale, y: scale)))
+    if !AdjustWindowRectExForDpi(&r, self.style.base, false,
+                                 self.style.extended, dpi) {
+      log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
+    }
     self.frame = Rect(from: r)
   }
 
