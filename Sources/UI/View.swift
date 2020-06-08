@@ -48,51 +48,44 @@ public class View {
 
     self.frame = frame
 
+    let bOverlappedWindow: Bool =
+        style.base & DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW)
+
     // We only check `x` because if `x` is `CW_USEDEFAULT` for a
     // `WS_OVERLAPPEDWINDOW` window, then `y` is ignored; if `y` is
     // `CW_USEDEFAULT`, `ShowWindow` will be invoked with `SW_SHOW`.
-    if self.frame.origin.x == Double(CW_USEDEFAULT) &&
-       style.base & DWORD(WS_OVERLAPPEDWINDOW) == 0 {
+    if self.frame.origin.x == Double(CW_USEDEFAULT) && !bOverlappedWindow {
       log.warning("CW_USEDEFAULT is only valid on WS_OVERLAPPEDWINDOW windows")
       self.frame.origin = Point(x: 0, y: 0)
     }
 
     // We only check `width` because if `width` is CW_USEDEFAULT` for a
     // `WS_OVERLAPPEDWINDOW` window, `height` is ignored.
-    if self.frame.size.width == Double(CW_USEDEFAULT) &&
-       style.base & DWORD(WS_OVERLAPPEDWINDOW) == 0 {
+    if self.frame.size.width == Double(CW_USEDEFAULT) && !bOverlappedWindow {
       log.warning("CW_USEDEFAULT is only valid on WS_OVERLAPPEDWINDOW windows")
       self.frame.size = Size(width: 0, height: 0)
     }
 
+    // Only request the window size, not the location, the location will be
+    // mapped when reparenting.
     self.hWnd =
         CreateWindowExW(self.style.extended, self.class.name, "".LPCWSTR,
                         self.style.base,
-                        Int32(self.frame.origin.x),
-                        Int32(self.frame.origin.y),
+                        Int32(bOverlappedWindow ? self.frame.origin.x : 0),
+                        Int32(bOverlappedWindow ? self.frame.origin.y : 0),
                         Int32(self.frame.size.width),
                         Int32(self.frame.size.height),
                         nil, nil, GetModuleHandleW(nil), nil)
 
-    var r: RECT = RECT(from: self.frame)
     // If `CW_USEDEFAULT` was used, query the actual allocated rect
     if frame.origin.x == Double(CW_USEDEFAULT) ||
        frame.size.width == Double(CW_USEDEFAULT) {
+      var r: RECT = RECT()
       if !GetWindowRect(self.hWnd, &r) {
         log.warning("GetWindowRect: \(GetLastError())")
       }
+      self.frame = Rect(from: r)
     }
-
-    let dpi: UINT = GetDpiForWindow(self.hWnd)
-    let scale: Double = Double(dpi) / 96.0
-
-    // scale the window frame for the DPI
-    r = RECT(from: Rect(from: r).applying(AffineTransform(scaleX: scale, y: scale)))
-    if !AdjustWindowRectExForDpi(&r, self.style.base, false,
-                                 self.style.extended, dpi) {
-      log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
-    }
-    self.frame = Rect(from: r)
   }
 
   deinit {
@@ -114,20 +107,20 @@ public class View {
 
     // Adjust the client rectangle and resize the view when reparenting. This
     // ensures that the requested size is honoured properly.
-    var r = RECT(from: view.frame)
     let dpi: UINT = GetDpiForWindow(view.hWnd)
+    let scale: Double = Double(dpi) / 96.0
+
+    var r: RECT =
+        RECT(from: view.frame.applying(AffineTransform(scaleX: scale, y: scale)))
     if !AdjustWindowRectExForDpi(&r, view.style.base, false,
                                  view.style.extended, dpi) {
       log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
     }
-    view.frame = Rect(from: r)
 
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
     // changes take effect.
-    SetWindowPos(view.hWnd, nil,
-                  Int32(view.frame.origin.x), Int32(view.frame.origin.y),
-                  Int32(view.frame.size.width), Int32(view.frame.size.height),
-                  UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
+    SetWindowPos(view.hWnd, nil, r.left, r.top, r.right - r.left,
+                 r.bottom - r.top, UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
 
     view.superview = self
     subviews.append(view)
