@@ -39,7 +39,23 @@ public class View {
   // TODO(compnerd) handle set
   public private(set) var subviews: [View] = []
   public private(set) var superview: View?
-  public private(set) var frame: Rect
+
+  public var frame: Rect {
+    willSet {
+      let dpi: UINT = GetDpiForWindow(self.hWnd)
+      let scale: Double = Double(dpi) / 96.0
+
+      var r: RECT =
+          RECT(from: newValue.applying(AffineTransform(scaleX: scale, y: scale)))
+      if !AdjustWindowRectExForDpi(&r, self.style.base, false,
+                                   self.style.extended, dpi) {
+        log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
+      }
+
+      SetWindowPos(self.hWnd, nil, r.left, r.top, r.right - r.left,
+                   r.bottom - r.top, UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
+    }
+  }
 
   public init(frame: Rect, `class`: WindowClass, style: WindowStyle) {
     self.class = `class`
