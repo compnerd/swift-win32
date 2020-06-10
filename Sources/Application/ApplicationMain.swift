@@ -29,7 +29,7 @@
 
 import WinSDK
 
-private let pApplicationWindowProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, lParam: LPARAM) -> LRESULT  in
+private let pApplicationWindowProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, lParam: LPARAM) -> LRESULT in
   guard nCode == HC_ACTION else {
     return CallNextHookEx(nil, nCode, wParam, lParam)
   }
@@ -92,10 +92,10 @@ public func ApplicationMain(_ argc: Int32,
     log.error("GetModuleHandleExW: \(GetLastError())")
   }
 
-  let hHook: HHOOK? =
+  let hWindowProcedureHook: HHOOK? =
       SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, 0)
-  if hHook == nil {
-    log.error("SetWindowsHookExW: \(GetLastError())")
+  if hWindowProcedureHook == nil {
+    log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(GetLastError())")
   }
 
   if Application.shared.delegate?
@@ -110,9 +110,9 @@ public func ApplicationMain(_ argc: Int32,
     DispatchMessageW(&msg)
   }
 
-  if let hHook = hHook {
-    if !UnhookWindowsHookEx(hHook) {
-      log.error("UnhookWindowsHookEx: \(GetLastError())")
+  if let hWindowProcedureHook = hWindowProcedureHook {
+    if !UnhookWindowsHookEx(hWindowProcedureHook) {
+      log.error("UnhookWindowsHookEx(WndProc): \(GetLastError())")
     }
   }
 
