@@ -65,12 +65,43 @@ private let pApplicationMessageProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM,
     return CallNextHookEx(nil, nCode, wParam, lParam)
   }
 
+  if let pMessage = UnsafeMutablePointer<MSG>(bitPattern: UInt(lParam)) {
+    switch pMessage.pointee.message {
+    case UINT(WM_HOTKEY):
+      switch pMessage.pointee.wParam {
+      case 1: // rotate 90CCW
+        // TODO(compnerd) dispatch the message
+        fallthrough
+      case 2: // rotate 90CW
+        // TODO(compnerd) dispatch the message
+        fallthrough
+      case 3: // rotate 180CCW
+        // TODO(compnerd) dispatch the message
+        fallthrough
+      case 4: // rotate 180CW
+        // TODO(compnerd) dispatch the message
+        break
+      default:
+        log.warning("unkown HotKey: \(pMessage.pointee.wParam) [\(pMessage.pointee.lParam)]")
+      }
+    default:
+      break
+    }
+  }
+
   return CallNextHookEx(nil, nCode, wParam, lParam)
 }
 
 private func NSClassFromString(_ string: String) -> AnyClass? {
   return _typeByName(string) as? AnyClass
 }
+
+private let arrHotKeys: [(modifier: UINT, key: UINT)] = [
+  (modifier: UINT(MOD_CONTROL | MOD_ALT), key: UINT(VK_LEFT)),
+  (modifier: UINT(MOD_CONTROL | MOD_ALT), key: UINT(VK_RIGHT)),
+  (modifier: UINT(MOD_CONTROL | MOD_ALT), key: UINT(VK_UP)),
+  (modifier: UINT(MOD_CONTROL | MOD_ALT), key: UINT(VK_DOWN)),
+]
 
 @discardableResult
 public func ApplicationMain(_ argc: Int32,
@@ -112,6 +143,12 @@ public func ApplicationMain(_ argc: Int32,
     log.error("SetWindowsHookExW(WH_GETMESSAGE): \(GetLastError())")
   }
 
+  for (id, hotkey) in arrHotKeys.enumerated() {
+    if !RegisterHotKey(nil, Int32(id) + 1, hotkey.modifier, hotkey.key) {
+      log.error("RegisterHotKey(\(id + 1)): \(GetLastError())")
+    }
+  }
+
   if Application.shared.delegate?
         .application(Application.shared,
                      didFinishLaunchingWithOptions: nil) == false {
@@ -122,6 +159,12 @@ public func ApplicationMain(_ argc: Int32,
   while GetMessageW(&msg, nil, 0, 0) {
     TranslateMessage(&msg)
     DispatchMessageW(&msg)
+  }
+
+  for id in 1...arrHotKeys.count {
+    if !UnregisterHotKey(nil, Int32(id)) {
+      log.error("UnregisterHotKey(\(id)): \(GetLastError())")
+    }
   }
 
   if let hMessageProcedureHook = hMessageProcedureHook {
