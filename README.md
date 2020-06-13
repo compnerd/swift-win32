@@ -8,8 +8,12 @@ This requires the 5.2 or newer. You can use the the release binaries from
 build from [Azure](https://dev.azure.com/compnerd/swift-build).
 
 ```cmd
-cmake -B build -D BUILD_SHARED_LIBS=YES -D CMAKE_BUILD_TYPE=Release -G Ninja  -S .
+set SDKROOT=%SystemDrive%/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
+set SWIFTFLAGS=-sdk %SDKROOT% -I %SDKROOT%/usr/lib/swift -L %SDKROOT%/usr/lib/swift/windows
+
+cmake -B build -D BUILD_SHARED_LIBS=YES -D CMAKE_BUILD_TYPE=Release -D CMAKE_Swift_FLAGS="%SWIFTFLAGS%" -G Ninja -S .
 ninja -C build SwiftWin32 HelloSwift
+
 %CD%\build\bin\HelloSwift
 ```
 
