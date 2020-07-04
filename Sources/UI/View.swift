@@ -109,34 +109,37 @@ public class View {
   }
 
   public func addSubview(_ view: View) {
+    if view.style.base & ~DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW) {
+      log.warning("child windows may not set WS_OVERLAPPEDWINDOW")
+      return
+    }
+
     if SetWindowLongPtrW(view.hWnd, GWL_STYLE,
-                         LONG_PTR(view.style.base | DWORD(WS_CHILD))) == 0 {
+                         LONG_PTR((view.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD))) == 0 {
       SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.style.base))
       return
     }
     view.style.base |= DWORD(WS_CHILD)
-    if view.style.base & ~DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW) {
-      log.warning("child windows may not set WS_OVERLAPPEDWINDOW")
-    }
-
-    SetParent(view.hWnd, self.hWnd)
-
-    // Adjust the client rectangle and resize the view when reparenting. This
-    // ensures that the requested size is honoured properly.
-    let dpi: UINT = GetDpiForWindow(view.hWnd)
-    let scale: Double = Double(dpi) / 96.0
-
-    var r: RECT =
-        RECT(from: view.frame.applying(AffineTransform(scaleX: scale, y: scale)))
-    if !AdjustWindowRectExForDpi(&r, view.style.base, false,
-                                 view.style.extended, dpi) {
-      log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
-    }
-
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
     // changes take effect.
-    SetWindowPos(view.hWnd, nil, r.left, r.top, r.right - r.left,
-                 r.bottom - r.top, UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
+    if !SetWindowPos(view.hWnd, nil, 0, 0, 0, 0,
+                     UINT(SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED)) {
+      log.warning("unable to update the window information: \(GetLastError())")
+    }
+
+    // Reparent the window
+    SetParent(view.hWnd, self.hWnd)
+
+    // Adjust the client rect
+    var frame: RECT = RECT(from: view.frame)
+    if view.superview == nil {
+      _ = withUnsafeMutablePointer(to: &frame) {
+        $0.withMemoryRebound(to: POINT.self, capacity: 2) {
+          MapWindowPoints(GetParent(view.hWnd), self.hWnd, $0, 2)
+        }
+      }
+    }
+    view.frame = Rect(from: frame)
 
     view.superview = self
     subviews.append(view)
