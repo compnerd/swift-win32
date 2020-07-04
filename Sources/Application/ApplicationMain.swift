@@ -78,11 +78,17 @@ public func ApplicationMain(_ argc: Int32,
                             _ application: String?,
                             _ delegate: String?) -> Int32 {
   if let application = application {
-    Application.shared =
-        (NSClassFromString(application)! as! Application.Type).init()
+    guard let instance = NSClassFromString(application) else {
+      fatalError("unable to find application class: \(application)")
+    }
+    Application.shared = (instance as! Application.Type).init()
   }
-  Application.shared.delegate =
-      (NSClassFromString(delegate!)! as! ApplicationDelegate.Type).init()
+  if let delegate = delegate {
+    guard let instance = NSClassFromString(delegate) else {
+      fatalError("unable to find delegate class: \(delegate)")
+    }
+    Application.shared.delegate = (instance as! ApplicationDelegate.Type).init()
+  }
 
   // Enable Per Monitor DPI Awareness
   if !SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) {
