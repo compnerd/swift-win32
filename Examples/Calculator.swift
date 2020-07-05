@@ -118,6 +118,9 @@ private class CalculatorWindowDelegate: WindowDelegate {
       calculator.txtResult.text =
           NumberFormatter.localizedString(from: NSNumber(value: value),
                                           number: .decimal)
+    case "AC":
+        calculator.state = CalculatorState()
+        calculator.txtResult.text = "0"
     case "⁺∕₋":
       let value: Double =
           Double(calculator.state[keyPath: calculator.state.operand])!
@@ -175,6 +178,7 @@ private class Calculator {
       Button(frame: Rect(x: 96, y: 192, width: 32, height: 32), title: ".")
 
   private var btnOperations: [Button] = [
+      Button(frame: Rect(x: 32, y: 64, width: 32, height: 32), title: "AC"),
       Button(frame: Rect(x: 64, y: 64, width: 32, height: 32), title: "⁺∕₋"),
       Button(frame: Rect(x: 96, y: 64, width: 32, height: 32), title: "%"),
       Button(frame: Rect(x: 128, y: 64, width: 32, height: 32), title: "÷"),
@@ -192,6 +196,7 @@ private class Calculator {
     self.window.addSubview(self.txtResult)
     self.txtResult.font = Font(name: "Consolas", size: 14)
     self.txtResult.textAlignment = .right
+    self.txtResult.text = "0"
 
     self.window.addSubviews(self.btnDigits)
     self.window.addSubviews(self.btnOperations)
