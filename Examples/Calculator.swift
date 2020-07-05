@@ -120,11 +120,11 @@ private class CalculatorWindowDelegate: WindowDelegate {
                                           number: .decimal)
     case "⁺∕₋":
       let value: Double =
-          Double(calculator.state[keyPath: calculator.state.operand]) ?? 0.0
+          Double(calculator.state[keyPath: calculator.state.operand])!
       let number: NSNumber = NSNumber(value: -1.0 * value)
 
       calculator.state[keyPath: calculator.state.operand] =
-          NumberFormatter().string(from: number)!
+          NumberFormatter.localizedString(from: number, number: .decimal)
       calculator.txtResult.text =
           NumberFormatter.localizedString(from: number, number: .decimal)
     case "%":
