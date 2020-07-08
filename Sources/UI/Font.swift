@@ -228,3 +228,38 @@ public extension Font.Weight {
   static let heavy: Font.Weight = Font.Weight(rawValue: FW_HEAVY)
   static let black: Font.Weight = Font.Weight(rawValue: FW_BLACK)
 }
+
+public extension Font {
+  struct TextStyle: Hashable, Equatable, RawRepresentable {
+    public let rawValue: String
+
+    public init(rawValue: String) {
+      self.rawValue = rawValue
+    }
+  }
+}
+
+public extension Font.TextStyle {
+  static let body: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleBody")
+  static let callout: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleCallout")
+  static let caption1: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleCaption1")
+  static let caption2: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleCaption2")
+  static let footnote: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleFootnote")
+  static let headline: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleHeadline")
+  static let subheadline: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleSubhead")
+  static let largeTitle: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleTitle0")
+  static let title1: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleTitle1")
+  static let title2: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleTitle2")
+  static let title3: Font.TextStyle =
+      Font.TextStyle(rawValue: "UICTFontTextStyleTitle3")
+}
