@@ -30,10 +30,6 @@
 import func WinSDK.GetWindowTextW
 import func WinSDK.PostQuitMessage
 import let WinSDK.CW_USEDEFAULT
-import let WinSDK.ES_RIGHT
-import let WinSDK.WS_BORDER
-import let WinSDK.WS_TABSTOP
-import let WinSDK.WS_VISIBLE
 import struct WinSDK.DWORD
 import struct WinSDK.HWND
 import struct WinSDK.LPARAM
@@ -167,9 +163,7 @@ private class Calculator {
                          width: 204, height: 264), title: "Calculator")
 
   internal var txtResult: TextField =
-      TextField(frame: Rect(x: 34, y: 32, width: 125, height: 24),
-                style: WindowStyle(base: DWORD(WS_BORDER | WS_TABSTOP | WS_VISIBLE | ES_RIGHT),
-                                   extended: 0))
+      TextField(frame: Rect(x: 34, y: 32, width: 128, height: 24))
 
   private var btnDigits: [Button] = [
       Button(frame: Rect(x: 32, y: 192, width: 64, height: 32), title: "0"),
@@ -204,6 +198,7 @@ private class Calculator {
 
     self.window.addSubview(self.txtResult)
     self.txtResult.font = Font(name: "Consolas", size: 14)
+    self.txtResult.textAlignment = .right
 
     self.window.addSubviews(self.btnDigits)
     self.window.addSubviews(self.btnOperations)
