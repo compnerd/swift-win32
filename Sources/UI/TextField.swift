@@ -39,7 +39,7 @@ internal let SwiftTextFieldProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, u
 }
 
 public class TextField: Control {
-  public static let `class`: WindowClass = WindowClass(named: "EDIT")
+  public static let `class`: WindowClass = WindowClass(named: MSFTEDIT_CLASS)
 
   public weak var delegate: TextFieldDelegate?
 
@@ -77,6 +77,16 @@ public class TextField: Control {
                        style: WindowStyle = (base: DWORD(WS_BORDER | WS_TABSTOP | WS_VISIBLE | ES_AUTOHSCROLL),
                                              extended: 0)) {
     super.init(frame: frame, class: `class`, style: style)
+
+    // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance
+    let lExtendedStyle: LONG = GetWindowLongW(hWnd, GWL_EXSTYLE);
+    SetWindowLongW(hWnd, GWL_EXSTYLE, lExtendedStyle & ~WS_EX_CLIENTEDGE)
+
+    // Enable the advanced typography options unconditionally rather than only
+    // in complex scripts and math mode.
+    SendMessageW(hWnd, UINT(EM_SETTYPOGRAPHYOPTIONS),
+                 WPARAM(TO_ADVANCEDTYPOGRAPHY), LPARAM(TO_ADVANCEDTYPOGRAPHY))
+
     SetWindowSubclass(hWnd, SwiftTextFieldProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
