@@ -64,28 +64,27 @@ internal let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
 }
 
 public class Button: Control {
-  public static let `class`: WindowClass = WindowClass(named: "BUTTON")
+  internal static let `class`: WindowClass = WindowClass(named: "BUTTON")
+  internal static let style: WindowStyle =
+      (base: DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON), extended: 0)
 
   public weak var delegate: ButtonDelegate?
 
-  public override init(frame: Rect = .default, `class`: WindowClass = Button.class,
-                       style: WindowStyle = (base: DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON),
-                                             extended: 0)) {
-    super.init(frame: frame, class: `class`, style: style)
+  public init(frame: Rect = .default) {
+    super.init(frame: frame, class: Button.class, style: Button.style)
     SetWindowSubclass(hWnd, SwiftButtonProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
-  }
-
-  public convenience init(frame: Rect = .zero, `class`: WindowClass = Button.class,
-                          style: WindowStyle = (base: DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON),
-                                                extended: 0),
-                          title: String) {
-    self.init(frame: frame, class: `class`, style: style)
-    setTitle(title, forState: .normal)
   }
 
   // FIXME(compnerd) handle title setting for different states
   public func setTitle(_ title: String?, forState _: Control.State) {
     SetWindowTextW(hWnd, title?.LPCWSTR)
+  }
+}
+
+extension Button {
+  public convenience init(frame: Rect = .zero, title: String) {
+    self.init(frame: frame)
+    setTitle(title, forState: .normal)
   }
 }

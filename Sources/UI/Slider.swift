@@ -30,10 +30,9 @@
 import WinSDK
 
 public class Slider: Control {
-  public static let `class`: WindowClass = WindowClass(named: TRACKBAR_CLASS)
-  public static let style: WindowStyle =
-      WindowStyle(base: DWORD(WS_VISIBLE | TBS_TRANSPARENTBKGND),
-                  extended: 0)
+  internal static let `class`: WindowClass = WindowClass(named: TRACKBAR_CLASS)
+  internal static let style: WindowStyle =
+      (base: DWORD(WS_VISIBLE | TBS_TRANSPARENTBKGND), extended: 0)
 
   public var value: Float {
     get { Float(SendMessageW(hWnd, UINT(TBM_GETPOS), 0, 0)) / 100.0 }
@@ -56,9 +55,8 @@ public class Slider: Control {
     }
   }
 
-  public override init(frame: Rect, `class`: WindowClass = Slider.class,
-                       style: WindowStyle = Slider.style) {
-    super.init(frame: frame, class: `class`, style: style)
+  public init(frame: Rect) {
+    super.init(frame: frame, class: Slider.class, style: Slider.style)
     SendMessageW(hWnd, UINT(TBM_SETLINESIZE), WPARAM(1), LPARAM(100))
   }
 }

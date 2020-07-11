@@ -30,9 +30,9 @@
 import WinSDK
 
 public class Label: Control {
-  public static let `class`: WindowClass = WindowClass(named: "STATIC")
-  public static let style: WindowStyle =
-      WindowStyle(base: DWORD(WS_TABSTOP | WS_VISIBLE), extended: 0)
+  internal static let `class`: WindowClass = WindowClass(named: "STATIC")
+  internal static let style: WindowStyle =
+      (base: DWORD(WS_TABSTOP | WS_VISIBLE), extended: 0)
 
   public var font: Font! {
     get {
@@ -61,14 +61,14 @@ public class Label: Control {
     }
   }
 
-  public override init(frame: Rect, `class`: WindowClass = Label.class,
-                       style: WindowStyle = Label.style) {
-    super.init(frame: frame, class: `class`, style: style)
+  public init(frame: Rect) {
+    super.init(frame: frame, class: Label.class, style: Label.style)
   }
+}
 
-  public convenience init(frame: Rect = .zero, `class`: WindowClass = Label.class,
-                          style: WindowStyle = Label.style, title: String) {
-    self.init(frame: frame, class: `class`, style: style)
+extension Label {
+  public convenience init(frame: Rect = .zero, title: String) {
+    self.init(frame: frame)
     SetWindowTextW(hWnd, title.LPCWSTR)
   }
 }
