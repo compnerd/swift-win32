@@ -172,6 +172,36 @@ public class Font {
     return Array<String>(arrFonts)
   }
 
+  public static func preferredFont(forTextStyle style: Font.TextStyle) -> Font {
+    switch style {
+    case .body:
+      return systemFont(ofSize: 17)
+    case .callout:
+      return systemFont(ofSize: 16)
+    case .caption1:
+      return systemFont(ofSize: 12)
+    case .caption2:
+      return systemFont(ofSize: 11)
+    case .footnote:
+      return systemFont(ofSize: 13)
+    case .headline:
+      return systemFont(ofSize: 17, weight: .semibold)
+    case .subheadline:
+      return systemFont(ofSize: 15)
+    case .largeTitle:
+      return systemFont(ofSize: 34)
+    case .title1:
+      return systemFont(ofSize: 28)
+    case .title2:
+      return systemFont(ofSize: 22)
+    case .title3:
+      return systemFont(ofSize: 20)
+    default:
+      log.warning("unknown text style: \(style) - assuming 12pt system font")
+      return systemFont(ofSize: 12)
+    }
+  }
+
   public static func systemFont(ofSize fontSize: Float) -> Font {
     return systemFont(ofSize: fontSize, weight: .regular, italic: false)
   }
