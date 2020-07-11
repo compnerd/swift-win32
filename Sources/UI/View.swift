@@ -40,6 +40,13 @@ public class View {
   public private(set) var subviews: [View] = []
   public private(set) var superview: View?
 
+  /// Configuring a View's Visual Appearance
+  public var isHidden: Bool {
+    get { IsWindowVisible(hWnd) }
+    set(hidden) { ShowWindow(hWnd, hidden ? SW_HIDE : SW_SHOW) }
+  }
+
+  /// Configuring the Bounds and Frame Rectangles
   public var frame: Rect {
     willSet {
       let dpi: UINT = GetDpiForWindow(self.hWnd)
