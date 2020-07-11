@@ -30,12 +30,11 @@
 import WinSDK
 
 public class ProgressView: Control {
-  public static let `class`: WindowClass = WindowClass(named: PROGRESS_CLASS)
+  internal static let `class`: WindowClass = WindowClass(named: PROGRESS_CLASS)
+  internal static let style: WindowStyle = (base: DWORD(WS_VISIBLE), extended: 0)
 
-  public override init(frame: Rect, `class`: WindowClass = ProgressView.class,
-                       style: WindowStyle = (base: DWORD(WS_VISIBLE),
-                                             extended: 0)) {
-    super.init(frame: frame, class: `class`, style: style)
+  public init(frame: Rect) {
+    super.init(frame: frame, class: ProgressView.class, style: ProgressView.style)
     SendMessageW(hWnd, UINT(PBM_SETRANGE32), 0, 100)
     SendMessageW(hWnd, UINT(PBM_SETPOS), 0, 0)
   }

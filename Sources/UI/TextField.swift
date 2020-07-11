@@ -47,7 +47,9 @@ case justified
 }
 
 public class TextField: Control {
-  public static let `class`: WindowClass = WindowClass(named: MSFTEDIT_CLASS)
+  internal static let `class`: WindowClass = WindowClass(named: MSFTEDIT_CLASS)
+  internal static let style: WindowStyle =
+      (base: DWORD(WS_BORDER | WS_TABSTOP | WS_VISIBLE | ES_AUTOHSCROLL), extended: 0)
 
   public weak var delegate: TextFieldDelegate?
 
@@ -128,10 +130,8 @@ public class TextField: Control {
     }
   }
 
-  public override init(frame: Rect = .default, `class`: WindowClass = TextField.class,
-                       style: WindowStyle = (base: DWORD(WS_BORDER | WS_TABSTOP | WS_VISIBLE | ES_AUTOHSCROLL),
-                                             extended: 0)) {
-    super.init(frame: frame, class: `class`, style: style)
+  public init(frame: Rect = .default) {
+    super.init(frame: frame, class: TextField.class, style: TextField.style)
 
     // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance
     let lExtendedStyle: LONG = GetWindowLongW(hWnd, GWL_EXSTYLE);

@@ -29,10 +29,10 @@
 
 import WinSDK
 
-public typealias WindowProc =
+internal typealias WindowProc =
     @convention(c) (HWND?, UINT, WPARAM, LPARAM) -> LRESULT
 
-public class WindowClass {
+internal class WindowClass {
   internal var name: [WCHAR]
 
   internal var hInstance: HINSTANCE?

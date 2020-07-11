@@ -29,7 +29,7 @@
 
 import WinSDK
 
-public typealias WindowStyle = (base: DWORD, extended: DWORD)
+internal typealias WindowStyle = (base: DWORD, extended: DWORD)
 
 public class View {
   internal var hWnd: HWND
@@ -57,7 +57,7 @@ public class View {
     }
   }
 
-  public init(frame: Rect, `class`: WindowClass, style: WindowStyle) {
+  internal init(frame: Rect, `class`: WindowClass, style: WindowStyle) {
     self.class = `class`
     _ = self.class.register()
     self.style = style
