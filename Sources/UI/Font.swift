@@ -40,6 +40,14 @@ extension HFONT__: HandleValue {
 
 internal typealias FontHandle = ManagedHandle<HFONT__>
 
+private func PointToLogical(_ points: Float) -> Int32 {
+  return -MulDiv(Int32(points), GetDeviceCaps(GetDC(nil), LOGPIXELSY), 72)
+}
+
+private func LogicalToPoint(_ logical: Int32) -> Float {
+  return Float(MulDiv(-logical, 72, GetDeviceCaps(GetDC(nil), LOGPIXELSY)))
+}
+
 public class Font {
   internal var hFont: FontHandle
 
@@ -131,8 +139,7 @@ public class Font {
   }
 
   public init?(name: String, size: Float) {
-    let szFontSizeEM = -MulDiv(Int32(size), GetDeviceCaps(GetDC(nil), LOGPIXELSY), 72)
-    self.hFont = FontHandle(owning: CreateFontW(szFontSizeEM,
+    self.hFont = FontHandle(owning: CreateFontW(PointToLogical(size),
                                                 /*cWidth=*/0,
                                                 /*cEscapement=*/0,
                                                 /*cOrientation=*/0,
