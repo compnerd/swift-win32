@@ -55,6 +55,10 @@ public class Font {
     self.hFont = hFont
   }
 
+  private init(owning hFont: HFONT) {
+    self.hFont = FontHandle(owning: hFont)
+  }
+
   private static func systemFont(ofSize fontSize: Float, weight: Font.Weight,
                                  italic bItalic: Bool) -> Font {
     // Windows XP+ default fault name
@@ -73,20 +77,20 @@ public class Font {
       }
     }
 
-    return Font(FontHandle(owning: CreateFontW(PointToLogical(fontSize),
-                                               /*cWidth=*/0,
-                                               /*cEscapement=*/0,
-                                               /*cOrientation=*/0,
-                                               weight.rawValue,
-                                               bItalic ? 1 : 0,
-                                               /*bUnderline=*/DWORD(0),
-                                               /*bStrikeOut=*/DWORD(0),
-                                               DWORD(DEFAULT_CHARSET),
-                                               DWORD(OUT_DEFAULT_PRECIS),
-                                               DWORD(CLIP_DEFAULT_PRECIS),
-                                               DWORD(DEFAULT_QUALITY),
-                                               DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
-                                               fontName.LPCWSTR)))
+    return Font(owning: CreateFontW(PointToLogical(fontSize),
+                                    /*cWidth=*/0,
+                                    /*cEscapement=*/0,
+                                    /*cOrientation=*/0,
+                                    weight.rawValue,
+                                    bItalic ? 1 : 0,
+                                    /*bUnderline=*/DWORD(0),
+                                    /*bStrikeOut=*/DWORD(0),
+                                    DWORD(DEFAULT_CHARSET),
+                                    DWORD(OUT_DEFAULT_PRECIS),
+                                    DWORD(CLIP_DEFAULT_PRECIS),
+                                    DWORD(DEFAULT_QUALITY),
+                                    DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
+                                    fontName.LPCWSTR))
   }
 
   public var fontName: String {
@@ -221,38 +225,38 @@ public class Font {
 
   public static func monospacedSystemFont(ofSize fontSize: Float,
                                           weight: Font.Weight) -> Font {
-    return Font(FontHandle(owning: CreateFontW(PointToLogical(fontSize),
-                                               /*cWidth=*/0,
-                                               /*cEscapement=*/0,
-                                               /*cOrientation=*/0,
-                                               weight.rawValue,
-                                               /*bItalic=*/DWORD(0),
-                                               /*bUnderline=*/DWORD(0),
-                                               /*bStrikeOut=*/DWORD(0),
-                                               DWORD(DEFAULT_CHARSET),
-                                               DWORD(OUT_DEFAULT_PRECIS),
-                                               DWORD(CLIP_DEFAULT_PRECIS),
-                                               DWORD(DEFAULT_QUALITY),
-                                               DWORD((FF_DONTCARE << 2) | FIXED_PITCH),
-                                               nil)))
+    return Font(owning: CreateFontW(PointToLogical(fontSize),
+                                    /*cWidth=*/0,
+                                    /*cEscapement=*/0,
+                                    /*cOrientation=*/0,
+                                    weight.rawValue,
+                                    /*bItalic=*/DWORD(0),
+                                    /*bUnderline=*/DWORD(0),
+                                    /*bStrikeOut=*/DWORD(0),
+                                    DWORD(DEFAULT_CHARSET),
+                                    DWORD(OUT_DEFAULT_PRECIS),
+                                    DWORD(CLIP_DEFAULT_PRECIS),
+                                    DWORD(DEFAULT_QUALITY),
+                                    DWORD((FF_DONTCARE << 2) | FIXED_PITCH),
+                                    nil))
   }
 
   public static func monospacedDigitSystemFont(ofSize fontSize: Float,
                                                weight: Font.Weight) -> Font {
-    return Font(FontHandle(owning: CreateFontW(PointToLogical(fontSize),
-                                               /*cWidth=*/0,
-                                               /*cEscapement=*/0,
-                                               /*cOrientation=*/0,
-                                               weight.rawValue,
-                                               /*bItalic=*/DWORD(0),
-                                               /*bUnderline=*/DWORD(0),
-                                               /*bStrikeOut=*/DWORD(0),
-                                               DWORD(DEFAULT_CHARSET),
-                                               DWORD(OUT_DEFAULT_PRECIS),
-                                               DWORD(CLIP_DEFAULT_PRECIS),
-                                               DWORD(DEFAULT_QUALITY),
-                                               DWORD((FF_DONTCARE << 2) | FIXED_PITCH),
-                                               nil)))
+    return Font(owning: CreateFontW(PointToLogical(fontSize),
+                                    /*cWidth=*/0,
+                                    /*cEscapement=*/0,
+                                    /*cOrientation=*/0,
+                                    weight.rawValue,
+                                    /*bItalic=*/DWORD(0),
+                                    /*bUnderline=*/DWORD(0),
+                                    /*bStrikeOut=*/DWORD(0),
+                                    DWORD(DEFAULT_CHARSET),
+                                    DWORD(OUT_DEFAULT_PRECIS),
+                                    DWORD(CLIP_DEFAULT_PRECIS),
+                                    DWORD(DEFAULT_QUALITY),
+                                    DWORD((FF_DONTCARE << 2) | FIXED_PITCH),
+                                    nil))
   }
 
   public init?(name: String, size: Float) {
