@@ -219,6 +219,42 @@ public class Font {
     return systemFont(ofSize: fontSize, weight: .regular, italic: true)
   }
 
+  public static func monospacedSystemFont(ofSize fontSize: Float,
+                                          weight: Font.Weight) -> Font {
+    return Font(FontHandle(owning: CreateFontW(PointToLogical(fontSize),
+                                               /*cWidth=*/0,
+                                               /*cEscapement=*/0,
+                                               /*cOrientation=*/0,
+                                               weight.rawValue,
+                                               /*bItalic=*/DWORD(0),
+                                               /*bUnderline=*/DWORD(0),
+                                               /*bStrikeOut=*/DWORD(0),
+                                               DWORD(DEFAULT_CHARSET),
+                                               DWORD(OUT_DEFAULT_PRECIS),
+                                               DWORD(CLIP_DEFAULT_PRECIS),
+                                               DWORD(DEFAULT_QUALITY),
+                                               DWORD((FF_DONTCARE << 2) | FIXED_PITCH),
+                                               nil)))
+  }
+
+  public static func monospacedDigitSystemFont(ofSize fontSize: Float,
+                                               weight: Font.Weight) -> Font {
+    return Font(FontHandle(owning: CreateFontW(PointToLogical(fontSize),
+                                               /*cWidth=*/0,
+                                               /*cEscapement=*/0,
+                                               /*cOrientation=*/0,
+                                               weight.rawValue,
+                                               /*bItalic=*/DWORD(0),
+                                               /*bUnderline=*/DWORD(0),
+                                               /*bStrikeOut=*/DWORD(0),
+                                               DWORD(DEFAULT_CHARSET),
+                                               DWORD(OUT_DEFAULT_PRECIS),
+                                               DWORD(CLIP_DEFAULT_PRECIS),
+                                               DWORD(DEFAULT_QUALITY),
+                                               DWORD((FF_DONTCARE << 2) | FIXED_PITCH),
+                                               nil)))
+  }
+
   public init?(name: String, size: Float) {
     self.hFont = FontHandle(owning: CreateFontW(PointToLogical(size),
                                                 /*cWidth=*/0,
