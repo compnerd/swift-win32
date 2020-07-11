@@ -34,7 +34,6 @@ public protocol WindowDelegate: class {
   func OnPaint(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
   func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
   func OnDestroy(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
-  func OnQuit(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
 }
 
 public extension WindowDelegate {
@@ -51,10 +50,6 @@ public extension WindowDelegate {
   }
 
   func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
-    return 1
-  }
-
-  func OnQuit(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
     return 1
   }
 }
@@ -74,11 +69,6 @@ internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
     break
   case UINT(WM_DESTROY):
     if window?.delegate?.OnDestroy(hWnd, wParam, lParam) == 0 {
-      return 0
-    }
-    break
-  case UINT(WM_QUIT):
-    if window?.delegate?.OnQuit(hWnd, wParam, lParam) == 0 {
       return 0
     }
     break
