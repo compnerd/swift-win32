@@ -70,14 +70,14 @@ public class View {
     // We only check `x` because if `x` is `CW_USEDEFAULT` for a
     // `WS_OVERLAPPEDWINDOW` window, then `y` is ignored; if `y` is
     // `CW_USEDEFAULT`, `ShowWindow` will be invoked with `SW_SHOW`.
-    if self.frame.origin.x == Double(CW_USEDEFAULT) && !bOverlappedWindow {
+    if !bOverlappedWindow && frame.origin.x == Double(CW_USEDEFAULT) {
       log.warning("CW_USEDEFAULT is only valid on WS_OVERLAPPEDWINDOW windows")
       self.frame.origin = Point(x: 0, y: 0)
     }
 
     // We only check `width` because if `width` is CW_USEDEFAULT` for a
     // `WS_OVERLAPPEDWINDOW` window, `height` is ignored.
-    if self.frame.size.width == Double(CW_USEDEFAULT) && !bOverlappedWindow {
+    if !bOverlappedWindow && frame.size.width == Double(CW_USEDEFAULT) {
       log.warning("CW_USEDEFAULT is only valid on WS_OVERLAPPEDWINDOW windows")
       self.frame.size = Size(width: 0, height: 0)
     }
@@ -91,7 +91,7 @@ public class View {
                         Int32(bOverlappedWindow ? self.frame.origin.y : 0),
                         Int32(self.frame.size.width),
                         Int32(self.frame.size.height),
-                        nil, nil, GetModuleHandleW(nil), nil)
+                        nil, nil, GetModuleHandleW(nil), nil)!
 
     // If `CW_USEDEFAULT` was used, query the actual allocated rect
     if frame.origin.x == Double(CW_USEDEFAULT) ||

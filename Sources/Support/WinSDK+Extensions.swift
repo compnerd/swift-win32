@@ -62,5 +62,5 @@ public let HKEY_CURRENT_USER_LOCAL_SETTINGS: HKEY = HKEY(bitPattern: 0x80000007)
 
 #if swift(<6.0)
 // Richedit.h
-public let MSFTEDIT_CLASS: [WCHAR] = Array<WCHAR>("RICHEDIT50W".utf16)
+public let MSFTEDIT_CLASS: String = "RICHEDIT50W"
 #endif
