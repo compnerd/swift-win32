@@ -28,7 +28,6 @@
  **/
 
 import func WinSDK.GetWindowTextW
-import func WinSDK.PostQuitMessage
 import let WinSDK.CW_USEDEFAULT
 import struct WinSDK.DWORD
 import struct WinSDK.HWND
@@ -85,12 +84,6 @@ private struct CalculatorState {
 
 private class CalculatorWindowDelegate: WindowDelegate {
   weak var calculator: Calculator?
-
-  func OnDestroy(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM)
-      -> LRESULT {
-    PostQuitMessage(0)
-    return 0
-  }
 
   func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM)
       -> LRESULT {

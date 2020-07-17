@@ -33,7 +33,6 @@ public protocol WindowDelegate: class {
   func OnCreate(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
   func OnPaint(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
   func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
-  func OnDestroy(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
 }
 
 public extension WindowDelegate {
@@ -42,10 +41,6 @@ public extension WindowDelegate {
   }
 
   func OnPaint(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
-    return 1
-  }
-
-  func OnDestroy(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
     return 1
   }
 
@@ -66,9 +61,10 @@ internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
       return 0
     }
   case UINT(WM_DESTROY):
-    if window?.delegate?.OnDestroy(hWnd, wParam, lParam) == 0 {
-      return 0
-    }
+    // TODO(compnerd) we should handle multiple scenes, which can have multiple
+    // Windows, so the destruction of a window should not post the quit message
+    // to the message loop.
+    PostQuitMessage(0)
   case UINT(WM_COMMAND):
     if window?.delegate?.OnCommand(hWnd, wParam, lParam) == 0 {
       return 0
