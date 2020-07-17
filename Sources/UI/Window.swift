@@ -61,22 +61,18 @@ internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
     if window?.delegate?.OnCreate(hWnd, wParam, lParam) == 0 {
       return 0
     }
-    break
   case UINT(WM_PAINT):
     if window?.delegate?.OnPaint(hWnd, wParam, lParam) == 0 {
       return 0
     }
-    break
   case UINT(WM_DESTROY):
     if window?.delegate?.OnDestroy(hWnd, wParam, lParam) == 0 {
       return 0
     }
-    break
   case UINT(WM_COMMAND):
     if window?.delegate?.OnCommand(hWnd, wParam, lParam) == 0 {
       return 0
     }
-    break
   default:
     break
   }
