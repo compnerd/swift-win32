@@ -93,7 +93,8 @@ public final class Screen {
       _ = GetScaleFactorForMonitor(hMonitor, &dsfDevceScaleFactor)
 
       let screen: Screen =
-          Screen(height: info.s.rcMonitor.bottom, width: info.s.rcMonitor.right,
+          Screen(handle: hMonitor!,
+                 height: info.s.rcMonitor.bottom, width: info.s.rcMonitor.right,
                  scale: dsfDevceScaleFactor.factor)
 
       // The main screen is always at index 0
@@ -125,7 +126,13 @@ public final class Screen {
   /// The native scale factor for the physical screen.
   public let nativeScale: Double
 
-  private init(height: LONG, width: LONG, scale: Double) {
+  /// The handle to the monitor that the screen represents.
+  private let hMonitor: HMONITOR!
+
+  private init(handle hMonitor: HMONITOR!, height: LONG, width: LONG,
+               scale: Double) {
+    self.hMonitor = hMonitor
+
     self.bounds = Rect(origin: Point(x: 0, y: 0),
                        size: Size(width: Double(width) / scale,
                                   height: Double(height) / scale))
@@ -133,6 +140,16 @@ public final class Screen {
         Rect(origin: Point(x: 0, y: 0),
              size: Size(width: Double(width), height: Double(height)))
     self.nativeScale = scale
+  }
+}
+
+extension Screen {
+  internal static func == (_ lhs: Screen, _ rhs: HMONITOR) -> Bool {
+    return lhs.hMonitor == rhs
+  }
+
+  internal static func == (_ lhs: HMONITOR, _ rhs: Screen) -> Bool {
+    return rhs.hMonitor == lhs
   }
 }
 
