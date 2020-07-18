@@ -94,6 +94,15 @@ public class Window: View {
 
   public weak var delegate: WindowDelegate?
 
+  // TODO(compnerd) remove this in favour of scene management interface;
+  // windowScene provides the scene associated with the window, and the scene is
+  // attached to a window.
+  public var screen: Screen {
+    let hMonitor: HMONITOR =
+        MonitorFromWindow(hWnd, DWORD(MONITOR_DEFAULTTOPRIMARY))
+    return Screen.screens.filter { $0 == hMonitor }.first!
+  }
+
   public init(frame: Rect) {
     super.init(frame: frame, class: Window.class, style: Window.style)
     SetWindowSubclass(hWnd, SwiftWindowProc, UINT_PTR(0),
