@@ -60,6 +60,11 @@ internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
     if window?.delegate?.OnCommand(hWnd, wParam, lParam) == 0 {
       return 0
     }
+  case UINT(WM_DPICHANGED):
+    if let hMonitor = MonitorFromWindow(hWnd, DWORD(MONITOR_DEFAULTTONULL)) {
+      let screen = Screen.screens.filter { $0 == hMonitor }.first
+      screen?.traitCollectionDidChange(screen?.traitCollection)
+    }
   default:
     break
   }
