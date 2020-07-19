@@ -129,6 +129,8 @@ public final class Screen {
   /// The handle to the monitor that the screen represents.
   private let hMonitor: HMONITOR!
 
+  public private(set) var traitCollection: TraitCollection
+
   private init(handle hMonitor: HMONITOR!, height: LONG, width: LONG,
                scale: Double) {
     self.hMonitor = hMonitor
@@ -140,6 +142,33 @@ public final class Screen {
         Rect(origin: Point(x: 0, y: 0),
              size: Size(width: Double(width), height: Double(height)))
     self.nativeScale = scale
+
+    self.traitCollection = TraitCollection(traitsFrom: [
+      TraitCollection.current,
+      TraitCollection(displayScale: scale),
+    ])
+  }
+}
+
+extension Screen: TraitEnvironment {
+  public func traitCollectionDidChange(_ previousTraitCollection: TraitCollection?) {
+    for screen in Screen.screens {
+      var dpiX: UINT = 0
+      var dpiY: UINT = 0
+      guard GetDpiForMonitor(screen.hMonitor, MDT_EFFECTIVE_DPI,
+                             &dpiX, &dpiY) == S_OK else {
+        log.error("GetDpiForMonitor: invalid argument")
+        fatalError()
+      }
+
+      // From MSDN: "The values of *dpiX and *dpiY are identical."
+      assert(dpiX == dpiY)
+
+      screen.traitCollection = TraitCollection(traitsFrom: [
+        screen.traitCollection,
+        TraitCollection(displayScale: Double(dpiX)),
+      ])
+    }
   }
 }
 
