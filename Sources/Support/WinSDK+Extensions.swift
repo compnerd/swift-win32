@@ -79,3 +79,18 @@ func GetMessageW(_ lpMsg: LPMSG?, _ hWnd: HWND?, _ wMsgFilterMin: UINT,
                     to: ((LPMSG?, HWND?, UINT, UINT) -> CInt).self)
   return pfnGetMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax)
 }
+
+// `EnableMenuItem` returns `BOOL` but can return `-1` in the case of an error.
+// Explicitly convert the signature to unwrap the `BOOL` to `CInt`.
+func EnableMenuItem(_ hMenu: HMENU, _ uIDEnableItem: UINT, _ uEnable: UINT)
+    -> Bool {
+  return WinSDK.EnableMenuItem(hMenu, uIDEnableItem, uEnable)
+}
+
+func EnableMenuItem(_ hMenu: HMENU, _ uIDEnableItem: UINT, _ uEnable: UINT)
+    -> CInt {
+  let pfnEnableMenuItem: (HMENU?, UINT, UINT) -> CInt =
+      unsafeBitCast(WinSDK.EnableMenuItem,
+                    to: ((HMENU?, UINT, UINT) -> CInt).self)
+  return pfnEnableMenuItem(hMenu, uIDEnableItem, uEnable)
+}
