@@ -64,3 +64,18 @@ public let HKEY_CURRENT_USER_LOCAL_SETTINGS: HKEY = HKEY(bitPattern: 0x80000007)
 // Richedit.h
 public let MSFTEDIT_CLASS: String = "RICHEDIT50W"
 #endif
+
+// `GetMessageW` returns `BOOL` but can return `-1` in the case of an error.
+// Explicitly convert the signature to unwrap the `BOOL` to `CInt`.
+func GetMessageW(_ lpMsg: LPMSG?, _ hWnd: HWND?, _ wMsgFilterMin: UINT,
+                 _ wMsgFilterMax: UINT) -> Bool {
+  return WinSDK.GetMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax)
+}
+
+func GetMessageW(_ lpMsg: LPMSG?, _ hWnd: HWND?, _ wMsgFilterMin: UINT,
+                 _ wMsgFilterMax: UINT) -> CInt {
+  let pfnGetMessageW: (LPMSG?, HWND?, UINT, UINT) -> CInt =
+      unsafeBitCast(WinSDK.GetMessageW,
+                    to: ((LPMSG?, HWND?, UINT, UINT) -> CInt).self)
+  return pfnGetMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax)
+}
