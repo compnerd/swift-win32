@@ -129,8 +129,14 @@ public func ApplicationMain(_ argc: Int32,
     return EXIT_FAILURE
   }
 
+  // `GetMessageW` returns `BOOL` but can return `-1` in the case of an error.
+  // Explicitly convert the signature to unwrap the `BOOL` to `CInt`.
+  let GetMessageW: (LPMSG?, HWND?, UINT, UINT) -> CInt =
+        unsafeBitCast(WinSDK.GetMessageW,
+                      to: ((LPMSG?, HWND?, UINT, UINT) -> CInt).self)
+
   var msg: MSG = MSG()
-  while GetMessageW(&msg, nil, 0, 0) {
+  while GetMessageW(&msg, nil, 0, 0) > 0 {
     TranslateMessage(&msg)
     DispatchMessageW(&msg)
   }
