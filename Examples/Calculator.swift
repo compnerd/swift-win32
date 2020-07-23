@@ -202,6 +202,8 @@ private class Calculator {
     self.window.addSubviews(self.btnOperations)
 
     self.window.addSubview(self.btnDecimal)
+
+    self.window.makeKeyAndVisible()
   }
 }
 

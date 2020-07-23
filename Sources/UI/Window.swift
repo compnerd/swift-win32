@@ -55,7 +55,11 @@ internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
     // TODO(compnerd) we should handle multiple scenes, which can have multiple
     // Windows, so the destruction of a window should not post the quit message
     // to the message loop.
-    PostQuitMessage(0)
+    Application.shared.windows.removeAll(where: { $0.hWnd == window!.hWnd })
+    if window?.isKeyWindow ?? false {
+      window?.resignKey()
+      PostQuitMessage(0)
+    }
   case UINT(WM_COMMAND):
     if window?.delegate?.OnCommand(hWnd, wParam, lParam) == 0 {
       return 0
@@ -82,6 +86,31 @@ public class Window: View {
 
   public weak var delegate: WindowDelegate?
 
+  /// Making Windows Key
+  var isKeyWindow: Bool {
+    guard let keyWindow = Application.shared.keyWindow else { return false }
+    return self.hWnd == keyWindow.hWnd
+  }
+
+  public func makeKeyAndVisible() {
+    self.makeKey()
+    self.isHidden = false
+  }
+
+  public func makeKey() {
+    Application.shared.keyWindow?.resignKey()
+    Application.shared.keyWindow = self
+    Application.shared.keyWindow?.becomeKey()
+  }
+
+  public func becomeKey() {
+    // TODO(compnerd) post didBecomKeyNotification
+  }
+
+  public func resignKey() {
+    // TODO(compnerd) post didResignKeyNotification
+  }
+
   // TODO(compnerd) remove this in favour of scene management interface;
   // windowScene provides the scene associated with the window, and the scene is
   // attached to a window.
@@ -95,6 +124,9 @@ public class Window: View {
     super.init(frame: frame, class: Window.class, style: Window.style)
     SetWindowSubclass(hWnd, SwiftWindowProc, UINT_PTR(0),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
+
+    // TODO(compnerd) insert/sort by z-order
+    Application.shared.windows.append(self)
   }
 }
 
