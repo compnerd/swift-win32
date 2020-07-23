@@ -28,13 +28,22 @@
  **/
 
 public class Application: _TriviallyConstructible {
+  /// Getting the App Instance
   public static var shared: Application = Application()
 
+  /// Managing the App's Behaviour
   public var delegate: ApplicationDelegate?
+
+  /// Getting the Application State
   public internal(set) var state: Application.State
+
+  /// Getting App Windows
+  public internal(set) var keyWindow: Window?
+  public internal(set) var windows: [Window]
 
   public required init() {
     self.state = .active
+    self.windows = []
   }
 }
 
