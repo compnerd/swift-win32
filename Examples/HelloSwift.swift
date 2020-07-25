@@ -102,6 +102,8 @@ deserunt mollit anim id est laborum.\r\n
     self.slider.maximumValue = 100.0
     self.slider.value = 48.0
 
+    window.makeKeyAndVisible()
+
     return true
   }
 
