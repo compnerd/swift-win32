@@ -30,16 +30,11 @@
 import WinSDK
 
 public protocol WindowDelegate: class {
-  func OnCreate(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
   func OnPaint(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
   func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
 }
 
 public extension WindowDelegate {
-  func OnCreate(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
-    return 1
-  }
-
   func OnPaint(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
     return 1
   }
@@ -52,10 +47,6 @@ public extension WindowDelegate {
 internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let window: Window? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Window
   switch uMsg {
-  case UINT(WM_CREATE):
-    if window?.delegate?.OnCreate(hWnd, wParam, lParam) == 0 {
-      return 0
-    }
   case UINT(WM_PAINT):
     if window?.delegate?.OnPaint(hWnd, wParam, lParam) == 0 {
       return 0
