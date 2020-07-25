@@ -177,6 +177,11 @@ public class Font {
     return Array<String>(arrFonts)
   }
 
+  /// Getting System Font Information
+  public static var labelFontSize: Float { 17.0 }
+  public static var buttonFontSize: Float { 18.0 }
+  public static var smallSystemFontSize: Float { 12.0 }
+  public static var systemFontSize: Float { 14.0 }
 
   /// Creating System Fonts
   public static func systemFont(ofSize fontSize: Float) -> Font {
