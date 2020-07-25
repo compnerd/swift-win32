@@ -124,7 +124,7 @@ private class Calculator {
     self.window.rootViewController?.title = "Calculator"
 
     self.window.addSubview(self.txtResult)
-    self.txtResult.font = Font(name: "Consolas", size: 14)
+    self.txtResult.font = Font(name: "Consolas", size: Font.systemFontSize)
     self.txtResult.textAlignment = .right
     self.txtResult.text = "0"
 
