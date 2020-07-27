@@ -51,12 +51,15 @@ public class TextView: View {
     }
   }
 
+  private var _font: Font?
   public var font: Font? {
     get {
+      guard _font == nil else { return _font }
       let lResult: LRESULT = SendMessageW(hWnd, UINT(WM_GETFONT), 0, 0)
       return Font(FontHandle(referencing: HFONT(bitPattern: Int(lResult))))
     }
     set(font) {
+      self._font = font
       SendMessageW(hWnd, UINT(WM_SETFONT),
                    unsafeBitCast(font?.hFont.value, to: WPARAM.self), LPARAM(1))
     }
