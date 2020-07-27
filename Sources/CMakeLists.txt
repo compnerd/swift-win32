@@ -39,6 +39,9 @@ target_link_libraries(SwiftWin32 PUBLIC
   $<$<VERSION_LESS:${CMAKE_Swift_COMPILER_VERSION},5.3>:Gdi32>
   ComCtl32
   User32)
+target_link_libraries(SwiftWin32 PUBLIC
+  $<$<NOT:$<PLATFORM_ID:Darwin>>:dispatch>
+  $<$<NOT:$<PLATFORM_ID:Darwin>>:Foundation>)
 if(WITH_SWIFT_LOG)
   target_compile_definitions(SwiftWin32 PRIVATE
     WITH_SWIFT_LOG)

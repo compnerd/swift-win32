@@ -1,6 +1,3 @@
-find_package(dispatch CONFIG QUIET)
-find_package(Foundation CONFIG QUIET)
-
 add_executable(HelloSwift
   HelloSwift.swift)
 add_custom_command(TARGET HelloSwift POST_BUILD
