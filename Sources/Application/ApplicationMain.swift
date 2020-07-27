@@ -28,6 +28,7 @@
  **/
 
 import WinSDK
+import Foundation
 
 private let pApplicationWindowProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, lParam: LPARAM) -> LRESULT in
   guard nCode == HC_ACTION else {
@@ -66,10 +67,6 @@ private let pApplicationMessageProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM,
   }
 
   return CallNextHookEx(nil, nCode, wParam, lParam)
-}
-
-private func NSClassFromString(_ string: String) -> AnyClass? {
-  return _typeByName(string) as? AnyClass
 }
 
 @discardableResult

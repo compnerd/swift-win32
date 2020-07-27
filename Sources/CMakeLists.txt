@@ -27,7 +27,6 @@ target_sources(SwiftWin32 PRIVATE
   CG/Size.swift)
 target_sources(SwiftWin32 PRIVATE
   Support/Logging.swift
-  Support/Range.swift
   Support/Rect+UIExtensions.swift
   Support/String.swift
   Support/WindowsHandle.swift
