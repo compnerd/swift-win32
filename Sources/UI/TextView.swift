@@ -28,6 +28,7 @@
  **/
 
 import WinSDK
+import Foundation
 
 internal let SwiftTextViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let textview: TextView? =
@@ -83,7 +84,7 @@ public class TextView: View {
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
-  public func scrollRangeToVisible(_ range: Range) {
+  public func scrollRangeToVisible(_ range: NSRange) {
     SendMessageW(hWnd, UINT(EM_SETSEL), WPARAM(range.location),
                  LPARAM(range.location + range.length))
     SendMessageW(hWnd, UINT(EM_SETSEL), UInt64(bitPattern: -1), -1)
