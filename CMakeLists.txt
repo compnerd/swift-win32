@@ -15,6 +15,8 @@ set(CMAKE_Swift_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/swift)
 if(WITH_SWIFT_LOG)
   find_package(swift-log CONFIG QUIET)
 endif()
+find_package(dispatch CONFIG QUIET)
+find_package(Foundation CONFIG QUIET)
 
 include(SwiftSupport)
 
