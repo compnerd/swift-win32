@@ -6,7 +6,7 @@
 
   <!-- assembly identity -->
   <asmv1:assemblyIdentity
-    name="org.compnerd.swift-win32.HelloSwift"
+    name="org.compnerd.swift-win32.UICatalog"
     processorArchitecture="*"
     type="win32"
     version="1.0.0.0"/>
@@ -19,7 +19,7 @@
     </windowsSettings>
   </asmv3:application>
 
-  <asmv1:description>Swift/Win32 Demo</asmv1:description>
+  <asmv1:description>UICatalog</asmv1:description>
 
   <!-- Common Control Support -->
   <asmv1:dependency>
