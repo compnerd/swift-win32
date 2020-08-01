@@ -65,21 +65,8 @@ public class TextView: View {
     }
   }
 
-  public var text: String? {
-    get {
-      let szLength: Int32 = GetWindowTextLengthW(hWnd)
-
-      let buffer: UnsafeMutablePointer<WCHAR> =
-        UnsafeMutablePointer<WCHAR>.allocate(capacity: Int(szLength) + 1)
-      defer { buffer.deallocate() }
-
-      GetWindowTextW(hWnd, buffer, szLength + 1)
-      return String(decodingCString: buffer, as: UTF16.self)
-    }
-    set(value) {
-      SetWindowTextW(hWnd, value?.LPCWSTR)
-    }
-  }
+  @_Win32WindowText
+  public var text: String?
 
   public init(frame: Rect = .default) {
     super.init(frame: frame, class: TextView.class, style: TextView.style)

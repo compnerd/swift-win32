@@ -1,5 +1,5 @@
 /**
- * Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
+ * Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,29 +29,39 @@
 
 import WinSDK
 
-public class Label: Control {
-  internal static let `class`: WindowClass = WindowClass(named: "STATIC")
-  internal static let style: WindowStyle =
-      (base: DWORD(WS_TABSTOP | WS_VISIBLE), extended: 0)
+@propertyWrapper
+public struct _Win32WindowText {
+  public var wrappedValue: String? {
+    get { fatalError() }
+    set { fatalError() }
+  }
 
-  private var _font: Font?
-  public var font: Font! {
+  public static subscript<EnclosingSelf: View>(_enclosingInstance view: EnclosingSelf,
+                                               wrapped wrappedKeyPath: ReferenceWritableKeyPath<EnclosingSelf, String?>,
+                                               storage storageKeyPath: ReferenceWritableKeyPath<EnclosingSelf, _Win32WindowText>)
+      -> String? {
     get {
-      guard _font == nil else { return _font }
-      let lResult: LRESULT = SendMessageW(hWnd, UINT(WM_GETFONT), 0, 0)
-      return Font(FontHandle(referencing: HFONT(bitPattern: Int(lResult))))
+      let szLength: Int32 = GetWindowTextLengthW(view.hWnd)
+
+#if swift(<5.3)
+      let buffer: UnsafeMutablePointer<WCHAR> =
+        UnsafeMutablePointer<WCHAR>.allocate(capacity: Int(szLength) + 1)
+      defer { buffer.deallocate() }
+
+      GetWindowTextW(view.hWnd, buffer, szLength + 1)
+      return String(decodingCString: buffer, as: UTF16.self)
+#else
+      let buffer: [WCHAR] = Array<WCHAR>(unsafeUninitializedCapacity: Int(szLength) + 1) {
+        $1 = Int(GetWindowTextW(view.hWnd, $0.baseAddress!, CInt($0.count)))
+      }
+      return String(decodingCString: buffer, as: UTF16.self)
+#endif
     }
-    set(font) {
-      self._font = font
-      SendMessageW(hWnd, UINT(WM_SETFONT),
-                   unsafeBitCast(font?.hFont.value, to: WPARAM.self), LPARAM(1))
+    set(value) {
+      SetWindowTextW(view.hWnd, value?.LPCWSTR)
     }
   }
 
-  @_Win32WindowText
-  public var text: String?
-
-  public init(frame: Rect) {
-    super.init(frame: frame, class: Label.class, style: Label.style)
+  public init() {
   }
 }

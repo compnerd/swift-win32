@@ -30,6 +30,13 @@
 import WinSDK
 import SwiftWin32
 
+internal extension Label {
+  convenience init(frame: Rect, title: String) {
+    self.init(frame: frame)
+    self.text = title
+  }
+}
+
 class EventHandler: WindowDelegate {
   func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM)
       -> LRESULT {
