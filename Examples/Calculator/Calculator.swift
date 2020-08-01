@@ -163,7 +163,7 @@ private class Calculator {
 
   private var window: Window =
       Window(frame: Rect(x: Double(CW_USEDEFAULT), y: Double(CW_USEDEFAULT),
-                         width: 204, height: 264), title: "Calculator")
+                         width: 204, height: 264))
 
   internal var txtResult: TextField =
       TextField(frame: Rect(x: 34, y: 32, width: 128, height: 24))
@@ -198,6 +198,8 @@ private class Calculator {
   public init() {
     self.delegate.calculator = self
 
+    self.window.rootViewController = ViewController()
+    self.window.rootViewController?.title = "Calculator"
     self.window.delegate = self.delegate
 
     self.window.addSubview(self.txtResult)

@@ -21,6 +21,7 @@ add_library(SwiftWin32 SHARED
   UI/TraitCollection.swift
   UI/TraitEnvironment.swift
   UI/View.swift
+  UI/ViewController.swift
   UI/Window.swift
   UI/WindowClass.swift)
 target_sources(SwiftWin32 PRIVATE

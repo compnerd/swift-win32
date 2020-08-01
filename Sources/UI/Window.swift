@@ -75,7 +75,28 @@ public class Window: View {
   private static let style: WindowStyle =
       (base: DWORD(WS_OVERLAPPEDWINDOW | UInt32(WS_VISIBLE)), extended: 0)
 
+  // TODO(compnerd) remove this in favour of the view controller
   public weak var delegate: WindowDelegate?
+
+  /// Configuring the Window
+  public var rootViewController: ViewController? {
+    didSet { self.rootViewController?.view = self }
+  }
+
+  // TODO(compnerd) handle set
+  public private(set) var windowLevel: Window.Level = .normal
+
+  // TODO(compnerd) handle set
+  public private(set) var canResizeToFitContent: Bool = true
+
+  // TODO(compnerd) remove this in favour of scene management interface;
+  // windowScene provides the scene associated with the window, and the scene is
+  // attached to a window.
+  public var screen: Screen {
+    let hMonitor: HMONITOR =
+        MonitorFromWindow(hWnd, DWORD(MONITOR_DEFAULTTOPRIMARY))
+    return Screen.screens.filter { $0 == hMonitor }.first!
+  }
 
   /// Making Windows Key
   var isKeyWindow: Bool {
@@ -102,15 +123,6 @@ public class Window: View {
     // TODO(compnerd) post didResignKeyNotification
   }
 
-  // TODO(compnerd) remove this in favour of scene management interface;
-  // windowScene provides the scene associated with the window, and the scene is
-  // attached to a window.
-  public var screen: Screen {
-    let hMonitor: HMONITOR =
-        MonitorFromWindow(hWnd, DWORD(MONITOR_DEFAULTTOPRIMARY))
-    return Screen.screens.filter { $0 == hMonitor }.first!
-  }
-
   public init(frame: Rect) {
     super.init(frame: frame, class: Window.class, style: Window.style)
     SetWindowSubclass(hWnd, SwiftWindowProc, UINT_PTR(0),
@@ -122,8 +134,19 @@ public class Window: View {
 }
 
 extension Window {
-  public convenience init(frame: Rect = .zero, title: String) {
-    self.init(frame: frame)
-    SetWindowTextW(hWnd, title.LPCWSTR)
+  public struct Level: Equatable, Hashable, RawRepresentable {
+    public typealias RawValue = Double
+
+    public let rawValue: RawValue
+
+    public init(rawValue: RawValue) {
+      self.rawValue = rawValue
+    }
   }
+}
+
+extension Window.Level {
+  public static let normal: Window.Level = Window.Level(rawValue: 0.0)
+  public static let statusBar: Window.Level = Window.Level(rawValue: 1000.0)
+  public static let alert: Window.Level = Window.Level(rawValue: 2000.0)
 }
