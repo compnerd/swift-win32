@@ -7,6 +7,7 @@ add_library(SwiftWin32 SHARED
   UI/Button.swift
   UI/Color.swift
   UI/Control.swift
+  UI/DatePicker.swift
   UI/Device.swift
   UI/EdgeInsets.swift
   UI/Font.swift
