@@ -29,6 +29,7 @@ target_sources(SwiftWin32 PRIVATE
 target_sources(SwiftWin32 PRIVATE
   Support/Logging.swift
   Support/Rect+UIExtensions.swift
+  Support/PropertyWrappers.swift
   Support/String.swift
   Support/WindowsHandle.swift
   Support/WinSDK+Extensions.swift)
