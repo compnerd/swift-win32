@@ -56,7 +56,7 @@ class EventHandler: WindowDelegate {
 @main
 final class SwiftApplicationDelegate: ApplicationDelegate {
   var window: Window =
-      Window(frame: .default, title: "UICatalog")
+      Window(frame: .default)
 
   lazy var label: Label =
       Label(frame: Rect(x: 4.0, y: 12.0, width: 72.0, height: 16.0),
@@ -87,6 +87,9 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
 
   func application(_: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
+    window.rootViewController = ViewController()
+    window.rootViewController?.title = "UICatalog"
+
     window.addSubview(self.label)
     window.addSubview(self.button)
     window.addSubview(self.checkbox)
