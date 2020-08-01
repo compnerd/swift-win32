@@ -70,6 +70,9 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
   lazy var slider: Slider =
       Slider(frame: Rect(x: 4.0, y: 156.0, width: 256.0, height: 32.0))
 
+  lazy var picker: DatePicker =
+      DatePicker(frame: Rect(x: 4.0, y: 192.0, width: 256.0, height: 32.0))
+
   lazy var delegate = EventHandler()
 
   func application(_: Application,
@@ -80,6 +83,7 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
     window.addSubview(self.textfield)
     window.addSubview(self.textview)
     window.addSubview(self.slider)
+    window.addSubview(self.picker)
 
     window.delegate = delegate
 
