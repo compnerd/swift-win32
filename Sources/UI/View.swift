@@ -31,6 +31,26 @@ import WinSDK
 
 internal typealias WindowStyle = (base: DWORD, extended: DWORD)
 
+private func ClientToWindow(size: inout Size, for style: WindowStyle) {
+  var r: RECT =
+      RECT(left: 0, top: 0, right: LONG(size.width), bottom: LONG(size.height))
+  if !AdjustWindowRect(&r, style.base, false) {
+    log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
+  }
+  size = Size(width: Double(r.right - r.left), height: Double(r.bottom - r.top))
+}
+
+private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) {
+  let scale: Double = Double(dpi) / Double(USER_DEFAULT_SCREEN_DPI)
+
+  var r: RECT =
+      RECT(from: rect.applying(AffineTransform(scaleX: scale, y: scale)))
+  if !AdjustWindowRectExForDpi(&r, style.base, false, style.extended, dpi) {
+    log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
+  }
+  rect = Rect(from: r)
+}
+
 public class View {
   internal var hWnd: HWND
   internal var window: (`class`: WindowClass, style: WindowStyle)
@@ -46,67 +66,58 @@ public class View {
   }
 
   /// Configuring the Bounds and Frame Rectangles
-  public var frame: Rect {
-    willSet {
-      let dpi: UINT = GetDpiForWindow(self.hWnd)
-      let scale: Double = Double(dpi) / 96.0
-
-      var r: RECT =
-          RECT(from: newValue.applying(AffineTransform(scaleX: scale, y: scale)))
-      if !AdjustWindowRectExForDpi(&r, self.window.style.base, false,
-                                   self.window.style.extended, dpi) {
-        log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
-      }
-
-      SetWindowPos(self.hWnd, nil, r.left, r.top, r.right - r.left,
-                   r.bottom - r.top, UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
-    }
-  }
+  public let frame: Rect
 
   internal init(frame: Rect, `class`: WindowClass, style: WindowStyle) {
     self.window = (class: `class`, style: style)
     _ = self.window.class.register()
 
-    self.frame = frame
-
     let bOverlappedWindow: Bool =
         style.base & DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW)
 
-    // We only check `x` because if `x` is `CW_USEDEFAULT` for a
-    // `WS_OVERLAPPEDWINDOW` window, then `y` is ignored; if `y` is
-    // `CW_USEDEFAULT`, `ShowWindow` will be invoked with `SW_SHOW`.
-    if !bOverlappedWindow && frame.origin.x == Double(CW_USEDEFAULT) {
-      log.warning("CW_USEDEFAULT is only valid on WS_OVERLAPPEDWINDOW windows")
-      self.frame.origin = Point(x: 0, y: 0)
-    }
+    var client: Rect = frame
 
-    // We only check `width` because if `width` is CW_USEDEFAULT` for a
-    // `WS_OVERLAPPEDWINDOW` window, `height` is ignored.
-    if !bOverlappedWindow && frame.size.width == Double(CW_USEDEFAULT) {
-      log.warning("CW_USEDEFAULT is only valid on WS_OVERLAPPEDWINDOW windows")
-      self.frame.size = Size(width: 0, height: 0)
-    }
+    // Convert client area to window rect
+    ClientToWindow(size: &client.size, for: style)
+
+    // TODO(compnerd) Convert client rect into display units
 
     // Only request the window size, not the location, the location will be
     // mapped when reparenting.
     self.hWnd =
         CreateWindowExW(self.window.style.extended, self.window.class.name, nil,
                         self.window.style.base,
-                        Int32(bOverlappedWindow ? self.frame.origin.x : 0),
-                        Int32(bOverlappedWindow ? self.frame.origin.y : 0),
-                        Int32(self.frame.size.width),
-                        Int32(self.frame.size.height),
+                        Int32(bOverlappedWindow ? client.origin.x : 0),
+                        Int32(bOverlappedWindow ? client.origin.y : 0),
+                        Int32(client.size.width),
+                        Int32(client.size.height),
                         nil, nil, GetModuleHandleW(nil), nil)!
 
     // If `CW_USEDEFAULT` was used, query the actual allocated rect
     if frame.origin.x == Double(CW_USEDEFAULT) ||
        frame.size.width == Double(CW_USEDEFAULT) {
       var r: RECT = RECT()
-      if !GetWindowRect(self.hWnd, &r) {
-        log.warning("GetWindowRect: \(GetLastError())")
+      if !GetClientRect(self.hWnd, &r) {
+        log.warning("GetClientRect: \(GetLastError())")
       }
-      self.frame = Rect(from: r)
+      _ = withUnsafeMutablePointer(to: &r) { [hWnd = self.hWnd] in
+        $0.withMemoryRebound(to: POINT.self, capacity: 2) {
+          MapWindowPoints(hWnd, nil, $0, 2)
+        }
+      }
+      client = Rect(from: r)
     }
+
+    // Scale window for DPI
+    ScaleClient(rect: &client, for: GetDpiForWindow(self.hWnd), style)
+
+    // Resize and Position the Window
+    SetWindowPos(self.hWnd, nil,
+                 CInt(client.origin.x), CInt(client.origin.y),
+                 CInt(client.size.width), CInt(client.size.height),
+                 UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
+
+    self.frame = client
   }
 
   deinit {
@@ -114,37 +125,31 @@ public class View {
   }
 
   public func addSubview(_ view: View) {
-    if view.window.style.base & ~DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW) {
-      log.warning("child windows may not set WS_OVERLAPPEDWINDOW")
+    // Reparent the window
+    guard let hPreviousParent: HWND = SetParent(view.hWnd, self.hWnd) else {
+      log.warning("SetParent: \(GetLastError())")
       return
     }
 
     if SetWindowLongPtrW(view.hWnd, GWL_STYLE,
                          LONG_PTR((view.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD))) == 0 {
-      SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.window.style.base))
+      log.warning("SetWindowLongPtrW: \(GetLastError())")
+      // TODO(compnerd) check for error
+      _ = SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.window.style.base))
       return
     }
-    view.window.style.base |= DWORD(WS_CHILD)
+    view.window.style.base = (view.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD)
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
     // changes take effect.
     if !SetWindowPos(view.hWnd, nil, 0, 0, 0, 0,
                      UINT(SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED)) {
-      log.warning("unable to update the window information: \(GetLastError())")
+      log.warning("SetWindowPos: \(GetLastError())")
     }
 
-    // Reparent the window
-    SetParent(view.hWnd, self.hWnd)
-
-    // Adjust the client rect
-    var frame: RECT = RECT(from: view.frame)
-    if view.superview == nil {
-      _ = withUnsafeMutablePointer(to: &frame) {
-        $0.withMemoryRebound(to: POINT.self, capacity: 2) {
-          MapWindowPoints(GetParent(view.hWnd), self.hWnd, $0, 2)
-        }
-      }
-    }
-    view.frame = Rect(from: frame)
+    SetWindowPos(view.hWnd, nil,
+                 CInt(view.frame.origin.x), CInt(view.frame.origin.y),
+                 CInt(view.frame.size.width), CInt(view.frame.size.height),
+                 UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
 
     view.superview = self
     subviews.append(view)
