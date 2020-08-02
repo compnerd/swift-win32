@@ -30,8 +30,8 @@
 import WinSDK
 
 public class ProgressView: Control {
-  internal static let `class`: WindowClass = WindowClass(named: PROGRESS_CLASS)
-  internal static let style: WindowStyle = (base: DWORD(WS_VISIBLE), extended: 0)
+  private static let `class`: WindowClass = WindowClass(named: PROGRESS_CLASS)
+  private static let style: WindowStyle = (base: DWORD(WS_VISIBLE), extended: 0)
 
   public init(frame: Rect) {
     super.init(frame: frame, class: ProgressView.class, style: ProgressView.style)

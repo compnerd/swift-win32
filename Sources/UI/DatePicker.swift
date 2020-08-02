@@ -43,9 +43,9 @@ case inline
 }
 
 public class DatePicker: Control {
-  internal static let `class`: WindowClass =
+  private static let `class`: WindowClass =
       WindowClass(named: DATETIMEPICK_CLASS)
-  internal static let style: WindowStyle =
+  private static let style: WindowStyle =
       (base: DWORD(WS_BORDER | WS_TABSTOP | WS_VISIBLE), extended: 0)
 
   /// Configuring the Date Picker Style

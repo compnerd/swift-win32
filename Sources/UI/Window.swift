@@ -76,12 +76,12 @@ internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
 }
 
 public class Window: View {
-  internal static let `class`: WindowClass =
+  private static let `class`: WindowClass =
       WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Window",
                   style: UInt32(CS_HREDRAW | CS_VREDRAW),
                   hbrBackground: GetSysColorBrush(COLOR_3DFACE),
                   hCursor: LoadCursorW(nil, IDC_ARROW))
-  internal static let style: WindowStyle =
+  private static let style: WindowStyle =
       (base: DWORD(WS_OVERLAPPEDWINDOW | UInt32(WS_VISIBLE)), extended: 0)
 
   public weak var delegate: WindowDelegate?
