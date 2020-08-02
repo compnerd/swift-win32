@@ -45,6 +45,13 @@ private extension View {
   }
 }
 
+private extension Button {
+  convenience init(frame: Rect = .zero, title: String) {
+    self.init(frame: frame)
+    setTitle(title, forState: .normal)
+  }
+}
+
 private enum CalculatorOperation {
 case undefined
 case addition

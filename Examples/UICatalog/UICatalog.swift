@@ -30,7 +30,14 @@
 import WinSDK
 import SwiftWin32
 
-internal extension Label {
+private extension Button {
+  convenience init(frame: Rect = .zero, title: String) {
+    self.init(frame: frame)
+    setTitle(title, forState: .normal)
+  }
+}
+
+private extension Label {
   convenience init(frame: Rect, title: String) {
     self.init(frame: frame)
     self.text = title

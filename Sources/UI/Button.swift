@@ -81,10 +81,3 @@ public class Button: Control {
     SetWindowTextW(hWnd, title?.LPCWSTR)
   }
 }
-
-extension Button {
-  public convenience init(frame: Rect = .zero, title: String) {
-    self.init(frame: frame)
-    setTitle(title, forState: .normal)
-  }
-}
