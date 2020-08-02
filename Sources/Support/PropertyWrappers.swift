@@ -65,3 +65,34 @@ public struct _Win32WindowText {
   public init() {
   }
 }
+
+@propertyWrapper
+public struct _Win32Font {
+  private var storage: Font?
+
+  public var wrappedValue: Font? {
+    get { fatalError() }
+    set { fatalError() }
+  }
+
+  public static subscript<EnclosingSelf: View>(_enclosingInstance view: EnclosingSelf,
+                                               wrapped wrappedKeyPath: ReferenceWritableKeyPath<EnclosingSelf, Font?>,
+                                               storage storageKeyPath: ReferenceWritableKeyPath<EnclosingSelf, _Win32Font>)
+      -> Font? {
+    get {
+      guard view[keyPath: storageKeyPath].storage == nil else {
+        return view[keyPath: storageKeyPath].storage
+      }
+      let lResult: LRESULT = SendMessageW(view.hWnd, UINT(WM_GETFONT), 0, 0)
+      return Font(FontHandle(referencing: HFONT(bitPattern: Int(lResult))))
+    }
+    set(font) {
+      view[keyPath: storageKeyPath].storage = font
+      SendMessageW(view.hWnd, UINT(WM_SETFONT),
+                   unsafeBitCast(font?.hFont.value, to: WPARAM.self), LPARAM(1))
+    }
+  }
+
+  public init() {
+  }
+}
