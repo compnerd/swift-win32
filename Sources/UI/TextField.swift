@@ -108,7 +108,7 @@ public class TextField: Control {
     }
   }
 
-  public init(frame: Rect = .default) {
+  public init(frame: Rect) {
     super.init(frame: frame, class: TextField.class, style: TextField.style)
 
     // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance

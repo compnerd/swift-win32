@@ -55,7 +55,7 @@ public class DatePicker: Control {
     didSet { fatalError("not yet implemented") }
   }
 
-  public init(frame: Rect = .default) {
+  public init(frame: Rect) {
     super.init(frame: frame, class: DatePicker.class, style: DatePicker.style)
     SetWindowSubclass(hWnd, SwiftDatePickerProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))

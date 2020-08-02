@@ -58,7 +58,7 @@ public class TextView: View {
   @_Win32WindowText
   public var text: String?
 
-  public init(frame: Rect = .default) {
+  public init(frame: Rect) {
     super.init(frame: frame, class: TextView.class, style: TextView.style)
 
     // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance
