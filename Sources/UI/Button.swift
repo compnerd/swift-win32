@@ -70,7 +70,7 @@ public class Button: Control {
 
   public weak var delegate: ButtonDelegate?
 
-  public init(frame: Rect = .default) {
+  public init(frame: Rect) {
     super.init(frame: frame, class: Button.class, style: Button.style)
     SetWindowSubclass(hWnd, SwiftButtonProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))

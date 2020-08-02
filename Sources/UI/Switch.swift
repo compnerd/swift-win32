@@ -53,7 +53,7 @@ public class Switch: Control {
   }
   public private(set) var style: Switch.Style = .checkbox
 
-  public init(frame: Rect = .default) {
+  public init(frame: Rect) {
     super.init(frame: frame, class: Switch.class, style: Switch.style)
     SetWindowSubclass(hWnd, SwiftSwitchProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
