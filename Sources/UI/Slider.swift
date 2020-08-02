@@ -30,8 +30,8 @@
 import WinSDK
 
 public class Slider: Control {
-  internal static let `class`: WindowClass = WindowClass(named: TRACKBAR_CLASS)
-  internal static let style: WindowStyle =
+  private static let `class`: WindowClass = WindowClass(named: TRACKBAR_CLASS)
+  private static let style: WindowStyle =
       (base: DWORD(WS_VISIBLE | TBS_TRANSPARENTBKGND), extended: 0)
 
   public var value: Float {

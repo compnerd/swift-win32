@@ -64,8 +64,8 @@ internal let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
 }
 
 public class Button: Control {
-  internal static let `class`: WindowClass = WindowClass(named: "BUTTON")
-  internal static let style: WindowStyle =
+  private static let `class`: WindowClass = WindowClass(named: "BUTTON")
+  private static let style: WindowStyle =
       (base: DWORD(WS_TABSTOP | WS_VISIBLE | BS_PUSHBUTTON), extended: 0)
 
   public weak var delegate: ButtonDelegate?
