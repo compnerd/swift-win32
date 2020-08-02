@@ -33,8 +33,7 @@ internal typealias WindowStyle = (base: DWORD, extended: DWORD)
 
 public class View {
   internal var hWnd: HWND
-  internal var `class`: WindowClass
-  internal var style: WindowStyle
+  internal var window: (`class`: WindowClass, style: WindowStyle)
 
   // TODO(compnerd) handle set
   public private(set) var subviews: [View] = []
@@ -54,8 +53,8 @@ public class View {
 
       var r: RECT =
           RECT(from: newValue.applying(AffineTransform(scaleX: scale, y: scale)))
-      if !AdjustWindowRectExForDpi(&r, self.style.base, false,
-                                   self.style.extended, dpi) {
+      if !AdjustWindowRectExForDpi(&r, self.window.style.base, false,
+                                   self.window.style.extended, dpi) {
         log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
       }
 
@@ -65,9 +64,8 @@ public class View {
   }
 
   internal init(frame: Rect, `class`: WindowClass, style: WindowStyle) {
-    self.class = `class`
-    _ = self.class.register()
-    self.style = style
+    self.window = (class: `class`, style: style)
+    _ = self.window.class.register()
 
     self.frame = frame
 
@@ -92,8 +90,8 @@ public class View {
     // Only request the window size, not the location, the location will be
     // mapped when reparenting.
     self.hWnd =
-        CreateWindowExW(self.style.extended, self.class.name, "".LPCWSTR,
-                        self.style.base,
+        CreateWindowExW(self.window.style.extended, self.window.class.name, nil,
+                        self.window.style.base,
                         Int32(bOverlappedWindow ? self.frame.origin.x : 0),
                         Int32(bOverlappedWindow ? self.frame.origin.y : 0),
                         Int32(self.frame.size.width),
@@ -112,21 +110,21 @@ public class View {
   }
 
   deinit {
-    _ = self.class.unregister()
+    _ = self.window.class.unregister()
   }
 
   public func addSubview(_ view: View) {
-    if view.style.base & ~DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW) {
+    if view.window.style.base & ~DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW) {
       log.warning("child windows may not set WS_OVERLAPPEDWINDOW")
       return
     }
 
     if SetWindowLongPtrW(view.hWnd, GWL_STYLE,
-                         LONG_PTR((view.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD))) == 0 {
-      SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.style.base))
+                         LONG_PTR((view.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD))) == 0 {
+      SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.window.style.base))
       return
     }
-    view.style.base |= DWORD(WS_CHILD)
+    view.window.style.base |= DWORD(WS_CHILD)
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
     // changes take effect.
     if !SetWindowPos(view.hWnd, nil, 0, 0, 0, 0,
