@@ -15,6 +15,7 @@ add_library(SwiftWin32 SHARED
   UI/ProgressView.swift
   UI/Screen.swift
   UI/Slider.swift
+  UI/Switch.swift
   UI/TextField.swift
   UI/TextView.swift
   UI/TraitCollection.swift
