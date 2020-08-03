@@ -61,7 +61,8 @@ public class Window: View {
                   hbrBackground: GetSysColorBrush(COLOR_3DFACE),
                   hCursor: LoadCursorW(nil, IDC_ARROW))
   private static let style: WindowStyle =
-      (base: DWORD(WS_OVERLAPPEDWINDOW | UInt32(WS_VISIBLE)), extended: 0)
+      (base: DWORD(WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME),
+       extended: 0)
 
   /// Configuring the Window
   public var rootViewController: ViewController? {
