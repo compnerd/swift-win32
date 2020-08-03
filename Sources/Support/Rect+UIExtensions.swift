@@ -29,12 +29,6 @@
 
 import WinSDK
 
-public extension Rect {
-  static let `default`: Rect =
-      Rect(x: Double(CW_USEDEFAULT), y: Double(CW_USEDEFAULT),
-           width: Double(CW_USEDEFAULT), height: Double(CW_USEDEFAULT))
-}
-
 internal extension Rect {
   init(from: RECT) {
     self.origin = Point(x: Double(from.left), y: Double(from.top))
