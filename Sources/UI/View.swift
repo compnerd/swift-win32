@@ -52,7 +52,7 @@ private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) 
 }
 
 public class View {
-  internal var hWnd: HWND
+  internal var hWnd: HWND!
   internal var window: (`class`: WindowClass, style: WindowStyle)
 
   // TODO(compnerd) handle set
