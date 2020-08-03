@@ -29,16 +29,16 @@
 
 import WinSDK
 
-internal extension Rect {
-  init(from: RECT) {
+extension Rect {
+  internal init(from: RECT) {
     self.origin = Point(x: Double(from.left), y: Double(from.top))
     self.size = Size(width: Double(from.right - from.left),
                      height: Double(from.bottom - from.top))
   }
 }
 
-internal extension RECT {
-  init(from: Rect) {
+extension RECT {
+  internal init(from: Rect) {
     self.init(left: Int32(from.origin.x),
               top: Int32(from.origin.y),
               right: Int32(from.origin.x + from.size.width),
