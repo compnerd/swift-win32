@@ -87,7 +87,7 @@ private class Calculator {
 
   private var window: Window =
       Window(frame: Rect(x: Double(CW_USEDEFAULT), y: Double(CW_USEDEFAULT),
-                         width: 204, height: 264))
+                         width: 192, height: 264))
 
   private var txtResult: TextField =
       TextField(frame: Rect(x: 34, y: 32, width: 128, height: 24))
