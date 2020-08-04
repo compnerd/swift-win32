@@ -135,6 +135,8 @@ public class View {
                  UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
 
     self.frame = client
+
+    defer { self.font = Font.systemFont(ofSize: Font.systemFontSize) }
   }
 
   deinit {
