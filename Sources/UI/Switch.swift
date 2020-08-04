@@ -41,7 +41,7 @@ internal let SwiftSwitchProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
 public class Switch: Control {
   private static let `class`: WindowClass = WindowClass(named: "BUTTON")
   private static let style: WindowStyle =
-      (base: DWORD(WS_TABSTOP | WS_VISIBLE | BS_CHECKBOX), extended: 0)
+      (base: DWORD(WS_TABSTOP | BS_AUTOCHECKBOX), extended: 0)
 
   /// Customizing the Appearance of the Switch
   @_Win32WindowText

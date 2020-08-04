@@ -32,7 +32,7 @@ import WinSDK
 public class Slider: Control {
   private static let `class`: WindowClass = WindowClass(named: TRACKBAR_CLASS)
   private static let style: WindowStyle =
-      (base: DWORD(WS_VISIBLE | TBS_TRANSPARENTBKGND), extended: 0)
+      (base: WS_POPUP | DWORD(TBS_HORZ | TBS_TRANSPARENTBKGND), extended: 0)
 
   public var value: Float {
     get { Float(SendMessageW(hWnd, UINT(TBM_GETPOS), 0, 0)) / 100.0 }

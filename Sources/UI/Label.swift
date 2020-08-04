@@ -31,8 +31,7 @@ import WinSDK
 
 public class Label: Control {
   private static let `class`: WindowClass = WindowClass(named: "STATIC")
-  private static let style: WindowStyle =
-      (base: DWORD(WS_TABSTOP | WS_VISIBLE), extended: 0)
+  private static let style: WindowStyle = (base: DWORD(WS_TABSTOP), extended: 0)
 
   private var _font: Font?
   public var font: Font! {

@@ -38,9 +38,9 @@ internal let SwiftTextViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uI
 
 // FIXME(compnerd) we would like this to derive from ScrollView
 public class TextView: View {
-  private static let `class`: WindowClass = WindowClass(named: "EDIT")
+  private static let `class`: WindowClass = WindowClass(named: MSFTEDIT_CLASS)
   private static let style: WindowStyle =
-      (base: DWORD(WS_BORDER | WS_HSCROLL | WS_TABSTOP | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE),
+      (base: DWORD(WS_BORDER | WS_HSCROLL) | WS_POPUP | DWORD(WS_TABSTOP | WS_VSCROLL | ES_MULTILINE),
        extended: 0)
 
   public var editable: Bool {
@@ -71,6 +71,11 @@ public class TextView: View {
 
   public init(frame: Rect = .default) {
     super.init(frame: frame, class: TextView.class, style: TextView.style)
+
+    // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance
+    let lExtendedStyle: LONG = GetWindowLongW(hWnd, GWL_EXSTYLE);
+    SetWindowLongW(hWnd, GWL_EXSTYLE, lExtendedStyle & ~WS_EX_CLIENTEDGE)
+
     SetWindowSubclass(hWnd, SwiftTextViewProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
