@@ -61,8 +61,16 @@ public class View {
 
   /// Configuring a View's Visual Appearance
   public var isHidden: Bool {
-    get { IsWindowVisible(hWnd) }
-    set(hidden) { ShowWindow(hWnd, hidden ? SW_HIDE : SW_SHOW) }
+    get { IsWindowVisible(self.hWnd) }
+    set(hidden) {
+      let pEnumFunc: WNDENUMPROC = { (hWnd, lParam) -> WindowsBool in
+        ShowWindow(hWnd, CInt(lParam))
+        return true
+      }
+      _ = EnumChildWindows(self.hWnd, pEnumFunc,
+                           LPARAM(hidden ? SW_HIDE : SW_RESTORE))
+      ShowWindow(self.hWnd, hidden ? SW_HIDE : SW_RESTORE)
+    }
   }
 
   /// Configuring the Bounds and Frame Rectangles

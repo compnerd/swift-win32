@@ -46,7 +46,7 @@ public class DatePicker: Control {
   private static let `class`: WindowClass =
       WindowClass(named: DATETIMEPICK_CLASS)
   private static let style: WindowStyle =
-      (base: DWORD(WS_BORDER | WS_TABSTOP | WS_VISIBLE), extended: 0)
+      (base: WS_POPUP | DWORD(WS_TABSTOP), extended: 0)
 
   /// Configuring the Date Picker Style
 
