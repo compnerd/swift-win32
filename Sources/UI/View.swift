@@ -59,6 +59,14 @@ public class View {
   public private(set) var subviews: [View] = []
   public private(set) var superview: View?
 
+  internal var font: Font? {
+    didSet {
+      SendMessageW(self.hWnd, UINT(WM_SETFONT),
+                   unsafeBitCast(self.font?.hFont.value, to: WPARAM.self),
+                   LPARAM(1))
+    }
+  }
+
   /// Configuring a View's Visual Appearance
   public var isHidden: Bool {
     get { IsWindowVisible(self.hWnd) }

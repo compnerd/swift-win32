@@ -58,8 +58,10 @@ public class TextField: Control {
   @_Win32WindowText
   public var text: String?
 
-  @_Win32Font
-  public var font: Font?
+  public override var font: Font? {
+    get { return super.font }
+    set(value) { super.font = value }
+  }
 
   public var textAlignment: TextAlignment {
     get {

@@ -33,8 +33,10 @@ public class Label: Control {
   private static let `class`: WindowClass = WindowClass(named: "STATIC")
   private static let style: WindowStyle = (base: DWORD(WS_TABSTOP), extended: 0)
 
-  @_Win32Font
-  public var font: Font!
+  public override var font: Font! {
+    get { return super.font }
+    set(value) { super.font = value }
+  }
 
   @_Win32WindowText
   public var text: String?
