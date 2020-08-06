@@ -114,4 +114,55 @@ public struct Device {
     // TODO(compnerd) should be Windows.System.Profile.GetSystemIdForPublisher()
     return nil
   }
+
+  /// Getting the Device Battery State
+  public var batteryLevel: Float {
+    guard Device.current.isBatteryMonitoringEnabled else { return -1.0 }
+
+    var status: SYSTEM_POWER_STATUS = SYSTEM_POWER_STATUS()
+    guard GetSystemPowerStatus(&status) else {
+      log.warning("GetSystemPowerStatus: \(GetLastError())")
+      return -1.0
+    }
+
+    if status.BatteryLifePercent == 255 { return -1.0 }
+    return Float(status.BatteryLifePercent) / 100.0
+  }
+
+  public var isBatteryMonitoringEnabled: Bool = false
+
+  public var batteryState: Device.BatteryState {
+    guard Device.current.isBatteryMonitoringEnabled else { return .unknown }
+
+    var status: SYSTEM_POWER_STATUS = SYSTEM_POWER_STATUS()
+    guard GetSystemPowerStatus(&status) else {
+      log.warning("GetSystemPowerStatus: \(GetLastError())")
+      return .unknown
+    }
+
+    // If the system does not have a battery (e.g. desktop system), present as
+    // `unknown`.
+    guard status.BatteryFlag & BYTE(BATTERY_FLAG_NO_BATTERY) == 0 else {
+      return .unknown
+    }
+
+    // If AC power is offline, we are unplugged.
+    if status.ACLineStatus & BYTE(AC_LINE_OFFLINE) == BYTE(AC_LINE_OFFLINE) {
+      return .unplugged
+    }
+
+    // Either we are `charging` or the battery is `full`.
+    return status.BatteryFlag & BYTE(BATTERY_FLAG_CHARGING) == BYTE(BATTERY_FLAG_CHARGING)
+        ? .charging
+        : .full
+  }
+}
+
+extension Device {
+  public enum BatteryState: Int {
+  case unknown
+  case unplugged
+  case charging
+  case full
+  }
 }
