@@ -53,6 +53,17 @@ public class Switch: Control {
   }
   public private(set) var style: Switch.Style = .checkbox
 
+  /// Setting the Off/On State
+  public var isOn: Bool {
+    get { SendMessageW(self.hWnd, UINT(BM_GETCHECK), 0, 0) == BST_CHECKED }
+    set(value) { self.setOn(value, animated: false) }
+  }
+
+  public func setOn(_ on: Bool, animated: Bool) {
+    assert(!animated, "not yet implemented")
+    _ = SendMessageW(self.hWnd, UINT(BM_SETCHECK), WPARAM(on ? 1 : 0), 0)
+  }
+
   public init(frame: Rect) {
     super.init(frame: frame, class: Switch.class, style: Switch.style)
     SetWindowSubclass(hWnd, SwiftSwitchProc, UINT_PTR(1),
