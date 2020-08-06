@@ -137,4 +137,8 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
   func applicationDidEnterBackground(_: Application) {
     print("Good night!")
   }
+
+  func applicationWillTerminate(_: Application) {
+    print("Goodbye cruel world!")
+  }
 }

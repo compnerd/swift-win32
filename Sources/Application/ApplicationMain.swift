@@ -132,6 +132,8 @@ public func ApplicationMain(_ argc: Int32,
     DispatchMessageW(&msg)
   }
 
+  Application.shared.delegate?.applicationWillTerminate(Application.shared)
+
   if let hMessageProcedureHook = hMessageProcedureHook {
     if !UnhookWindowsHookEx(hMessageProcedureHook) {
       log.error("UnhookWindowsHookEx(MsgProc): \(GetLastError())")
