@@ -6,8 +6,10 @@ add_library(SwiftWin32 SHARED
   Application/ApplicationMain.swift
   UI/AlertAction.swift
   UI/AlertController.swift
+  UI/AnimationCurve.swift
   UI/Button.swift
   UI/Color.swift
+  UI/ContentContainer.swift
   UI/Control.swift
   UI/DatePicker.swift
   UI/Device.swift
@@ -25,6 +27,8 @@ add_library(SwiftWin32 SHARED
   UI/TraitEnvironment.swift
   UI/View.swift
   UI/ViewController.swift
+  UI/ViewControllerTransitionCoordinator.swift
+  UI/ViewControllerTransitionCoordinatorContext.swift
   UI/Window.swift
   UI/WindowClass.swift)
 target_sources(SwiftWin32 PRIVATE
