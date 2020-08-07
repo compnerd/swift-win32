@@ -28,6 +28,7 @@
  **/
 
 import WinSDK
+import class Foundation.NSNotification
 
 public struct Device {
   public static let current: Device = Device()
@@ -228,6 +229,17 @@ extension Device {
   case faceUp
   case faceDown
   }
+}
+
+extension Device {
+  public static let batteryLevelDidChangeNotification: NSNotification.Name =
+      NSNotification.Name(rawValue: "UIDeviceBatteryLevelDidChangeNotification")
+  public static let batteryStateDidChangeNotification: NSNotification.Name =
+      NSNotification.Name(rawValue: "UIDeviceBatteryStateDidChangeNotification")
+  public static let orientationDidChangeNotification: NSNotification.Name =
+      NSNotification.Name(rawValue: "UIDeviceOrientationDidChangeNotification")
+  public static let proximityStateDidChangeNotification: NSNotification.Name =
+      NSNotification.Name(rawValue: "UIDeviceProximityStateDidChangeNotification")
 }
 
 extension Device.Orientation {
