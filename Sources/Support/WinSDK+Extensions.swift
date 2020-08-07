@@ -65,6 +65,9 @@ public let HKEY_CURRENT_USER_LOCAL_SETTINGS: HKEY = HKEY(bitPattern: 0x80000007)
 public let MSFTEDIT_CLASS: String = "RICHEDIT50W"
 #endif
 
+// WinUser.h
+internal let ENUM_CURRENT_SETTINGS: DWORD = DWORD(bitPattern: -1)
+
 // `GetMessageW` returns `BOOL` but can return `-1` in the case of an error.
 // Explicitly convert the signature to unwrap the `BOOL` to `CInt`.
 func GetMessageW(_ lpMsg: LPMSG?, _ hWnd: HWND?, _ wMsgFilterMin: UINT,

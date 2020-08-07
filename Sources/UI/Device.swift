@@ -115,6 +115,57 @@ public struct Device {
     return nil
   }
 
+  /// Tracking the Device Orientation
+  public var orientation: Device.Orientation {
+    var dmDeviceMode: DEVMODEW = DEVMODEW()
+    dmDeviceMode.dmSize = WORD(MemoryLayout<DEVMODEW>.size)
+    dmDeviceMode.dmDriverExtra = 0
+    if !EnumDisplaySettingsExW(nil, ENUM_CURRENT_SETTINGS, &dmDeviceMode, 0) {
+      log.warning("EnumDisplaySettingsExW: \(GetLastError())")
+      return .unknown
+    }
+
+    let dwRequiredFields: DWORD =
+        DWORD(DM_PELSWIDTH | DM_PELSHEIGHT | DM_DISPLAYORIENTATION)
+    guard dmDeviceMode.dmFields & dwRequiredFields == dwRequiredFields else {
+      return .unknown
+    }
+
+    switch dmDeviceMode.u.s2.dmDisplayOrientation {
+    case DWORD(DMDO_90), DWORD(DMDO_270):
+      swap(&dmDeviceMode.dmPelsHeight, &dmDeviceMode.dmPelsWidth)
+    case DWORD(DMDO_DEFAULT), DWORD(DMDO_180):
+      break
+    default:
+      log.error("unknown display orientation: \(dmDeviceMode.u.s2.dmDisplayOrientation)")
+      return .unknown
+    }
+
+    let bPortrait: Bool = dmDeviceMode.dmPelsWidth < dmDeviceMode.dmPelsHeight
+    switch dmDeviceMode.u.s2.dmDisplayOrientation {
+    case DWORD(DMDO_DEFAULT):
+      return bPortrait ? .portrait : .landscape
+    case DWORD(DMDO_90):
+      return bPortrait ? .landscapeRight : .portrait
+    case DWORD(DMDO_180):
+      return bPortrait ? .portraitUpsideDown : .landscapeRight
+    case DWORD(DMDO_270):
+      return bPortrait ? .landscape : .portraitUpsideDown
+    default:
+      return .unknown
+    }
+  }
+
+  public var isGeneratingDeviceOrientationNotifications: Bool = false
+
+  public func beginGeneratingDeviceOrientationNotifications() {
+    // TODO(compnerd) implement this
+  }
+
+  public func endGeneratingDeviceOrientationNotifications() {
+    // TODO(compnerd) implement this
+  }
+
   /// Getting the Device Battery State
   public var batteryLevel: Float {
     guard Device.current.isBatteryMonitoringEnabled else { return -1.0 }
@@ -165,4 +216,20 @@ extension Device {
   case charging
   case full
   }
+}
+
+extension Device {
+  public enum Orientation: Int {
+  case unknown
+  case portrait
+  case portraitUpsideDown
+  case landscapeLeft
+  case landscapeRight
+  case faceUp
+  case faceDown
+  }
+}
+
+extension Device.Orientation {
+  internal static let landscape: Device.Orientation = .landscapeLeft
 }
