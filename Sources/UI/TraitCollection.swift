@@ -47,12 +47,19 @@ case light
 case dark
 }
 
+public enum UserInterfaceActiveAppearance: Int {
+case unspecified
+case active
+case inactive
+}
+
 public enum UserInterfaceIdiom: Int {
 case unspecified
 case phone
 case pad
 case tv
 case car
+case mac
 }
 
 public enum UserInterfaceLevel: Int {
@@ -191,8 +198,8 @@ public class TraitCollection {
       TraitCollection(userInterfaceStyle: GetCurrentColorScheme()),
       TraitCollection(userInterfaceIdiom: GetCurrentDeviceFamily()),
       TraitCollection(userInterfaceLevel: GetCurrentElevationLevel()),
-      TraitCollection(accessibilityContrast: GetCurrentAccessibilityContrast()),
       TraitCollection(layoutDirection: GetCurrentLayoutDirection()),
+      TraitCollection(accessibilityContrast: GetCurrentAccessibilityContrast()),
     ])
   }
 
@@ -203,7 +210,7 @@ public class TraitCollection {
       .unspecified
 
   // Retriving Display-Related Traits
-  public private(set) var displayScale: Double = 1.0
+  public private(set) var displayScale: Double = 0.0
   public private(set) var displayGamut: DisplayGamut = .unspecified
 
   // Retriving Interface-Related Traits
@@ -215,6 +222,8 @@ public class TraitCollection {
   public private(set) var accessibilityContrast: AccessibilityContrast =
       .unspecified
   public private(set) var legibilityWeight: LegibilityWeight = .unspecified
+  public private(set) var activeAppearance: UserInterfaceActiveAppearance =
+      .unspecified
 
   // Retriving the Force Touch Capability
   public private(set) var forceTouchCapability: ForceTouchCapability =
@@ -224,9 +233,6 @@ public class TraitCollection {
   public private(set) var preferredContentSizeCategory: ContentSizeCategory =
       .unspecified
 
-  public init() {
-  }
-
   public init(traitsFrom traits: [TraitCollection]) {
     _ = traits.map {
       if $0.horizontalSizeClass != .unspecified {
@@ -235,7 +241,9 @@ public class TraitCollection {
       if $0.verticalSizeClass != .unspecified {
         self.verticalSizeClass = $0.verticalSizeClass
       }
-      self.displayScale = $0.displayScale
+      if $0.displayScale != 0.0 {
+        self.displayScale = $0.displayScale
+      }
       if $0.displayGamut != .unspecified {
         self.displayGamut = $0.displayGamut
       }
@@ -256,6 +264,9 @@ public class TraitCollection {
       }
       if $0.legibilityWeight != .unspecified {
         self.legibilityWeight = $0.legibilityWeight
+      }
+      if $0.activeAppearance != .unspecified {
+        self.activeAppearance = $0.activeAppearance
       }
       if $0.forceTouchCapability != .unspecified {
         self.forceTouchCapability = $0.forceTouchCapability
@@ -292,6 +303,10 @@ public class TraitCollection {
 
   public init(legibilityWeight: LegibilityWeight) {
     self.legibilityWeight = legibilityWeight
+  }
+
+  public init(activeAppearance: UserInterfaceActiveAppearance) {
+    self.activeAppearance = activeAppearance
   }
 
   public init(forceTouchCapability: ForceTouchCapability) {
