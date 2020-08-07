@@ -167,6 +167,25 @@ public struct Device {
     // TODO(compnerd) implement this
   }
 
+  /// Determining the Current Orientation
+  public var isPortrait: Bool {
+    switch self.orientation {
+    case .portrait, .portraitUpsideDown: return true
+    default: return false
+    }
+  }
+
+  public var isLandscape: Bool {
+    switch self.orientation {
+    case .landscapeLeft, .landscapeRight: return true
+    default: return false
+    }
+  }
+
+  public var isValidIntefaceOrientation: Bool {
+    true
+  }
+
   /// Getting the Device Battery State
   public var batteryLevel: Float {
     guard Device.current.isBatteryMonitoringEnabled else { return -1.0 }
