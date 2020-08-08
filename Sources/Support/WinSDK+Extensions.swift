@@ -65,6 +65,16 @@ public let HKEY_CURRENT_USER_LOCAL_SETTINGS: HKEY = HKEY(bitPattern: 0x80000007)
 public let MSFTEDIT_CLASS: String = "RICHEDIT50W"
 #endif
 
+// WinUser.h
+internal let HWND_MESSAGE: HWND = HWND(bitPattern: -3)!
+
+internal let GUID_ACDC_POWER_SOURCE: GUID =
+    GUID(Data1: 0x5D3E9A59, Data2: 0xE9D5, Data3: 0x4B00,
+         Data4: (0xA6, 0xBD, 0xFF, 0x34, 0xFF, 0x51, 0x65, 0x48))
+internal let GUID_BATTERY_PERCENTAGE_REMAINING: GUID =
+    GUID(Data1: 0xA7AD8041, Data2: 0xB45A, Data3: 0x4CAE,
+         Data4: (0x87, 0xA3, 0xEE, 0xCB, 0xB4, 0x68, 0xA9, 0xE1))
+
 // `GetMessageW` returns `BOOL` but can return `-1` in the case of an error.
 // Explicitly convert the signature to unwrap the `BOOL` to `CInt`.
 func GetMessageW(_ lpMsg: LPMSG?, _ hWnd: HWND?, _ wMsgFilterMin: UINT,
