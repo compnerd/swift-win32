@@ -181,7 +181,15 @@ public struct Device {
     return Float(status.BatteryLifePercent) / 100.0
   }
 
-  public var isBatteryMonitoringEnabled: Bool = false
+  private var batteryMonitor: BatteryMonitor?
+  public var isBatteryMonitoringEnabled: Bool = false {
+    didSet {
+      self.batteryMonitor =
+          self.isBatteryMonitoringEnabled
+              ? (self.batteryMonitor ?? BatteryMonitor())
+              : nil
+    }
+  }
 
   public var batteryState: Device.BatteryState {
     guard Device.current.isBatteryMonitoringEnabled else { return .unknown }
