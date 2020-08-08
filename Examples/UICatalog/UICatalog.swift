@@ -62,29 +62,29 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
                          width: 444, height: 555))
 
   lazy var label: Label =
-      Label(frame: Rect(x: 4.0, y: 12.0, width: 72.0, height: 16.0),
+      Label(frame: Rect(x: 4.0, y: 12.0, width: 64.0, height: 16.0),
             title: "Read Me:")
 
   lazy var button: Button =
       Button(frame: Rect(x: 72.0, y: 4.0, width: 96.0, height: 32.0),
              title: "Press Me!")
   lazy var checkbox: Switch =
-      Switch(frame: Rect(x: 4.0, y: 40.0, width: 256.0, height: 24.0))
+      Switch(frame: Rect(x: 4.0, y: 40.0, width: 256.0, height: 16.0))
 
   lazy var progress: ProgressView =
-      ProgressView(frame: Rect(x: 4.0, y: 64.0, width: 256.0, height: 16.0))
+      ProgressView(frame: Rect(x: 4.0, y: 64.0, width: 256.0, height: 20.0))
 
   lazy var textfield: TextField =
-      TextField(frame: Rect(x: 4.0, y: 88.0, width: 256.0, height: 16.0))
+      TextField(frame: Rect(x: 4.0, y: 94.0, width: 254.0, height: 16.0))
 
   lazy var textview: TextView =
-      TextView(frame: Rect(x: 4.0, y: 110.0, width: 256.0, height: 64.0))
+      TextView(frame: Rect(x: 4.0, y: 120.0, width: 254.0, height: 72.0))
 
   lazy var slider: Slider =
-      Slider(frame: Rect(x: 4.0, y: 180.0, width: 256.0, height: 32.0))
+      Slider(frame: Rect(x: 4.0, y: 200.0, width: 256.0, height: 24.0))
 
   lazy var picker: DatePicker =
-      DatePicker(frame: Rect(x: 4.0, y: 216.0, width: 256.0, height: 32.0))
+      DatePicker(frame: Rect(x: 4.0, y: 230.0, width: 256.0, height: 32.0))
 
   lazy var delegate = EventHandler()
 
