@@ -3,7 +3,8 @@ add_subdirectory(CWinRT)
 add_library(SwiftWin32 SHARED
   Application/Application.swift
   Application/ApplicationDelegate.swift
-  Application/ApplicationMain.swift
+  Application/ApplicationMain.swift)
+target_sources(SwiftWin32 PRIVATE
   UI/AlertAction.swift
   UI/AlertController.swift
   UI/AnimationCurve.swift
