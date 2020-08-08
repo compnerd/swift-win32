@@ -31,8 +31,7 @@ target_sources(SwiftWin32 PRIVATE
   UI/ViewController.swift
   UI/ViewControllerTransitionCoordinator.swift
   UI/ViewControllerTransitionCoordinatorContext.swift
-  UI/Window.swift
-  UI/WindowClass.swift)
+  UI/Window.swift)
 target_sources(SwiftWin32 PRIVATE
   CG/AffineTransform.swift
   CG/Point.swift
@@ -45,6 +44,7 @@ target_sources(SwiftWin32 PRIVATE
   Support/Rect+UIExtensions.swift
   Support/PropertyWrappers.swift
   Support/String.swift
+  Support/WindowClass.swift
   Support/WindowsHandle.swift
   Support/WinSDK+Extensions.swift)
 target_compile_options(SwiftWin32 PRIVATE
