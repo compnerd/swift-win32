@@ -29,8 +29,8 @@
 
 import WinSDK
 
-internal extension DEVICE_SCALE_FACTOR {
-  var factor: Double {
+extension DEVICE_SCALE_FACTOR {
+  internal var factor: Double {
     switch self {
     case SCALE_100_PERCENT: return 1.00
     case SCALE_120_PERCENT: return 1.20
@@ -89,13 +89,13 @@ public final class Screen {
       let _: DeviceContextHandle =
           ManagedHandle(owning: CreateDCW(szDevice.LPCWSTR, nil, nil, nil))
 
-      var dsfDevceScaleFactor: DEVICE_SCALE_FACTOR = SCALE_100_PERCENT
-      _ = GetScaleFactorForMonitor(hMonitor, &dsfDevceScaleFactor)
+      var dsfDeviceScaleFactor: DEVICE_SCALE_FACTOR = SCALE_100_PERCENT
+      _ = GetScaleFactorForMonitor(hMonitor, &dsfDeviceScaleFactor)
 
       let screen: Screen =
           Screen(handle: hMonitor!,
                  height: info.s.rcMonitor.bottom, width: info.s.rcMonitor.right,
-                 scale: dsfDevceScaleFactor.factor)
+                 scale: dsfDeviceScaleFactor.factor)
 
       // The main screen is always at index 0
       if info.s.dwFlags & DWORD(MONITORINFOF_PRIMARY) == DWORD(MONITORINFOF_PRIMARY) {
