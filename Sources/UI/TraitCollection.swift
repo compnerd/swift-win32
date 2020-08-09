@@ -193,15 +193,14 @@ private func GetCurrentLayoutDirection() -> TraitEnvironmentLayoutDirection {
 }
 
 public class TraitCollection {
-  public static var current: TraitCollection {
-    return TraitCollection(traitsFrom: [
-      TraitCollection(userInterfaceStyle: GetCurrentColorScheme()),
-      TraitCollection(userInterfaceIdiom: GetCurrentDeviceFamily()),
-      TraitCollection(userInterfaceLevel: GetCurrentElevationLevel()),
-      TraitCollection(layoutDirection: GetCurrentLayoutDirection()),
-      TraitCollection(accessibilityContrast: GetCurrentAccessibilityContrast()),
-    ])
-  }
+  public private(set) static var current: TraitCollection =
+      TraitCollection(traitsFrom: [
+        TraitCollection(userInterfaceStyle: GetCurrentColorScheme()),
+        TraitCollection(userInterfaceIdiom: GetCurrentDeviceFamily()),
+        TraitCollection(userInterfaceLevel: GetCurrentElevationLevel()),
+        TraitCollection(layoutDirection: GetCurrentLayoutDirection()),
+        TraitCollection(accessibilityContrast: GetCurrentAccessibilityContrast()),
+      ])
 
   // Retriving Size Class Traits
   public private(set) var horizontalSizeClass: UserInterfaceSizeClass =
