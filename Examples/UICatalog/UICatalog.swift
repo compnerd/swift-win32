@@ -27,10 +27,12 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 
-import WinSDK
 import SwiftWin32
 
+import func WinSDK.MessageBoxW
 import let WinSDK.CW_USEDEFAULT
+import let WinSDK.MB_OK
+import struct WinSDK.UINT
 
 private extension Button {
   convenience init(frame: Rect = .zero, title: String) {
@@ -43,15 +45,6 @@ private extension Label {
   convenience init(frame: Rect, title: String) {
     self.init(frame: frame)
     self.text = title
-  }
-}
-
-class EventHandler: WindowDelegate {
-  func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM)
-      -> LRESULT {
-    MessageBoxW(nil, "Swift/Win32 Demo!".LPCWSTR,
-                "Swift/Win32 MessageBox!".LPCWSTR, UINT(MB_OK))
-    return 0
   }
 }
 
@@ -86,8 +79,6 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
   lazy var picker: DatePicker =
       DatePicker(frame: Rect(x: 4.0, y: 230.0, width: 256.0, height: 32.0))
 
-  lazy var delegate = EventHandler()
-
   func application(_: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
     window.rootViewController = ViewController()
@@ -102,9 +93,10 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
     window.addSubview(self.slider)
     window.addSubview(self.picker)
 
-    window.delegate = delegate
-
     self.label.font = Font(name: "Consolas", size: 10)!
+
+    self.button.addTarget(self, action: SwiftApplicationDelegate.pressMe(_:),
+                          for: .primaryActionTriggered)
 
     self.checkbox.title = "Check me out"
 
@@ -140,5 +132,10 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
   func applicationWillTerminate(_: Application) {
     print("Goodbye cruel world!")
+  }
+
+  private func pressMe(_: Button?) {
+    MessageBoxW(nil, "Swift/Win32 Demo!".LPCWSTR,
+                "Swift/Win32 MessageBox!".LPCWSTR, UINT(MB_OK))
   }
 }

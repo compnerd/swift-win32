@@ -27,7 +27,88 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 
+private protocol ControlEventCallable {
+  func callAsFunction(sender: Button?, event: Control.Event)
+}
+
+private struct ControlEventCallback<Target: AnyObject>: ControlEventCallable {
+  private unowned(safe) let instance: Target
+  private let method: (Target) -> (_: Button?, _: Control.Event) -> Void
+
+  public init(binding: @escaping (Target) -> (_: Button?, _: Control.Event) -> Void,
+              on: Target) {
+    self.instance = on
+    self.method = binding
+  }
+
+  public init(binding: @escaping (Target) -> (_: Button?) -> Void, on: Target) {
+    self.instance = on
+    self.method = { (target: Target) in { (sender: Button?, _: Control.Event) in
+        binding(target)(sender)
+      }
+    }
+  }
+
+  public init(binding: @escaping (Target) -> () -> Void, on: Target) {
+    self.instance = on
+    self.method = { (target: Target) in { (_: Button?, _: Control.Event) in
+        binding(target)()
+      }
+    }
+  }
+
+  public func callAsFunction(sender: Button?, event: Control.Event) {
+    self.method(instance)(sender, event)
+  }
+}
+
 public class Control: View {
+  private var actions: [Control.Event:[ControlEventCallable]] =
+      Dictionary<Control.Event, [ControlEventCallable]>(minimumCapacity: 16)
+
+  /// Accessing the Control's Targets and Actions
+  public let allControlEvents: Control.Event = Control.Event(rawValue: 0)
+
+  @inline(__always)
+  private func addAction(_ callable: ControlEventCallable,
+                         for controlEvents: Control.Event) {
+    for event in Control.Event.touchEvents + Control.Event.semanticEvents + Control.Event.editingEvents {
+      if controlEvents.rawValue & event.rawValue == event.rawValue {
+        self.actions[event, default: []].append(callable)
+      }
+    }
+  }
+
+  public func addTarget<Target: AnyObject>(_ target: Target,
+                                           action: @escaping (Target) -> () -> Void,
+                                           for controlEvents: Control.Event) {
+    self.addAction(ControlEventCallback(binding: action, on: target),
+                   for: controlEvents)
+  }
+
+  public func addTarget<Target: AnyObject>(_ target: Target,
+                                           action: @escaping (Target) -> (_: Button?) -> Void,
+                                           for controlEvents: Control.Event) {
+    self.addAction(ControlEventCallback(binding: action, on: target),
+                   for: controlEvents)
+  }
+
+  public func addTarget<Target: AnyObject>(_ target: Target,
+                                           action: @escaping (Target) -> (_: Button?, _: Control.Event) -> Void,
+                                           for controlEvents: Control.Event) {
+    self.addAction(ControlEventCallback(binding: action, on: target),
+                   for: controlEvents)
+  }
+
+  /// Triggering Actions
+  func sendActions(for controlEvents: Control.Event) {
+    for event in Control.Event.touchEvents + Control.Event.semanticEvents + Control.Event.editingEvents {
+      if controlEvents.rawValue & event.rawValue == event.rawValue {
+        _ = self.actions[event]?.map { $0(sender: self as? Button,
+                                          event: controlEvents) }
+      }
+    }
+  }
 }
 
 public extension Control {
@@ -110,4 +191,27 @@ extension Control.Event {
 
   public static let allEvents: Control.Event =
       Control.Event(rawValue: 0xffffffff)
+}
+
+extension Control.Event {
+  fileprivate static var touchEvents: [Control.Event] {
+    return [
+        .touchDown, .touchDownRepeat,
+        .touchDragInside, .touchDragOutside, .touchDragEnter, .touchDragExit,
+        .touchUpInside, .touchUpOutside,
+        .touchCancel
+    ]
+  }
+
+  fileprivate static var semanticEvents: [Control.Event] {
+    return [
+      .valueChanged, /* .menuActionTriggered, */ .primaryActionTriggered
+    ]
+  }
+
+  fileprivate static var editingEvents: [Control.Event] {
+    return [
+        .editingDidBegin, .editingChanged, .editingDidEnd, .editingDidEndOnExit
+    ]
+  }
 }
