@@ -29,34 +29,12 @@
 
 import WinSDK
 
-public protocol ButtonDelegate: class {
-  func OnLeftButtonPressed(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
-  func OnRightButtonPressed(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
-}
-
-public extension ButtonDelegate {
-  func OnLeftButtonPressed(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
-    return 1
-  }
-
-  func OnRightButtonPressed(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
-    return 1
-  }
-}
-
 internal let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let button: Button? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Button
   switch uMsg {
   case UINT(WM_LBUTTONDOWN):
-    if button?.delegate?.OnLeftButtonPressed(hWnd, wParam, lParam) == 0 {
-      return 0
-    }
-    break
-  case UINT(WM_RBUTTONDOWN):
-    if button?.delegate?.OnRightButtonPressed(hWnd, wParam, lParam) == 0 {
-      return 0
-    }
-    break
+    button?.sendActions(for: .primaryActionTriggered)
+    return 0
   default:
     break
   }
@@ -67,8 +45,6 @@ public class Button: Control {
   private static let `class`: WindowClass = WindowClass(named: "BUTTON")
   private static let style: WindowStyle =
       (base: DWORD(WS_TABSTOP | BS_PUSHBUTTON), extended: 0)
-
-  public weak var delegate: ButtonDelegate?
 
   public init(frame: Rect) {
     super.init(frame: frame, class: Button.class, style: Button.style)
