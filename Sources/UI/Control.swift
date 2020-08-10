@@ -49,3 +49,65 @@ public extension Control.State {
   static let application: Control.State = Control.State(rawValue: 1 << 5)
   static let reserved: Control.State = Control.State(rawValue: 1 << 6)
 }
+
+extension Control {
+  public struct Event: Equatable, Hashable, RawRepresentable {
+    public typealias RawValue = Int
+
+    public let rawValue: RawValue
+
+    public init(rawValue: RawValue) {
+      self.rawValue = rawValue
+    }
+  }
+}
+
+extension Control.Event {
+  public static let touchDown: Control.Event =
+      Control.Event(rawValue: 1 << 0)
+  public static let touchDownRepeat: Control.Event =
+      Control.Event(rawValue: 1 << 1)
+  public static let touchDragInside: Control.Event =
+      Control.Event(rawValue: 1 << 2)
+  public static let touchDragOutside: Control.Event =
+      Control.Event(rawValue: 1 << 3)
+  public static let touchDragEnter: Control.Event =
+      Control.Event(rawValue: 1 << 4)
+  public static let touchDragExit: Control.Event =
+      Control.Event(rawValue: 1 << 5)
+  public static let touchUpInside: Control.Event =
+      Control.Event(rawValue: 1 << 6)
+  public static let touchUpOutside: Control.Event =
+      Control.Event(rawValue: 1 << 7)
+  public static let touchCancel: Control.Event =
+      Control.Event(rawValue: 1 << 8)
+
+  public static let valueChanged: Control.Event =
+      Control.Event(rawValue: 1 << 12)
+  public static let menuActionTriggered: Control.Event =
+      Control.Event(rawValue: 0)
+  public static let primaryActionTriggered: Control.Event =
+      Control.Event(rawValue: 1 << 13)
+
+  public static let editingDidBegin: Control.Event =
+      Control.Event(rawValue: 1 << 16)
+  public static let editingChanged: Control.Event =
+      Control.Event(rawValue: 1 << 17)
+  public static let editingDidEnd: Control.Event =
+      Control.Event(rawValue: 1 << 18)
+  public static let editingDidEndOnExit: Control.Event =
+      Control.Event(rawValue: 1 << 19)
+
+  public static let allTouchEvents: Control.Event =
+      Control.Event(rawValue: 0x00000fff)
+  public static let allEditingEvents: Control.Event =
+      Control.Event(rawValue: 0x000f0000)
+
+  public static let applicationReserved: Control.Event =
+      Control.Event(rawValue: 0x0f000000)
+  public static let systemReserved: Control.Event =
+      Control.Event(rawValue: 0xf0000000)
+
+  public static let allEvents: Control.Event =
+      Control.Event(rawValue: 0xffffffff)
+}
