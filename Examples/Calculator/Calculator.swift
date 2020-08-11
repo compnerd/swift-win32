@@ -27,17 +27,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 
-import func WinSDK.GetWindowTextW
-import let WinSDK.CW_USEDEFAULT
-import struct WinSDK.DWORD
-import struct WinSDK.HWND
-import struct WinSDK.LPARAM
-import struct WinSDK.LRESULT
-import struct WinSDK.WCHAR
-import struct WinSDK.WPARAM
-
 import SwiftWin32
 import Foundation
+
+import let WinSDK.CW_USEDEFAULT
 
 private extension View {
   func addSubviews(_ views: [View]) {
@@ -89,77 +82,8 @@ private struct CalculatorState {
   }
 }
 
-private class CalculatorWindowDelegate: WindowDelegate {
-  weak var calculator: Calculator?
-
-  func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM)
-      -> LRESULT {
-    guard let calculator = self.calculator else { return 0 }
-
-    let sender: HWND? = HWND(bitPattern: Int(lParam))
-
-#if swift(<5.3)
-    var buffer: [WCHAR] = Array<WCHAR>(repeating: 0, count: 32)
-    GetWindowTextW(sender, &buffer, CInt(buffer.count))
-#else
-    let buffer: [WCHAR] = Array<WCHAR>(unsafeUninitializedCapacity: 32) {
-      $1 = Int(GetWindowTextW(sender, $0.baseAddress!, CInt($0.count)))
-    }
-#endif
-
-    let szText: String = String(decodingCString: buffer, as: UTF16.self)
-    switch szText {
-    case "+": calculator.state.operation = .addition
-    case "-": calculator.state.operation = .substraction
-    case "x": calculator.state.operation = .multiplication
-    case "÷": calculator.state.operation = .division
-    case ".":
-      calculator.state[keyPath: calculator.state.operand] += szText
-      calculator.txtResult.text =
-          calculator.state[keyPath: calculator.state.operand]
-    case "0"..."9":
-      calculator.state[keyPath: calculator.state.operand] += szText
-
-      let value: Double =
-          Double(calculator.state[keyPath: calculator.state.operand])!
-      calculator.txtResult.text =
-          NumberFormatter.localizedString(from: NSNumber(value: value),
-                                          number: .decimal)
-    case "AC":
-        calculator.state = CalculatorState()
-        calculator.txtResult.text = "0"
-    case "⁺∕₋":
-      let value: Double =
-          Double(calculator.state[keyPath: calculator.state.operand])!
-      let number: NSNumber = NSNumber(value: -1.0 * value)
-
-      calculator.state[keyPath: calculator.state.operand] =
-          NumberFormatter.localizedString(from: number, number: .decimal)
-      calculator.txtResult.text =
-          NumberFormatter.localizedString(from: number, number: .decimal)
-    case "%":
-      if Double(calculator.state.lhs) == 0.0 { break }
-      calculator.state.operation = .division
-      calculator.state.rhs = "100"
-      fallthrough
-    case "=":
-      let value: Double = Double(calculator.state.evaluate())!
-      calculator.txtResult.text =
-          NumberFormatter.localizedString(from: NSNumber(value: value),
-                                          number: .decimal)
-    default:
-      // TODO(compnerd) handle the invalid operation
-      fatalError("unreachable")
-    }
-
-    return 0
-  }
-}
-
 private class Calculator {
-  internal var state: CalculatorState = CalculatorState()
-
-  private var delegate: CalculatorWindowDelegate = CalculatorWindowDelegate()
+  private var state: CalculatorState = CalculatorState()
 
   private var window: Window =
       Window(frame: Rect(x: Double(CW_USEDEFAULT), y: Double(CW_USEDEFAULT),
@@ -196,11 +120,8 @@ private class Calculator {
   ]
 
   public init() {
-    self.delegate.calculator = self
-
     self.window.rootViewController = ViewController()
     self.window.rootViewController?.title = "Calculator"
-    self.window.delegate = self.delegate
 
     self.window.addSubview(self.txtResult)
     self.txtResult.font = Font(name: "Consolas", size: 14)
@@ -208,18 +129,81 @@ private class Calculator {
     self.txtResult.text = "0"
 
     self.window.addSubviews(self.btnDigits)
+    _ = self.btnDigits.map {
+      $0.addTarget(self, action: Calculator.onDigitPress(_:_:),
+                   for: .primaryActionTriggered)
+    }
     self.window.addSubviews(self.btnOperations)
+    _ = self.btnOperations.map {
+      $0.addTarget(self, action: Calculator.onOperationPress(_:_:),
+                   for: .primaryActionTriggered)
+    }
 
     self.window.addSubview(self.btnDecimal)
+    self.btnDecimal.addTarget(self, action: Calculator.onDecimalPress(_:_:),
+                              for: .primaryActionTriggered)
 
     self.window.makeKeyAndVisible()
   }
-}
 
-private var calculator: Calculator?
+  private func onDigitPress(_ sender: Button?, _: Control.Event) {
+    let input = self.btnDigits.firstIndex(of: sender!)!
+
+    self.state[keyPath: self.state.operand] += String(input)
+
+    let value: Double = Double(self.state[keyPath: self.state.operand])!
+    self.txtResult.text =
+        NumberFormatter.localizedString(from: NSNumber(value: value),
+                                        number: .decimal)
+  }
+
+  private func onOperationPress(_ sender: Button?, _: Control.Event) {
+    switch self.btnOperations.firstIndex(of: sender!)! {
+    case 0: /* AC */
+      self.state = CalculatorState()
+      self.txtResult.text = "0"
+    case 1: /* +/- */
+      let value: Double = Double(self.state[keyPath: self.state.operand])!
+      let number: NSNumber = NSNumber(value: -1.0 * value)
+
+      self.state[keyPath: self.state.operand] =
+          NumberFormatter.localizedString(from: number, number: .decimal)
+      self.txtResult.text =
+          NumberFormatter.localizedString(from: number, number: .decimal)
+    case 3: /* ÷ */
+      self.state.operation = .division
+    case 4: /* x */
+      self.state.operation = .multiplication
+    case 5: /* - */
+      self.state.operation = .substraction
+    case 6: /* + */
+      self.state.operation = .addition
+    case 2: /* % */
+      if Double(self.state.lhs) == 0.0 { break }
+      self.state.operation = .division
+      self.state.rhs = "100"
+      fallthrough
+    case 7: /* = */
+      let value: Double = Double(self.state.evaluate())!
+      self.txtResult.text =
+          NumberFormatter.localizedString(from: NSNumber(value: value),
+                                          number: .decimal)
+    default:
+      // TODO(compnerd) handle the invalid operation
+      fatalError()
+    }
+  }
+
+  private func onDecimalPress(_ sender: Button?, _: Control.Event) {
+    self.state[keyPath: self.state.operand] += "."
+    self.txtResult.text = self.state[keyPath: self.state.operand]
+  }
+}
 
 @main
 final class CalculatorDelegate: ApplicationDelegate {
+  private var calculator: Calculator?
+
   func application(_: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
     calculator = Calculator()
