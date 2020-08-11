@@ -32,9 +32,46 @@ import WinSDK
 public protocol TextFieldDelegate: class {
 }
 
-internal let SwiftTextFieldProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
-  let textfield: TextField? =
+private let SwiftTextFieldProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
+  let textfield: TextField! =
       unsafeBitCast(dwRefData, to: AnyObject.self) as? TextField
+
+  switch uMsg {
+  case UINT(WM_PAINT):
+    guard let placeholder = textfield.placeholder, textfield.text == nil else {
+      break
+    }
+
+    // Get the device context with DCX_INTERSECTUPDATE before the default
+    // WM_PAINT event handler calls `BeginPaint`/`EndPaint` which invalidates
+    // the update rect and will nullify the rendering as the region is empty.
+    // Gerab the value from the cache to avoid interacting with the control's
+    // DC.
+    let hDC: HDC =
+        GetDCEx(hWnd, nil, DWORD(DCX_INTERSECTUPDATE | DCX_CACHE | DCX_CLIPCHILDREN | DCX_CLIPSIBLINGS))
+
+    // Invoke the default renderer
+    let lResult: LRESULT = DefSubclassProc(hWnd, uMsg, wParam, lParam)
+
+    // Get the Client Rect
+    var rctClient: RECT = RECT()
+    _ = withUnsafeMutablePointer(to: &rctClient) {
+      SendMessageW(hWnd, UINT(EM_GETRECT), 0,
+                   LPARAM(bitPattern: UInt64(Int(bitPattern: $0))))
+    }
+
+    _ = SetTextColor(hDC, GetSysColor(COLOR_GRAYTEXT))
+    _ = SetBkMode(hDC, TRANSPARENT)
+    _ = DrawTextW(hDC, placeholder.LPCWSTR, -1, &rctClient,
+                  UINT(DT_EDITCONTROL | DT_NOCLIP | DT_NOPREFIX | DT_SINGLELINE | DT_VCENTER))
+
+    _ = ReleaseDC(hWnd, hDC)
+
+    return lResult
+  default:
+    break
+  }
+
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
 }
 
@@ -57,6 +94,8 @@ public class TextField: Control {
   /// Accessing the Text Attributes
   @_Win32WindowText
   public var text: String?
+
+  public var placeholder: String?
 
   public override var font: Font? {
     get { return super.font }
