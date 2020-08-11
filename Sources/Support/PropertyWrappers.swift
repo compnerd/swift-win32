@@ -42,6 +42,7 @@ public struct _Win32WindowText {
       -> String? {
     get {
       let szLength: Int32 = GetWindowTextLengthW(view.hWnd)
+      guard szLength > 0 else { return nil }
 
 #if swift(<5.3)
       let buffer: UnsafeMutablePointer<WCHAR> =
