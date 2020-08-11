@@ -22,6 +22,7 @@ add_library(SwiftWin32 SHARED
   UI/Stepper.swift
   UI/Switch.swift
   UI/TextField.swift
+  UI/TextInputTraits.swift
   UI/TextView.swift
   UI/TraitCollection.swift
   UI/TraitEnvironment.swift

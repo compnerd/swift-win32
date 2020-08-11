@@ -114,15 +114,31 @@ public class TextField: Control {
     super.init(frame: frame, class: TextField.class, style: TextField.style)
 
     // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance
-    let lExtendedStyle: LONG = GetWindowLongW(hWnd, GWL_EXSTYLE);
-    SetWindowLongW(hWnd, GWL_EXSTYLE, lExtendedStyle & ~WS_EX_CLIENTEDGE)
+    let lExtendedStyle: LONG = GetWindowLongW(self.hWnd, GWL_EXSTYLE);
+    _ = SetWindowLongW(self.hWnd, GWL_EXSTYLE,
+                       lExtendedStyle & ~WS_EX_CLIENTEDGE)
 
     // Enable the advanced typography options unconditionally rather than only
     // in complex scripts and math mode.
-    SendMessageW(hWnd, UINT(EM_SETTYPOGRAPHYOPTIONS),
+    SendMessageW(self.hWnd, UINT(EM_SETTYPOGRAPHYOPTIONS),
                  WPARAM(TO_ADVANCEDTYPOGRAPHY), LPARAM(TO_ADVANCEDTYPOGRAPHY))
 
-    SetWindowSubclass(hWnd, SwiftTextFieldProc, UINT_PTR(1),
+    SetWindowSubclass(self.hWnd, SwiftTextFieldProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
+  }
+}
+
+extension TextField: TextInputTraits {
+  public var isSecureTextEntry: Bool {
+    get {
+      SendMessageW(self.hWnd, UINT(EM_GETPASSWORDCHAR), 0, 0) == 0
+          ? false
+          : true
+    }
+    set {
+      // 0x25cf is "BLACK CIRCLE"
+      _ = SendMessageW(self.hWnd, UINT(EM_SETPASSWORDCHAR),
+                       WPARAM(newValue ? 0x25cf : 0), 0)
+    }
   }
 }
