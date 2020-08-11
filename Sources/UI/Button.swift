@@ -57,3 +57,9 @@ public class Button: Control {
     SetWindowTextW(hWnd, title?.LPCWSTR)
   }
 }
+
+extension Button: Equatable {
+  public static func ==(_ lhs: Button, _ rhs: Button) -> Bool {
+    return lhs.hWnd == rhs.hWnd
+  }
+}
