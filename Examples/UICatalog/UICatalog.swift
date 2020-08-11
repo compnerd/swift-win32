@@ -70,14 +70,17 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
   lazy var textfield: TextField =
       TextField(frame: Rect(x: 4.0, y: 94.0, width: 254.0, height: 16.0))
 
+  lazy var password: TextField =
+      TextField(frame: Rect(x: 4.0, y: 120.0, width: 254.0, height: 16.0))
+
   lazy var textview: TextView =
-      TextView(frame: Rect(x: 4.0, y: 120.0, width: 254.0, height: 72.0))
+      TextView(frame: Rect(x: 4.0, y: 144.0, width: 254.0, height: 72.0))
 
   lazy var slider: Slider =
-      Slider(frame: Rect(x: 4.0, y: 200.0, width: 256.0, height: 24.0))
+      Slider(frame: Rect(x: 4.0, y: 224.0, width: 256.0, height: 24.0))
 
   lazy var picker: DatePicker =
-      DatePicker(frame: Rect(x: 4.0, y: 230.0, width: 256.0, height: 32.0))
+      DatePicker(frame: Rect(x: 4.0, y: 254.0, width: 256.0, height: 32.0))
 
   lazy var stepperLabel: Label =
       Label(frame: Rect(x: 4.0, y: 292.0, width: 128.0, height: 48.0))
@@ -94,6 +97,7 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
     window.addSubview(self.checkbox)
     window.addSubview(self.progress)
     window.addSubview(self.textfield)
+    window.addSubview(self.password)
     window.addSubview(self.textview)
     window.addSubview(self.slider)
     window.addSubview(self.picker)
@@ -109,6 +113,9 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
 
     self.textfield.text = "Introducing Swift/Win32"
     self.textfield.font = Font(name: "Cascadia Code", size: 10)
+
+    self.password.isSecureTextEntry = true
+    self.password.font = Font(name: "Cascadia Code", size: 10)
 
     self.textview.text = """
 Lorem ipsum dolor sit amet, consectetur adipiscicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
