@@ -109,18 +109,15 @@ public class TextField: Control {
       pfFormat.dwMask = DWORD(PFM_ALIGNMENT)
 
       _ = withUnsafePointer(to: &pfFormat) {
-        SendMessageW(hWnd, UINT(EM_GETPARAFORMAT), 0, LPARAM(Int(bitPattern: $0)))
+        SendMessageW(self.hWnd, UINT(EM_GETPARAFORMAT), 0,
+                     LPARAM(Int(bitPattern: $0)))
       }
 
       switch pfFormat.wAlignment {
-      case WORD(PFA_LEFT):
-        return .left
-      case WORD(PFA_RIGHT):
-        return .right
-      case WORD(PFA_CENTER):
-        return .center
-      case WORD(PFA_JUSTIFY):
-        return .justified
+      case WORD(PFA_LEFT):      return .left
+      case WORD(PFA_RIGHT):     return .right
+      case WORD(PFA_CENTER):    return .center
+      case WORD(PFA_JUSTIFY):   return .justified
       default:
         fatalError("unknown alignment `\(pfFormat.wAlignment)`")
       }
@@ -133,18 +130,15 @@ public class TextField: Control {
       switch value {
       case .natural:
         fatalError("do not know how to render `\(value)` text")
-      case .left:
-        pfFormat.wAlignment = WORD(PFA_LEFT)
-      case .right:
-        pfFormat.wAlignment = WORD(PFA_RIGHT)
-      case .center:
-        pfFormat.wAlignment = WORD(PFA_CENTER)
-      case .justified:
-        pfFormat.wAlignment = WORD(PFA_JUSTIFY)
+      case .left:       pfFormat.wAlignment = WORD(PFA_LEFT)
+      case .right:      pfFormat.wAlignment = WORD(PFA_RIGHT)
+      case .center:     pfFormat.wAlignment = WORD(PFA_CENTER)
+      case .justified:  pfFormat.wAlignment = WORD(PFA_JUSTIFY)
       }
 
       _ = withUnsafePointer(to: &pfFormat) {
-        SendMessageW(hWnd, UINT(EM_SETPARAFORMAT), 0, LPARAM(Int(bitPattern: $0)))
+        SendMessageW(self.hWnd, UINT(EM_SETPARAFORMAT), 0,
+                     LPARAM(Int(bitPattern: $0)))
       }
     }
   }
