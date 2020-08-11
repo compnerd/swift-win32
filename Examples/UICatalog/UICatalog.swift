@@ -116,6 +116,7 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
 
     self.password.isSecureTextEntry = true
     self.password.font = Font(name: "Cascadia Code", size: 10)
+    self.password.placeholder = "Password"
 
     self.textview.text = """
 Lorem ipsum dolor sit amet, consectetur adipiscicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
