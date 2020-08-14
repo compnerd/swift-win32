@@ -87,9 +87,9 @@ public extension Color {
 
 extension Color {
   internal init(red: Int, green: Int, blue: Int,
-                alpha: Int = 255) {
+                alpha: Double = 1.0) {
     self.init(red: Double(red) / 255.0, green: Double(green) / 255.0,
-              blue: Double(blue) / 255.0, alpha: Double(alpha) / 255.0)
+              blue: Double(blue) / 255.0, alpha: Double(alpha))
   }
 }
 
@@ -351,5 +351,363 @@ extension Color {
     case (.high, .dark):
       return Color(red: 36, green: 36, blue: 38)
     }
+  }
+}
+
+/// UI Element Colors
+extension Color {
+  /// Label Colors
+
+  /// The Color for text labels that contain primary content.
+  public static var label: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (_, .light):
+      return Color(white: 0.0, alpha: 1.0)
+    case (_, .dark):
+      return Color(white: 1.0, alpha: 1.0)
+    }
+  }
+
+  /// The color for text labels that contain secondary content.
+  public static var secondaryLabel: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 60, green: 60, blue: 67, alpha: 0.60)
+    case (.high, .light):
+      return Color(red: 60, green: 60, blue: 67, alpha: 0.68)
+    case (.normal, .dark):
+      return Color(red: 235, green: 235, blue: 245, alpha: 0.60)
+    case (.high, .dark):
+      return Color(red: 235, green: 235, blue: 245, alpha: 0.68)
+    }
+  }
+
+  /// The color for text labels that contain tertiary content.
+  public static var tertiaryLabel: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 60.0, green: 60, blue: 67, alpha: 0.30)
+    case (.high, .light):
+      return Color(red: 60.0, green: 60, blue: 67, alpha: 0.38)
+    case (.normal, .dark):
+      return Color(red: 235, green: 235, blue: 245, alpha: 0.30)
+    case (.high, .dark):
+      return Color(red: 235, green: 235, blue: 245, alpha: 0.38)
+    }
+  }
+
+  /// The color for text labels that contain quatenary content.
+  public static var quatenaryLabel: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 60, green: 60, blue: 67, alpha: 0.18)
+    case (.high, .light):
+      return Color(red: 60, green: 60, blue: 67, alpha: 0.26)
+    case (.normal, .dark):
+      return Color(red: 235, green: 235, blue: 245, alpha: 0.18)
+    case (.high, .dark):
+      return Color(red: 235, green: 235, blue: 245, alpha: 0.26)
+    }
+  }
+
+  /// Fill Colors
+
+  /// An overlay fill color for thin and small shapes.
+  public static var systemFill: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 120, green: 120, blue: 128, alpha: 0.20)
+    case (.high, .light):
+      return Color(red: 120, green: 120, blue: 128, alpha: 0.28)
+    case (.normal, .dark):
+      return Color(red: 120, green: 120, blue: 128, alpha: 0.36)
+    case (.high, .dark):
+      return Color(red: 120, green: 120, blue: 128, alpha: 0.44)
+    }
+  }
+
+  /// An overlay fill color for medium-size shapes.
+  public static var secondarySystemFill: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 120, green: 120, blue: 128, alpha: 0.16)
+    case (.high, .light):
+      return Color(red: 120, green: 120, blue: 128, alpha: 0.24)
+    case (.normal, .dark):
+      return Color(red: 120, green: 120, blue: 128, alpha: 0.32)
+    case (.high, .dark):
+      return Color(red: 120, green: 120, blue: 128, alpha: 0.40)
+    }
+  }
+
+  /// An overlay fill color for large shapes.
+  public static var tertiarySystemFill: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 118, green: 118, blue: 128, alpha: 0.12)
+    case (.high, .light):
+      return Color(red: 118, green: 118, blue: 128, alpha: 0.20)
+    case (.normal, .dark):
+      return Color(red: 118, green: 118, blue: 128, alpha: 0.24)
+    case (.high, .dark):
+      return Color(red: 118, green: 118, blue: 128, alpha: 0.32)
+    }
+  }
+
+  /// An overlay fill color for large areas that contain complex content.
+  public static var quaternarySystemFill: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 116, green: 116, blue: 128, alpha: 0.08)
+    case (.high, .light):
+      return Color(red: 116, green: 116, blue: 128, alpha: 0.16)
+    case (.normal, .dark):
+      return Color(red: 118, green: 118, blue: 128, alpha: 0.18)
+    case (.high, .dark):
+      return Color(red: 118, green: 118, blue: 128, alpha: 0.26)
+    }
+  }
+
+  /// Text Colors
+
+  /// The color for placeholder text in controls or text views.
+  public static var placeholderText: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 60, green: 60, blue: 67, alpha: 0.30)
+    case (.high, .light):
+      return Color(red: 60, green: 60, blue: 67, alpha: 0.38)
+    case (.normal, .dark):
+      return Color(red: 235, green: 235, blue: 245, alpha: 0.30)
+    case (.high, .dark):
+      return Color(red: 235, green: 235, blue: 245, alpha: 0.38)
+    }
+  }
+
+  /// Standard Content Background Colors
+  ///
+  /// Use these colors for standard table views and designs that have a white
+  /// primary background in a light environment.
+
+  /// The color for the main background of your interface.
+  public static var systemBackground: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(white: 1.0, alpha: 1.0)
+    case (.high, .light):
+      return Color(white: 1.0, alpha: 1.0)
+    case (.normal, .dark):
+      return Color(white: 0.0, alpha: 1.0)
+    case (.high, .dark):
+      return Color(white: 0.0, alpha: 1.0)
+    }
+  }
+
+  /// The color for content layered on top of the main background.
+  public static var secondarySystemBackground: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 242, green: 242, blue: 247, alpha: 1.0)
+    case (.high, .light):
+      return Color(red: 235, green: 235, blue: 240, alpha: 1.0)
+    case (.normal, .dark):
+      return Color(red: 28, green: 28, blue: 30, alpha: 1.0)
+    case (.high, .dark):
+      return Color(red: 36, green: 36, blue: 38, alpha: 1.0)
+    }
+  }
+
+  /// The color for content layered on top of secondary backgrounds.
+  public static var tertiarySystemBackground: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(white: 1.0, alpha: 1.0)
+    case (.high, .light):
+      return Color(white: 1.0, alpha: 1.0)
+    case (.normal, .dark):
+      return Color(red: 44, green: 44, blue: 46, alpha: 1.0)
+    case (.high, .dark):
+      return Color(red: 54, green: 54, blue: 56, alpha: 1.0)
+    }
+  }
+
+  /// Grouped Content Background Colors
+  ///
+  /// Use these colors for grouped content, including table views and
+  /// platter-based designs.
+
+  /// The color for the main background of your grouped interface.
+  public static var systemGroupedBackground: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 242, green: 242, blue: 247, alpha: 1.0)
+    case (.high, .light):
+      return Color(red: 235, green: 235, blue: 240, alpha: 1.0)
+    case (.normal, .dark):
+      return Color(white: 0.0, alpha: 1.0)
+    case (.high, .dark):
+      return Color(white: 0.0, alpha: 1.0)
+    }
+  }
+
+  /// The color for content layered on top of the main background of your
+  /// grouped interface.
+  public static var secondarySystemGroupedBackground: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 242, green: 242, blue: 247, alpha: 1.0)
+    case (.high, .light):
+      return Color(white: 1.0, alpha: 1.0)
+    case (.normal, .dark):
+      return Color(red: 28, green: 28, blue: 30, alpha: 1.0)
+    case (.high, .dark):
+      return Color(red: 36, green: 36, blue: 38, alpha: 1.0)
+    }
+  }
+
+  /// The color for content layered on top of secondary backgrounds of your
+  /// grouped interface.
+  public static var tertiarySystemGroupedBackground: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 242, green: 242, blue: 247, alpha: 1.0)
+    case (.high, .light):
+      return Color(red: 235, green: 235, blue: 240, alpha: 1.0)
+    case (.normal, .dark):
+      return Color(red: 44, green: 44, blue: 46, alpha: 1.0)
+    case (.high, .dark):
+      return Color(red: 54, green: 54, blue: 56, alpha: 1.0)
+    }
+  }
+
+  /// Separator Colors
+
+  /// The color for thin borders or divider lines that allows some underlying
+  /// content to be visible.
+  public static var separator: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 60, green: 60, blue: 67, alpha: 0.29)
+    case (.high, .light):
+      return Color(red: 60, green: 60, blue: 67, alpha: 0.37)
+    case (.normal, .dark):
+      return Color(red: 84, green: 84, blue: 88, alpha: 0.60)
+    case (.high, .dark):
+      return Color(red: 84, green: 84, blue: 88, alpha: 0.70)
+    }
+  }
+
+  /// The color for borders or divider lines that hides any underlying content.
+  public static var opaqueSeparator: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 198, green: 198, blue: 200, alpha: 1.0)
+    case (.high, .light):
+      return Color(red: 198, green: 198, blue: 200, alpha: 1.0)
+    case (.normal, .dark):
+      return Color(red: 56, green: 56, blue: 58, alpha: 1.0)
+    case (.high, .dark):
+      return Color(red: 56, green: 56, blue: 58, alpha: 1.0)
+    }
+  }
+
+  /// Link Color
+
+  /// The color for links.
+  public static var link: Color {
+    let traits: TraitCollection = TraitCollection.current
+    switch (traits.accessibilityContrast, traits.userInterfaceStyle) {
+    case (.unspecified, _), (_, .unspecified):
+      log.warning("unable to query contrast or color scheme")
+      fallthrough
+    case (.normal, .light):
+      return Color(red: 0, green: 122, blue: 255, alpha: 1.0)
+    case (.high, .light):
+      return Color(red: 0, green: 122, blue: 255, alpha: 1.0)
+    case (.normal, .dark):
+      return Color(red: 9, green: 132, blue: 255, alpha: 1.0)
+    case (.high, .dark):
+      return Color(red: 9, green: 132, blue: 255, alpha: 1.0)
+    }
+  }
+
+  /// Nonadaptable Colors
+
+  /// The nonadaptable system color for text on a light background.
+  public static var darkText: Color {
+    return Color(white: 0.0, alpha: 1.0)
+  }
+
+  /// The nonadaptable system color for text on a dark background.
+  public static var lightText: Color {
+    return Color(white: 1.0, alpha: 0.6)
   }
 }
