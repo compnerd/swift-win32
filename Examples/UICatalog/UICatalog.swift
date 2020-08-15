@@ -125,6 +125,9 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     self.slider.value = 48.0
 
     self.stepperLabel.text = String(Int(self.stepper.value))
+    self.stepper.addTarget(self,
+                           action: SwiftApplicationDelegate.stepperValueDidChange(_:),
+                           for: .valueChanged)
 
     window.makeKeyAndVisible()
 
@@ -146,5 +149,9 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
   private func pressMe(_: Button?) {
     MessageBoxW(nil, "Swift/Win32 Demo!".LPCWSTR,
                 "Swift/Win32 MessageBox!".LPCWSTR, UINT(MB_OK))
+  }
+
+  private func stepperValueDidChange(_ stepper: Stepper) {
+    self.stepperLabel.text = String(Int(stepper.value))
   }
 }
