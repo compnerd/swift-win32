@@ -28,22 +28,22 @@
  **/
 
 private protocol ControlEventCallable {
-  func callAsFunction(sender: Button?, event: Control.Event)
+  func callAsFunction(sender: Control, event: Control.Event)
 }
 
-private struct ControlEventCallback<Target: AnyObject>: ControlEventCallable {
+private struct ControlEventCallback<Source: Control, Target: AnyObject>: ControlEventCallable {
   private unowned(safe) let instance: Target
-  private let method: (Target) -> (_: Button?, _: Control.Event) -> Void
+  private let method: (Target) -> (_: Source, _: Control.Event) -> Void
 
-  public init(binding: @escaping (Target) -> (_: Button?, _: Control.Event) -> Void,
+  public init(binding: @escaping (Target) -> (_: Source, _: Control.Event) -> Void,
               on: Target) {
     self.instance = on
     self.method = binding
   }
 
-  public init(binding: @escaping (Target) -> (_: Button?) -> Void, on: Target) {
+  public init(binding: @escaping (Target) -> (_: Source) -> Void, on: Target) {
     self.instance = on
-    self.method = { (target: Target) in { (sender: Button?, _: Control.Event) in
+    self.method = { (target: Target) in { (sender: Source, _: Control.Event) in
         binding(target)(sender)
       }
     }
@@ -51,14 +51,14 @@ private struct ControlEventCallback<Target: AnyObject>: ControlEventCallable {
 
   public init(binding: @escaping (Target) -> () -> Void, on: Target) {
     self.instance = on
-    self.method = { (target: Target) in { (_: Button?, _: Control.Event) in
+    self.method = { (target: Target) in { (_: Source, _: Control.Event) in
         binding(target)()
       }
     }
   }
 
-  public func callAsFunction(sender: Button?, event: Control.Event) {
-    self.method(instance)(sender, event)
+  public func callAsFunction(sender: Control, event: Control.Event) {
+    self.method(instance)(sender as! Source, event)
   }
 }
 
@@ -82,21 +82,21 @@ public class Control: View {
   public func addTarget<Target: AnyObject>(_ target: Target,
                                            action: @escaping (Target) -> () -> Void,
                                            for controlEvents: Control.Event) {
+    self.addAction(ControlEventCallback<Self, Target>(binding: action, on: target),
+                   for: controlEvents)
+  }
+
+  public func addTarget<Source: Control, Target: AnyObject>(_ target: Target,
+                                                            action: @escaping (Target) -> (_: Source) -> Void,
+                                                            for controlEvents: Control.Event) {
     self.addAction(ControlEventCallback(binding: action, on: target),
                    for: controlEvents)
   }
 
-  public func addTarget<Target: AnyObject>(_ target: Target,
-                                           action: @escaping (Target) -> (_: Button?) -> Void,
-                                           for controlEvents: Control.Event) {
-    self.addAction(ControlEventCallback(binding: action, on: target),
-                   for: controlEvents)
-  }
-
-  public func addTarget<Target: AnyObject>(_ target: Target,
-                                           action: @escaping (Target) -> (_: Button?, _: Control.Event) -> Void,
-                                           for controlEvents: Control.Event) {
-    self.addAction(ControlEventCallback(binding: action, on: target),
+  public func addTarget<Source: Control, Target: AnyObject>(_ target: Target,
+                                                            action: @escaping (Target) -> (_: Source, _: Control.Event) -> Void,
+                                                            for controlEvents: Control.Event) {
+    self.addAction(ControlEventCallback<Source, Target>(binding: action, on: target),
                    for: controlEvents)
   }
 
@@ -104,8 +104,7 @@ public class Control: View {
   func sendActions(for controlEvents: Control.Event) {
     for event in Control.Event.touchEvents + Control.Event.semanticEvents + Control.Event.editingEvents {
       if controlEvents.rawValue & event.rawValue == event.rawValue {
-        _ = self.actions[event]?.map { $0(sender: self as? Button,
-                                          event: controlEvents) }
+        _ = self.actions[event]?.map { $0(sender: self, event: controlEvents) }
       }
     }
   }
