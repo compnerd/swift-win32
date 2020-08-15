@@ -79,6 +79,11 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
   lazy var picker: DatePicker =
       DatePicker(frame: Rect(x: 4.0, y: 230.0, width: 256.0, height: 32.0))
 
+  lazy var stepperLabel: Label =
+      Label(frame: Rect(x: 4.0, y: 292.0, width: 128.0, height: 48.0))
+  lazy var stepper: Stepper =
+      Stepper(frame: Rect(x: 197.0, y: 290.0, width: 64.0, height: 32.0))
+
   func application(_: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
     window.rootViewController = ViewController()
@@ -92,6 +97,8 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
     window.addSubview(self.textview)
     window.addSubview(self.slider)
     window.addSubview(self.picker)
+    window.addSubview(self.stepperLabel)
+    window.addSubview(self.stepper)
 
     self.label.font = Font(name: "Consolas", size: 10)!
 
@@ -116,6 +123,8 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     self.slider.minimumValue = 0.0
     self.slider.maximumValue = 100.0
     self.slider.value = 48.0
+
+    self.stepperLabel.text = String(Int(self.stepper.value))
 
     window.makeKeyAndVisible()
 
