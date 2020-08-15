@@ -84,7 +84,8 @@ public class View {
   /// Configuring the Bounds and Frame Rectangles
   public let frame: Rect
 
-  internal init(frame: Rect, `class`: WindowClass, style: WindowStyle) {
+  internal init(frame: Rect, `class`: WindowClass, style: WindowStyle,
+                parent: HWND? = nil) {
     self.window = (class: `class`, style: style)
     _ = self.window.class.register()
 
@@ -107,7 +108,7 @@ public class View {
                         Int32(bOverlappedWindow ? client.origin.y : 0),
                         Int32(client.size.width),
                         Int32(client.size.height),
-                        nil, nil, GetModuleHandleW(nil), nil)!
+                        parent, nil, GetModuleHandleW(nil), nil)!
 
     // If `CW_USEDEFAULT` was used, query the actual allocated rect
     if frame.origin.x == Double(CW_USEDEFAULT) ||
