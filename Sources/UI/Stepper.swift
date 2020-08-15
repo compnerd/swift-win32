@@ -41,12 +41,67 @@ public class Stepper: Control {
       (base: UInt32(UDS_HORZ) | WS_POPUP | DWORD(WS_TABSTOP), extended: 0)
 
   /// Configuring the Stepper
-  public var isContinuous: Bool = true
-  public var autorepeat: Bool = true
-  public var wraps: Bool = false
-  public var minimumValue: Double = 0.0
-  public var maximumValue: Double = 100.0
-  public var stepValue: Double = 1.0
+  public var isContinuous: Bool { fatalError("not yet implemented") }
+  public var autorepeat: Bool { fatalError("not yet implemented") }
+  public var wraps: Bool {
+    get { return GetWindowLongW(self.hWnd, GWL_STYLE) & UDS_WRAP == UDS_WRAP }
+    set {
+      var lStyle: LONG = GetWindowLongW(self.hWnd, GWL_STYLE)
+      lStyle = newValue ? lStyle | UDS_WRAP : lStyle & ~UDS_WRAP
+      _ = SetWindowLongW(self.hWnd, GWL_STYLE, lStyle)
+    }
+  }
+  public var minimumValue: Double {
+    get {
+      var value: CInt = 0
+      _ = withUnsafeMutablePointer(to: &value) {
+        SendMessageW(self.hWnd, UINT(UDM_GETRANGE32),
+                     WPARAM(UInt(bitPattern: $0)), 0)
+      }
+      return Double(value)
+    }
+    set {
+      _ = SendMessageW(self.hWnd, UINT(UDM_SETRANGE32),
+                       WPARAM(CInt(newValue)), LPARAM(CInt(self.maximumValue)))
+    }
+  }
+  public var maximumValue: Double {
+    get {
+      var value: CInt = 0
+      _ = withUnsafeMutablePointer(to: &value) {
+        SendMessageW(self.hWnd, UINT(UDM_GETRANGE32),
+                     0, LPARAM(UInt(bitPattern: $0)))
+      }
+      return Double(value)
+    }
+    set {
+      _ = SendMessageW(self.hWnd, UINT(UDM_SETRANGE32),
+                       WPARAM(CInt(self.minimumValue)), LPARAM(CInt(newValue)))
+    }
+  }
+  public var stepValue: Double {
+    get {
+      var value: UDACCEL = UDACCEL(nSec: 0, nInc: 0)
+      _ = withUnsafeMutablePointer(to: &value) {
+        SendMessageW(self.hWnd, UINT(UDM_GETACCEL),
+                     WPARAM(MemoryLayout<UDACCEL>.size),
+                     LPARAM(UInt(bitPattern: $0)))
+      }
+      return Double(value.nInc)
+    }
+    set {
+      var value: UDACCEL = UDACCEL(nSec: 0, nInc: 0)
+      _ = withUnsafeMutablePointer(to: &value) {
+        SendMessageW(self.hWnd, UINT(UDM_GETACCEL),
+                     WPARAM(1), LPARAM(UInt(bitPattern: $0)))
+      }
+      value.nInc = DWORD(newValue)
+      _ = withUnsafeMutablePointer(to: &value) {
+        SendMessageW(self.hWnd, UINT(UDM_SETACCEL),
+                     WPARAM(1), LPARAM(UInt(bitPattern: $0)))
+      }
+    }
+  }
 
   /// Accessing the Stepper's Value
   public var value: Double {
@@ -64,7 +119,12 @@ public class Stepper: Control {
     SetWindowSubclass(hWnd, SwiftStepperProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
 
-    // NOTE: we must manually initialize the value
-    self.value = 0.0
+    defer {
+      self.wraps = false
+      self.minimumValue = 0.0
+      self.maximumValue = 100.0
+      self.stepValue = 1.0
+      self.value = 0.0
+    }
   }
 }
