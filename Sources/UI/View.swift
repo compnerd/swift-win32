@@ -140,6 +140,7 @@ public class View {
   }
 
   deinit {
+    _ = DestroyWindow(self.hWnd)
     _ = self.window.class.unregister()
   }
 
