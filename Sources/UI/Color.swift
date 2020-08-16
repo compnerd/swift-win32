@@ -49,19 +49,22 @@ public struct Color {
   }
 }
 
+extension COLORREF {
+  fileprivate init(red r: Double, green g: Double, blue b: Double) {
+    self = 0
+         | (DWORD((b * 255.0).rounded(.toNearestOrAwayFromZero)) << 16)
+         | (DWORD((g * 255.0).rounded(.toNearestOrAwayFromZero)) <<  8)
+         | (DWORD((r * 255.0).rounded(.toNearestOrAwayFromZero)) <<  0)
+  }
+}
+
 extension Color {
   internal var COLORREF: COLORREF {
     switch self.value {
     case .rgba(let r, let g, let b, _):
-      return 0
-           | (DWORD(b * 255.0) << 16)
-           | (DWORD(g * 255.0) <<  8)
-           | (DWORD(r * 255.0) <<  0)
+      return WinSDK.COLORREF(red: r, green: g, blue: b)
     case .gray(let w, _):
-      return 0
-           | (DWORD(w * 255.0) << 16)
-           | (DWORD(w * 255.0) <<  8)
-           | (DWORD(w * 255.0) <<  0)
+      return WinSDK.COLORREF(red: w * 255.0, green: w * 255.0, blue: w * 255.0)
     }
   }
 }
