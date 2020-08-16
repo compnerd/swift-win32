@@ -32,6 +32,7 @@ import WinSDK
 extension Color {
   private enum Representation {
   case rgba(Double, Double, Double, Double)
+  case hsba(Double, Double, Double, Double)
   case gray(Double, Double)
   }
 }
@@ -42,6 +43,11 @@ public struct Color {
   /// Creating a Color from Component Values
   public init(white: Double, alpha: Double) {
     self.value = .gray(white, alpha)
+  }
+
+  public init(hue: Double, saturation: Double, brightness: Double,
+              alpha: Double) {
+    self.value = .hsba(hue, saturation, brightness, alpha)
   }
 
   public init(red: Double, green: Double, blue: Double, alpha: Double) {
@@ -63,6 +69,13 @@ extension Color {
     switch self.value {
     case .rgba(let r, let g, let b, _):
       return WinSDK.COLORREF(red: r, green: g, blue: b)
+    case .hsba(let h, let s, let b, _):
+      func f(_ n: Double) -> Double {
+        let k = ucrt.fmod(n + (6.0 * h), 6.0)
+        return b - b * s * max(0, min(k, 4 - k, 1))
+      }
+
+      return WinSDK.COLORREF(red: f(5.0), green: f(3.0), blue: f(1.0))
     case .gray(let w, _):
       return WinSDK.COLORREF(red: w * 255.0, green: w * 255.0, blue: w * 255.0)
     }
