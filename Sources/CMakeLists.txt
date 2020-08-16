@@ -4,6 +4,8 @@ add_library(SwiftWin32 SHARED
   Application/Application.swift
   Application/ApplicationDelegate.swift
   Application/ApplicationMain.swift
+  UI/AlertAction.swift
+  UI/AlertController.swift
   UI/Button.swift
   UI/Color.swift
   UI/Control.swift
