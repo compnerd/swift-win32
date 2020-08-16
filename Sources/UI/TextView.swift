@@ -30,7 +30,7 @@
 import WinSDK
 import Foundation
 
-internal let SwiftTextViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
+private let SwiftTextViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let textview: TextView? =
       unsafeBitCast(dwRefData, to: AnyObject.self) as? TextView
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)

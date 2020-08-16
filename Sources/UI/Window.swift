@@ -39,7 +39,7 @@ public extension WindowDelegate {
   }
 }
 
-internal let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
+private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let window: Window? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Window
   switch uMsg {
   case UINT(WM_DESTROY):

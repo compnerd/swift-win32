@@ -29,7 +29,7 @@
 
 import WinSDK
 
-internal let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
+private let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let button: Button? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Button
   switch uMsg {
   case UINT(WM_LBUTTONDOWN):

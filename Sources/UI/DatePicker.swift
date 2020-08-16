@@ -29,7 +29,7 @@
 
 import WinSDK
 
-internal let SwiftDatePickerProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
+private let SwiftDatePickerProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let datepicker: DatePicker? =
       unsafeBitCast(dwRefData, to: AnyObject.self) as? DatePicker
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)

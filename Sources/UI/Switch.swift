@@ -29,7 +29,7 @@
 
 import WinSDK
 
-internal let SwiftSwitchProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
+private let SwiftSwitchProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let button: Switch? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Switch
   switch uMsg {
   default:
