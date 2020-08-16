@@ -82,7 +82,7 @@ private class StepperMessengerProxy {
 }
 
 
-internal let SwiftStepperProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
+private let SwiftStepperProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let stepper: Stepper? =
       unsafeBitCast(dwRefData, to: AnyObject.self) as? Stepper
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
