@@ -29,27 +29,41 @@
 
 import WinSDK
 
+extension Color {
+  private enum Representation {
+  case rgba(Double, Double, Double, Double)
+  case gray(Double, Double)
+  }
+}
+
 public struct Color {
-  internal let rawValue: DWORD
+  private let value: Representation
 
   /// Creating a Color from Component Values
-  public init(red: Double, green: Double, blue: Double, alpha: Double) {
-    self.rawValue = 0
-                  | (DWORD(blue * 255.0) << 16)
-                  | (DWORD(green * 255.0) << 8)
-                  | (DWORD(red * 255.0) << 0)
+  public init(white: Double, alpha: Double) {
+    self.value = .gray(white, alpha)
   }
 
-  public init(white: Double, alpha: Double) {
-    self.rawValue = 0
-                  | (DWORD(white * 255.0) << 16)
-                  | (DWORD(white * 255.0) <<  8)
-                  | (DWORD(white * 255.0) <<  0)
+  public init(red: Double, green: Double, blue: Double, alpha: Double) {
+    self.value = .rgba(red, green, blue, alpha)
   }
 }
 
 extension Color {
-  internal var COLORREF: COLORREF { return rawValue }
+  internal var COLORREF: COLORREF {
+    switch self.value {
+    case .rgba(let r, let g, let b, _):
+      return 0
+           | (DWORD(b * 255.0) << 16)
+           | (DWORD(g * 255.0) <<  8)
+           | (DWORD(r * 255.0) <<  0)
+    case .gray(let w, _):
+      return 0
+           | (DWORD(w * 255.0) << 16)
+           | (DWORD(w * 255.0) <<  8)
+           | (DWORD(w * 255.0) <<  0)
+    }
+  }
 }
 
 extension Color: _ExpressibleByColorLiteral {
@@ -64,7 +78,8 @@ extension Color: Equatable {
 }
 
 public func ==(lhs: Color, rhs: Color) -> Bool {
-  return lhs.rawValue == rhs.rawValue
+  // TODO(compnerd) make this more accurate
+  return lhs.COLORREF == rhs.COLORREF
 }
 
 /// Fixed Colors
