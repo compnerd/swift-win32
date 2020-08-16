@@ -156,22 +156,6 @@ private func GetCurrentDeviceFamily() -> UserInterfaceIdiom {
   return GetSystemMetrics(SM_TABLETPC) == 0 ? .unspecified : .pad
 }
 
-private func GetCurrentElevationLevel() -> UserInterfaceLevel {
-  var token: HANDLE?
-  if OpenProcessToken(GetCurrentProcess(), DWORD(TOKEN_QUERY), &token) {
-    defer { CloseHandle(token) }
-
-    var elevation: TOKEN_ELEVATION = TOKEN_ELEVATION()
-    var szElevation: DWORD = DWORD(MemoryLayout<TOKEN_ELEVATION>.size)
-    if GetTokenInformation(token, TokenElevation, &elevation,
-                           DWORD(MemoryLayout<TOKEN_ELEVATION>.size),
-                           &szElevation) {
-      return elevation.TokenIsElevated == 0 ? .base : .elevated
-    }
-  }
-  return .unspecified
-}
-
 private func GetCurrentAccessibilityContrast() -> AccessibilityContrast {
   var hcContrast: HIGHCONTRASTW = HIGHCONTRASTW()
   hcContrast.cbSize = UINT(MemoryLayout<HIGHCONTRASTW>.size)
@@ -192,14 +176,44 @@ private func GetCurrentLayoutDirection() -> TraitEnvironmentLayoutDirection {
   return dwDefaultLayout == LAYOUT_RTL ? .rightToLeft : .leftToRight
 }
 
+private func GetCurrentDisplayScale() -> Double {
+  let hMonitor: HMONITOR =
+      MonitorFromWindow(GetDesktopWindow(), DWORD(MONITOR_DEFAULTTOPRIMARY))
+  var dsfDeviceScaleFactor: DEVICE_SCALE_FACTOR = SCALE_100_PERCENT
+  let hr: HRESULT = GetScaleFactorForMonitor(hMonitor, &dsfDeviceScaleFactor)
+  guard hr == S_OK else {
+    log.warning("GetScaleFactorFromMonitor: \(String(hr, radix: 16))")
+    return 0.0
+  }
+  return dsfDeviceScaleFactor.factor
+}
+
+private func GetCurrentDisplayGamut() -> DisplayGamut {
+  // TODO(compnerd) identify the actual display gamut in use for the primary
+  // display.  sRGB is still far more common than DCI-P3, so assume that for
+  // now.  Note that in reality, its more likely that the display is using
+  // wsRGB, which is a Windows "optimized" sRGB color gamut.
+  return .SRGB
+}
+
 public class TraitCollection {
   public private(set) static var current: TraitCollection =
       TraitCollection(traitsFrom: [
-        TraitCollection(userInterfaceStyle: GetCurrentColorScheme()),
-        TraitCollection(userInterfaceIdiom: GetCurrentDeviceFamily()),
-        TraitCollection(userInterfaceLevel: GetCurrentElevationLevel()),
-        TraitCollection(layoutDirection: GetCurrentLayoutDirection()),
         TraitCollection(accessibilityContrast: GetCurrentAccessibilityContrast()),
+        TraitCollection(displayGamut: GetCurrentDisplayGamut()),
+        TraitCollection(displayScale: GetCurrentDisplayScale()),
+        TraitCollection(layoutDirection: GetCurrentLayoutDirection()),
+        TraitCollection(preferredContentSizeCategory: .large),
+        TraitCollection(userInterfaceIdiom: GetCurrentDeviceFamily()),
+        TraitCollection(userInterfaceLevel: .base),
+        TraitCollection(userInterfaceStyle: GetCurrentColorScheme()),
+
+        TraitCollection(horizontalSizeClass: Device.current.isPortrait
+                                                ? .compact
+                                                : .regular),
+        TraitCollection(verticalSizeClass: Device.current.isPortrait
+                                              ? .regular
+                                              : .compact),
       ])
 
   // Retriving Size Class Traits
