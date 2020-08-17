@@ -27,7 +27,7 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 
-public class Application: _TriviallyConstructible {
+public class Application: Responder {
   /// Getting the App Instance
   public static var shared: Application = Application()
 
@@ -41,9 +41,20 @@ public class Application: _TriviallyConstructible {
   public internal(set) var keyWindow: Window?
   public internal(set) var windows: [Window]
 
-  public required init() {
+  override public required init() {
     self.state = .active
     self.windows = []
+    super.init()
+  }
+
+  // Responder Chain
+  override public var next: Responder? {
+    if let responder = self.delegate as? Responder,
+       !(self.delegate is View), !(self.delegate is ViewController),
+       !(self.delegate === self) {
+      return responder
+    }
+    return nil
   }
 }
 
@@ -92,10 +103,10 @@ extension Application.LaunchOptionsKey {
 extension Application {
   /// The running states of the application
   public enum State: Int {
-    /// The application is running in the foreground
-    case active
-    case inactive
-    /// The application is running in the background
-    case background
+  /// The application is running in the foreground
+  case active
+  case inactive
+  /// The application is running in the background
+  case background
   }
 }

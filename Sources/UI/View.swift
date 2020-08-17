@@ -51,7 +51,7 @@ private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) 
   rect = Rect(from: r)
 }
 
-public class View {
+public class View: Responder {
   internal var hWnd: HWND!
   internal var win32: (window: (`class`: WindowClass, style: WindowStyle), _: ())
 
@@ -133,6 +133,8 @@ public class View {
 
     self.frame = client
 
+    super.init()
+
     defer { self.font = Font.systemFont(ofSize: Font.systemFontSize) }
   }
 
@@ -176,5 +178,13 @@ public class View {
 
     view.superview = self
     subviews.append(view)
+  }
+
+  // Responder Chain
+  public override var next: Responder? {
+    if let parent = self.superview { return parent }
+    // if let vc = self.viewController { return vc }
+    if let window = self.window { return window }
+    return Application.shared
   }
 }

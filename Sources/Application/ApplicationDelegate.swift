@@ -29,10 +29,6 @@
 
 import class Foundation.NSNotification
 
-public protocol _TriviallyConstructible {
-  init()
-}
-
 public protocol ApplicationDelegate: class, _TriviallyConstructible {
   /// Initializing the App
   func application(_ application: Application,
