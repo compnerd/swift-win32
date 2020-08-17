@@ -29,18 +29,9 @@
 
 import WinSDK
 
-public protocol WindowDelegate: class {
-  func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT
-}
-
-public extension WindowDelegate {
-  func OnCommand(_ hWnd: HWND?, _ wParam: WPARAM, _ lParam: LPARAM) -> LRESULT {
-    return 1
-  }
-}
-
 private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let window: Window? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Window
+
   switch uMsg {
   case UINT(WM_DESTROY):
     // TODO(compnerd) we should handle multiple scenes, which can have multiple
@@ -51,10 +42,6 @@ private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
       window?.resignKey()
       PostQuitMessage(0)
     }
-  case UINT(WM_COMMAND):
-    if window?.delegate?.OnCommand(hWnd, wParam, lParam) == 0 {
-      return 0
-    }
   case UINT(WM_DPICHANGED):
     if let hMonitor = MonitorFromWindow(hWnd, DWORD(MONITOR_DEFAULTTONULL)) {
       let screen = Screen.screens.filter { $0 == hMonitor }.first
@@ -63,6 +50,7 @@ private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
   default:
     break
   }
+
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
 }
 
@@ -74,9 +62,6 @@ public class Window: View {
                   hCursor: LoadCursorW(nil, IDC_ARROW))
   private static let style: WindowStyle =
       (base: DWORD(WS_OVERLAPPEDWINDOW | UInt32(WS_VISIBLE)), extended: 0)
-
-  // TODO(compnerd) remove this in favour of the view controller
-  public weak var delegate: WindowDelegate?
 
   /// Configuring the Window
   public var rootViewController: ViewController? {
