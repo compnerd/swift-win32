@@ -1,6 +1,7 @@
 add_subdirectory(CWinRT)
 
 add_library(SwiftWin32 SHARED
+  Application/_TriviallyConstructible.swift
   Application/Application.swift
   Application/ApplicationDelegate.swift
   Application/ApplicationMain.swift)
@@ -18,6 +19,7 @@ target_sources(SwiftWin32 PRIVATE
   UI/Font.swift
   UI/Label.swift
   UI/ProgressView.swift
+  UI/Responder.swift
   UI/Screen.swift
   UI/Slider.swift
   UI/Stepper.swift
