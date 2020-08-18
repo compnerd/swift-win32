@@ -66,10 +66,10 @@ internal typealias DeviceContextHandle = ManagedHandle<HDC__>
 
 public final class Screen {
   /// Returns the screen object representing the device's screen.
-  static var main: Screen { screens.first! }
+  public static var main: Screen { screens.first! }
 
   /// Returns an array containing all the screens attached to the device.
-  static var screens: [Screen] {
+  public static var screens: [Screen] {
     let pfnEnumMonitor: MONITORENUMPROC = { hMonitor, hDC, lpRect, lParam in
       let pScreens: UnsafeMutablePointer<Array<Screen>> =
           UnsafeMutablePointer<Array<Screen>>(bitPattern: Int(lParam))!
