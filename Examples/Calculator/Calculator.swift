@@ -89,7 +89,7 @@ private class Calculator {
       Window(frame: Rect(x: Double(CW_USEDEFAULT), y: Double(CW_USEDEFAULT),
                          width: 204, height: 264))
 
-  internal var txtResult: TextField =
+  private var txtResult: TextField =
       TextField(frame: Rect(x: 34, y: 32, width: 128, height: 24))
 
   private var btnDigits: [Button] = [
@@ -146,8 +146,8 @@ private class Calculator {
     self.window.makeKeyAndVisible()
   }
 
-  private func onDigitPress(_ sender: Button?, _: Control.Event) {
-    let input = self.btnDigits.firstIndex(of: sender!)!
+  private func onDigitPress(_ sender: Button, _: Control.Event) {
+    let input = self.btnDigits.firstIndex(of: sender)!
 
     self.state[keyPath: self.state.operand] += String(input)
 
@@ -157,8 +157,8 @@ private class Calculator {
                                         number: .decimal)
   }
 
-  private func onOperationPress(_ sender: Button?, _: Control.Event) {
-    switch self.btnOperations.firstIndex(of: sender!)! {
+  private func onOperationPress(_ sender: Button, _: Control.Event) {
+    switch self.btnOperations.firstIndex(of: sender)! {
     case 0: /* AC */
       self.state = CalculatorState()
       self.txtResult.text = "0"
@@ -189,12 +189,11 @@ private class Calculator {
           NumberFormatter.localizedString(from: NSNumber(value: value),
                                           number: .decimal)
     default:
-      // TODO(compnerd) handle the invalid operation
-      fatalError()
+      fatalError("unknown operation \(self.btnOperations.firstIndex(of: sender)!)")
     }
   }
 
-  private func onDecimalPress(_ sender: Button?, _: Control.Event) {
+  private func onDecimalPress(_ sender: Button, _: Control.Event) {
     self.state[keyPath: self.state.operand] += "."
     self.txtResult.text = self.state[keyPath: self.state.operand]
   }
