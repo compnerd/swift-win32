@@ -38,6 +38,7 @@ target_sources(SwiftWin32 PRIVATE
   CG/Size.swift)
 target_sources(SwiftWin32 PRIVATE
   Support/BatteryMonitor.swift
+  Support/Color+UIExtensions.swift
   Support/Logging.swift
   Support/Rect+UIExtensions.swift
   Support/PropertyWrappers.swift

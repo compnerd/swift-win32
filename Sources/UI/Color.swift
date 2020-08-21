@@ -27,8 +27,6 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  **/
 
-import WinSDK
-
 extension Color {
   private enum Representation {
   case rgba(Double, Double, Double, Double)
@@ -55,33 +53,6 @@ public struct Color {
   }
 }
 
-extension COLORREF {
-  fileprivate init(red r: Double, green g: Double, blue b: Double) {
-    self = 0
-         | (DWORD((b * 255.0).rounded(.toNearestOrAwayFromZero)) << 16)
-         | (DWORD((g * 255.0).rounded(.toNearestOrAwayFromZero)) <<  8)
-         | (DWORD((r * 255.0).rounded(.toNearestOrAwayFromZero)) <<  0)
-  }
-}
-
-extension Color {
-  internal var COLORREF: COLORREF {
-    switch self.value {
-    case .rgba(let r, let g, let b, _):
-      return WinSDK.COLORREF(red: r, green: g, blue: b)
-    case .hsba(let h, let s, let b, _):
-      func f(_ n: Double) -> Double {
-        let k = ucrt.fmod(n + (6.0 * h), 6.0)
-        return b - b * s * max(0, min(k, 4 - k, 1))
-      }
-
-      return WinSDK.COLORREF(red: f(5.0), green: f(3.0), blue: f(1.0))
-    case .gray(let w, _):
-      return WinSDK.COLORREF(red: w * 255.0, green: w * 255.0, blue: w * 255.0)
-    }
-  }
-}
-
 extension Color: _ExpressibleByColorLiteral {
   public init(_colorLiteralRed red: Float, green: Float, blue: Float,
               alpha: Float) {
@@ -91,11 +62,10 @@ extension Color: _ExpressibleByColorLiteral {
 }
 
 extension Color: Equatable {
-}
-
-public func ==(lhs: Color, rhs: Color) -> Bool {
-  // TODO(compnerd) make this more accurate
-  return lhs.COLORREF == rhs.COLORREF
+  public static func ==(lhs: Color, rhs: Color) -> Bool {
+    // TODO(compnerd) make this more accurate
+    return lhs.COLORREF == rhs.COLORREF
+  }
 }
 
 /// Fixed Colors
