@@ -8,19 +8,21 @@ let SwiftWin32 = Package(
     .library(name: "SwiftWin32", type: .dynamic, targets: ["SwiftWin32"])
   ],
   targets: [
-    .target(name: "SwiftWin32",
-            path: "Sources",
-            exclude: [
-              "CMakeLists.txt",
-              "CWinRT",
-            ],
-            cSettings: [
-              .define("COBJMACROS"),
-              .define("NONAMELESSUNION"),
-            ],
-            linkerSettings: [
-              .linkedLibrary("User32"),
-              .linkedLibrary("ComCtl32"),
-            ]),
+    .target(
+      name: "SwiftWin32",
+      path: "Sources",
+      exclude: [
+        "CMakeLists.txt",
+        "CWinRT",
+      ],
+      cSettings: [
+        .define("COBJMACROS"),
+        .define("NONAMELESSUNION"),
+      ],
+      linkerSettings: [
+        .linkedLibrary("User32"),
+        .linkedLibrary("ComCtl32"),
+      ]
+    ),
   ]
 )
