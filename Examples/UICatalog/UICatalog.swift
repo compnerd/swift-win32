@@ -6,6 +6,7 @@
  **/
 
 import SwiftWin32
+import Foundation
 
 import func WinSDK.MessageBoxW
 import let WinSDK.CW_USEDEFAULT
@@ -30,7 +31,7 @@ private extension Label {
 final class SwiftApplicationDelegate: ApplicationDelegate {
   var window: Window =
       Window(frame: Rect(x: Double(CW_USEDEFAULT), y: Double(CW_USEDEFAULT),
-                         width: 444, height: 555))
+                         width: 265, height: 384))
 
   lazy var label: Label =
       Label(frame: Rect(x: 4.0, y: 12.0, width: 64.0, height: 16.0),
@@ -40,7 +41,7 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
       Button(frame: Rect(x: 72.0, y: 4.0, width: 96.0, height: 32.0),
              title: "Press Me!")
   lazy var checkbox: Switch =
-      Switch(frame: Rect(x: 4.0, y: 40.0, width: 256.0, height: 16.0))
+      Switch(frame: Rect(x: 4.0, y: 40.0, width: 256.0, height: 24.0))
 
   lazy var progress: ProgressView =
       ProgressView(frame: Rect(x: 4.0, y: 64.0, width: 256.0, height: 20.0))
@@ -65,6 +66,10 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
   lazy var stepper: Stepper =
       Stepper(frame: Rect(x: 197.0, y: 290.0, width: 64.0, height: 32.0))
 
+  lazy var tableview: TableView =
+      TableView(frame: Rect(x: 4.0, y: 330.0, width: 254.0, height: 48.0),
+                style: .plain)
+
   func application(_: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
     window.rootViewController = ViewController()
@@ -81,6 +86,7 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
     window.addSubview(self.picker)
     window.addSubview(self.stepperLabel)
     window.addSubview(self.stepper)
+    window.addSubview(self.tableview)
 
     self.label.font = Font(name: "Consolas", size: 10)!
 
@@ -115,6 +121,8 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
                            action: SwiftApplicationDelegate.stepperValueDidChange(_:),
                            for: .valueChanged)
 
+    self.tableview.dataSource = self
+
     window.makeKeyAndVisible()
 
     return true
@@ -139,5 +147,21 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
   private func stepperValueDidChange(_ stepper: Stepper) {
     self.stepperLabel.text = String(Int(stepper.value))
+  }
+}
+
+extension SwiftApplicationDelegate: TableViewDataSource {
+  public func tableView(_ tableView: TableView,
+                        numberOfRowsInSection section: Int) -> Int {
+    return 3
+  }
+
+  public func tableView(_ tableView: TableView,
+                        cellForRowAt indexPath: IndexPath) -> TableViewCell {
+    let cell = TableViewCell(style: .default, reuseIdentifier: nil)
+    cell.addSubview(Button(frame: Rect(x: 0, y: 0, width: 80, height: 32),
+                           title: "Button \(indexPath.row)"))
+    cell.frame = Rect(x: 0, y: 0, width: 80, height: 32)
+    return cell
   }
 }
