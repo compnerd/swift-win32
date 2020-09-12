@@ -31,6 +31,9 @@ target_sources(SwiftWin32 PRIVATE
   UI/Slider.swift
   UI/Stepper.swift
   UI/Switch.swift
+  UI/TableView.swift
+  UI/TableViewCell.swift
+  UI/TableViewDataSource.swift
   UI/TextField.swift
   UI/TextInputTraits.swift
   UI/TextView.swift
@@ -50,6 +53,7 @@ target_sources(SwiftWin32 PRIVATE
 target_sources(SwiftWin32 PRIVATE
   Support/BatteryMonitor.swift
   Support/Error.swift
+  Support/IndexPath+UIExtensions.swift
   Support/Logging.swift
   Support/Rect+UIExtensions.swift
   Support/PropertyWrappers.swift
