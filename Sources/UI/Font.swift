@@ -40,78 +40,144 @@ extension HFONT__: HandleValue {
 
 internal typealias FontHandle = ManagedHandle<HFONT__>
 
-private func PointToLogical(_ points: Float) -> Int32 {
+private func PointToLogical(_ points: Double) -> Int32 {
   return -MulDiv(Int32(points), GetDeviceCaps(GetDC(nil), LOGPIXELSY), 72)
 }
 
-private func LogicalToPoint(_ logical: Int32) -> Float {
-  return Float(MulDiv(-logical, 72, GetDeviceCaps(GetDC(nil), LOGPIXELSY)))
+private func LogicalToPoint(_ logical: Int32) -> Double {
+  return Double(MulDiv(-logical, 72, GetDeviceCaps(GetDC(nil), LOGPIXELSY)))
 }
 
 public class Font {
   internal var hFont: FontHandle
 
-  internal init(_ hFont: FontHandle) {
-    self.hFont = hFont
+  /// Creating Fonts
+
+  public static func preferredFont(forTextStyle style: Font.TextStyle) -> Font {
+    return Font.preferredFont(forTextStyle: style, compatibleWith: nil)
   }
 
-  private init(owning hFont: HFONT) {
-    self.hFont = FontHandle(owning: hFont)
-  }
-
-  private static func systemFont(ofSize fontSize: Float, weight: Font.Weight,
-                                 italic bItalic: Bool) -> Font {
-    // Windows XP+ default fault name
-    var fontName: String = "Segoe UI"
-
-    var metrics: NONCLIENTMETRICSW = NONCLIENTMETRICSW()
-    metrics.cbSize = UINT(MemoryLayout<NONCLIENTMETRICSW>.size)
-    if SystemParametersInfoW(UINT(SPI_GETNONCLIENTMETRICS),
-                             metrics.cbSize, &metrics, 0) {
-      fontName = withUnsafePointer(to: metrics.lfMessageFont.lfFaceName) {
-        let capacity: Int =
-            MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size
-        return $0.withMemoryRebound(to: UInt16.self, capacity: capacity) {
-          String(decodingCString: $0, as: UTF16.self)
-        }
-      }
+  public static func preferredFont(forTextStyle style: Font.TextStyle,
+                                   compatibleWith traitCollection: TraitCollection?)
+      -> Font {
+    switch style {
+    case .body:
+      return systemFont(ofSize: 17)
+    case .callout:
+      return systemFont(ofSize: 16)
+    case .caption1:
+      return systemFont(ofSize: 12)
+    case .caption2:
+      return systemFont(ofSize: 11)
+    case .footnote:
+      return systemFont(ofSize: 13)
+    case .headline:
+      return systemFont(ofSize: 17, weight: .semibold)
+    case .subheadline:
+      return systemFont(ofSize: 15)
+    case .largeTitle:
+      return systemFont(ofSize: 34)
+    case .title1:
+      return systemFont(ofSize: 28)
+    case .title2:
+      return systemFont(ofSize: 22)
+    case .title3:
+      return systemFont(ofSize: 20)
+    default:
+      log.warning("unknown text style: \(style) - assuming 12pt system font")
+      return systemFont(ofSize: 12)
     }
+  }
 
+  public init?(name: String, size: Double) {
+    self.hFont = FontHandle(owning: CreateFontW(PointToLogical(size),
+                                                /*cWidth=*/0,
+                                                /*cEscapement=*/0,
+                                                /*cOrientation=*/0,
+                                                Font.Weight.regular.rawValue,
+                                                /*bItalic=*/DWORD(0),
+                                                /*bUnderline=*/DWORD(0),
+                                                /*bStrikeOut=*/DWORD(0),
+                                                DWORD(DEFAULT_CHARSET),
+                                                DWORD(OUT_DEFAULT_PRECIS),
+                                                DWORD(CLIP_DEFAULT_PRECIS),
+                                                DWORD(DEFAULT_QUALITY),
+                                                DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
+                                                name.LPCWSTR))
+  }
+
+  // public init(descriptor: FontDescriptor, size pointSize: Double)
+
+  public func withSize(_ fontSize: Double) -> Font {
+    var lfFont: LOGFONTW = LOGFONTW()
+
+    if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size),
+                  &lfFont) == 0 {
+      log.error("GetObjectW: \(GetLastError())")
+      return self
+    }
+    lfFont.lfHeight = PointToLogical(fontSize)
+
+    return Font(owning: CreateFontIndirectW(&lfFont))
+  }
+
+  /// Creating System Fonts
+
+  public static func systemFont(ofSize fontSize: Double) -> Font {
+    return systemFont(ofSize: fontSize, weight: .regular, italic: false)
+  }
+
+  public static func systemFont(ofSize fontSize: Double, weight: Font.Weight)
+      -> Font {
+    return systemFont(ofSize: fontSize, weight: weight, italic: false)
+  }
+
+  public static func boldSystemFont(ofSize fontSize: Double) -> Font {
+    return systemFont(ofSize: fontSize, weight: .bold, italic: false)
+  }
+
+  public static func italicSystemFont(ofSize fontSize: Double) -> Font {
+    return systemFont(ofSize: fontSize, weight: .regular, italic: true)
+  }
+
+  public static func monospacedSystemFont(ofSize fontSize: Double,
+                                          weight: Font.Weight) -> Font {
     return Font(owning: CreateFontW(PointToLogical(fontSize),
                                     /*cWidth=*/0,
                                     /*cEscapement=*/0,
                                     /*cOrientation=*/0,
                                     weight.rawValue,
-                                    bItalic ? 1 : 0,
+                                    /*bItalic=*/DWORD(0),
                                     /*bUnderline=*/DWORD(0),
                                     /*bStrikeOut=*/DWORD(0),
                                     DWORD(DEFAULT_CHARSET),
                                     DWORD(OUT_DEFAULT_PRECIS),
                                     DWORD(CLIP_DEFAULT_PRECIS),
                                     DWORD(DEFAULT_QUALITY),
-                                    DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
-                                    fontName.LPCWSTR))
+                                    DWORD((FF_DONTCARE << 2) | FIXED_PITCH),
+                                    nil))
   }
 
-  public var fontName: String {
-    var lfFont: LOGFONTW = LOGFONTW()
-
-    if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size),
-                  &lfFont) == 0 {
-      log.error("GetObjectW: \(GetLastError())")
-      return ""
-    }
-
-    return withUnsafePointer(to: &lfFont.lfFaceName) {
-      let capacity: Int =
-          MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size
-      return $0.withMemoryRebound(to: UInt16.self, capacity: capacity) {
-        return String(decodingCString: $0, as: UTF16.self)
-      }
-    }
+  public static func monospacedDigitSystemFont(ofSize fontSize: Double,
+                                               weight: Font.Weight) -> Font {
+    return Font(owning: CreateFontW(PointToLogical(fontSize),
+                                    /*cWidth=*/0,
+                                    /*cEscapement=*/0,
+                                    /*cOrientation=*/0,
+                                    weight.rawValue,
+                                    /*bItalic=*/DWORD(0),
+                                    /*bUnderline=*/DWORD(0),
+                                    /*bStrikeOut=*/DWORD(0),
+                                    DWORD(DEFAULT_CHARSET),
+                                    DWORD(OUT_DEFAULT_PRECIS),
+                                    DWORD(CLIP_DEFAULT_PRECIS),
+                                    DWORD(DEFAULT_QUALITY),
+                                    DWORD((FF_DONTCARE << 2) | FIXED_PITCH),
+                                    nil))
   }
 
   /// Getting the Available Font Names
+
   public static var familyNames: [String] {
     let hDC: HDC = GetDC(nil)
 
@@ -177,112 +243,172 @@ public class Font {
     return Array<String>(arrFonts)
   }
 
-  /// Getting System Font Information
-  public static var labelFontSize: Float { 17.0 }
-  public static var buttonFontSize: Float { 18.0 }
-  public static var smallSystemFontSize: Float { 12.0 }
-  public static var systemFontSize: Float { 14.0 }
+  /// Getting Font Name Attributes
 
-  /// Creating System Fonts
-  public static func systemFont(ofSize fontSize: Float) -> Font {
-    return systemFont(ofSize: fontSize, weight: .regular, italic: false)
-  }
+  // public var familyName: String { }
 
-  public static func systemFont(ofSize fontSize: Float, weight: Font.Weight)
-      -> Font {
-    return systemFont(ofSize: fontSize, weight: weight, italic: false)
-  }
+  public var fontName: String {
+    var lfFont: LOGFONTW = LOGFONTW()
 
-  public static func boldSystemFont(ofSize fontSize: Float) -> Font {
-    return systemFont(ofSize: fontSize, weight: .bold, italic: false)
-  }
+    if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size),
+                  &lfFont) == 0 {
+      log.error("GetObjectW: \(GetLastError())")
+      return ""
+    }
 
-  public static func italicSystemFont(ofSize fontSize: Float) -> Font {
-    return systemFont(ofSize: fontSize, weight: .regular, italic: true)
-  }
-
-  public static func monospacedSystemFont(ofSize fontSize: Float,
-                                          weight: Font.Weight) -> Font {
-    return Font(owning: CreateFontW(PointToLogical(fontSize),
-                                    /*cWidth=*/0,
-                                    /*cEscapement=*/0,
-                                    /*cOrientation=*/0,
-                                    weight.rawValue,
-                                    /*bItalic=*/DWORD(0),
-                                    /*bUnderline=*/DWORD(0),
-                                    /*bStrikeOut=*/DWORD(0),
-                                    DWORD(DEFAULT_CHARSET),
-                                    DWORD(OUT_DEFAULT_PRECIS),
-                                    DWORD(CLIP_DEFAULT_PRECIS),
-                                    DWORD(DEFAULT_QUALITY),
-                                    DWORD((FF_DONTCARE << 2) | FIXED_PITCH),
-                                    nil))
-  }
-
-  public static func monospacedDigitSystemFont(ofSize fontSize: Float,
-                                               weight: Font.Weight) -> Font {
-    return Font(owning: CreateFontW(PointToLogical(fontSize),
-                                    /*cWidth=*/0,
-                                    /*cEscapement=*/0,
-                                    /*cOrientation=*/0,
-                                    weight.rawValue,
-                                    /*bItalic=*/DWORD(0),
-                                    /*bUnderline=*/DWORD(0),
-                                    /*bStrikeOut=*/DWORD(0),
-                                    DWORD(DEFAULT_CHARSET),
-                                    DWORD(OUT_DEFAULT_PRECIS),
-                                    DWORD(CLIP_DEFAULT_PRECIS),
-                                    DWORD(DEFAULT_QUALITY),
-                                    DWORD((FF_DONTCARE << 2) | FIXED_PITCH),
-                                    nil))
-  }
-
-  /// Creating Fonts
-  public static func preferredFont(forTextStyle style: Font.TextStyle) -> Font {
-    switch style {
-    case .body:
-      return systemFont(ofSize: 17)
-    case .callout:
-      return systemFont(ofSize: 16)
-    case .caption1:
-      return systemFont(ofSize: 12)
-    case .caption2:
-      return systemFont(ofSize: 11)
-    case .footnote:
-      return systemFont(ofSize: 13)
-    case .headline:
-      return systemFont(ofSize: 17, weight: .semibold)
-    case .subheadline:
-      return systemFont(ofSize: 15)
-    case .largeTitle:
-      return systemFont(ofSize: 34)
-    case .title1:
-      return systemFont(ofSize: 28)
-    case .title2:
-      return systemFont(ofSize: 22)
-    case .title3:
-      return systemFont(ofSize: 20)
-    default:
-      log.warning("unknown text style: \(style) - assuming 12pt system font")
-      return systemFont(ofSize: 12)
+    return withUnsafePointer(to: &lfFont.lfFaceName) {
+      let capacity: Int =
+          MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size
+      return $0.withMemoryRebound(to: UInt16.self, capacity: capacity) {
+        return String(decodingCString: $0, as: UTF16.self)
+      }
     }
   }
 
-  public init?(name: String, size: Float) {
-    self.hFont = FontHandle(owning: CreateFontW(PointToLogical(size),
-                                                /*cWidth=*/0,
-                                                /*cEscapement=*/0,
-                                                /*cOrientation=*/0,
-                                                Font.Weight.regular.rawValue,
-                                                /*bItalic=*/DWORD(0),
-                                                /*bUnderline=*/DWORD(0),
-                                                /*bStrikeOut=*/DWORD(0),
-                                                DWORD(DEFAULT_CHARSET),
-                                                DWORD(OUT_DEFAULT_PRECIS),
-                                                DWORD(CLIP_DEFAULT_PRECIS),
-                                                DWORD(DEFAULT_QUALITY),
-                                                DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
-                                                name.LPCWSTR))
+  /// Getting Font Metrics
+
+  /// The font's point size, or the effective vertical point size for a font
+  /// with a non-standard matrix.
+  public var pointSize: Double {
+    var lfFont: LOGFONTW = LOGFONTW()
+
+    if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size),
+                  &lfFont) == 0 {
+      log.error("GetObjectW: \(GetLastError())")
+      return 0.0
+    }
+
+    return LogicalToPoint(lfFont.lfHeight)
+  }
+
+  /// The top y-coordinate, offset from the baseline, of the font's longest
+  /// ascender.
+  public var ascender: Double {
+    let hDC: DeviceContextHandle =
+        DeviceContextHandle(owning: CreateCompatibleDC(nil))
+    let _ = SelectObject(hDC.value, self.hFont.value)
+
+    var metrics: TEXTMETRICW = TEXTMETRICW()
+    if !GetTextMetricsW(hDC.value, &metrics) {
+      log.warning("GetTextMetricsW: \(GetLastError())")
+      return 0.0
+    }
+    return Double(metrics.tmAscent)
+  }
+
+  /// The bottom y-coordinate, offset from the baseline, of the font's longest
+  /// descender.
+  public var descender: Double {
+    let hDC: DeviceContextHandle =
+        DeviceContextHandle(owning: CreateCompatibleDC(nil))
+    let _ = SelectObject(hDC.value, self.hFont.value)
+
+    var metrics: TEXTMETRICW = TEXTMETRICW()
+    if !GetTextMetricsW(hDC.value, &metrics) {
+      log.warning("GetTextMetricsW: \(GetLastError())")
+      return 0.0
+    }
+    return Double(metrics.tmDescent)
+  }
+
+  /// The font's leading information.
+  public var leading: Double {
+    let hDC: DeviceContextHandle =
+        DeviceContextHandle(owning: CreateCompatibleDC(nil))
+    let _ = SelectObject(hDC.value, self.hFont.value)
+
+    var metrics: TEXTMETRICW = TEXTMETRICW()
+    if !GetTextMetricsW(hDC.value, &metrics) {
+      log.warning("GetTextMetricsW: \(GetLastError())")
+      return 0.0
+    }
+    return Double(metrics.tmExternalLeading)
+  }
+
+  /// The font's cap height information.
+  public var capHeight: Double {
+    let hDC: DeviceContextHandle =
+        DeviceContextHandle(owning: CreateCompatibleDC(nil))
+    let _ = SelectObject(hDC.value, self.hFont.value)
+
+    var size: SIZE = SIZE()
+    if !GetTextExtentPoint32W(hDC.value, "u{0048}".LPCWSTR, 1, &size) {
+      log.warning("GetTextExtentPoint32W: \(GetLastError())")
+      return 0.0
+    }
+    return Double(size.cy)
+  }
+
+  /// The x-height of the font.
+  public var xHeight: Double {
+    let hDC: DeviceContextHandle =
+        DeviceContextHandle(owning: CreateCompatibleDC(nil))
+    let _ = SelectObject(hDC.value, self.hFont.value)
+
+    var size: SIZE = SIZE()
+    if !GetTextExtentPoint32W(hDC.value, "u{0078}".LPCWSTR, 1, &size) {
+      log.warning("GetTextExtentPoint32W: \(GetLastError())")
+      return 0.0
+    }
+    return Double(size.cy)
+  }
+
+  /// The height, in points, of text lines.
+  // public var lineHeight: Double { }
+
+  /// Getting System Font Information
+
+  public static var labelFontSize: Double { 17.0 }
+
+  public static var buttonFontSize: Double { 18.0 }
+
+  public static var smallSystemFontSize: Double { 12.0 }
+
+  public static var systemFontSize: Double { 14.0 }
+
+  /// Getting Font Descriptors
+  // public var fontDescriptor: FontDescriptor { }
+
+  internal init(_ hFont: FontHandle) {
+    self.hFont = hFont
+  }
+
+  private init(owning hFont: HFONT) {
+    self.hFont = FontHandle(owning: hFont)
+  }
+
+  private static func systemFont(ofSize fontSize: Double, weight: Font.Weight,
+                                 italic bItalic: Bool) -> Font {
+    // Windows XP+ default fault name
+    var fontName: String = "Segoe UI"
+
+    var metrics: NONCLIENTMETRICSW = NONCLIENTMETRICSW()
+    metrics.cbSize = UINT(MemoryLayout<NONCLIENTMETRICSW>.size)
+    if SystemParametersInfoW(UINT(SPI_GETNONCLIENTMETRICS),
+                             metrics.cbSize, &metrics, 0) {
+      fontName = withUnsafePointer(to: metrics.lfMessageFont.lfFaceName) {
+        let capacity: Int =
+            MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size
+        return $0.withMemoryRebound(to: UInt16.self, capacity: capacity) {
+          String(decodingCString: $0, as: UTF16.self)
+        }
+      }
+    }
+
+    return Font(owning: CreateFontW(PointToLogical(fontSize),
+                                    /*cWidth=*/0,
+                                    /*cEscapement=*/0,
+                                    /*cOrientation=*/0,
+                                    weight.rawValue,
+                                    bItalic ? 1 : 0,
+                                    /*bUnderline=*/DWORD(0),
+                                    /*bStrikeOut=*/DWORD(0),
+                                    DWORD(DEFAULT_CHARSET),
+                                    DWORD(OUT_DEFAULT_PRECIS),
+                                    DWORD(CLIP_DEFAULT_PRECIS),
+                                    DWORD(DEFAULT_QUALITY),
+                                    DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
+                                    fontName.LPCWSTR))
   }
 }
 
