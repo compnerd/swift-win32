@@ -40,6 +40,8 @@ extension HFONT__: HandleValue {
 
 internal typealias FontHandle = ManagedHandle<HFONT__>
 
+// Values derived from the Apple Human Inteface Guidelines
+// https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/typography
 private typealias TypographyInfo = (weight: Font.Weight, size: Double, leading: Int)
 private let typography: [ContentSizeCategory:[Font.TextStyle:TypographyInfo]] = [
   .extraSmall: [
