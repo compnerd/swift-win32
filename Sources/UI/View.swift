@@ -53,7 +53,7 @@ private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) 
 
 public class View {
   internal var hWnd: HWND!
-  internal var window: (`class`: WindowClass, style: WindowStyle)
+  internal var win32: (window: (`class`: WindowClass, style: WindowStyle), _: ())
 
   // TODO(compnerd) handle set
   public private(set) var subviews: [View] = []
@@ -86,8 +86,8 @@ public class View {
 
   internal init(frame: Rect, `class`: WindowClass, style: WindowStyle,
                 parent: HWND? = nil) {
-    self.window = (class: `class`, style: style)
-    _ = self.window.class.register()
+    self.win32.window = (class: `class`, style: style)
+    _ = self.win32.window.class.register()
 
     let bOverlappedWindow: Bool =
         style.base & DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW)
@@ -102,8 +102,9 @@ public class View {
     // Only request the window size, not the location, the location will be
     // mapped when reparenting.
     self.hWnd =
-        CreateWindowExW(self.window.style.extended, self.window.class.name, nil,
-                        self.window.style.base,
+        CreateWindowExW(self.win32.window.style.extended,
+                        self.win32.window.class.name, nil,
+                        self.win32.window.style.base,
                         Int32(bOverlappedWindow ? client.origin.x : 0),
                         Int32(bOverlappedWindow ? client.origin.y : 0),
                         Int32(client.size.width),
@@ -141,7 +142,7 @@ public class View {
 
   deinit {
     _ = DestroyWindow(self.hWnd)
-    _ = self.window.class.unregister()
+    _ = self.win32.window.class.unregister()
   }
 
   public func addSubview(_ view: View) {
@@ -152,13 +153,13 @@ public class View {
     }
 
     if SetWindowLongPtrW(view.hWnd, GWL_STYLE,
-                         LONG_PTR((view.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD))) == 0 {
+                         LONG_PTR((view.win32.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD))) == 0 {
       log.warning("SetWindowLongPtrW: \(GetLastError())")
       // TODO(compnerd) check for error
-      _ = SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.window.style.base))
+      _ = SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.win32.window.style.base))
       return
     }
-    view.window.style.base = (view.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD)
+    view.win32.window.style.base = (view.win32.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD)
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
     // changes take effect.
     if !SetWindowPos(view.hWnd, nil, 0, 0, 0, 0,
