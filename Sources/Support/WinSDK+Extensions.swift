@@ -65,6 +65,12 @@ public let HKEY_CURRENT_USER_LOCAL_SETTINGS: HKEY = HKEY(bitPattern: 0x80000007)
 public let MSFTEDIT_CLASS: String = "RICHEDIT50W"
 #endif
 
+// winnt.h
+@_transparent
+public func MAKELANGID(_ p: WORD, _ s: WORD) -> DWORD {
+  return DWORD((s << 10) | p)
+}
+
 // WinUser.h
 internal let ENUM_CURRENT_SETTINGS: DWORD = DWORD(bitPattern: -1)
 internal let HWND_MESSAGE: HWND = HWND(bitPattern: -3)!
