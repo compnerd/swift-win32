@@ -55,10 +55,6 @@ public class View {
   internal var hWnd: HWND!
   internal var win32: (window: (`class`: WindowClass, style: WindowStyle), _: ())
 
-  // TODO(compnerd) handle set
-  public private(set) var subviews: [View] = []
-  public private(set) var superview: View?
-
   internal var font: Font? {
     didSet {
       SendMessageW(self.hWnd, UINT(WM_SETFONT),
@@ -144,6 +140,12 @@ public class View {
     _ = DestroyWindow(self.hWnd)
     _ = self.win32.window.class.unregister()
   }
+
+  /// Managing the View Hierarchy
+
+  public private(set) var superview: View?
+  public private(set) var subviews: [View] = []
+  public private(set) var window: Window?
 
   public func addSubview(_ view: View) {
     // Reparent the window
