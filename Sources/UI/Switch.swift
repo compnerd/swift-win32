@@ -39,7 +39,7 @@ private let SwiftSwitchProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
 }
 
 public class Switch: Control {
-  private static let `class`: WindowClass = WindowClass(named: "BUTTON")
+  private static let `class`: WindowClass = WindowClass(named: WC_BUTTON)
   private static let style: WindowStyle =
       (base: DWORD(WS_TABSTOP | BS_AUTOCHECKBOX), extended: 0)
 
