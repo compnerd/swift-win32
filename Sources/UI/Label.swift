@@ -30,7 +30,7 @@
 import WinSDK
 
 public class Label: Control {
-  private static let `class`: WindowClass = WindowClass(named: "STATIC")
+  private static let `class`: WindowClass = WindowClass(named: WC_STATIC)
   private static let style: WindowStyle = (base: DWORD(WS_TABSTOP), extended: 0)
 
   public override var font: Font! {
