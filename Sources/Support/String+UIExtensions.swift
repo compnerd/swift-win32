@@ -31,12 +31,12 @@ import ucrt
 
 public extension String {
   var LPCWSTR: [UInt16] {
-    var array: [UInt16] =
-        Array<UInt16>(repeating: 0, count: self.utf16.count + 1)
-    _ = self.withCString(encodedAs: UTF16.self) {
-      wcscpy_s(&array, array.count, $0)
+    return self.withCString(encodedAs: UTF16.self) { buffer in
+      Array<UInt16>(unsafeUninitializedCapacity: self.utf16.count + 1) {
+        wcscpy_s($0.baseAddress, $0.count, buffer)
+        $1 = $0.count
+      }
     }
-    return array
   }
 }
 
