@@ -234,13 +234,19 @@ extension Device {
 }
 
 extension Device {
-  public static let batteryLevelDidChangeNotification: NSNotification.Name =
-      NSNotification.Name(rawValue: "UIDeviceBatteryLevelDidChangeNotification")
-  public static let batteryStateDidChangeNotification: NSNotification.Name =
-      NSNotification.Name(rawValue: "UIDeviceBatteryStateDidChangeNotification")
-  public static let orientationDidChangeNotification: NSNotification.Name =
-      NSNotification.Name(rawValue: "UIDeviceOrientationDidChangeNotification")
-  public static let proximityStateDidChangeNotification: NSNotification.Name =
-      NSNotification.Name(rawValue: "UIDeviceProximityStateDidChangeNotification")
-}
+  public static var batteryLevelDidChangeNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIDeviceBatteryLevelDidChangeNotification")
+  }
 
+  public static var batteryStateDidChangeNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIDeviceBatteryStateDidChangeNotification")
+  }
+
+  public static var orientationDidChangeNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIDeviceOrientationDidChangeNotification")
+  }
+
+  public static var proximityStateDidChangeNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIDeviceProximityStateDidChangeNotification")
+  }
+}
