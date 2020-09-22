@@ -12,7 +12,7 @@ Swift/Win32 aims to provide a [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93
 
 ## Building
 
-This requires the 5.3 or newer. You can use the the release binaries from [//swift/build](https://github.com/compnerd/swift-build) or download the nightly build from [Azure](https://dev.azure.com/compnerd/swift-build).
+This requires the 5.3 or newer. You can use the the release binaries from [swift.org](https://swift.org/download/) or download the nightly build from [Azure](https://dev.azure.com/compnerd/swift-build).
 
 The following example session shows how to build with CMake 3.16 or newer.
 
