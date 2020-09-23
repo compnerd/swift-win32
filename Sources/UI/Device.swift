@@ -38,14 +38,11 @@ public struct Device {
 
   /// The name identifyying the device
   public var name: String {
-    var szBuffer: [WCHAR] =
-        Array<WCHAR>(repeating: 0, count: Int(MAX_COMPUTERNAME_LENGTH) + 1)
-    var nSize: DWORD = DWORD(szBuffer.count)
-    guard GetComputerNameW(&szBuffer, &nSize) else {
-      log.warning("GetComputerNameW: \(GetLastError())")
-      return ""
+    let value: [WCHAR] = Array<WCHAR>(unsafeUninitializedCapacity: Int(MAX_COMPUTERNAME_LENGTH) + 1) {
+      var nSize: DWORD = DWORD($0.count)
+      $1 = GetComputerNameW($0.baseAddress!, &nSize) ? Int(nSize) : 0
     }
-    return String(decodingCString: szBuffer, as: UTF16.self)
+    return String(decodingCString: value, as: UTF16.self)
   }
 
   /// The name of the operating system running on the device represented by the
