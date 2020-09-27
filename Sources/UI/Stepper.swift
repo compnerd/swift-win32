@@ -77,12 +77,8 @@ public class Stepper: Control {
   public var isContinuous: Bool { fatalError("not yet implemented") }
   public var autorepeat: Bool { fatalError("not yet implemented") }
   public var wraps: Bool {
-    get { return GetWindowLongW(self.hWnd, GWL_STYLE) & UDS_WRAP == UDS_WRAP }
-    set {
-      var lStyle: LONG = GetWindowLongW(self.hWnd, GWL_STYLE)
-      lStyle = newValue ? lStyle | UDS_WRAP : lStyle & ~UDS_WRAP
-      _ = SetWindowLongW(self.hWnd, GWL_STYLE, lStyle)
-    }
+    get { self.GWL_STYLE & UDS_WRAP == UDS_WRAP }
+    set { self.GWL_STYLE = newValue ? self.GWL_STYLE | UDS_WRAP : self.GWL_STYLE & ~UDS_WRAP }
   }
   public var minimumValue: Double {
     get {

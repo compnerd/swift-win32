@@ -23,7 +23,7 @@ public class TextView: View {
 
   public var editable: Bool {
     get {
-      GetWindowLongW(hWnd, GWL_STYLE) & ES_READONLY == ES_READONLY
+      self.GWL_STYLE & ES_READONLY == ES_READONLY
     }
     set(editable) {
       SendMessageW(hWnd, UINT(EM_SETREADONLY), editable ? 0 : 1, 0)
