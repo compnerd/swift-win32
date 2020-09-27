@@ -39,14 +39,6 @@ private let pApplicationWindowProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, 
   return CallNextHookEx(nil, nCode, wParam, lParam)
 }
 
-private let pApplicationMessageProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, lParam: LPARAM) -> LRESULT in
-  guard nCode == HC_ACTION else {
-    return CallNextHookEx(nil, nCode, wParam, lParam)
-  }
-
-  return CallNextHookEx(nil, nCode, wParam, lParam)
-}
-
 @discardableResult
 public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
@@ -92,12 +84,6 @@ public func ApplicationMain(_ argc: Int32,
     log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(GetLastError())")
   }
 
-  let hMessageProcedureHook: HHOOK? =
-      SetWindowsHookExW(WH_GETMESSAGE, pApplicationMessageProc, hSwiftWin32, 0)
-  if hMessageProcedureHook == nil {
-    log.error("SetWindowsHookExW(WH_GETMESSAGE): \(GetLastError())")
-  }
-
   if Application.shared.delegate?
         .application(Application.shared,
                      didFinishLaunchingWithOptions: nil) == false {
@@ -111,12 +97,6 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
-
-  if let hMessageProcedureHook = hMessageProcedureHook {
-    if !UnhookWindowsHookEx(hMessageProcedureHook) {
-      log.error("UnhookWindowsHookEx(MsgProc): \(GetLastError())")
-    }
-  }
 
   if let hWindowProcedureHook = hWindowProcedureHook {
     if !UnhookWindowsHookEx(hWindowProcedureHook) {
