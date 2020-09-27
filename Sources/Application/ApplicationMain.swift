@@ -82,7 +82,7 @@ public func ApplicationMain(_ argc: Int32,
 
   var hSwiftWin32: HMODULE?
   if !GetModuleHandleExW(DWORD(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT),
-                               "SwiftWin32.dll".LPCWSTR, &hSwiftWin32) {
+                         "SwiftWin32.dll".LPCWSTR, &hSwiftWin32) {
     log.error("GetModuleHandleExW: \(GetLastError())")
   }
 
@@ -125,4 +125,11 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   return EXIT_SUCCESS
+}
+
+extension ApplicationDelegate {
+  public static func main() {
+    ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
+                    String(describing: String(reflecting: Self.self)))
+  }
 }

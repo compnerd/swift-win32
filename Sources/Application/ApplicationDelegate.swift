@@ -128,10 +128,3 @@ extension ApplicationDelegate {
     NSNotification.Name(rawValue: "UIApplicationWillTerminateNotification")
   }
 }
-
-extension ApplicationDelegate {
-  public static func main() {
-    ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
-                    String(describing: String(reflecting: Self.self)))
-  }
-}
