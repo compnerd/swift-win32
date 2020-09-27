@@ -33,6 +33,11 @@ public class View: Responder {
   internal var hWnd: HWND!
   internal var win32: (window: (`class`: WindowClass, style: WindowStyle), _: ())
 
+  internal var GWL_STYLE: LONG {
+    get { GetWindowLongW(hWnd, WinSDK.GWL_STYLE) }
+    set { SetWindowLongW(hWnd, WinSDK.GWL_STYLE, newValue) }
+  }
+
   internal var font: Font? {
     didSet {
       SendMessageW(self.hWnd, UINT(WM_SETFONT),
@@ -134,11 +139,11 @@ public class View: Responder {
       return
     }
 
-    if SetWindowLongPtrW(view.hWnd, GWL_STYLE,
+    if SetWindowLongPtrW(view.hWnd, WinSDK.GWL_STYLE,
                          LONG_PTR((view.win32.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD))) == 0 {
       log.warning("SetWindowLongPtrW: \(GetLastError())")
       // TODO(compnerd) check for error
-      _ = SetWindowLongPtrW(view.hWnd, GWL_STYLE, LONG_PTR(view.win32.window.style.base))
+      _ = SetWindowLongPtrW(view.hWnd, WinSDK.GWL_STYLE, LONG_PTR(view.win32.window.style.base))
       return
     }
     view.win32.window.style.base = (view.win32.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD)
