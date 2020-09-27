@@ -29,6 +29,18 @@ public protocol ApplicationDelegate: class, _TriviallyConstructible {
   func applicationProtectedDataWillBecomeUnavailable(_ application: Application)
   func applicationDidRecieveMemoryWarning(_ application: Application)
   func applicationSignificantTimeChange(_ application: Application)
+
+  /// Configuring and Discarding Scenes
+
+  /// Returns the configuration data to use when creating a new scene.
+  func application(_ application: Application,
+                   configurationForConnecting connectingSceneSession: SceneSession,
+                   options: Scene.ConnectionOptions) -> SceneConfiguration
+
+  /// Tells the delegate that the user closed one or more of teh application's
+  /// scenes.
+  func application(_ application: Application,
+                   didDiscardSceneSessions sceneSessions: Set<SceneSession>)
 }
 
 public extension ApplicationDelegate {
@@ -73,6 +85,23 @@ extension ApplicationDelegate {
   }
 
   public func applicationSignificantTimeChange(_ application: Application) {
+  }
+}
+
+extension ApplicationDelegate {
+  public func application(_ application: Application,
+                          configurationForConnecting connectingSceneSession: SceneSession,
+                          options: Scene.ConnectionOptions) -> SceneConfiguration {
+    return SceneConfiguration(name: "", sessionRole: connectingSceneSession.role)
+  }
+
+  public func application(_ application: Application,
+                          didDiscardSceneSessions sceneSessions: Set<SceneSession>) {
+    sceneSessions.forEach {
+      if let scene = $0.scene {
+        scene.delegate?.sceneDidDisconnect(scene)
+      }
+    }
   }
 }
 
