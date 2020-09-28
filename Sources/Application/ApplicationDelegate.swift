@@ -92,7 +92,7 @@ extension ApplicationDelegate {
   public func application(_ application: Application,
                           configurationForConnecting connectingSceneSession: SceneSession,
                           options: Scene.ConnectionOptions) -> SceneConfiguration {
-    return SceneConfiguration(name: "", sessionRole: connectingSceneSession.role)
+    return connectingSceneSession.configuration
   }
 
   public func application(_ application: Application,

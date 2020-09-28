@@ -5,8 +5,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  **/
 
-import struct Foundation.UUID
-
 extension SceneSession {
   public struct Role: Equatable, Hashable, RawRepresentable {
     public typealias RawValue = String
@@ -22,19 +20,21 @@ extension SceneSession {
 extension SceneSession.Role {
   /// The scene displays noninteractive windows on an externally connected
   /// screen.
-  public static let windowApplication: SceneSession.Role =
-      SceneSession.Role(rawValue: "UIWindowSSceneSessionRoleApplication")
+  public static var windowApplication: SceneSession.Role {
+    SceneSession.Role(rawValue: "UIWindowSSceneSessionRoleApplication")
+  }
 
   /// The scene displays interactive content on the device's main screen.
-  public static let windowExternalDisplay: SceneSession.Role =
-      SceneSession.Role(rawValue: "UIWindowSceneSessionRoleExternalDisplay")
+  public static var windowExternalDisplay: SceneSession.Role {
+    SceneSession.Role(rawValue: "UIWindowSceneSessionRoleExternalDisplay")
+  }
 }
 
 public class SceneSession {
   /// Getting the Scene Information
 
   /// The scene associated with the current session.
-  public let scene: Scene?
+  public internal(set) weak var scene: Scene?
 
   /// The role played by the scene's content.
   public let role: SceneSession.Role
@@ -42,19 +42,20 @@ public class SceneSession {
   /// Getting the Scene Configuration Details
 
   /// The configuration data for creating the secene.
-  public var configuration: SceneConfiguration
+  // This is mutable as the configuration is only finalized after the deleate
+  // has formed the final configuration.
+  public internal(set) var configuration: SceneConfiguration
 
   /// Identifying the Scene
 
   /// A unique identifier that persists for the lifetime of the session
   public let persistentIdentifier: String
 
-  internal init(scene: Scene?, role: SceneSession.Role,
-                configuration: SceneConfiguration) {
-    self.scene = scene
+  internal init(identifier: String, role: SceneSession.Role,
+                configuration name: String) {
+    self.persistentIdentifier = identifier
     self.role = role
-    self.configuration = configuration
-    self.persistentIdentifier = UUID().uuidString
+    self.configuration = SceneConfiguration(name: name, sessionRole: role)
   }
 }
 

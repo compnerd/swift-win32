@@ -7,13 +7,34 @@
 
 public class Application: Responder {
   /// Getting the App Instance
+
+  /// Returns the singleton application instance.
   public static var shared: Application = Application()
 
   /// Managing the App's Behaviour
+
+  /// The delegate of the application object.
   public var delegate: ApplicationDelegate?
 
   /// Getting the Application State
+
+  /// The applications current state or that of its most active scene.
   public internal(set) var state: Application.State
+
+  /// Getting Scene Information
+
+  /// A boolean indicating whether the application may display multiple scenes.
+  public var supportsMultipleScenes: Bool {
+    // TODO(compnerd) deserialise this from Info.plist in the bundle
+    false
+  }
+
+  /// The application's currently connected scenes.
+  public internal(set) var connectedScenes: Set<Scene> = []
+
+  /// The sessions whose scenes are either currently active or archived by the
+  /// system.
+  public internal(set) var openSessions: Set<SceneSession> = []
 
   /// Getting App Windows
   public internal(set) var keyWindow: Window?

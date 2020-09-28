@@ -84,6 +84,31 @@ public func ApplicationMain(_ argc: Int32,
     log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(GetLastError())")
   }
 
+  // Setup the scene session.
+  // TODO(compnerd) deserialize configuration name from the application
+  // information.
+  let (_, session) =
+      Application.shared.openSessions
+          .insert(SceneSession(identifier: UUID().uuidString,
+                               role: .windowApplication,
+                               configuration: "Default Configuration"))
+
+  // Create the scene.
+  // TODO(compnerd) deserialize scene type from the application information.
+  let (_, scene) =
+      Application.shared.connectedScenes
+          .insert(WindowScene(session: session,
+                              connectionOptions: Scene.ConnectionOptions()))
+
+  session.scene = scene
+
+  // Update the scene configuration based on the delegate's response.
+  if let configuration = Application.shared.delegate?
+      .application(Application.shared, configurationForConnecting: session,
+                   options: Scene.ConnectionOptions()) {
+    session.configuration = configuration
+  }
+
   if Application.shared.delegate?
         .application(Application.shared,
                      didFinishLaunchingWithOptions: nil) == false {
@@ -95,6 +120,14 @@ public func ApplicationMain(_ argc: Int32,
     TranslateMessage(&msg)
     DispatchMessageW(&msg)
   }
+
+  // Disard all open sessions.
+  let sessions = Application.shared.openSessions
+  Application.shared.openSessions = []
+  Application.shared.connectedScenes = []
+
+  Application.shared.delegate?.application(Application.shared,
+                                           didDiscardSceneSessions: sessions)
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
 
