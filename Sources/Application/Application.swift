@@ -37,48 +37,6 @@ public class Application: Responder {
 }
 
 extension Application {
-  public struct LaunchOptionsKey: Equatable, Hashable, RawRepresentable {
-    public typealias RawValue = String
-
-    public var rawValue: RawValue
-
-    public init(rawValue: RawValue) {
-      self.rawValue = rawValue
-    }
-  }
-}
-
-extension Application.LaunchOptionsKey {
-  public static let annotation: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.Annotation")
-  public static let bluetootCentrals: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.BluetoothCentrals")
-  public static let bluetoothPeripherals: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.BluetoothPeripherals")
-  public static let cloudKitShareMetadata: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.CloudKitShareMetadata")
-  @available(*, deprecated)
-  public static let localNotification: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.LocalNotification")
-  public static let location: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.Location")
-  public static let newsstandDownloads: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.NewsStandDownloads")
-  public static let remoteNotification: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.RemoteNotification")
-  public static let shortcutItem: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.ShortCutItem")
-  public static let sourceApplication: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.SourceApplication")
-  public static let url: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.URL")
-  public static let userActivityDictionary: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.UserActivityDictionary")
-  public static let userActivityType: Application.LaunchOptionsKey =
-      Application.LaunchOptionsKey(rawValue: "Application.UserActivityType")
-}
-
-extension Application {
   /// The running states of the application
   public enum State: Int {
   /// The application is running in the foreground

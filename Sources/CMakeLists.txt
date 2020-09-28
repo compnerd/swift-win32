@@ -4,7 +4,8 @@ add_library(SwiftWin32 SHARED
   Application/_TriviallyConstructible.swift
   Application/Application.swift
   Application/ApplicationDelegate.swift
-  Application/ApplicationMain.swift)
+  Application/ApplicationMain.swift
+  Application/LaunchKeyOptions.swift)
 target_sources(SwiftWin32 PRIVATE
   UI/AlertAction.swift
   UI/AlertController.swift
