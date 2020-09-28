@@ -6,12 +6,22 @@
  **/
 
 public class SceneConfiguration {
+  /// Creating a Configuration Object
+
   /// Creates a scene-configuration object with the specified role and
   /// application-specific name.
   public init(name: String?, sessionRole: SceneSession.Role) {
     self.name = name
     self.role = sessionRole
   }
+
+  /// Specifying the Scene Creation Details
+
+  /// The class of the scene object you want to create.
+  public var sceneClass: AnyClass?
+
+  /// The class of the delegate object you want to create.
+  public var delegateClass: AnyClass?
 
   /// Getting the Configuration Attributes
 

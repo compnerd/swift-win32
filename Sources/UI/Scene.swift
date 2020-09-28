@@ -30,3 +30,14 @@ extension Scene {
     return NSNotification.Name(rawValue: "UISceneDidDisconnectNotification")
   }
 }
+
+extension Scene: Hashable {
+  public static func == (lhs: Scene, rhs: Scene) -> Bool {
+    // TODO(compnerd) figure out the proper equality check for Scene
+    return lhs === rhs
+  }
+
+  public func hash(into hasher: inout Hasher) {
+    // TODO(compnerd) figure out the proper hashing for Scene
+  }
+}
