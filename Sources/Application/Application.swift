@@ -55,6 +55,8 @@ public class Application: Responder {
     }
     return nil
   }
+
+  internal var information: Information?
 }
 
 extension Application {

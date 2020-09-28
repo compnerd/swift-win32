@@ -5,6 +5,7 @@ add_library(SwiftWin32 SHARED
   Application/Application.swift
   Application/ApplicationDelegate.swift
   Application/ApplicationMain.swift
+  Application/Information.swift
   Application/LaunchKeyOptions.swift)
 target_sources(SwiftWin32 PRIVATE
   UI/AlertAction.swift
