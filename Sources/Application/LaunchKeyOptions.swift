@@ -58,25 +58,25 @@ extension Application.LaunchOptionsKey {
 
   /// A key indicating that another application rrequested the launch of your
   /// application.
-  public static let sourceApplication: Application.LaunchOptionsKey {
+  public static var sourceApplication: Application.LaunchOptionsKey {
     Application.LaunchOptionsKey(rawValue: "Application.SourceApplication")
   }
 
   /// A key indicating that the application was launched so it could open the
   /// specified URL.
-  public static let url: Application.LaunchOptionsKey {
+  public static var url: Application.LaunchOptionsKey {
     Application.LaunchOptionsKey(rawValue: "Application.URL")
   }
 
   /// A key indicating a dictionary associated with an activity that the user
   /// wants to continue.
-  public static let userActivityDictionary: Application.LaunchOptionsKey {
+  public static var userActivityDictionary: Application.LaunchOptionsKey {
     Application.LaunchOptionsKey(rawValue: "Application.UserActivityDictionary")
   }
 
   /// A key indicating the type of user activity that the user wants to
   /// continue.
-  public static let userActivityType: Application.LaunchOptionsKey {
+  public static var userActivityType: Application.LaunchOptionsKey {
     Application.LaunchOptionsKey(rawValue: "Application.UserActivityType")
   }
 }
