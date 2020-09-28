@@ -9,7 +9,7 @@ public class WindowScene: Scene {
   /// Getting the Interface Attributes
   public private(set) var sizeRestrictions: SceneSizeRestrictions?
 
-  public override init(session: SceneSession,
+  public required init(session: SceneSession,
                        connectionOptions: Scene.ConnectionOptions) {
     // TODO(compnerd) we really should base this on the device properties.
     // Windows Phone should have set the sizeRestrictions to nil.  Similarly,

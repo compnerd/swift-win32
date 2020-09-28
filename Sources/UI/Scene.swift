@@ -16,7 +16,8 @@ extension Scene {
 public class Scene: Responder {
   /// Creating a Scene Object
 
-  public init(session: SceneSession, connectionOptions: Scene.ConnectionOptions) {
+  public required init(session: SceneSession,
+                       connectionOptions: Scene.ConnectionOptions) {
   }
 
   /// Managing the Life Cycle of a Scene
