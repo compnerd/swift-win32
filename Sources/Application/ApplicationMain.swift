@@ -62,6 +62,14 @@ public func ApplicationMain(_ argc: Int32,
     Application.shared.delegate = (instance as! ApplicationDelegate.Type).init()
   }
 
+  if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
+      if let contents = FileManager.default.contents(atPath: path) {
+        Application.shared.information =
+            try? PropertyListDecoder().decode(Application.Information.self,
+                                              from: contents)
+      }
+  }
+
   // Enable Per Monitor DPI Awareness
   if !SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) {
     log.error("SetProcessDpiAwarenessContext: \(GetLastError())")
