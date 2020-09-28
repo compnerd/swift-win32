@@ -7,10 +7,10 @@
 
 import WinSDK
 
-public protocol SceneDelegate {
+public protocol SceneDelegate: _TriviallyConstructible {
   /// Connecting and Disconnecting the Scene
 
-  /// Tells teh delegate about the addition of a scene to the application.
+  /// Tells the delegate about the addition of a scene to the application.
   func scene(_ scene: Scene, willConnecTo: SceneSession,
              options: Scene.ConnectionOptions)
 
@@ -19,7 +19,7 @@ public protocol SceneDelegate {
 }
 
 extension SceneDelegate {
-  public func scene(_ scene: Scene, willConnecTo: SceneSession,
+  public func scene(_ scene: Scene, willConnectTo: SceneSession,
                     options: Scene.ConnectionOptions) {
   }
 

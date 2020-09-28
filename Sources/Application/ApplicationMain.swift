@@ -84,6 +84,15 @@ public func ApplicationMain(_ argc: Int32,
     log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(GetLastError())")
   }
 
+  if Application.shared.delegate?
+        .application(Application.shared,
+                     didFinishLaunchingWithOptions: nil) == false {
+    return EXIT_FAILURE
+  }
+
+  // TODO(compnerd) populate these based on the application instantiation
+  let options: Scene.ConnectionOptions = Scene.ConnectionOptions()
+
   // Setup the scene session.
   // TODO(compnerd) deserialize configuration name from the application
   // information.
@@ -93,26 +102,27 @@ public func ApplicationMain(_ argc: Int32,
                                role: .windowApplication,
                                configuration: "Default Configuration"))
 
-  // Create the scene.
-  // TODO(compnerd) deserialize scene type from the application information.
-  let (_, scene) =
-      Application.shared.connectedScenes
-          .insert(WindowScene(session: session,
-                              connectionOptions: Scene.ConnectionOptions()))
-
-  session.scene = scene
-
   // Update the scene configuration based on the delegate's response.
   if let configuration = Application.shared.delegate?
       .application(Application.shared, configurationForConnecting: session,
-                   options: Scene.ConnectionOptions()) {
+                   options: options) {
     session.configuration = configuration
   }
 
-  if Application.shared.delegate?
-        .application(Application.shared,
-                     didFinishLaunchingWithOptions: nil) == false {
-    return EXIT_FAILURE
+  // Create the scene.
+  if let `class` = session.configuration.sceneClass,
+     let SceneType = `class` as? Scene.Type {
+    let (_, scene) =
+        Application.shared.connectedScenes
+            .insert(SceneType.init(session: session, connectionOptions: options))
+
+    if let `class` = session.configuration.delegateClass,
+       let DelegateType = `class` as? SceneDelegate.Type {
+        scene.delegate = DelegateType.init()
+    }
+
+    scene.delegate?.scene(scene, willConnectTo: session, options: options)
+    session.scene = scene
   }
 
   var msg: MSG = MSG()
@@ -120,14 +130,6 @@ public func ApplicationMain(_ argc: Int32,
     TranslateMessage(&msg)
     DispatchMessageW(&msg)
   }
-
-  // Disard all open sessions.
-  let sessions = Application.shared.openSessions
-  Application.shared.openSessions = []
-  Application.shared.connectedScenes = []
-
-  Application.shared.delegate?.application(Application.shared,
-                                           didDiscardSceneSessions: sessions)
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
 

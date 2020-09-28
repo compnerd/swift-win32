@@ -21,7 +21,7 @@ extension SceneSession.Role {
   /// The scene displays noninteractive windows on an externally connected
   /// screen.
   public static var windowApplication: SceneSession.Role {
-    SceneSession.Role(rawValue: "UIWindowSSceneSessionRoleApplication")
+    SceneSession.Role(rawValue: "UIWindowSceneSessionRoleApplication")
   }
 
   /// The scene displays interactive content on the device's main screen.
