@@ -75,9 +75,15 @@ public func ApplicationMain(_ argc: Int32,
     log.error("SetProcessDpiAwarenessContext: \(GetLastError())")
   }
 
+  let dwICC: DWORD = DWORD(ICC_BAR_CLASSES)
+                   | DWORD(ICC_DATE_CLASSES)
+                   | DWORD(ICC_LISTVIEW_CLASSES)
+                   | DWORD(ICC_NATIVEFNTCTL_CLASS)
+                   | DWORD(ICC_PROGRESS_CLASS)
+                   | DWORD(ICC_STANDARD_CLASSES)
   var ICCE: INITCOMMONCONTROLSEX =
       INITCOMMONCONTROLSEX(dwSize: DWORD(MemoryLayout<INITCOMMONCONTROLSEX>.size),
-                           dwICC: DWORD(ICC_BAR_CLASSES | ICC_DATE_CLASSES | ICC_LISTVIEW_CLASSES | ICC_NATIVEFNTCTL_CLASS | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES))
+                           dwICC: dwICC)
   InitCommonControlsEx(&ICCE)
 
   var hSwiftWin32: HMODULE?
