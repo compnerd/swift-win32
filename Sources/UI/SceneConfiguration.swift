@@ -5,6 +5,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  **/
 
+import func Foundation.NSClassFromString
+
 public class SceneConfiguration {
   /// Creating a Configuration Object
 
@@ -13,6 +15,36 @@ public class SceneConfiguration {
   public init(name: String?, sessionRole: SceneSession.Role) {
     self.name = name
     self.role = sessionRole
+
+    // Try to load the configuration from the Info.plist ...
+
+    // ... which requires that we have an Info.plist
+    guard let info = Application.shared.information else {
+      return
+    }
+
+    // ... which requires that the Info.plist contains scene configuration
+    guard let configurations =
+        info.scene?.configurations?[sessionRole.rawValue] else {
+      return
+    }
+
+    // ... taking the configuration which matches the name or the first entry
+    guard let scene = name == nil
+                        ? configurations.first
+                        : configurations.filter({ $0.name == name }).first else {
+      return
+    }
+
+    // ... deserialising the scene class if one was provided
+    if let sceneClass = scene.class {
+      self.sceneClass = NSClassFromString(sceneClass)
+    }
+
+    // .. deserialising the delegate class if one was provided
+    if let delegateClass = scene.delegate {
+      self.delegateClass = NSClassFromString(delegateClass)
+    }
   }
 
   /// Specifying the Scene Creation Details

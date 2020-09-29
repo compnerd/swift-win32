@@ -108,13 +108,10 @@ public func ApplicationMain(_ argc: Int32,
   let options: Scene.ConnectionOptions = Scene.ConnectionOptions()
 
   // Setup the scene session.
-  // TODO(compnerd) deserialize configuration name from the application
-  // information.
   let (_, session) =
       Application.shared.openSessions
           .insert(SceneSession(identifier: UUID().uuidString,
-                               role: .windowApplication,
-                               configuration: "Default Configuration"))
+                               role: .windowApplication))
 
   // Update the scene configuration based on the delegate's response.
   if let configuration = Application.shared.delegate?
