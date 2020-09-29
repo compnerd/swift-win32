@@ -52,7 +52,7 @@ public class SceneSession {
   public let persistentIdentifier: String
 
   internal init(identifier: String, role: SceneSession.Role,
-                configuration name: String) {
+                configuration name: String? = nil) {
     self.persistentIdentifier = identifier
     self.role = role
     self.configuration = SceneConfiguration(name: name, sessionRole: role)
