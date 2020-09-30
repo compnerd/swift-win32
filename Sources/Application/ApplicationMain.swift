@@ -120,9 +120,24 @@ public func ApplicationMain(_ argc: Int32,
     log.error("SetWindowsHookExW(WH_GETMESSAGE): \(GetLastError())")
   }
 
+  func removeHooks() {
+    if let hMessageProcedureHook = hMessageProcedureHook {
+      if !UnhookWindowsHookEx(hMessageProcedureHook) {
+        log.error("UnhookWindowsHookEx(MsgProc): \(GetLastError())")
+      }
+    }
+
+    if let hWindowProcedureHook = hWindowProcedureHook {
+      if !UnhookWindowsHookEx(hWindowProcedureHook) {
+        log.error("UnhookWindowsHookEx(WndProc): \(GetLastError())")
+      }
+    }
+  }
+
   if Application.shared.delegate?
         .application(Application.shared,
                      didFinishLaunchingWithOptions: nil) == false {
+    removeHooks()
     return EXIT_FAILURE
   }
 
@@ -134,17 +149,7 @@ public func ApplicationMain(_ argc: Int32,
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
 
-  if let hMessageProcedureHook = hMessageProcedureHook {
-    if !UnhookWindowsHookEx(hMessageProcedureHook) {
-      log.error("UnhookWindowsHookEx(MsgProc): \(GetLastError())")
-    }
-  }
-
-  if let hWindowProcedureHook = hWindowProcedureHook {
-    if !UnhookWindowsHookEx(hWindowProcedureHook) {
-      log.error("UnhookWindowsHookEx(WndProc): \(GetLastError())")
-    }
-  }
+  removeHooks()
 
   return EXIT_SUCCESS
 }
