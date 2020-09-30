@@ -108,14 +108,16 @@ public func ApplicationMain(_ argc: Int32,
     log.error("GetModuleHandleExW: \(GetLastError())")
   }
 
+  let dwThreadId = GetCurrentThreadId()
+
   let hWindowProcedureHook: HHOOK? =
-      SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, 0)
+      SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, dwThreadId)
   if hWindowProcedureHook == nil {
     log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(GetLastError())")
   }
 
   let hMessageProcedureHook: HHOOK? =
-      SetWindowsHookExW(WH_GETMESSAGE, pApplicationMessageProc, hSwiftWin32, 0)
+      SetWindowsHookExW(WH_GETMESSAGE, pApplicationMessageProc, hSwiftWin32, dwThreadId)
   if hMessageProcedureHook == nil {
     log.error("SetWindowsHookExW(WH_GETMESSAGE): \(GetLastError())")
   }
