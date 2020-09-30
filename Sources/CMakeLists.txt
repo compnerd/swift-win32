@@ -4,7 +4,9 @@ add_library(SwiftWin32 SHARED
   Application/_TriviallyConstructible.swift
   Application/Application.swift
   Application/ApplicationDelegate.swift
-  Application/ApplicationMain.swift)
+  Application/ApplicationMain.swift
+  Application/Information.swift
+  Application/LaunchKeyOptions.swift)
 target_sources(SwiftWin32 PRIVATE
   UI/AlertAction.swift
   UI/AlertController.swift
@@ -20,6 +22,11 @@ target_sources(SwiftWin32 PRIVATE
   UI/Label.swift
   UI/ProgressView.swift
   UI/Responder.swift
+  UI/Scene.swift
+  UI/SceneConfiguration.swift
+  UI/SceneDelegate.swift
+  UI/SceneSession.swift
+  UI/SceneSizeRestrictions.swift
   UI/Screen.swift
   UI/Slider.swift
   UI/Stepper.swift
@@ -33,7 +40,8 @@ target_sources(SwiftWin32 PRIVATE
   UI/ViewController.swift
   UI/ViewControllerTransitionCoordinator.swift
   UI/ViewControllerTransitionCoordinatorContext.swift
-  UI/Window.swift)
+  UI/Window.swift
+  UI/WindowScene.swift)
 target_sources(SwiftWin32 PRIVATE
   CG/AffineTransform.swift
   CG/Point.swift

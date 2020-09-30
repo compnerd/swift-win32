@@ -2,29 +2,7 @@
  * Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
  * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * 3. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
- * EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
- * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * SPDX-License-Identifier: BSD-3-Clause
  **/
 
 import class Foundation.NSNotification
@@ -51,6 +29,18 @@ public protocol ApplicationDelegate: class, _TriviallyConstructible {
   func applicationProtectedDataWillBecomeUnavailable(_ application: Application)
   func applicationDidRecieveMemoryWarning(_ application: Application)
   func applicationSignificantTimeChange(_ application: Application)
+
+  /// Configuring and Discarding Scenes
+
+  /// Returns the configuration data to use when creating a new scene.
+  func application(_ application: Application,
+                   configurationForConnecting connectingSceneSession: SceneSession,
+                   options: Scene.ConnectionOptions) -> SceneConfiguration
+
+  /// Tells the delegate that the user closed one or more of teh application's
+  /// scenes.
+  func application(_ application: Application,
+                   didDiscardSceneSessions sceneSessions: Set<SceneSession>)
 }
 
 public extension ApplicationDelegate {
@@ -99,6 +89,23 @@ extension ApplicationDelegate {
 }
 
 extension ApplicationDelegate {
+  public func application(_ application: Application,
+                          configurationForConnecting connectingSceneSession: SceneSession,
+                          options: Scene.ConnectionOptions) -> SceneConfiguration {
+    return connectingSceneSession.configuration
+  }
+
+  public func application(_ application: Application,
+                          didDiscardSceneSessions sceneSessions: Set<SceneSession>) {
+    sceneSessions.forEach {
+      if let scene = $0.scene {
+        scene.delegate?.sceneDidDisconnect(scene)
+      }
+    }
+  }
+}
+
+extension ApplicationDelegate {
   public static var didFinishLaunchingNotification: NSNotification.Name {
     NSNotification.Name(rawValue: "UIApplicationDidFinishLaunchingNotificaton")
   }
@@ -119,12 +126,5 @@ extension ApplicationDelegate {
   }
   public static var willTerminateNotification: NSNotification.Name {
     NSNotification.Name(rawValue: "UIApplicationWillTerminateNotification")
-  }
-}
-
-extension ApplicationDelegate {
-  public static func main() {
-    ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
-                    String(describing: String(reflecting: Self.self)))
   }
 }
