@@ -92,10 +92,8 @@ public func ApplicationMain(_ argc: Int32,
     log.error("GetModuleHandleExW: \(GetLastError())")
   }
 
-  let dwThreadId = GetCurrentThreadId()
-
   let hWindowProcedureHook: HHOOK? =
-      SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, dwThreadId)
+      SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, GetCurrentThreadId())
   if hWindowProcedureHook == nil {
     log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(GetLastError())")
   }
