@@ -98,7 +98,7 @@ public func ApplicationMain(_ argc: Int32,
     log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(GetLastError())")
   }
 
-  func removeHooks() {
+  defer {
     if let hWindowProcedureHook = hWindowProcedureHook {
       if !UnhookWindowsHookEx(hWindowProcedureHook) {
         log.error("UnhookWindowsHookEx(WndProc): \(GetLastError())")
@@ -109,7 +109,6 @@ public func ApplicationMain(_ argc: Int32,
   if Application.shared.delegate?
         .application(Application.shared,
                      didFinishLaunchingWithOptions: nil) == false {
-    removeHooks()
     return EXIT_FAILURE
   }
 
@@ -152,8 +151,6 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
-
-  removeHooks()
 
   return EXIT_SUCCESS
 }
