@@ -93,9 +93,17 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   let hWindowProcedureHook: HHOOK? =
-      SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, 0)
+      SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, GetCurrentThreadId())
   if hWindowProcedureHook == nil {
     log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(GetLastError())")
+  }
+
+  defer {
+    if let hWindowProcedureHook = hWindowProcedureHook {
+      if !UnhookWindowsHookEx(hWindowProcedureHook) {
+        log.error("UnhookWindowsHookEx(WndProc): \(GetLastError())")
+      }
+    }
   }
 
   if Application.shared.delegate?
@@ -143,12 +151,6 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
-
-  if let hWindowProcedureHook = hWindowProcedureHook {
-    if !UnhookWindowsHookEx(hWindowProcedureHook) {
-      log.error("UnhookWindowsHookEx(WndProc): \(GetLastError())")
-    }
-  }
 
   return EXIT_SUCCESS
 }
