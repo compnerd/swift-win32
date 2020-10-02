@@ -31,17 +31,6 @@ extension DEVICE_SCALE_FACTOR {
   }
 }
 
-extension HDC__: HandleValue {
-  typealias HandleType = HDC
-  internal static func release(_ hDC: HandleType?) {
-    if let hDC = hDC {
-      DeleteDC(hDC)
-    }
-  }
-}
-
-internal typealias DeviceContextHandle = ManagedHandle<HDC__>
-
 public final class Screen {
   /// Returns the screen object representing the device's screen.
   public static var main: Screen { screens.first! }

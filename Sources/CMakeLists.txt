@@ -56,6 +56,7 @@ target_sources(SwiftWin32 PRIVATE
   Support/String+UIExtensions.swift
   Support/WindowClass.swift
   Support/WindowsHandle.swift
+  Support/WindowsHandle+UIExtensions.swift
   Support/WinSDK+Extensions.swift)
 target_compile_options(SwiftWin32 PRIVATE
   "SHELL:-Xcc -DNONAMELESSUNION"
