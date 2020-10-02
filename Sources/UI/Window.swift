@@ -114,3 +114,15 @@ extension Window.Level {
   public static let statusBar: Window.Level = Window.Level(rawValue: 1000.0)
   public static let alert: Window.Level = Window.Level(rawValue: 2000.0)
 }
+
+extension Window {
+  public var isMaximizable: Bool {
+    get { self.GWL_STYLE & WS_MAXIMIZEBOX == WS_MAXIMIZEBOX }
+    set { self.GWL_STYLE = newValue ? self.GWL_STYLE | WS_MAXIMIZEBOX : self.GWL_STYLE & ~WS_MAXIMIZEBOX }
+  }
+
+  public var isMinimizable: Bool {
+    get { self.GWL_STYLE & WS_MINIMIZEBOX == WS_MINIMIZEBOX }
+    set { self.GWL_STYLE = newValue ? self.GWL_STYLE | WS_MINIMIZEBOX : self.GWL_STYLE & ~WS_MINIMIZEBOX }
+  }
+}
