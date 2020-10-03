@@ -61,7 +61,7 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
       DatePicker(frame: Rect(x: 4.0, y: 254.0, width: 256.0, height: 32.0))
 
   lazy var stepperLabel: Label =
-      Label(frame: Rect(x: 4.0, y: 292.0, width: 128.0, height: 48.0))
+      Label(frame: Rect(x: 4.0, y: 292.0, width: 128.0, height: 32.0))
   lazy var stepper: Stepper =
       Stepper(frame: Rect(x: 197.0, y: 290.0, width: 64.0, height: 32.0))
 
