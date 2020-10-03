@@ -120,13 +120,13 @@ public struct Device {
     let bPortrait: Bool = dmDeviceMode.dmPelsWidth < dmDeviceMode.dmPelsHeight
     switch dmDeviceMode.u.s2.dmDisplayOrientation {
     case DWORD(DMDO_DEFAULT):
-      return bPortrait ? .portrait : .landscape
+      return bPortrait ? .portrait : .landscapeLeft
     case DWORD(DMDO_90):
       return bPortrait ? .landscapeRight : .portrait
     case DWORD(DMDO_180):
       return bPortrait ? .portraitUpsideDown : .landscapeRight
     case DWORD(DMDO_270):
-      return bPortrait ? .landscape : .portraitUpsideDown
+      return bPortrait ? .landscapeLeft : .portraitUpsideDown
     default:
       return .unknown
     }
@@ -244,6 +244,3 @@ extension Device {
       NSNotification.Name(rawValue: "UIDeviceProximityStateDidChangeNotification")
 }
 
-extension Device.Orientation {
-  internal static let landscape: Device.Orientation = .landscapeLeft
-}
