@@ -75,3 +75,12 @@ func EnableMenuItem(_ hMenu: HMENU, _ uIDEnableItem: UINT, _ uEnable: UINT)
                     to: ((HMENU?, UINT, UINT) -> CInt).self)
   return pfnEnableMenuItem(hMenu, uIDEnableItem, uEnable)
 }
+
+// Wait next message with timeout
+func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
+  let timerId = SetTimer(nil, 0, dwMilliseconds, nil)
+  defer {
+    KillTimer(nil, timerId)
+  }
+  return WaitMessage()
+}

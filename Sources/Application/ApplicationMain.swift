@@ -145,14 +145,36 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   var msg: MSG = MSG()
-  while GetMessageW(&msg, nil, 0, 0) > 0 {
-    TranslateMessage(&msg)
-    DispatchMessageW(&msg)
+
+  let mainRunLoop = RunLoop.current
+
+  var exitCode: Int32 = EXIT_SUCCESS
+
+  mainLoop: while true {
+    while PeekMessageW(&msg, nil, 0, 0, UINT(PM_REMOVE)) {
+      guard msg.message != UINT(WM_QUIT) else {
+        exitCode = Int32(msg.wParam)
+        break mainLoop
+      }
+
+      TranslateMessage(&msg)
+      DispatchMessageW(&msg)
+    }
+
+    var limitDate: Date? = nil
+    repeat {
+      limitDate = mainRunLoop.limitDate(forMode: .default)
+      guard let limitDate = limitDate, limitDate.timeIntervalSinceNow <= 0 else {
+        break
+      }
+    } while true
+
+    _ = WaitMessage(DWORD(limitDate?.timeIntervalSinceNow ?? 0 * 1000))
   }
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
 
-  return EXIT_SUCCESS
+  return exitCode
 }
 
 extension ApplicationDelegate {
