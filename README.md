@@ -1,6 +1,9 @@
-# Swift/Win32
+Swift/Win32 - A Swift Application Framework for Windows
+-------------------------------------------------------
 
-![Swift/Win32 Screenshot](screenshot.png)
+<p align="center">
+  <img alt="Swift/Win32 Screenshot" src="screenshot.png"/>
+</p>
 
 Swift/Win32 aims to provide a [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) model for writing applications on Windows.  It provides Swift friendly wrapping of the Win32 APIs much like [MFC](https://en.wikipedia.org/wiki/Microsoft_Foundation_Class_Library) did for C++.
 
