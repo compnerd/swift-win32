@@ -148,12 +148,12 @@ public func ApplicationMain(_ argc: Int32,
 
   let mainRunLoop = RunLoop.current
 
-  var exitCode: Int32 = EXIT_SUCCESS
+  var nExitCode: Int32 = EXIT_SUCCESS
 
   mainLoop: while true {
     while PeekMessageW(&msg, nil, 0, 0, UINT(PM_REMOVE)) {
       guard msg.message != UINT(WM_QUIT) else {
-        exitCode = Int32(msg.wParam)
+        nExitCode = Int32(msg.wParam)
         break mainLoop
       }
 
@@ -174,7 +174,7 @@ public func ApplicationMain(_ argc: Int32,
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
 
-  return exitCode
+  return nExitCode
 }
 
 extension ApplicationDelegate {
