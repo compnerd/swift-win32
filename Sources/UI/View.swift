@@ -61,7 +61,17 @@ public class View: Responder {
   }
 
   /// Configuring the Bounds and Frame Rectangles
-  public let frame: Rect
+
+  /// The frame rectangle, which describes the view's location and size in it's
+  /// superview's coordinate system.
+  public var frame: Rect {
+    didSet {
+      _ = SetWindowPos(self.hWnd, nil,
+                       CInt(self.frame.origin.x), CInt(self.frame.origin.y),
+                       CInt(self.frame.size.width), CInt(self.frame.size.height),
+                       UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
+    }
+  }
 
   internal init(frame: Rect, `class`: WindowClass, style: WindowStyle,
                 parent: HWND? = nil) {
