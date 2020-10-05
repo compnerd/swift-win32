@@ -140,14 +140,13 @@ public class TableView: View {
 
     _ = SendMessageW(self.hWnd, UINT(LB_RESETCONTENT), 0, 0)
 
-    var index = 0
     for section in 0 ..< dataSource.numberOfSections(in: self) {
       for row in 0 ..< dataSource.tableView(self, numberOfRowsInSection: section) {
         let cell = dataSource.tableView(self, cellForRowAt: IndexPath(row: row, section: section))
-        _ = SendMessageW(self.hWnd, UINT(LB_INSERTSTRING), WPARAM(index),
+        _ = SendMessageW(self.hWnd, UINT(LB_INSERTSTRING),
+                         WPARAM(bitPattern: -1),
                          unsafeBitCast(cell as AnyObject, to: LPARAM.self))
         addSubview(cell)
-        index = index + 1
       }
     }
   }
