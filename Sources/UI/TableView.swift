@@ -8,7 +8,14 @@
 import WinSDK
 import struct Foundation.IndexPath
 
-private let SwiftTableViewMessageProxyProc: WNDPROC = { (hWnd, uMsg, wParam, lParam) in
+// Notification Proxy
+
+// When the Window is created, the initial parent is cached.  This cache cannot
+// be updated.  Instead, we always parent any table view control to the
+// `Swift.TableView.Proxy` which is process-wide.  All notifications
+// about the control events will be dispatched by the proxy.
+
+private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lParam) in
   switch uMsg {
   case UINT(WM_DRAWITEM):
     let lpDrawItem: UnsafeMutablePointer<DRAWITEMSTRUCT> =
@@ -52,24 +59,22 @@ private let SwiftTableViewMessageProxyProc: WNDPROC = { (hWnd, uMsg, wParam, lPa
   return DefWindowProcW(hWnd, uMsg, wParam, lParam)
 }
 
-private class TableViewMessageProxy {
+private class TableViewProxy {
   private static let `class`: WindowClass =
-      WindowClass(hInst: GetModuleHandleW(nil),
-                  name: "Swift.TableView.MessageProxy",
-                  WindowProc: SwiftTableViewMessageProxyProc)
+      WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.TableView.Proxy",
+                  WindowProc: SwiftTableViewProxyWindowProc)
 
   fileprivate var hWnd: HWND!
 
   fileprivate init() {
-    _ = TableViewMessageProxy.class.register()
-    self.hWnd = CreateWindowExW(0, TableViewMessageProxy.class.name, nil, 0,
-                                0, 0, 0, 0,
+    _ = TableViewProxy.class.register()
+    self.hWnd = CreateWindowExW(0, TableViewProxy.class.name, nil, 0, 0, 0, 0, 0,
                                 HWND_MESSAGE, nil, GetModuleHandleW(nil), nil)!
   }
 
   deinit {
     _ = DestroyWindow(self.hWnd)
-    _ = TableViewMessageProxy.class.unregister()
+    _ = TableViewProxy.class.unregister()
   }
 }
 
@@ -92,7 +97,7 @@ public class TableView: View {
       (base: DWORD(WS_BORDER | WS_HSCROLL) | WS_POPUP | DWORD(WS_TABSTOP | WS_VSCROLL | LBS_NODATA | LBS_OWNERDRAWVARIABLE),
        extended: 0)
 
-  private static let proxy: TableViewMessageProxy = TableViewMessageProxy()
+  private static let proxy: TableViewProxy = TableViewProxy()
 
   /// Creating a Table View
 
