@@ -11,7 +11,7 @@ import WinSDK
 
 // When the Window is created, the initial parent is cached.  This cache cannot
 // be updated.  Instead, we always parent any stepper control to the
-// `Swift.Stepper.MessengerProxy` which is process-wide.  All notifications
+// `Swift.Stepper.Proxy` which is process-wide.  All notifications
 // about the control events will be dispatched by the proxy.
 //
 // In order to facilitate this, the control will stash the `self` (instance)
@@ -20,7 +20,7 @@ import WinSDK
 // stashed instance pointer and dispatch the action to the control, allowing the
 // action targets to be invoked.
 
-private let SwiftStepperMessengerProc: WNDPROC = { (hWnd, uMsg, wParam, lParam) in
+private let SwiftStepperWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lParam) in
   switch uMsg {
   case UINT(WM_HSCROLL):
     guard let hSender = HWND(bitPattern: UInt(lParam)) else { break }
@@ -38,24 +38,22 @@ private let SwiftStepperMessengerProc: WNDPROC = { (hWnd, uMsg, wParam, lParam) 
   return DefWindowProcW(hWnd, uMsg, wParam, lParam)
 }
 
-private class StepperMessengerProxy {
+private class StepperProxy {
   private static let `class`: WindowClass =
-      WindowClass(hInst: GetModuleHandleW(nil),
-                  name: "Swift.Stepper.MessengerProxy",
-                  WindowProc: SwiftStepperMessengerProc)
+      WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Stepper.Proxy",
+                  WindowProc: SwiftStepperWindowProc)
 
   fileprivate var hWnd: HWND!
 
   fileprivate init() {
-    _ = StepperMessengerProxy.class.register()
-    self.hWnd = CreateWindowExW(0, StepperMessengerProxy.class.name, nil, 0,
-                                0, 0, 0, 0,
+    _ = StepperProxy.class.register()
+    self.hWnd = CreateWindowExW(0, StepperProxy.class.name, nil, 0, 0, 0, 0, 0,
                                 HWND_MESSAGE, nil, GetModuleHandleW(nil), nil)!
   }
 
   deinit {
     _ = DestroyWindow(self.hWnd)
-    _ = StepperMessengerProxy.class.unregister()
+    _ = StepperProxy.class.unregister()
   }
 }
 
@@ -71,7 +69,7 @@ public class Stepper: Control {
   private static let style: WindowStyle =
       (base: UInt32(UDS_HORZ) | WS_POPUP | DWORD(WS_TABSTOP), extended: 0)
 
-  private static var proxy: StepperMessengerProxy = StepperMessengerProxy()
+  private static var proxy: StepperProxy = StepperProxy()
 
   /// Configuring the Stepper
   public var isContinuous: Bool { fatalError("not yet implemented") }
