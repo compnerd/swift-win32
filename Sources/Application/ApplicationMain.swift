@@ -144,11 +144,8 @@ public func ApplicationMain(_ argc: Int32,
     session.scene = scene
   }
 
-  var msg: MSG = MSG()
-  while GetMessageW(&msg, nil, 0, 0) > 0 {
-    TranslateMessage(&msg)
-    DispatchMessageW(&msg)
-  }
+  RunLoop.main._add(WindowsMessageLoopSource(), forMode: .default)
+  RunLoop.main.run()
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
 
