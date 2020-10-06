@@ -138,7 +138,7 @@ private func GetCurrentAccessibilityContrast() -> AccessibilityContrast {
   var hcContrast: HIGHCONTRASTW = HIGHCONTRASTW()
   hcContrast.cbSize = UINT(MemoryLayout<HIGHCONTRASTW>.size)
   if !SystemParametersInfoW(UINT(SPI_GETHIGHCONTRAST), 0, &hcContrast, 0) {
-    log.error("SystemParametersInfoW: \(GetLastError())")
+    log.error("SystemParametersInfoW: \(Error(win32: GetLastError()))")
     return .unspecified
   }
   return Int32(hcContrast.dwFlags) & HCF_HIGHCONTRASTON == HCF_HIGHCONTRASTON
@@ -148,7 +148,7 @@ private func GetCurrentAccessibilityContrast() -> AccessibilityContrast {
 private func GetCurrentLayoutDirection() -> TraitEnvironmentLayoutDirection {
   var dwDefaultLayout: DWORD = 0
   if !GetProcessDefaultLayout(&dwDefaultLayout) {
-    log.error("GetProcessDefaultLayout: \(GetLastError())")
+    log.error("GetProcessDefaultLayout: \(Error(win32: GetLastError()))")
     return .unspecified
   }
   return dwDefaultLayout == LAYOUT_RTL ? .rightToLeft : .leftToRight
