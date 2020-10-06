@@ -46,7 +46,7 @@ public func ApplicationMain(_ argc: Int32,
                             _ delegate: String?) -> Int32 {
   let hRichEdit: HMODULE? = LoadLibraryW("msftedit.dll".LPCWSTR)
   if hRichEdit == nil {
-    log.error("unable to load `msftedit.dll`: \(GetLastError())")
+    log.error("unable to load `msftedit.dll`: \(Error(win32: GetLastError()))")
   }
 
   if let application = application {
@@ -72,7 +72,7 @@ public func ApplicationMain(_ argc: Int32,
 
   // Enable Per Monitor DPI Awareness
   if !SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) {
-    log.error("SetProcessDpiAwarenessContext: \(GetLastError())")
+    log.error("SetProcessDpiAwarenessContext: \(Error(win32: GetLastError()))")
   }
 
   let dwICC: DWORD = DWORD(ICC_BAR_CLASSES)
@@ -89,19 +89,19 @@ public func ApplicationMain(_ argc: Int32,
   var hSwiftWin32: HMODULE?
   if !GetModuleHandleExW(DWORD(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT),
                          "SwiftWin32.dll".LPCWSTR, &hSwiftWin32) {
-    log.error("GetModuleHandleExW: \(GetLastError())")
+    log.error("GetModuleHandleExW: \(Error(win32: GetLastError()))")
   }
 
   let hWindowProcedureHook: HHOOK? =
       SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, GetCurrentThreadId())
   if hWindowProcedureHook == nil {
-    log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(GetLastError())")
+    log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(Error(win32: GetLastError()))")
   }
 
   defer {
     if let hWindowProcedureHook = hWindowProcedureHook {
       if !UnhookWindowsHookEx(hWindowProcedureHook) {
-        log.error("UnhookWindowsHookEx(WndProc): \(GetLastError())")
+        log.error("UnhookWindowsHookEx(WndProc): \(Error(win32: GetLastError()))")
       }
     }
   }
