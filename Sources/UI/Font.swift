@@ -224,7 +224,7 @@ public class Font {
 
     if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size),
                   &lfFont) == 0 {
-      log.error("GetObjectW: \(GetLastError())")
+      log.error("GetObjectW: \(Error(win32: GetLastError()))")
       return self
     }
     lfFont.lfHeight = PointToLogical(fontSize)
@@ -363,7 +363,7 @@ public class Font {
 
     if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size),
                   &lfFont) == 0 {
-      log.error("GetObjectW: \(GetLastError())")
+      log.error("GetObjectW: \(Error(win32: GetLastError()))")
       return ""
     }
 
@@ -385,7 +385,7 @@ public class Font {
 
     if GetObjectW(self.hFont.value, Int32(MemoryLayout<LOGFONTW>.size),
                   &lfFont) == 0 {
-      log.error("GetObjectW: \(GetLastError())")
+      log.error("GetObjectW: \(Error(win32: GetLastError()))")
       return 0.0
     }
 
@@ -401,7 +401,7 @@ public class Font {
 
     var metrics: TEXTMETRICW = TEXTMETRICW()
     if !GetTextMetricsW(hDC.value, &metrics) {
-      log.warning("GetTextMetricsW: \(GetLastError())")
+      log.warning("GetTextMetricsW: \(Error(win32: GetLastError()))")
       return 0.0
     }
     return Double(metrics.tmAscent)
@@ -416,7 +416,7 @@ public class Font {
 
     var metrics: TEXTMETRICW = TEXTMETRICW()
     if !GetTextMetricsW(hDC.value, &metrics) {
-      log.warning("GetTextMetricsW: \(GetLastError())")
+      log.warning("GetTextMetricsW: \(Error(win32: GetLastError()))")
       return 0.0
     }
     return Double(metrics.tmDescent)
@@ -430,7 +430,7 @@ public class Font {
 
     var metrics: TEXTMETRICW = TEXTMETRICW()
     if !GetTextMetricsW(hDC.value, &metrics) {
-      log.warning("GetTextMetricsW: \(GetLastError())")
+      log.warning("GetTextMetricsW: \(Error(win32: GetLastError()))")
       return 0.0
     }
     return Double(metrics.tmExternalLeading)
@@ -444,7 +444,7 @@ public class Font {
 
     var size: SIZE = SIZE()
     if !GetTextExtentPoint32W(hDC.value, "u{0048}".LPCWSTR, 1, &size) {
-      log.warning("GetTextExtentPoint32W: \(GetLastError())")
+      log.warning("GetTextExtentPoint32W: \(Error(win32: GetLastError()))")
       return 0.0
     }
     return Double(size.cy)
@@ -458,7 +458,7 @@ public class Font {
 
     var size: SIZE = SIZE()
     if !GetTextExtentPoint32W(hDC.value, "u{0078}".LPCWSTR, 1, &size) {
-      log.warning("GetTextExtentPoint32W: \(GetLastError())")
+      log.warning("GetTextExtentPoint32W: \(Error(win32: GetLastError()))")
       return 0.0
     }
     return Double(size.cy)
