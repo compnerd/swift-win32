@@ -30,6 +30,13 @@ private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) 
 }
 
 public class View: Responder {
+  private static let `class`: WindowClass =
+      WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.View",
+                  style: UInt32(CS_HREDRAW | CS_VREDRAW),
+                  hbrBackground: GetSysColorBrush(COLOR_3DFACE),
+                  hCursor: LoadCursorW(nil, IDC_ARROW))
+  private static let style: WindowStyle = (base: 0, extended: 0)
+
   internal var hWnd: HWND!
   internal var win32: (window: (`class`: WindowClass, style: WindowStyle), _: ())
 
@@ -71,6 +78,13 @@ public class View: Responder {
                        CInt(self.frame.size.width), CInt(self.frame.size.height),
                        UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
     }
+  }
+
+  /// Creating a View Object
+
+  // FIXME(compnerd) should this be marked as a convenience initializer?
+  public convenience init(frame: Rect) {
+    self.init(frame: frame, class: View.class, style: View.style)
   }
 
   internal init(frame: Rect, `class`: WindowClass, style: WindowStyle,
