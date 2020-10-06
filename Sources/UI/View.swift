@@ -13,7 +13,7 @@ private func ClientToWindow(size: inout Size, for style: WindowStyle) {
   var r: RECT =
       RECT(left: 0, top: 0, right: LONG(size.width), bottom: LONG(size.height))
   if !AdjustWindowRect(&r, style.base, false) {
-    log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
+    log.warning("AdjustWindowRectExForDpi: \(Error(win32: GetLastError()))")
   }
   size = Size(width: Double(r.right - r.left), height: Double(r.bottom - r.top))
 }
@@ -24,7 +24,7 @@ private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) 
   var r: RECT =
       RECT(from: rect.applying(AffineTransform(scaleX: scale, y: scale)))
   if !AdjustWindowRectExForDpi(&r, style.base, false, style.extended, dpi) {
-    log.warning("AdjustWindowRectExForDpi: \(GetLastError())")
+    log.warning("AdjustWindowRectExForDpi: \(Error(win32: GetLastError()))")
   }
   rect = Rect(from: r)
 }
@@ -105,7 +105,7 @@ public class View: Responder {
        frame.size.width == Double(CW_USEDEFAULT) {
       var r: RECT = RECT()
       if !GetClientRect(self.hWnd, &r) {
-        log.warning("GetClientRect: \(GetLastError())")
+        log.warning("GetClientRect: \(Error(win32: GetLastError()))")
       }
       _ = withUnsafeMutablePointer(to: &r) { [hWnd = self.hWnd] in
         $0.withMemoryRebound(to: POINT.self, capacity: 2) {
@@ -145,13 +145,13 @@ public class View: Responder {
   public func addSubview(_ view: View) {
     // Reparent the window
     guard let hPreviousParent: HWND = SetParent(view.hWnd, self.hWnd) else {
-      log.warning("SetParent: \(GetLastError())")
+      log.warning("SetParent: \(Error(win32: GetLastError()))")
       return
     }
 
     if SetWindowLongPtrW(view.hWnd, WinSDK.GWL_STYLE,
                          LONG_PTR((view.win32.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD))) == 0 {
-      log.warning("SetWindowLongPtrW: \(GetLastError())")
+      log.warning("SetWindowLongPtrW: \(Error(win32: GetLastError()))")
       // TODO(compnerd) check for error
       _ = SetWindowLongPtrW(view.hWnd, WinSDK.GWL_STYLE, LONG_PTR(view.win32.window.style.base))
       return
@@ -161,7 +161,7 @@ public class View: Responder {
     // changes take effect.
     if !SetWindowPos(view.hWnd, nil, 0, 0, 0, 0,
                      UINT(SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED)) {
-      log.warning("SetWindowPos: \(GetLastError())")
+      log.warning("SetWindowPos: \(Error(win32: GetLastError()))")
     }
 
     SetWindowPos(view.hWnd, nil,
