@@ -78,9 +78,9 @@ func EnableMenuItem(_ hMenu: HMENU, _ uIDEnableItem: UINT, _ uEnable: UINT)
 
 // Wait next message with timeout
 func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
-  let timerId = SetTimer(nil, 0, dwMilliseconds, nil)
+  let timerId = WinSDK.SetTimer(nil, 0, dwMilliseconds, nil)
   defer {
-    KillTimer(nil, timerId)
+    WinSDK.KillTimer(nil, timerId)
   }
-  return WaitMessage()
+  return WinSDK.WaitMessage()
 }
