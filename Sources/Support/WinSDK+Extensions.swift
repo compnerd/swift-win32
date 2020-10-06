@@ -75,13 +75,3 @@ func EnableMenuItem(_ hMenu: HMENU, _ uIDEnableItem: UINT, _ uEnable: UINT)
                     to: ((HMENU?, UINT, UINT) -> CInt).self)
   return pfnEnableMenuItem(hMenu, uIDEnableItem, uEnable)
 }
-
-// Wait next message with timeout
-func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
-  let timerId = WinSDK.SetTimer(nil, 0, dwMilliseconds, nil)
-  defer {
-    WinSDK.KillTimer(nil, timerId)
-  }
-  // returned when a new message is placed in thread's message queue or timer expires
-  return WinSDK.WaitMessage()
-}
