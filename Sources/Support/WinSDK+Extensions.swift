@@ -82,5 +82,6 @@ func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
   defer {
     WinSDK.KillTimer(nil, timerId)
   }
+  // returned when a new message is placed in thread's message queue or timer expires
   return WinSDK.WaitMessage()
 }

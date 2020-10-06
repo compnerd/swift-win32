@@ -151,24 +151,34 @@ public func ApplicationMain(_ argc: Int32,
   var nExitCode: Int32 = EXIT_SUCCESS
 
   mainLoop: while true {
+    // Process all messages in thread's message queue
+    // For GUI applications UI events must have high priority
     while PeekMessageW(&msg, nil, 0, 0, UINT(PM_REMOVE)) {
       guard msg.message != UINT(WM_QUIT) else {
+        // Handle WM_QUIT message, set application's exit code and terminate main loop
         nExitCode = Int32(msg.wParam)
         break mainLoop
       }
-
+      // Dispatch received message
       TranslateMessage(&msg)
       DispatchMessageW(&msg)
     }
 
     var limitDate: Date? = nil
     repeat {
+      // Execute Foundation.RunLoop once and determine the next time the timer fires
+      // At this point handles all Foundation.RunLoop timers, sources and Dispatch.DispatchQueue.main tasks
       limitDate = mainRunLoop.limitDate(forMode: .default)
+      // If Foundation.RunLoop doesn't contain any timer or timer should not be running right now
+      // we interrupt the current loop, otherwise go to the next iteration
       guard let limitDate = limitDate, limitDate.timeIntervalSinceNow <= 0 else {
         break
       }
     } while true
-
+    // Yields control to other threads
+    // If Foundation.RunLoop contain a timer to execute, we wait untill a new message is placed in thread's message queue
+    // or the timer must be fired, otherwise we proceed to the next iteration of mainLoop, using 0 as the wait timeout.
+    // WaitMessage(:) declared in WinSDK+Extensions.swift
     _ = WaitMessage(DWORD(limitDate?.timeIntervalSinceNow ?? 0 * 1000))
   }
 
