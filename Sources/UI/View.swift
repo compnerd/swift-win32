@@ -97,6 +97,14 @@ public class View: Responder {
     }
   }
 
+  /// The center point of the view's frame rectangle
+  public var center: Point {
+    get { return Point(x: self.frame.midX, y: self.frame.midY) }
+    set { self.frame = Rect(origin: Point(x: self.frame.origin.x - newValue.x,
+                                          y: self.frame.origin.y - newValue.y),
+                            size: self.frame.size) }
+  }
+
   /// Creating a View Object
 
   // FIXME(compnerd) should this be marked as a convenience initializer?
