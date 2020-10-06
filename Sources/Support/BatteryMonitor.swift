@@ -75,7 +75,7 @@ internal struct BatteryMonitor {
     self.hWnd = CreateWindowExW(0, BatteryMonitor.class.name, nil, 0, 0, 0, 0, 0,
                                 HWND_MESSAGE, nil, GetModuleHandleW(nil), nil)
     guard let hWnd = self.hWnd else {
-      log.warning("CreateWindowExW: \(GetLastError())")
+      log.warning("CreateWindowExW: \(Error(win32: GetLastError()))")
       return
     }
 
@@ -87,7 +87,7 @@ internal struct BatteryMonitor {
         RegisterPowerSettingNotification(self.hWnd, &setting,
                                          DWORD(DEVICE_NOTIFY_WINDOW_HANDLE))
     if self.hBatteryStateNotification == nil {
-      log.warning("RegisterPowerSettingNotification: \(GetLastError())")
+      log.warning("RegisterPowerSettingNotification: \(Error(win32: GetLastError()))")
     }
   }
 }
