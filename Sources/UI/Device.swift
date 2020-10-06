@@ -97,7 +97,7 @@ public struct Device {
     dmDeviceMode.dmSize = WORD(MemoryLayout<DEVMODEW>.size)
     dmDeviceMode.dmDriverExtra = 0
     if !EnumDisplaySettingsExW(nil, ENUM_CURRENT_SETTINGS, &dmDeviceMode, 0) {
-      log.warning("EnumDisplaySettingsExW: \(GetLastError())")
+      log.warning("EnumDisplaySettingsExW: \(Error(win32: GetLastError()))")
       return .unknown
     }
 
@@ -167,7 +167,7 @@ public struct Device {
 
     var status: SYSTEM_POWER_STATUS = SYSTEM_POWER_STATUS()
     guard GetSystemPowerStatus(&status) else {
-      log.warning("GetSystemPowerStatus: \(GetLastError())")
+      log.warning("GetSystemPowerStatus: \(Error(win32: GetLastError()))")
       return -1.0
     }
 
@@ -190,7 +190,7 @@ public struct Device {
 
     var status: SYSTEM_POWER_STATUS = SYSTEM_POWER_STATUS()
     guard GetSystemPowerStatus(&status) else {
-      log.warning("GetSystemPowerStatus: \(GetLastError())")
+      log.warning("GetSystemPowerStatus: \(Error(win32: GetLastError()))")
       return .unknown
     }
 
