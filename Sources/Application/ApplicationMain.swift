@@ -39,6 +39,16 @@ private let pApplicationWindowProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, 
   return CallNextHookEx(nil, nCode, wParam, lParam)
 }
 
+// Wait next message with timeout
+private func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
+  let uIDEvent = WinSDK.SetTimer(nil, 0, dwMilliseconds, nil)
+  defer {
+    WinSDK.KillTimer(nil, uIDEvent)
+  }
+  // returned when a new message is placed in thread's message queue or timer expires
+  return WinSDK.WaitMessage()
+}
+
 @discardableResult
 public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
@@ -145,14 +155,42 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   var msg: MSG = MSG()
-  while GetMessageW(&msg, nil, 0, 0) > 0 {
-    TranslateMessage(&msg)
-    DispatchMessageW(&msg)
+
+  let mainRunLoop = RunLoop.current
+
+  var nExitCode: Int32 = EXIT_SUCCESS
+
+  mainLoop: while true {
+    // Process all messages in thread's message queue, for GUI applications UI events must have high priority
+    while PeekMessageW(&msg, nil, 0, 0, UINT(PM_REMOVE)) {
+      guard msg.message != UINT(WM_QUIT) else {
+        // Handle WM_QUIT message, set application's exit code and terminate main loop
+        nExitCode = Int32(msg.wParam)
+        break mainLoop
+      }
+      // Dispatch received message
+      TranslateMessage(&msg)
+      DispatchMessageW(&msg)
+    }
+
+    var limitDate: Date? = nil
+    repeat {
+      // Execute Foundation.RunLoop once and determine the next time the timer fires
+      // At this point handles all Foundation.RunLoop timers, sources and Dispatch.DispatchQueue.main tasks
+      limitDate = mainRunLoop.limitDate(forMode: .default)
+      // If Foundation.RunLoop doesn't contain any timer or timer should not be running right now, we interrupt the current loop, otherwise go to the next iteration
+      guard let limitDate = limitDate, limitDate.timeIntervalSinceNow <= 0 else {
+        break
+      }
+    } while true
+    // Yields control to other threads
+    // If Foundation.RunLoop contain a timer to execute, we wait untill a new message is placed in thread's message queue or the timer must be fired, otherwise we proceed to the next iteration of mainLoop, using 0 as the wait timeout.
+    _ = WaitMessage(DWORD(limitDate?.timeIntervalSinceNow ?? 0 * 1000))
   }
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
 
-  return EXIT_SUCCESS
+  return nExitCode
 }
 
 extension ApplicationDelegate {
