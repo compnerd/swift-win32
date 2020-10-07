@@ -185,6 +185,15 @@ public class View: Responder {
 
     view.superview = self
     subviews.append(view)
+
+    // Notify any subclassed types for observation.
+    self.didAddSubview(view)
+  }
+
+  /// Observing View-Related Changes
+
+  /// Tells the view that a subview was added.
+  public func didAddSubview(_ subview: View) {
   }
 
   // Responder Chain
