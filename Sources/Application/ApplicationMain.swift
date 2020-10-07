@@ -185,7 +185,7 @@ public func ApplicationMain(_ argc: Int32,
     } while true
     // Yields control to other threads
     // If Foundation.RunLoop contain a timer to execute, we wait untill a new message is placed in thread's message queue or the timer must be fired, otherwise we proceed to the next iteration of mainLoop, using 0 as the wait timeout.
-    _ = WaitMessage(DWORD(limitDate?.timeIntervalSinceNow ?? 0 * 1000))
+    _ = WaitMessage(DWORD(exactly: limitDate?.timeIntervalSinceNow ?? 0 * 1000) ?? DWORD.max)
   }
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
