@@ -6,6 +6,7 @@ let SwiftWin32 = Package(
   name: "SwiftWin32",
   products: [
     .library(name: "SwiftWin32", type: .dynamic, targets: ["SwiftWin32"]),
+    .executable(name: "UICatalog", targets: ["UICatalog"]),
     .executable(name: "Calculator", targets: ["Calculator"]),
   ],
   targets: [
@@ -36,7 +37,22 @@ let SwiftWin32 = Package(
       ],
       swiftSettings: [
         .unsafeFlags([
-          "-parse-as-library"
+          "-parse-as-library",
+        ]),
+      ]
+    ),
+    .target(
+      name: "UICatalog",
+      dependencies: [
+        "SwiftWin32",
+      ],
+      path: "Examples/UICatalog",
+      exclude: [
+        "CMakeLists.txt",
+      ],
+      swiftSettings: [
+        .unsafeFlags([
+          "-parse-as-library",
         ]),
       ]
     ),
