@@ -26,6 +26,7 @@ extension TableViewCell {
   }
 }
 
+/// The visual representation of a single row in a table view.
 public class TableViewCell: View {
   private static let `class`: WindowClass =
       WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.TableViewCell",

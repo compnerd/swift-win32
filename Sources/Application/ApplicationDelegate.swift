@@ -7,21 +7,36 @@
 
 import class Foundation.NSNotification
 
+/// A set of methods used to manage shared behaviours for the application.
 public protocol ApplicationDelegate: class, _TriviallyConstructible {
   /// Initializing the App
+
+  /// Indicates to the delegate that the application launch process has begun.
   func application(_ application: Application,
                    willFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?)
       -> Bool
 
+  /// Indicates to the delegate that the application launch process has ended and
+  /// the application is almost ready to run.
   func application(_ application: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?)
       -> Bool
 
   /// Responding to App Life-Cycle Events
+
+  /// Indicates to the delegate that the application has become active.
   func applicationDidBecomeActive(_ application: Application)
+
+  /// Indicates to the delgate that the application is about to become inactive.
   func applicationWillResignActive(_ application: Application)
+
+  /// Indicates to the delegate that the application is now in the background.
   func applicationDidEnterBackground(_ application: Application)
+
+  /// Indicates to the delegate that the application is about to enter the foreground.
   func applicationWillEnterForeground(_ application: Application)
+
+  /// Indicates to the delegate that the application is about to terminate.
   func applicationWillTerminate(_ application: Application)
 
   /// Responding to Environment Changes
