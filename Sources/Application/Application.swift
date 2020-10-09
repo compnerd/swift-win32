@@ -5,6 +5,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  **/
 
+/// The centralised point of control and coordination for running applications.
 public class Application: Responder {
   /// Getting the App Instance
 
