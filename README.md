@@ -15,14 +15,12 @@ Swift/Win32 aims to provide a [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93
 
 ## Building
 
-This requires the 5.3 or newer. You can use the the release binaries from [swift.org](https://swift.org/download/) or download the nightly build from [Azure](https://dev.azure.com/compnerd/swift-build).
+This requires the latest Swift snapshot. You can use the the snapshot binaries from [swift.org](https://swift.org/download/) or download the nightly build from [Azure](https://dev.azure.com/compnerd/swift-build).
 
 The following example session shows how to build with CMake 3.16 or newer.
 
 ```cmd
-set SWIFTFLAGS=-sdk %SDKROOT% -resource-dir %SDKROOT%/usr/lib/swift -I %SDKROOT%/usr/lib/swift -L %SDKROOT%/usr/lib/swift/windows
-
-cmake -B build -D BUILD_SHARED_LIBS=YES -D CMAKE_BUILD_TYPE=Release -D CMAKE_Swift_FLAGS="%SWIFTFLAGS%" -G Ninja -S .
+cmake -B build -D BUILD_SHARED_LIBS=YES -D CMAKE_BUILD_TYPE=Release -D CMAKE_Swift_FLAGS="-sdk %SDKROOT%" -G Ninja -S .
 ninja -C build SwiftWin32 UICatalog
 
 %CD%\build\bin\UICatalog.exe
