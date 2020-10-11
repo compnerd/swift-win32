@@ -14,6 +14,7 @@ target_sources(SwiftWin32 PRIVATE
   UI/Button.swift
   UI/Color.swift
   UI/ContentContainer.swift
+  UI/ContentsizeCategoryAdjusting.swift
   UI/Control.swift
   UI/DatePicker.swift
   UI/Device.swift
