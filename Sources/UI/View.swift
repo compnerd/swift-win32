@@ -244,4 +244,16 @@ public class View: Responder {
     if let window = self.window { return window }
     return Application.shared
   }
+
+  // Trait Environment
+  // NOTE: this must be in the class to permit deviced types to override the
+  // notification.
+  public func traitCollectionDidChange(_ previousTraitCollection: TraitCollection?) {
+  }
+}
+
+extension View: TraitEnvironment {
+  public var traitCollection: TraitCollection {
+    return self.window?.screen.traitCollection ?? TraitCollection.current
+  }
 }

@@ -138,6 +138,14 @@ public class TextField: Control {
 
   // ContentSizeCategoryAdjusting
   public var adjustsFontForContentSizeCategory = false
+
+  // TraitEnvironment
+  override public func traitCollectionDidChange(_ previousTraitCollection: TraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    guard self.adjustsFontForContentSizeCategory else { return }
+    self.font = FontMetrics.default.scaledFont(for: self.font!,
+                                               compatibleWith: traitCollection)
+  }
 }
 
 extension TextField: TextInputTraits {
