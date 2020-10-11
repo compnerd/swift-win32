@@ -42,11 +42,9 @@ public class TextView: View {
     super.init(frame: frame, class: TextView.class, style: TextView.style)
 
     // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance
-    let lExtendedStyle: LONG = GetWindowLongW(hWnd, GWL_EXSTYLE);
-    SetWindowLongW(hWnd, GWL_EXSTYLE, lExtendedStyle & ~WS_EX_CLIENTEDGE)
-
-    SetWindowSubclass(hWnd, SwiftTextViewProc, UINT_PTR(1),
-                      unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
+    self.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
+    _ = SetWindowSubclass(hWnd, SwiftTextViewProc, UINT_PTR(1),
+                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
   public func scrollRangeToVisible(_ range: NSRange) {

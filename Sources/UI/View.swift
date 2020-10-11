@@ -41,8 +41,13 @@ public class View: Responder {
   internal var win32: (window: (`class`: WindowClass, style: WindowStyle), _: ())
 
   internal var GWL_STYLE: LONG {
-    get { GetWindowLongW(hWnd, WinSDK.GWL_STYLE) }
-    set { SetWindowLongW(hWnd, WinSDK.GWL_STYLE, newValue) }
+    get { GetWindowLongW(self.hWnd, WinSDK.GWL_STYLE) }
+    set { _ = SetWindowLongW(self.hWnd, WinSDK.GWL_STYLE, newValue) }
+  }
+
+  internal var GWL_EXSTYLE: LONG {
+    get { GetWindowLongW(self.hWnd, WinSDK.GWL_EXSTYLE) }
+    set { _ = SetWindowLongW(self.hWnd, WinSDK.GWL_EXSTYLE, newValue) }
   }
 
   internal var font: Font? {
