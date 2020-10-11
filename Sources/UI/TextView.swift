@@ -8,12 +8,6 @@
 import WinSDK
 import Foundation
 
-private let SwiftTextViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
-  let textview: TextView? =
-      unsafeBitCast(dwRefData, to: AnyObject.self) as? TextView
-  return DefSubclassProc(hWnd, uMsg, wParam, lParam)
-}
-
 // FIXME(compnerd) we would like this to derive from ScrollView
 public class TextView: View {
   private static let `class`: WindowClass = WindowClass(named: MSFTEDIT_CLASS)
@@ -43,8 +37,6 @@ public class TextView: View {
 
     // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance
     self.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
-    _ = SetWindowSubclass(hWnd, SwiftTextViewProc, UINT_PTR(1),
-                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
   public func scrollRangeToVisible(_ range: NSRange) {
