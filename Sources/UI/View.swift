@@ -83,6 +83,9 @@ public class View: Responder {
   /// Creating a View Object
 
   // FIXME(compnerd) should this be marked as a convenience initializer?
+
+  /// Initializes and returns a newly allocated view object with the specified
+  /// frame rectangle.
   public convenience init(frame: Rect) {
     self.init(frame: frame, class: View.class, style: View.style)
   }
@@ -157,12 +160,19 @@ public class View: Responder {
   public private(set) var window: Window?
 
   public func addSubview(_ view: View) {
-    // Reparent the window
-    guard let hPreviousParent: HWND = SetParent(view.hWnd, self.hWnd) else {
+    // Notify the view that it is about to be reparented.
+    view.willMove(toSuperview: self)
+
+    // Notify the old parent that it is about to loose the child.
+    view.superview?.willRemoveSubview(view)
+
+    // Reparent the window.
+    guard let _ = SetParent(view.hWnd, self.hWnd) else {
       log.warning("SetParent: \(Error(win32: GetLastError()))")
       return
     }
 
+    // Update the window style.
     if SetWindowLongPtrW(view.hWnd, WinSDK.GWL_STYLE,
                          LONG_PTR((view.win32.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD))) == 0 {
       log.warning("SetWindowLongPtrW: \(Error(win32: GetLastError()))")
@@ -178,22 +188,39 @@ public class View: Responder {
       log.warning("SetWindowPos: \(Error(win32: GetLastError()))")
     }
 
-    SetWindowPos(view.hWnd, nil,
-                 CInt(view.frame.origin.x), CInt(view.frame.origin.y),
-                 CInt(view.frame.size.width), CInt(view.frame.size.height),
-                 UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
+    // TODO(compnerd) check for error
+    _ = SetWindowPos(view.hWnd, nil,
+                     CInt(view.frame.origin.x), CInt(view.frame.origin.y),
+                     CInt(view.frame.size.width), CInt(view.frame.size.height),
+                     UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
 
     view.superview = self
     subviews.append(view)
 
     // Notify any subclassed types for observation.
     self.didAddSubview(view)
+
+    // Notify the view that it has been reparented.
+    view.didMoveToSuperview()
   }
 
   /// Observing View-Related Changes
 
   /// Tells the view that a subview was added.
   public func didAddSubview(_ subview: View) {
+  }
+
+  /// Tells the view that a subview is about to be removed.
+  public func willRemoveSubview(_ subview: View) {
+  }
+
+  /// Tells the view that its superview is about to change to the specified
+  /// superview.
+  public func willMove(toSuperview: View?) {
+  }
+
+  /// Tells the view that its superview changed.
+  public func didMoveToSuperview() {
   }
 
   // Responder Chain
