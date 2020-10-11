@@ -20,6 +20,7 @@ target_sources(SwiftWin32 PRIVATE
   UI/Device.swift
   UI/EdgeInsets.swift
   UI/Font.swift
+  UI/FontMetrics.swift
   UI/Label.swift
   UI/ProgressView.swift
   UI/Responder.swift
