@@ -158,6 +158,15 @@ public class View: Responder {
     _ = self.win32.window.class.unregister()
   }
 
+  /// Configuring the Event-Related Behaviour
+
+  /// A boolean value that determines whether user events are ignored and removed
+  /// from the event queue.
+  public var isUserInteractionEnabled: Bool {
+    get { return IsWindowEnabled(self.hWnd) }
+    set { _ = EnableWindow(self.hWnd, newValue) }
+  }
+
   /// Managing the View Hierarchy
 
   public private(set) var superview: View?
