@@ -45,4 +45,10 @@ public class TextView: View {
     SendMessageW(hWnd, UINT(EM_SETSEL), UInt64(bitPattern: -1), -1)
     SendMessageW(hWnd, UINT(EM_SCROLLCARET), 0, 0)
   }
+
+  // ContentSizeCategoryAdjusting
+  public var adjustsFontForContentSizeCategory = false
+}
+
+extension TextView: ContentSizeCategoryAdjusting {
 }

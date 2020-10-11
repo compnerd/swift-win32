@@ -135,6 +135,9 @@ public class TextField: Control {
     SetWindowSubclass(self.hWnd, SwiftTextFieldProc, UINT_PTR(1),
                       unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
+
+  // ContentSizeCategoryAdjusting
+  public var adjustsFontForContentSizeCategory = false
 }
 
 extension TextField: TextInputTraits {
@@ -150,4 +153,7 @@ extension TextField: TextInputTraits {
                        WPARAM(newValue ? 0x25cf : 0), 0)
     }
   }
+}
+
+extension TextField: ContentSizeCategoryAdjusting {
 }

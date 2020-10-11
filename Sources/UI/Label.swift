@@ -22,4 +22,10 @@ public class Label: Control {
   public init(frame: Rect) {
     super.init(frame: frame, class: Label.class, style: Label.style)
   }
+
+  // ContentSizeCategoryAdjusting
+  public var adjustsFontForContentSizeCategory = false
+}
+
+extension Label: ContentSizeCategoryAdjusting {
 }
