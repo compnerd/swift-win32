@@ -7,7 +7,7 @@
 
 import WinSDK
 
-public class ViewController {
+public class ViewController: Responder {
   /// Managing the View
   public var view: View!
 
@@ -26,7 +26,12 @@ public class ViewController {
     }
   }
 
-  public init() {
+  override public init() {
+  }
+
+  // Responder Chain
+  override public var next: Responder? {
+    return view?.superview
   }
 }
 
