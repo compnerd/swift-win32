@@ -9,10 +9,43 @@ import WinSDK
 
 public class ViewController: Responder {
   /// Managing the View
-  public var view: View!
 
-  public var preferredContentSize: Size { fatalError("not yet implemented") }
+  /// The view that the controller manages.
+  public var view: View! {
+    get {
+      loadViewIfNeeded()
+      return self.viewIfLoaded
+    }
+    set {
+      self.viewIfLoaded = newValue
+    }
+  }
 
+  /// The controller's view or `nil` if the view is not yet loaded.
+  public private(set) var viewIfLoaded: View?
+
+  /// Indicates if the view is loaded into memory.
+  public var isViewLoaded: Bool {
+    return self.viewIfLoaded == nil ? false : true
+  }
+
+  /// Creates the view that the controller manages.
+  public func loadView() {
+    self.view = View(frame: .zero)
+  }
+
+  /// Called after the controller's view is loaded info memory.
+  public func viewDidLoad() {
+  }
+
+  /// Loads the controller's view if it has not yet been loaded.
+  public func loadViewIfNeeded() {
+    guard !self.isViewLoaded else { return }
+    self.loadView()
+    self.viewDidLoad()
+  }
+
+  /// A localized string that represents the view this controller manages.
   public var title: String? {
     get {
       let szLength: Int32 = GetWindowTextLengthW(view.hWnd)
@@ -24,6 +57,11 @@ public class ViewController: Responder {
     set(value) {
       SetWindowTextW(view.hWnd, value?.LPCWSTR)
     }
+  }
+
+  /// The preferred size for the view controller's view.
+  public var preferredContentSize: Size {
+    fatalError("not yet implemented")
   }
 
   override public init() {
