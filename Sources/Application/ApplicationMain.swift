@@ -101,7 +101,8 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   let hWindowProcedureHook: HHOOK? =
-      SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32, GetCurrentThreadId())
+      SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32,
+                        GetCurrentThreadId())
   if hWindowProcedureHook == nil {
     log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(Error(win32: GetLastError()))")
   }
@@ -153,9 +154,6 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   var msg: MSG = MSG()
-
-  let mainRunLoop = RunLoop.current
-
   var nExitCode: Int32 = EXIT_SUCCESS
 
   mainLoop: while true {
@@ -176,7 +174,7 @@ public func ApplicationMain(_ argc: Int32,
       // Execute Foundation.RunLoop once and determine the next time the timer
       // fires.  At this point handle all Foundation.RunLoop timers, sources and
       // Dispatch.DispatchQueue.main tasks
-      limitDate = mainRunLoop.limitDate(forMode: .default)
+      limitDate = RunLoop.main.limitDate(forMode: .default)
 
       // If Foundation.RunLoop doesn't contain any timers or the timers should
       // not be running right now, we interrupt the current loop or otherwise

@@ -6,6 +6,8 @@
  **/
 
 import WinSDK
+import class Foundation.NSNotification
+import class Foundation.NotificationCenter
 
 private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let window: Window? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Window
@@ -42,17 +44,25 @@ public class Window: View {
       (base: DWORD(WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME),
        extended: 0)
 
+  public init(frame: Rect) {
+    super.init(frame: frame, class: Window.class, style: Window.style)
+    _ = SetWindowSubclass(hWnd, SwiftWindowProc, UINT_PTR(0),
+                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
+
+    // TODO(compnerd) insert/sort by z-order
+    Application.shared.windows.append(self)
+  }
+
   /// Configuring the Window
 
+  /// The root view controller for the window.
   public var rootViewController: ViewController? {
     didSet { self.rootViewController?.view = self }
   }
 
   // TODO(compnerd) handle set
+  /// The position of the window in the z-axis.
   public private(set) var windowLevel: Window.Level = .normal
-
-  // TODO(compnerd) handle set
-  public private(set) var canResizeToFitContent: Bool = true
 
   // TODO(compnerd) remove this in favour of scene management interface;
   // windowScene provides the scene associated with the window, and the scene is
@@ -64,37 +74,70 @@ public class Window: View {
   }
 
   /// Making Windows Key
+
+  /// A boolean value that indicates whether the window is the key window for the
+  /// application.
   var isKeyWindow: Bool {
     guard let keyWindow = Application.shared.keyWindow else { return false }
     return self.hWnd == keyWindow.hWnd
   }
 
+  /// Shows the window and makes it the key window.
   public func makeKeyAndVisible() {
     self.makeKey()
     self.isHidden = false
   }
 
+  /// Makes the receiver the key window.
   public func makeKey() {
     Application.shared.keyWindow?.resignKey()
     Application.shared.keyWindow = self
     Application.shared.keyWindow?.becomeKey()
   }
 
+  /// Called automatically to inform the window that it has become the key
+  /// window.
   public func becomeKey() {
-    // TODO(compnerd) post didBecomKeyNotification
+    NotificationCenter.default.post(name: Window.didBecomeKeyNotification,
+                                    object: self)
   }
 
+  /// Called automatically to inform the window that it is no longer the key
+  /// window.
   public func resignKey() {
-    // TODO(compnerd) post didResignKeyNotification
+    NotificationCenter.default.post(name: Window.didResignKeyNotification,
+                                    object: self)
   }
 
-  public init(frame: Rect) {
-    super.init(frame: frame, class: Window.class, style: Window.style)
-    SetWindowSubclass(hWnd, SwiftWindowProc, UINT_PTR(0),
-                      unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
+  /// Getting Related Objects
 
-    // TODO(compnerd) insert/sort by z-order
-    Application.shared.windows.append(self)
+  /// The scene containing the window.
+  weak var windowScene: WindowScene? {
+    get { fatalError("\(#function) not yet implemented") }
+    set { fatalError("\(#function) not yet implemented") }
+  }
+}
+
+/// Responding to Window-Related Notifications
+extension Window {
+  /// Posted whn a `Window` object becomes visible.
+  public class var didBecomeVisibleNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIWindowDIdBecomeVisibleNotification")
+  }
+
+  /// Posted when a `Window` object becomes hidden.
+  public class var didBecomeHiddenNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIWindowDidBecomeHiddenNotification")
+  }
+
+  /// Posted whenever a `Window` object becomes the key window.
+  public class var didBecomeKeyNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIWindowDidBecomeKeyNotification")
+  }
+
+  /// Posted when a `Window` object resigns its status as main window.
+  public class var didResignKeyNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIWindowDidResignKeyNotification")
   }
 }
 
