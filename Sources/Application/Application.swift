@@ -7,12 +7,12 @@
 
 /// The centralised point of control and coordination for running applications.
 public class Application: Responder {
-  /// Getting the App Instance
+  /// Getting the Application Instance
 
   /// Returns the singleton application instance.
   public static var shared: Application = Application()
 
-  /// Managing the App's Behaviour
+  /// Managing the Application's Behaviour
 
   /// The delegate of the application object.
   public var delegate: ApplicationDelegate?
