@@ -54,9 +54,7 @@ public class ViewController: Responder {
       }
       return String(decodingCString: buffer, as: UTF16.self)
     }
-    set(value) {
-      SetWindowTextW(view.hWnd, value?.LPCWSTR)
-    }
+    set(value) { _ = SetWindowTextW(view.hWnd, value?.LPCWSTR) }
   }
 
   /// The preferred size for the view controller's view.

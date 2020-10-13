@@ -43,6 +43,7 @@ public class Window: View {
        extended: 0)
 
   /// Configuring the Window
+
   public var rootViewController: ViewController? {
     didSet { self.rootViewController?.view = self }
   }
@@ -118,11 +119,17 @@ extension Window.Level {
 extension Window {
   public var isMaximizable: Bool {
     get { self.GWL_STYLE & WS_MAXIMIZEBOX == WS_MAXIMIZEBOX }
-    set { self.GWL_STYLE = newValue ? self.GWL_STYLE | WS_MAXIMIZEBOX : self.GWL_STYLE & ~WS_MAXIMIZEBOX }
+    set {
+      self.GWL_STYLE = newValue ? self.GWL_STYLE | WS_MAXIMIZEBOX
+                                : self.GWL_STYLE & ~WS_MAXIMIZEBOX
+    }
   }
 
   public var isMinimizable: Bool {
     get { self.GWL_STYLE & WS_MINIMIZEBOX == WS_MINIMIZEBOX }
-    set { self.GWL_STYLE = newValue ? self.GWL_STYLE | WS_MINIMIZEBOX : self.GWL_STYLE & ~WS_MINIMIZEBOX }
+    set {
+      self.GWL_STYLE = newValue ? self.GWL_STYLE | WS_MINIMIZEBOX
+                                : self.GWL_STYLE & ~WS_MINIMIZEBOX
+    }
   }
 }
