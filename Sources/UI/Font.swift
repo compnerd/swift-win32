@@ -177,15 +177,20 @@ private func LogicalToPoint(_ logical: Int32) -> Double {
   return Double(MulDiv(-logical, 72, GetDeviceCaps(GetDC(nil), LOGPIXELSY)))
 }
 
+/// Represents a font.
 public class Font {
   internal var hFont: FontHandle
 
   /// Creating Fonts
 
+  /// Returns an instance of the system font for the specified text style with
+  /// scaling for the user's selected content size category.
   public static func preferredFont(forTextStyle style: Font.TextStyle) -> Font {
     return Font.preferredFont(forTextStyle: style, compatibleWith: nil)
   }
 
+  /// Returns an instance of the system font for the appropriate text style and
+  /// traits.
   public static func preferredFont(forTextStyle style: Font.TextStyle,
                                    compatibleWith traits: TraitCollection?)
       -> Font {
@@ -200,6 +205,7 @@ public class Font {
     return systemFont(ofSize: font.size, weight: font.weight)
   }
 
+  /// Creates an returns a font object for the specified font name and size.
   public init?(name: String, size: Double) {
     self.hFont = FontHandle(owning: CreateFontW(PointToLogical(size),
                                                 /*cWidth=*/0,
@@ -219,6 +225,8 @@ public class Font {
 
   // public init(descriptor: FontDescriptor, size pointSize: Double)
 
+  // Returns a font object that is the ame as the font, but has the specified
+  // size.
   public func withSize(_ fontSize: Double) -> Font {
     var lfFont: LOGFONTW = LOGFONTW()
 
@@ -234,23 +242,33 @@ public class Font {
 
   /// Creating System Fonts
 
+  /// Returns the font object for standard interface items in the specified
+  /// size.
   public static func systemFont(ofSize fontSize: Double) -> Font {
     return systemFont(ofSize: fontSize, weight: .regular, italic: false)
   }
 
+  /// Returns the font object for standard interface items in the specifed size
+  /// and weight.
   public static func systemFont(ofSize fontSize: Double, weight: Font.Weight)
       -> Font {
     return systemFont(ofSize: fontSize, weight: weight, italic: false)
   }
 
+  /// Returns the font object for standard interface items in boldface type in
+  /// the specified size.
   public static func boldSystemFont(ofSize fontSize: Double) -> Font {
     return systemFont(ofSize: fontSize, weight: .bold, italic: false)
   }
 
+  /// Returns the font object for standard interface items in italic type in the
+  /// specified size.
   public static func italicSystemFont(ofSize fontSize: Double) -> Font {
     return systemFont(ofSize: fontSize, weight: .regular, italic: true)
   }
 
+  /// Returns the fixed-width font for standard interface text in the specified
+  /// size.
   public static func monospacedSystemFont(ofSize fontSize: Double,
                                           weight: Font.Weight) -> Font {
     return Font(owning: CreateFontW(PointToLogical(fontSize),
@@ -269,6 +287,7 @@ public class Font {
                                     nil))
   }
 
+  /// Returns the standard system font with all digits of consistent width.
   public static func monospacedDigitSystemFont(ofSize fontSize: Double,
                                                weight: Font.Weight) -> Font {
     return Font(owning: CreateFontW(PointToLogical(fontSize),
@@ -289,6 +308,7 @@ public class Font {
 
   /// Getting the Available Font Names
 
+  /// Returns an array of font family names available on the system.
   public static var familyNames: [String] {
     let hDC: HDC = GetDC(nil)
 
@@ -326,6 +346,7 @@ public class Font {
     return Array<String>(arrFamilies)
   }
 
+  /// Returns an array of font names available in a particular font family.
   public static func fontNames(forFontFamily family: String) -> [String] {
     let hDC: HDC = GetDC(nil)
 
@@ -358,6 +379,7 @@ public class Font {
 
   // public var familyName: String { }
 
+  /// THe font face name.
   public var fontName: String {
     var lfFont: LOGFONTW = LOGFONTW()
 
@@ -469,12 +491,16 @@ public class Font {
 
   /// Getting System Font Information
 
+  /// The standard font size, in points, for labels.
   public static var labelFontSize: Double { 17.0 }
 
+  /// The standard font size, in points, for buttons.
   public static var buttonFontSize: Double { 18.0 }
 
+  /// The size, in points, of the standard small system font.
   public static var smallSystemFontSize: Double { 12.0 }
 
+  /// The size, in points, of the standard system font.
   public static var systemFontSize: Double { 14.0 }
 
   /// Getting Font Descriptors
@@ -524,6 +550,7 @@ public class Font {
 }
 
 public extension Font {
+  /// Constants that represent standard font weights.
   struct Weight: Hashable, Equatable, RawRepresentable {
     public let rawValue: Int32
 
@@ -546,6 +573,7 @@ public extension Font.Weight {
 }
 
 public extension Font {
+  /// Constants that describe the preferred styles for fonts.
   struct TextStyle: Hashable, Equatable, RawRepresentable {
     public let rawValue: String
 
