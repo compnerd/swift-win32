@@ -9,7 +9,7 @@ Swift/Win32 aims to provide a [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93
 
 ## Build Requirements
 
-- Swift 5.3 or newer
+- Latest Swift Snapshot (9/22 or later)
 - Windows SDK 10.0.107763 or newer
 - CMake 3.16 or newer
 
