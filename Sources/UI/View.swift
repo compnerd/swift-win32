@@ -165,10 +165,15 @@ public class View: Responder {
     _ = SetWindowSubclass(self.hWnd, SwiftViewProc, UINT_PTR.max,
                           unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
 
+    if !RegisterTouchWindow(self.hWnd, 0) {
+      log.error("RegisterTouchWindow: \(Error(win32: GetLastError()))")
+    }
+
     defer { self.font = Font.systemFont(ofSize: Font.systemFontSize) }
   }
 
   deinit {
+    _ = UnregisterTouchWindow(self.hWnd)
     _ = DestroyWindow(self.hWnd)
     _ = self.win32.window.class.unregister()
   }
