@@ -252,6 +252,12 @@ public class View: Responder {
   }
 }
 
+extension View: Equatable {
+  public static func ==(_ lhs: View, _ rhs: View) -> Bool {
+    return lhs.hWnd == rhs.hWnd
+  }
+}
+
 extension View: TraitEnvironment {
   public var traitCollection: TraitCollection {
     return self.window?.screen.traitCollection ?? TraitCollection.current
