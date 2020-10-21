@@ -37,48 +37,62 @@ internal struct Error: Swift.Error {
 
 extension Error: CustomStringConvertible {
   public var description: String {
+    let dwFlags: DWORD = DWORD(FORMAT_MESSAGE_ALLOCATE_BUFFER)
+                       | DWORD(FORMAT_MESSAGE_FROM_SYSTEM)
+                       | DWORD(FORMAT_MESSAGE_IGNORE_INSERTS)
+
+    let short: String
+    let dwResult: DWORD
+    var buffer: UnsafeMutablePointer<WCHAR>?
+
     switch self.code {
     case .errno(let errno):
-      if let description = _wcserror(errno) {
-        return "errno \(errno) - \(String(decodingCString: description, as: UTF16.self))"
+      short = "errno \(errno)"
+
+      // Short-circuit the formatting path as this does not do a `LocalAlloc`
+      // and does not use `FormatMessageW`.
+      guard let description = _wcserror(errno) else {
+        return short
       }
-      return "errno: \(errno)"
+      return "\(short) - \(String(decodingCString: description, as: UTF16.self))"
 
     case .win32(let error):
-      let buffer: UnsafeMutablePointer<WCHAR>? = nil
-      let dwResult: DWORD =
-          FormatMessageW(DWORD(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS),
-                         nil, error, MAKELANGID(WORD(LANG_NEUTRAL), WORD(SUBLANG_DEFAULT)),
-                         buffer, 0, nil)
-      guard dwResult == 0, let message = buffer else {
-        return "Error \(error)"
+      short = "Win32 Error \(error)"
+
+      dwResult = withUnsafeMutablePointer(to: &buffer) {
+        $0.withMemoryRebound(to: WCHAR.self, capacity: 2) {
+          FormatMessageW(dwFlags, nil, error,
+                         MAKELANGID(WORD(LANG_NEUTRAL), WORD(SUBLANG_DEFAULT)),
+                         $0, 0, nil)
+        }
       }
-      defer { LocalFree(buffer) }
-      return "Win32 Error \(error) - \(String(decodingCString: message, as: UTF16.self)))"
+
 
     case .nt(let status):
-      let buffer: UnsafeMutablePointer<WCHAR>? = nil
-      let dwResult: DWORD =
-          FormatMessageW(DWORD(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS),
-                         nil, status, MAKELANGID(WORD(LANG_NEUTRAL), WORD(SUBLANG_DEFAULT)),
-                         buffer, 0, nil)
-      guard dwResult == 0, let message = buffer else {
-        return "NTSTATUS: 0x\(String(status, radix: 16))"
+      short = "NTSTATUS 0x\(String(status, radix: 16))"
+
+      dwResult = withUnsafeMutablePointer(to: &buffer) {
+        $0.withMemoryRebound(to: WCHAR.self, capacity: 2) {
+          FormatMessageW(dwFlags, nil, status,
+                         MAKELANGID(WORD(LANG_NEUTRAL), WORD(SUBLANG_DEFAULT)),
+                         $0, 0, nil)
+        }
       }
-      defer { LocalFree(buffer) }
-      return "0x\(String(status, radix: 16)) - \(String(decodingCString: message, as: UTF16.self))"
 
     case .hresult(let hr):
-      let buffer: UnsafeMutablePointer<WCHAR>? = nil
-      let dwResult: DWORD =
-          FormatMessageW(DWORD(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS),
-                         nil, hr, MAKELANGID(WORD(LANG_NEUTRAL), WORD(SUBLANG_DEFAULT)),
-                         buffer, 0, nil)
-      guard dwResult == 0, let message = buffer else {
-        return "HRESULT: 0x\(String(hr, radix: 16))"
+      short = "HRESULT 0x\(String(hr, radix: 16))"
+
+      dwResult = withUnsafeMutablePointer(to: &buffer) {
+        $0.withMemoryRebound(to: WCHAR.self, capacity: 2) {
+          FormatMessageW(dwFlags, nil, hr,
+                         MAKELANGID(WORD(LANG_NEUTRAL), WORD(SUBLANG_DEFAULT)),
+                         $0, 0, nil)
+        }
       }
-      defer { LocalFree(buffer) }
-      return "0x\(String(hr, radix: 16)) - \(String(decodingCString: message, as: UTF16.self))"
     }
+
+    guard dwResult > 0, let message = buffer else { return short }
+    defer { LocalFree(buffer) }
+    return "\(short) - \(String(decodingCString: message, as: UTF16.self))"
   }
 }
