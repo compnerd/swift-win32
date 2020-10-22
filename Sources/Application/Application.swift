@@ -26,8 +26,7 @@ public class Application: Responder {
 
   /// A boolean indicating whether the application may display multiple scenes.
   public var supportsMultipleScenes: Bool {
-    // TODO(compnerd) deserialise this from Info.plist in the bundle
-    false
+    Application.shared.information?.scene?.supportsMultipleScenes ?? false
   }
 
   /// The application's currently connected scenes.
