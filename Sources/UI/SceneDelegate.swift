@@ -11,7 +11,7 @@ public protocol SceneDelegate: _TriviallyConstructible {
   /// Connecting and Disconnecting the Scene
 
   /// Tells the delegate about the addition of a scene to the application.
-  func scene(_ scene: Scene, willConnecTo: SceneSession,
+  func scene(_ scene: Scene, willConnectTo: SceneSession,
              options: Scene.ConnectionOptions)
 
   /// Tells the delegate that a scene was removed from the application.
