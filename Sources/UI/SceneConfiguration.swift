@@ -35,6 +35,8 @@ public class SceneConfiguration {
                         : configurations.filter({ $0.name == name }).first else {
       return
     }
+    // ... overwriting the scene name to the current configuration's scene name
+    self.name = scene.name
 
     // ... deserialising the scene class if one was provided
     if let sceneClass = scene.class {
@@ -58,7 +60,7 @@ public class SceneConfiguration {
   /// Getting the Configuration Attributes
 
   /// The application-specific name assigned to the scene configuration.
-  public let name: String?
+  public private(set) var name: String?
 
   /// The role assigned to the scene configuration.
   public let role: SceneSession.Role
