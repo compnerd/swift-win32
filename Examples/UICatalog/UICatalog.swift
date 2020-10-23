@@ -28,7 +28,7 @@ private extension Label {
 }
 
 @main
-final class SwiftApplicationDelegate: ApplicationDelegate {
+final class UICatalog: ApplicationDelegate {
   var window: Window =
       Window(frame: Rect(x: Double(CW_USEDEFAULT), y: Double(CW_USEDEFAULT),
                          width: 265, height: 384))
@@ -90,7 +90,7 @@ final class SwiftApplicationDelegate: ApplicationDelegate {
 
     self.label.font = Font(name: "Consolas", size: 10)!
 
-    self.button.addTarget(self, action: SwiftApplicationDelegate.pressMe(_:),
+    self.button.addTarget(self, action: UICatalog.pressMe(_:),
                           for: .primaryActionTriggered)
 
     self.checkbox.title = "Check me out"
@@ -117,8 +117,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     self.slider.value = 48.0
 
     self.stepperLabel.text = String(Int(self.stepper.value))
-    self.stepper.addTarget(self,
-                           action: SwiftApplicationDelegate.stepperValueDidChange(_:),
+    self.stepper.addTarget(self, action: UICatalog.stepperValueDidChange(_:),
                            for: .valueChanged)
 
     self.tableview.dataSource = self
@@ -150,7 +149,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
   }
 }
 
-extension SwiftApplicationDelegate: TableViewDataSource {
+extension UICatalog: TableViewDataSource {
   public func tableView(_ tableView: TableView,
                         numberOfRowsInSection section: Int) -> Int {
     return 3
