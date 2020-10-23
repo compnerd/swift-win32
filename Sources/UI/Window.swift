@@ -167,7 +167,7 @@ public class Window: View {
   /// Getting Related Objects
 
   /// The scene containing the window.
-  weak var windowScene: WindowScene? {
+  public weak var windowScene: WindowScene? {
     didSet { fatalError("\(#function) not yet implemented") }
   }
 }
