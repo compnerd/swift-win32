@@ -138,20 +138,20 @@ public func ApplicationMain(_ argc: Int32,
   }
 
   // Create the scene.
-  if let `class` = session.configuration.sceneClass,
-     let SceneType = `class` as? Scene.Type {
-    let (_, scene) =
-        Application.shared.connectedScenes
-            .insert(SceneType.init(session: session, connectionOptions: options))
+  let SceneType =
+      (session.configuration.sceneClass as? Scene.Type) ?? WindowScene.self
 
-    if let `class` = session.configuration.delegateClass,
-       let DelegateType = `class` as? SceneDelegate.Type {
-        scene.delegate = DelegateType.init()
-    }
+  let (_, scene) =
+      Application.shared.connectedScenes
+          .insert(SceneType.init(session: session, connectionOptions: options))
 
-    scene.delegate?.scene(scene, willConnectTo: session, options: options)
-    session.scene = scene
+  if let DelegateType =
+      session.configuration.delegateClass as? SceneDelegate.Type {
+    scene.delegate = DelegateType.init()
   }
+
+  scene.delegate?.scene(scene, willConnectTo: session, options: options)
+  session.scene = scene
 
   var msg: MSG = MSG()
   var nExitCode: Int32 = EXIT_SUCCESS
