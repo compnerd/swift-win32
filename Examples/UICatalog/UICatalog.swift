@@ -9,7 +9,6 @@ import SwiftWin32
 import Foundation
 
 import func WinSDK.MessageBoxW
-import let WinSDK.CW_USEDEFAULT
 import let WinSDK.MB_OK
 import struct WinSDK.UINT
 
@@ -28,10 +27,8 @@ private extension Label {
 }
 
 @main
-final class UICatalog: ApplicationDelegate {
-  var window: Window =
-      Window(frame: Rect(x: Double(CW_USEDEFAULT), y: Double(CW_USEDEFAULT),
-                         width: 265, height: 384))
+final class UICatalog: ApplicationDelegate, SceneDelegate {
+  var window: Window!
 
   lazy var label: Label =
       Label(frame: Rect(x: 4.0, y: 12.0, width: 64.0, height: 16.0),
@@ -70,8 +67,18 @@ final class UICatalog: ApplicationDelegate {
       TableView(frame: Rect(x: 4.0, y: 330.0, width: 254.0, height: 48.0),
                 style: .plain)
 
-  func application(_: Application,
-                   didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
+  func scene(_ scene: Scene, willConnectTo session: SceneSession,
+             options: Scene.ConnectionOptions) {
+    guard let windowScene = scene as? WindowScene else { return }
+
+    // Set the preferred window size and restrict resizing by setting the
+    // minimum and maximum to the same value.
+    let size: Size = Size(width: 265, height: 384)
+    windowScene.sizeRestrictions?.minimumSize = size
+    windowScene.sizeRestrictions?.maximumSize = size
+
+    self.window = Window(windowScene: windowScene)
+
     window.rootViewController = ViewController()
     window.rootViewController?.title = "UICatalog"
 
@@ -123,8 +130,6 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     self.tableview.dataSource = self
 
     window.makeKeyAndVisible()
-
-    return true
   }
 
   func applicationDidBecomeActive(_: Application) {
