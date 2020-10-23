@@ -41,8 +41,7 @@ public class Window: View {
                   hbrBackground: GetSysColorBrush(COLOR_3DFACE),
                   hCursor: LoadCursorW(nil, IDC_ARROW))
   private static let style: WindowStyle =
-      (base: DWORD(WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME),
-       extended: 0)
+      (base: DWORD(WS_OVERLAPPEDWINDOW), extended: 0)
 
   public init(frame: Rect) {
     super.init(frame: frame, class: Window.class, style: Window.style)
@@ -51,6 +50,26 @@ public class Window: View {
 
     // TODO(compnerd) insert/sort by z-order
     Application.shared.windows.append(self)
+  }
+
+  /// Creating a Window
+
+  /// Creates a Window and associates it with the specified scene object.
+  public init(windowScene: WindowScene) {
+    self.windowScene = windowScene
+
+    let frame: Rect =
+        Rect(origin: Point(x: Double(CW_USEDEFAULT), y: Double(CW_USEDEFAULT)),
+             size: windowScene.sizeRestrictions?.minimumSize ?? .zero)
+    super.init(frame: frame, class: Window.class, style: Window.style)
+    _ = SetWindowSubclass(hWnd, SwiftWindowProc, UINT_PTR(0),
+                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
+    if let restrictions = windowScene.sizeRestrictions,
+        restrictions.minimumSize == restrictions.maximumSize {
+      self.GWL_STYLE &= ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
+    }
+
+    windowScene.windows.append(self)
   }
 
   /// Configuring the Window
@@ -113,8 +132,7 @@ public class Window: View {
 
   /// The scene containing the window.
   weak var windowScene: WindowScene? {
-    get { fatalError("\(#function) not yet implemented") }
-    set { fatalError("\(#function) not yet implemented") }
+    didSet { fatalError("\(#function) not yet implemented") }
   }
 }
 
@@ -160,14 +178,6 @@ extension Window.Level {
 }
 
 extension Window {
-  public var isMaximizable: Bool {
-    get { self.GWL_STYLE & WS_MAXIMIZEBOX == WS_MAXIMIZEBOX }
-    set {
-      self.GWL_STYLE = newValue ? self.GWL_STYLE | WS_MAXIMIZEBOX
-                                : self.GWL_STYLE & ~WS_MAXIMIZEBOX
-    }
-  }
-
   public var isMinimizable: Bool {
     get { self.GWL_STYLE & WS_MINIMIZEBOX == WS_MINIMIZEBOX }
     set {
