@@ -58,6 +58,7 @@ target_sources(SwiftWin32 PRIVATE
   Support/IndexPath+UIExtensions.swift
   Support/Logging.swift
   Support/Rect+UIExtensions.swift
+  Support/Point+UIExtensions.swift
   Support/PropertyWrappers.swift
   Support/String+UIExtensions.swift
   Support/WindowClass.swift

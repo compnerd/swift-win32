@@ -27,6 +27,42 @@ private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
       let screen = Screen.screens.filter { $0 == hMonitor }.first
       screen?.traitCollectionDidChange(screen?.traitCollection)
     }
+  case UINT(WM_GETMINMAXINFO):
+    // We must have a window and size restrictions, otherwise we fallback to the
+    // default behaviour.
+    guard let window = window,
+          let restrictions = window.windowScene?.sizeRestrictions else {
+      break
+    }
+
+    // If the minimum and maximum sizes are the same, the window cannot be
+    // resized, and we can simply fallback to the default bhaviour.
+    if restrictions.minimumSize == restrictions.maximumSize {
+      break
+    }
+
+    func ClientSizeToWindowSize(_ size: Size) -> Size {
+      var rc: RECT = RECT(from: Rect(origin: .zero, size: size))
+      if !AdjustWindowRectExForDpi(&rc, DWORD(window.GWL_STYLE), false,
+                                   DWORD(window.GWL_EXSTYLE),
+                                   GetDpiForWindow(window.hWnd)) {
+        log.warning("AdjustWindowRetExForDpi: \(Error(win32: GetLastError()))")
+      }
+      return Rect(from: rc).size
+    }
+
+    let lpInfo: UnsafeMutablePointer<MINMAXINFO> =
+        UnsafeMutablePointer<MINMAXINFO>(bitPattern: UInt(lParam))!
+
+    // Adjust the minimum and maximum tracking size for the window.
+    lpInfo.pointee.ptMinTrackSize =
+        POINT(from: ClientSizeToWindowSize(restrictions.minimumSize))
+    lpInfo.pointee.ptMaxTrackSize =
+        POINT(from: ClientSizeToWindowSize(restrictions.maximumSize))
+    lpInfo.pointee.ptMaxSize =
+        POINT(from: ClientSizeToWindowSize(restrictions.maximumSize))
+
+    return LRESULT(0)
   default:
     break
   }
