@@ -30,10 +30,6 @@ let SwiftWin32 = Package(
         "CWinRT",
         "SwiftUIWin32",
       ],
-      cSettings: [
-        .define("COBJMACROS"),
-        .define("NONAMELESSUNION"),
-      ],
       swiftSettings: [
         .define("WITH_SWIFT_LOG"),
         .unsafeFlags(["-Xfrontend", "-validate-tbd-against-ir=none"]),

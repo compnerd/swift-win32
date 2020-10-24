@@ -42,10 +42,12 @@ public final class Screen {
           UnsafeMutablePointer<Array<Screen>>(bitPattern: Int(lParam))!
 
       var info: MONITORINFOEXW = MONITORINFOEXW()
-      info.s.cbSize = DWORD(MemoryLayout<MONITORINFOEXW>.size)
-      if !GetMonitorInfoW(hMonitor, &info.s) {
-        return false
-      }
+      info.cbSize = DWORD(MemoryLayout<MONITORINFOEXW>.size)
+      if (withUnsafeMutablePointer(to: &info) {
+        $0.withMemoryRebound(to: MONITORINFO.self, capacity: 1) {
+          GetMonitorInfoW(hMonitor, $0)
+        }
+      }) == false { return false }
 
       let szDevice: String = withUnsafePointer(to: &info.szDevice) {
         $0.withMemoryRebound(to: WCHAR.self, capacity: MemoryLayout.size(ofValue: $0) / MemoryLayout<WCHAR>.size) {
@@ -61,11 +63,11 @@ public final class Screen {
 
       let screen: Screen =
           Screen(handle: hMonitor!,
-                 height: info.s.rcMonitor.bottom, width: info.s.rcMonitor.right,
+                 height: info.rcMonitor.bottom, width: info.rcMonitor.right,
                  scale: dsfDeviceScaleFactor.factor)
 
       // The main screen is always at index 0
-      if info.s.dwFlags & DWORD(MONITORINFOF_PRIMARY) == DWORD(MONITORINFOF_PRIMARY) {
+      if info.dwFlags & DWORD(MONITORINFOF_PRIMARY) == DWORD(MONITORINFOF_PRIMARY) {
         pScreens.pointee.insert(screen, at: 0)
       } else {
         pScreens.pointee.append(screen)

@@ -107,18 +107,18 @@ public struct Device {
       return .unknown
     }
 
-    switch dmDeviceMode.u.s2.dmDisplayOrientation {
+    switch dmDeviceMode.dmDisplayOrientation {
     case DWORD(DMDO_90), DWORD(DMDO_270):
       swap(&dmDeviceMode.dmPelsHeight, &dmDeviceMode.dmPelsWidth)
     case DWORD(DMDO_DEFAULT), DWORD(DMDO_180):
       break
     default:
-      log.error("unknown display orientation: \(dmDeviceMode.u.s2.dmDisplayOrientation)")
+      log.error("unknown display orientation: \(dmDeviceMode.dmDisplayOrientation)")
       return .unknown
     }
 
     let bPortrait: Bool = dmDeviceMode.dmPelsWidth < dmDeviceMode.dmPelsHeight
-    switch dmDeviceMode.u.s2.dmDisplayOrientation {
+    switch dmDeviceMode.dmDisplayOrientation {
     case DWORD(DMDO_DEFAULT):
       return bPortrait ? .portrait : .landscapeLeft
     case DWORD(DMDO_90):
