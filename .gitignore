@@ -10,3 +10,5 @@
 .build/
 
 Package.resolved
+
+.vscode/
