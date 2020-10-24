@@ -8,6 +8,7 @@ let SwiftWin32 = Package(
     .library(name: "SwiftWin32", type: .dynamic, targets: ["SwiftWin32"]),
     .executable(name: "UICatalog", targets: ["UICatalog"]),
     .executable(name: "Calculator", targets: ["Calculator"]),
+    .executable(name: "HelloWorld", targets: ["HelloWorld"]),
   ],
   targets: [
     .target(
@@ -16,6 +17,7 @@ let SwiftWin32 = Package(
       exclude: [
         "CMakeLists.txt",
         "CWinRT",
+        "SwiftUIWin32",
       ],
       cSettings: [
         .define("COBJMACROS"),
@@ -32,6 +34,21 @@ let SwiftWin32 = Package(
         "SwiftWin32",
       ],
       path: "Examples/Calculator",
+      exclude: [
+        "CMakeLists.txt",
+      ],
+      swiftSettings: [
+        .unsafeFlags([
+          "-parse-as-library",
+        ]),
+      ]
+    ),
+    .target(
+      name: "HelloWorld",
+      dependencies: [
+        "SwiftWin32",
+      ],
+      path: "Examples/HelloWorld",
       exclude: [
         "CMakeLists.txt",
       ],
