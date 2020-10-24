@@ -67,7 +67,11 @@ public func ApplicationMain(_ argc: Int32,
     guard let instance = NSClassFromString(delegate) else {
       fatalError("unable to find delegate class: \(delegate)")
     }
-    Application.shared.delegate = (instance as! ApplicationDelegate.Type).init()
+    if instance as? Application.Type == nil {
+      Application.shared.delegate = (instance as! ApplicationDelegate.Type).init()
+    } else {
+      Application.shared.delegate = Application.shared as? ApplicationDelegate
+    }
   }
 
   if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
@@ -147,7 +151,17 @@ public func ApplicationMain(_ argc: Int32,
 
   if let DelegateType =
       session.configuration.delegateClass as? SceneDelegate.Type {
-    scene.delegate = DelegateType.init()
+    // Only instantiate the scene delegate if the scene delegate is not the
+    // Application class or the ApplicationDelegate class.
+    if DelegateType as? Application.Type == nil {
+      if DelegateType as? ApplicationDelegate.Type == nil {
+        scene.delegate = DelegateType.init()
+      } else {
+        scene.delegate = Application.shared.delegate as? SceneDelegate
+      }
+    } else {
+      scene.delegate = Application.shared as? SceneDelegate
+    }
   }
 
   scene.delegate?.scene(scene, willConnectTo: session, options: options)
