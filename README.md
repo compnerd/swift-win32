@@ -15,7 +15,9 @@ Swift/Win32 aims to provide a [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93
 
 ## Building
 
-This requires the latest Swift snapshot. You can use the the snapshot binaries from [swift.org](https://swift.org/download/) or download the nightly build from [Azure](https://dev.azure.com/compnerd/swift-build).
+This project requires the latest Swift snapshot (October 24, 2020 or newer). You can use the the snapshot binaries from [swift.org](https://swift.org/download/) or download the nightly build from [Azure](https://dev.azure.com/compnerd/swift-build).
+
+### Recommended (CMake)
 
 The following example session shows how to build with CMake 3.16 or newer.
 
@@ -24,4 +26,17 @@ cmake -B build -D BUILD_SHARED_LIBS=YES -D CMAKE_BUILD_TYPE=Release -D CMAKE_Swi
 ninja -C build SwiftWin32 UICatalog
 
 %CD%\build\bin\UICatalog.exe
+```
+
+### Experimental (Swift Package Manager)
+
+Building this project with swift-package-manager is experimental and does not fully function.  In particular, it is not possible to deploy auxiliary files which are required for Swift/Win32 based applications to function to the correct location.  However, the swift-package-manager build can be used with additional manual steps.  This also enables the use of VSCode and SourceKit-LSP to develop Swift/Win32 as well as applications using this library.
+
+LLD is the recommended linker to use when using swift-package-manager.
+
+```cmd
+swift build -Xswiftc -use-ld=lld --target UICatalog
+copy Examples\UICatalog\UICatalog.exe.manifest .build\x86_64-unknown-windows-msvc\debug\
+copy Examples\UICatalog\Info.plist .build\x86_64-unknown-windows-msvc\debug\
+.build\x86_64-unknown-windows-msvc\debug\UICatalog.exe
 ```
