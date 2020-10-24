@@ -101,7 +101,9 @@ public func ApplicationMain(_ argc: Int32,
   var ICCE: INITCOMMONCONTROLSEX =
       INITCOMMONCONTROLSEX(dwSize: DWORD(MemoryLayout<INITCOMMONCONTROLSEX>.size),
                            dwICC: dwICC)
-  InitCommonControlsEx(&ICCE)
+  if !InitCommonControlsEx(&ICCE) {
+    log.error("InitCommonControlsEx: \(Error(win32: GetLastError()))")
+  }
 
   if Application.shared.delegate?
         .application(Application.shared,
