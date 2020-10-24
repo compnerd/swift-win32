@@ -10,9 +10,17 @@ let SwiftWin32 = Package(
     .executable(name: "Calculator", targets: ["Calculator"]),
     .executable(name: "HelloWorld", targets: ["HelloWorld"]),
   ],
+  dependencies: [
+    // NOTE(compnerd) require main as no current release has support for the
+    // new CRT module.
+    .package(url: "https://github.com/apple/swift-log.git", .branch("main")),
+  ],
   targets: [
     .target(
       name: "SwiftWin32",
+      dependencies: [
+        .product(name: "Logging", package: "swift-log"),
+      ],
       path: "Sources",
       exclude: [
         "CMakeLists.txt",
@@ -22,6 +30,9 @@ let SwiftWin32 = Package(
       cSettings: [
         .define("COBJMACROS"),
         .define("NONAMELESSUNION"),
+      ],
+      swiftSettings: [
+        .define("WITH_SWIFT_LOG"),
       ],
       linkerSettings: [
         .linkedLibrary("User32"),
