@@ -7,8 +7,9 @@
 *~
 
 /build/
-.build/
 
-Package.resolved
+/package.resolved
+/Packages/
+.build/
 
 .vscode/
