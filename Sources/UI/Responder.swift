@@ -34,4 +34,26 @@ public class Responder {
   public func resignFirstResponder() -> Bool {
     return true
   }
+
+  /// Responding to Touch Events
+
+  /// Informs the responder that one or more new touches occurrd in a view or a
+  /// window.
+  public func touchesBegan(_ touches: Set<Touch>, with event: Event?) {
+  }
+
+  /// Informs the responder when one or more touches associated with an event
+  /// changed.
+  public func touchesMoved(_ touches: Set<Touch>, with event: Event?) {
+  }
+
+  /// Informs the responder when one or more fingers are raised from a view or a
+  /// window.
+  public func touchesEnded(_ touches: Set<Touch>, with event: Event?) {
+  }
+
+  /// Informs the responder when a system event (such as a system alert) cancels
+  /// a touch sequence.
+  public func touchesCancelled(_ touches: Set<Touch>, with event: Event?) {
+  }
 }

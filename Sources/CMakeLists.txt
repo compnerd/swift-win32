@@ -19,6 +19,7 @@ target_sources(SwiftWin32 PRIVATE
   UI/DatePicker.swift
   UI/Device.swift
   UI/EdgeInsets.swift
+  UI/Event.swift
   UI/Font.swift
   UI/FontMetrics.swift
   UI/Label.swift
@@ -39,6 +40,7 @@ target_sources(SwiftWin32 PRIVATE
   UI/TextField.swift
   UI/TextInputTraits.swift
   UI/TextView.swift
+  UI/Touch.swift
   UI/TraitCollection.swift
   UI/TraitEnvironment.swift
   UI/View.swift
