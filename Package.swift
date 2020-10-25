@@ -14,12 +14,14 @@ let SwiftWin32 = Package(
     // NOTE(compnerd) require main as no current release has support for the
     // new CRT module.
     .package(url: "https://github.com/apple/swift-log.git", .branch("main")),
+    .package(url: "https://github.com/compnerd/cassowary.git", .branch("master")),
   ],
   targets: [
     .target(
       name: "SwiftWin32",
       dependencies: [
         .product(name: "Logging", package: "swift-log"),
+        .product(name: "cassowary", package: "cassowary")
       ],
       path: "Sources",
       exclude: [
