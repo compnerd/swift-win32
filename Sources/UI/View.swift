@@ -7,6 +7,18 @@
 
 import WinSDK
 
+private let SwiftViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
+  let view: View? = unsafeBitCast(dwRefData, to: AnyObject.self) as? View
+  switch uMsg {
+  case UINT(WM_CONTEXTMENU):
+    // TODO handle popup menu events
+    return 0
+  default:
+    break
+  }
+  return DefSubclassProc(hWnd, uMsg, wParam, lParam)
+}
+
 internal typealias WindowStyle = (base: DWORD, extended: DWORD)
 
 private func ClientToWindow(size: inout Size, for style: WindowStyle) {
@@ -149,6 +161,9 @@ public class View: Responder {
     self.frame = client
 
     super.init()
+
+    _ = SetWindowSubclass(self.hWnd, SwiftViewProc, UINT_PTR.max,
+                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
 
     defer { self.font = Font.systemFont(ofSize: Font.systemFontSize) }
   }
