@@ -1,0 +1,18 @@
+/**
+ * Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ **/
+
+/// A part of the application's user interface.
+public protocol Scene {
+  /// Creating a Scene
+
+  /// The type of scene representing the body of this scene.
+  associatedtype Body: Scene
+
+  /// The content and behaviour of the scene.
+  @SceneBuilder
+  var body: Self.Body { get }
+}
