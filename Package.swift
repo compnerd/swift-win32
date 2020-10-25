@@ -6,6 +6,7 @@ let SwiftWin32 = Package(
   name: "SwiftWin32",
   products: [
     .library(name: "SwiftWin32", type: .dynamic, targets: ["SwiftWin32"]),
+    .library(name: "SwiftUIWin32", type: .dynamic, targets: ["SwiftUIWin32"]),
     .executable(name: "UICatalog", targets: ["UICatalog"]),
     .executable(name: "Calculator", targets: ["Calculator"]),
     .executable(name: "HelloWorld", targets: ["HelloWorld"]),
@@ -40,6 +41,13 @@ let SwiftWin32 = Package(
         .linkedLibrary("User32"),
         .linkedLibrary("ComCtl32"),
       ]
+    ),
+    .target(
+      name: "SwiftUIWin32",
+      dependencies: [
+        "SwiftWin32",
+      ],
+      path: "Sources/SwiftUIWin32"
     ),
     .target(
       name: "Calculator",
