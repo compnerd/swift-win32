@@ -71,6 +71,8 @@ public class View: Responder {
   }
 
   /// Configuring a View's Visual Appearance
+
+  /// A boolean that determines if the view is hidden.
   public var isHidden: Bool {
     get { IsWindowVisible(self.hWnd) }
     set(hidden) {
@@ -215,14 +217,14 @@ public class View: Responder {
     }
 
     // Update the window style.
-    if SetWindowLongPtrW(view.hWnd, WinSDK.GWL_STYLE,
-                         LONG_PTR((view.win32.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD))) == 0 {
+    let dwPrevStyle: DWORD = view.win32.window.style.base
+    let dwNewStyle: DWORD = (dwPrevStyle & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD)
+    if SetWindowLongPtrW(view.hWnd, WinSDK.GWL_STYLE, LONG_PTR(dwNewStyle)) == 0 {
       log.warning("SetWindowLongPtrW: \(Error(win32: GetLastError()))")
-      // TODO(compnerd) check for error
-      _ = SetWindowLongPtrW(view.hWnd, WinSDK.GWL_STYLE, LONG_PTR(view.win32.window.style.base))
+      view.GWL_STYLE = LONG(dwPrevStyle)
       return
     }
-    view.win32.window.style.base = (view.win32.window.style.base & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD)
+    view.win32.window.style.base = dwNewStyle
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
     // changes take effect.
     if !SetWindowPos(view.hWnd, nil, 0, 0, 0, 0,
