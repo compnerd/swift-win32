@@ -36,6 +36,9 @@ public class TableViewCell: View {
   private static let style: WindowStyle = (base: 0, extended: 0)
 
   /// Creating a Table View Cell
+
+  /// Initializes a table cell with a style and a reuse identifier and returns it
+  /// to the caller.
   public init(style: TableViewCell.CellStyle, reuseIdentifier: String?) {
     self.reuseIdentifier = reuseIdentifier
     super.init(frame: .zero, class: TableViewCell.class,
@@ -44,5 +47,10 @@ public class TableViewCell: View {
 
   /// Reusing Cells
 
+  /// A string used to identify a cell that is reusable.
   public let reuseIdentifier: String?
+
+  /// Prepares a reusable cell for reuse by the table view's delegate.
+  public func prepareForReuse() {
+  }
 }
