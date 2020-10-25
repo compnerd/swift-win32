@@ -16,14 +16,22 @@ extension Scene {
 public class Scene: Responder {
   /// Creating a Scene Object
 
+  /// Creates a scene object using the specified session and connection
+  /// information.
   public required init(session: SceneSession,
                        connectionOptions: Scene.ConnectionOptions) {
+    self.session = session
   }
 
   /// Managing the Life Cycle of a Scene
 
   /// The object you use to recieve life-cycle events associated with the scene.
   public var delegate: SceneDelegate?
+
+  /// Getting the Scene's Session
+
+  /// The session associated with the scene.
+  public let session: SceneSession
 }
 
 extension Scene {
