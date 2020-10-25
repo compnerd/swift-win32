@@ -276,9 +276,7 @@ public class View: Responder {
   // Responder Chain
   public override var next: Responder? {
     if let parent = self.superview { return parent }
-    // if let vc = self.viewController { return vc }
-    if let window = self.window { return window }
-    return Application.shared
+    return nil
   }
 
   // Trait Environment
