@@ -27,8 +27,38 @@ public class Scene: Responder {
 }
 
 extension Scene {
+  /// A notification indicating that a scene was added to the application.
+  public class var willConnectNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UISceneWillConnectNotification")
+  }
+
+  /// A notification indicating that a scene was removed from the application.
   public class var didDisconnectNotification: NSNotification.Name {
-    return NSNotification.Name(rawValue: "UISceneDidDisconnectNotification")
+    NSNotification.Name(rawValue: "UISceneDidDisconnectNotification")
+  }
+
+  /// A notification indicating that a scene is about to begin running in the
+  /// foreground and become visible to the user.
+  public class var willEnterForegroundNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UISceneWillEnterForegroundNotification")
+  }
+
+  /// A notification indicating that the scene is now onscreen and reponding to
+  /// user events.
+  public class var didActivateNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UISceneDidActivateNotification")
+  }
+
+  /// A notification indicating that the scene is about to resign the active
+  /// state and stop responding to user events.
+  public class var willDeactivateNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UISceneWillDeactivateNotification")
+  }
+
+  /// A notification indicating that the scene is running in the background and
+  /// is no longer onscreen.
+  public class var didEnterBackgroundNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UISceneDidEnterBackgroundNotification")
   }
 }
 
