@@ -54,6 +54,7 @@ let SwiftWin32 = Package(
       path: "Examples/Calculator",
       exclude: [
         "CMakeLists.txt",
+        "Calculator.exe.manifest",
       ],
       swiftSettings: [
         .unsafeFlags([
@@ -69,6 +70,7 @@ let SwiftWin32 = Package(
       path: "Examples/HelloWorld",
       exclude: [
         "CMakeLists.txt",
+        "Info.plist",
       ],
       swiftSettings: [
         .unsafeFlags([
@@ -84,6 +86,8 @@ let SwiftWin32 = Package(
       path: "Examples/UICatalog",
       exclude: [
         "CMakeLists.txt",
+        "Info.plist",
+        "UICatalog.exe.manifest",
       ],
       swiftSettings: [
         .unsafeFlags([
