@@ -92,9 +92,15 @@ public class View: Responder {
   /// superview's coordinate system.
   public var frame: Rect {
     didSet {
+      // Scale window for DPI
+      var client: Rect = self.frame
+      ScaleClient(rect: &client, for: GetDpiForWindow(self.hWnd),
+                  self.win32.window.style)
+
+      // Resize and Position the Window
       _ = SetWindowPos(self.hWnd, nil,
-                       CInt(self.frame.origin.x), CInt(self.frame.origin.y),
-                       CInt(self.frame.size.width), CInt(self.frame.size.height),
+                       CInt(client.origin.x), CInt(client.origin.y),
+                       CInt(client.size.width), CInt(client.size.height),
                        UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
     }
   }
