@@ -31,8 +31,14 @@ public let MSFTEDIT_CLASS: String = "RICHEDIT50W"
 
 // winnt.h
 @_transparent
-public func MAKELANGID(_ p: WORD, _ s: WORD) -> DWORD {
+internal func MAKELANGID(_ p: WORD, _ s: WORD) -> DWORD {
   return DWORD((s << 10) | p)
+}
+
+// minwindef.h
+@_transparent
+internal func LOWORD<T: FixedWidthInteger>(_ dword: T) -> WORD {
+  return WORD(DWORD_PTR(dword) & 0xffff)
 }
 
 // WinUser.h
