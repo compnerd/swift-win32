@@ -99,8 +99,10 @@ public func ApplicationMain(_ argc: Int32,
   InitCommonControlsEx(&ICCE)
 
   var hSwiftWin32: HMODULE?
-  if !GetModuleHandleExW(DWORD(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT),
-                         "SwiftWin32.dll".LPCWSTR, &hSwiftWin32) {
+  let dwFlags: DWORD = DWORD(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT)
+                     | DWORD(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS)
+  if !GetModuleHandleExW(dwFlags, #dsohandle.assumingMemoryBound(to: WCHAR.self),
+                         &hSwiftWin32) {
     log.error("GetModuleHandleExW: \(Error(win32: GetLastError()))")
   }
 

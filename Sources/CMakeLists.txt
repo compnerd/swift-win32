@@ -66,6 +66,7 @@ target_sources(SwiftWin32 PRIVATE
   Support/WindowsHandle+UIExtensions.swift
   Support/WinSDK+Extensions.swift)
 target_compile_options(SwiftWin32 PRIVATE
+  "SHELL:-Xfrontend -validate-tbd-against-ir=none"
   "SHELL:-Xcc -DNONAMELESSUNION"
   "SHELL:-Xcc -DCOBJMACROS")
 target_link_libraries(SwiftWin32 PUBLIC
