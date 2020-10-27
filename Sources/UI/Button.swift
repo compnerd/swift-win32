@@ -24,7 +24,7 @@ private let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
 public class Button: Control {
   private static let `class`: WindowClass = WindowClass(named: WC_BUTTON)
   private static let style: WindowStyle =
-      (base: DWORD(WS_TABSTOP | BS_PUSHBUTTON), extended: 0)
+      (base: DWORD(WS_TABSTOP | BS_MULTILINE | BS_PUSHBUTTON), extended: 0)
 
   public init(frame: Rect) {
     super.init(frame: frame, class: Button.class, style: Button.style)
