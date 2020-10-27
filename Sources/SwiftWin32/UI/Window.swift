@@ -196,6 +196,7 @@ extension Window {
 }
 
 extension Window {
+  /// The positioning of windows relative to each other.
   public struct Level: Equatable, Hashable, RawRepresentable {
     public typealias RawValue = Double
 
@@ -208,9 +209,20 @@ extension Window {
 }
 
 extension Window.Level {
-  public static let normal: Window.Level = Window.Level(rawValue: 0.0)
-  public static let statusBar: Window.Level = Window.Level(rawValue: 1000.0)
-  public static let alert: Window.Level = Window.Level(rawValue: 2000.0)
+  /// The default level.
+  public static var normal: Window.Level {
+    Window.Level(rawValue: 0.0)
+  }
+
+  /// The level for a status window.
+  public static var statusBar: Window.Level {
+    Window.Level(rawValue: 1000.0)
+  }
+
+  /// The level for an alert view.
+  public static var alert: Window.Level {
+    Window.Level(rawValue: 2000.0)
+  }
 }
 
 extension Window {
