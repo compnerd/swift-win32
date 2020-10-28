@@ -31,7 +31,7 @@ public class ContextMenuConfiguration {
 
   private init(identifier: NSCopying,
                previewProvider: @escaping ContextMenuContentPreviewProvider,
-               actionProvider: @escaping ContextMenuActionProvider) {
+               actionProvider: ContextMenuActionProvider?) {
     self.identifier = identifier
     self.previewProvider = previewProvider
     self.actionProvider = actionProvider
