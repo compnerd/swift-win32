@@ -5,6 +5,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  **/
 
+import WinSDK
+
 extension MenuElement {
   /// Attributes that determine the style of the menu element.
   public struct Attributes: OptionSet {
@@ -65,5 +67,51 @@ public class MenuElement {
   public init(title: String, image: Image? = nil) {
     self.title = title
     self.image = image
+  }
+}
+
+internal class Win32MenuElement {
+  internal var info: MENUITEMINFOW
+  private var titleW: [WCHAR]
+  private let subMenu: Win32Menu?
+
+  private init(title: String, subMenu: Win32Menu?, fType: Int32) {
+    self.titleW = title.LPCWSTR
+    let titleSize = titleW.count
+
+    self.subMenu = subMenu
+    self.info = titleW.withUnsafeMutableBufferPointer {
+      MENUITEMINFOW(cbSize: UINT(MemoryLayout<MENUITEMINFOW>.size),
+                    fMask: UINT(MIIM_FTYPE | MIIM_STATE | MIIM_ID | MIIM_STRING | MIIM_SUBMENU | MIIM_DATA),
+                    fType: UINT(fType),
+                    fState: UINT(MFS_ENABLED),
+                    wID: UInt32.random(in: .min ... .max),
+                    hSubMenu: subMenu?.hMenu.value,
+                    hbmpChecked: nil,
+                    hbmpUnchecked: nil,
+                    dwItemData: 0,
+                    dwTypeData: $0.baseAddress,
+                    cch: UINT(titleSize),
+                    hbmpItem: nil)
+    }
+  }
+
+  internal static func of(_ element: MenuElement) -> Win32MenuElement {
+    let subMenu: Win32Menu?
+    if let menu = element as? Menu {
+      subMenu = Win32Menu(MenuHandle(owning: CreatePopupMenu()),
+                          children: menu.children)
+    } else {
+      subMenu = nil
+    }
+    return Win32MenuElement(title: element.title, subMenu: subMenu, fType: MFT_STRING)
+  }
+
+  internal static var separator: Win32MenuElement {
+    Win32MenuElement(title: "", subMenu: nil, fType: MFT_SEPARATOR)
+  }
+
+  internal var isSeparator: Bool {
+    info.fType == MFT_SEPARATOR
   }
 }

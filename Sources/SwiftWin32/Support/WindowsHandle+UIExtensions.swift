@@ -38,3 +38,14 @@ extension HBITMAP__: HandleValue {
   }
 }
 internal typealias BitmapHandle = ManagedHandle<HBITMAP__>
+
+extension HMENU: HandleValue {
+  typealias HandleType = HMENU
+  internal static func release(_ hMenu: HandleType?) {
+    if let hMenu = hMenu {
+      DestroyMenu(hMenu)
+    }
+  }
+}
+
+internal typealias MenuHandle = ManagedHandle<HMENU>

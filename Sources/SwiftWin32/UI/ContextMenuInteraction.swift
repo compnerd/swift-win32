@@ -19,7 +19,7 @@ extension ContextMenuInteraction {
   }
 }
 
-public class ContextMenuInteraction {
+public class ContextMenuInteraction: Interaction {
   // MARK - Creating a Context Menu Interaction Object
 
   /// Creates a context menu interaction object with the specified delegate
@@ -33,6 +33,14 @@ public class ContextMenuInteraction {
   /// The object that provides the preview and contextual menu for your content
   /// and responds to interaction-related events.
   public private(set) weak var delegate: ContextMenuInteractionDelegate?
+
+  public private(set) var view: View? = nil
+
+  public func willMove(to view: View?) { }
+
+  public func didMove(to view: View?) {
+    self.view = view
+  }
 
   // MARK - Getting the Interaction's Location
 
