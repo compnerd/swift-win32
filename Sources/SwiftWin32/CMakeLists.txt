@@ -25,7 +25,10 @@ target_sources(SwiftWin32 PRIVATE
   UI/ContentSizeCategoryAdjusting.swift
   UI/ContentSizeCategoryImageAdjusting.swift
   UI/ContextMenuConfiguration.swift
+  UI/ContextMenuInteraction.swift
   UI/ContextMenuInteractionAnimating.swift
+  UI/ContextMenuInteractionCommitAnimating.swift
+  UI/ContextMenuInteractionDelegate.swift
   UI/Control.swift
   UI/CoordinateSpace.swift
   UI/DatePicker.swift

@@ -5,6 +5,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  **/
 
+import WinSDK
+
 extension Menu {
   /// Constants for identifying an application's standard menus.
   public struct Identifier: Equatable, Hashable, RawRepresentable {
@@ -275,12 +277,30 @@ extension Menu.Options {
 /// A container for grouping related menu elements in an application menu or
 /// contextual menu.
 public class Menu: MenuElement {
+  internal let children: [MenuElement]
+
   /// Creating a Menu Object
 
   /// Creates a new menu with the specified values.
   public init(title: String = "", image: Image? = nil,
               identifier: Menu.Identifier? = nil, options: Menu.Options = [],
               children: [MenuElement] = []) {
+    self.children = children
     super.init(title: title, image: image)
+  }
+}
+
+internal struct Win32Menu {
+  internal let hMenu: MenuHandle
+  private let children: [Win32MenuElement]
+
+  internal init(_ hMenu: MenuHandle, children: [MenuElement]) {
+    self.hMenu = hMenu
+    self.children = children.map { Win32MenuElement.of($0) }
+    for (index, child) in self.children.enumerated() {
+      InsertMenuItemW(hMenu.value,
+                      UINT(index), true,
+                      &(child.info))
+    }
   }
 }

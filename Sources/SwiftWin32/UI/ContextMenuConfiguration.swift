@@ -44,4 +44,8 @@ public class ContextMenuConfiguration {
 
   private var previewProvider: ContextMenuContentPreviewProvider
   private var actionProvider: ContextMenuActionProvider?
+
+  internal func provideActions() -> Menu? {
+    actionProvider?([]) // TODO suggest default actions
+  }
 }

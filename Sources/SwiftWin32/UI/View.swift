@@ -11,8 +11,27 @@ private let SwiftViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubc
   let view: View? = unsafeBitCast(dwRefData, to: AnyObject.self) as? View
   switch uMsg {
   case UINT(WM_CONTEXTMENU):
-    // TODO handle popup menu events
+    guard let view = view,
+          let menuInteraction = view.interactions.first(where: { $0 is ContextMenuInteraction })
+              as? ContextMenuInteraction else { break }
+    let x = Int16(truncatingIfNeeded: lParam)
+    let y = Int16(truncatingIfNeeded: lParam >> 16)
+    let point = Point(x: Int(x), y: Int(y))
+    let menuConfiguration = menuInteraction.delegate?.contextMenuInteraction(menuInteraction,
+                                                                             configurationForMenuAtLocation: point)
+    if let menu = menuConfiguration?.provideActions() {
+      view.win32ContextMenu = Win32Menu(MenuHandle(owning: CreatePopupMenu()),
+                                        children: menu.children)
+    } else {
+      view.win32ContextMenu = nil
+    }
+    let hMenu = view.win32ContextMenu?.hMenu.value
+    TrackPopupMenu(hMenu, UINT(TPM_RIGHTBUTTON),
+                   Int32(x), Int32(y), 0, view.hWnd, nil)
     return 0
+  case UINT(WM_COMMAND):
+    // TODO handle menu actions
+    break
   default:
     break
   }
@@ -200,6 +219,16 @@ public class View: Responder {
   public var isUserInteractionEnabled: Bool {
     get { return IsWindowEnabled(self.hWnd) }
     set { _ = EnableWindow(self.hWnd, newValue) }
+  }
+
+  public private(set) var interactions: [Interaction] = []
+  internal var win32ContextMenu: Win32Menu? = nil
+
+  public func addInteraction(_ interaction: Interaction) {
+    interaction.willMove(to: self)
+    interaction.view?.interactions.removeAll(where: { $0 === interaction })
+    interactions.append(interaction)
+    interaction.didMove(to: self)
   }
 
   // MARK - Managing the View Hierarchy
