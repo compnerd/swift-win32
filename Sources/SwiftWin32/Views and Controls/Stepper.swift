@@ -28,9 +28,9 @@ private let SwiftStepperWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lParam) in
     let lpInstance = GetWindowLongPtrW(hSender, GWLP_USERDATA)
     if lpInstance == 0 { break }
 
-    let stepper: Stepper! =
-        unsafeBitCast(lpInstance, to: AnyObject.self) as? Stepper
-    stepper.sendActions(for: .valueChanged)
+    if let stepper = unsafeBitCast(lpInstance, to: AnyObject.self) as? Stepper {
+      stepper.sendActions(for: .valueChanged)
+    }
   default:
     break
   }
