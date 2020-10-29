@@ -70,7 +70,7 @@ public class View: Responder {
     }
   }
 
-  /// Configuring a View's Visual Appearance
+  // MARK - Configuring a View's Visual Appearance
 
   /// A boolean that determines if the view is hidden.
   public var isHidden: Bool {
@@ -86,7 +86,7 @@ public class View: Responder {
     }
   }
 
-  /// Configuring the Bounds and Frame Rectangles
+  // MARK - Configuring the Bounds and Frame Rectangles
 
   /// The frame rectangle, which describes the view's location and size in it's
   /// superview's coordinate system.
@@ -113,7 +113,7 @@ public class View: Responder {
                             size: self.frame.size) }
   }
 
-  /// Creating a View Object
+  // MARK - Creating a View Object
 
   // FIXME(compnerd) should this be marked as a convenience initializer?
 
@@ -194,7 +194,7 @@ public class View: Responder {
     _ = self.win32.window.class.unregister()
   }
 
-  /// Configuring the Event-Related Behaviour
+  // MARK - Configuring the Event-Related Behaviour
 
   /// A boolean value that determines whether user events are ignored and removed
   /// from the event queue.
@@ -203,7 +203,7 @@ public class View: Responder {
     set { _ = EnableWindow(self.hWnd, newValue) }
   }
 
-  /// Managing the View Hierarchy
+  // MARK - Managing the View Hierarchy
 
   public private(set) var superview: View?
   public private(set) var subviews: [View] = []
@@ -254,7 +254,88 @@ public class View: Responder {
     view.didMoveToSuperview()
   }
 
-  /// Observing View-Related Changes
+  // MARK - Managing the View's Constraints
+
+  /// The constraints held by the view.
+  public private(set) var constraints: [LayoutConstraint] = []
+
+  /// Adds a constraint on the layout of the receiving view or its subviews.
+  public func addConstraint(_ constraint: LayoutConstraint) {
+  }
+
+  /// Removes the specified constraint from the view.
+  public func removeConstraint(_ constraint: LayoutConstraint) {
+  }
+
+  /// Removes the specified constraints from the view.
+  public func removeConstraints(_ constraints: [LayoutConstraint]) {
+  }
+
+  // MARK - Create Constraint Using Layout Constraint
+
+  /// A layout anchor representing the bottom edge of the view's frame.
+  public var bottomAnchor: LayoutYAxisAnchor {
+    LayoutYAxisAnchor(item: self, attribute: .bottom)
+  }
+
+  /// A layout anchor representing the horizontal center of the view's frame.
+  public var centerXAnchor: LayoutXAxisAnchor {
+    LayoutXAxisAnchor(item: self, attribute: .centerX)
+  }
+
+  /// A layout anchor representing the vertical center of the view's frame.
+  public var centerYAnchor: LayoutYAxisAnchor {
+    LayoutYAxisAnchor(item: self, attribute: .centerY)
+  }
+
+  /// A layout anchor representing the baseline for the topmost line of text in
+  /// the view.
+  public var firstBaselineAnchor: LayoutYAxisAnchor {
+    LayoutYAxisAnchor(item: self, attribute: .firstBaseline)
+  }
+
+  /// A layout anchor representing the height of the view's frame.
+  public var heightAnchor: LayoutDimension {
+    LayoutDimension(item: self, attribute: .height)
+  }
+
+  /// A layout anchor representing the baseline for the bottommost line of text
+  /// in the view.
+  public var lastBaselineAnchor: LayoutYAxisAnchor {
+    LayoutYAxisAnchor(item: self, attribute: .lastBaseline)
+  }
+
+  /// A layout anchor representing the leading edge of the view's frame.
+  public var leadingAnchor: LayoutXAxisAnchor {
+    LayoutXAxisAnchor(item: self, attribute: .leading)
+  }
+
+  /// A layout anchor representing the left edge of the view's frame.
+  public var leftAnchor: LayoutXAxisAnchor {
+    LayoutXAxisAnchor(item: self, attribute: .left)
+  }
+
+  /// A layout anchor representing the right edge of the view's frame.
+  public var rightAnchor: LayoutXAxisAnchor {
+    LayoutXAxisAnchor(item: self, attribute: .right)
+  }
+
+  /// A layout anchor representing the top edge of the view's frame.
+  public var topAnchor: LayoutYAxisAnchor {
+    LayoutYAxisAnchor(item: self, attribute: .top)
+  }
+
+  /// A layout anchor representing the top edge of the view's frame.
+  public var trailingAnchor: LayoutXAxisAnchor {
+    LayoutXAxisAnchor(item: self, attribute: .trailing)
+  }
+
+  /// A layout anchor representing the trailing edge of the view's frame.
+  public var widthAnchor: LayoutDimension {
+    LayoutDimension(item: self, attribute: .width)
+  }
+
+  // MARK - Observing View-Related Changes
 
   /// Tells the view that a subview was added.
   public func didAddSubview(_ subview: View) {
@@ -273,13 +354,14 @@ public class View: Responder {
   public func didMoveToSuperview() {
   }
 
-  // Responder Chain
+  // MARK - Responder Chain
   public override var next: Responder? {
     if let parent = self.superview { return parent }
     return nil
   }
 
-  // Trait Environment
+  // MARK - Trait Environment
+
   // NOTE: this must be in the class to permit deviced types to override the
   // notification.
   public func traitCollectionDidChange(_ previousTraitCollection: TraitCollection?) {

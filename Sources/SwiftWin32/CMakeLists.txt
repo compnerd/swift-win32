@@ -6,6 +6,15 @@ add_library(SwiftWin32 SHARED
   Application/Information.swift
   Application/LaunchKeyOptions.swift)
 target_sources(SwiftWin32 PRIVATE
+  AutoLayout/LayoutAnchor.swift
+  AutoLayout/LayoutConstraint.swift
+  AutoLayout/LayoutDimension.swift
+  AutoLayout/LayoutGuide.swift
+  AutoLayout/LayoutPriority.swift
+  AutoLayout/LayoutSupport.swift
+  AutoLayout/LayoutXAxisAnchor.swift
+  AutoLayout/LayoutYAxisAnchor.swift)
+target_sources(SwiftWin32 PRIVATE
   UI/AlertAction.swift
   UI/AlertController.swift
   UI/AnimationCurve.swift
