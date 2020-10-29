@@ -8,7 +8,7 @@
 import WinSDK
 
 public class ViewController: Responder {
-  /// Managing the View
+  // MARK - Managing the View
 
   /// The view that the controller manages.
   public var view: View! {
@@ -62,10 +62,46 @@ public class ViewController: Responder {
     fatalError("not yet implemented")
   }
 
+  // MARK - Responding to View Related Events
+
+  /// Notifies the view controller that its view is about to be added to a view
+  /// hierarchy.
+  public func viewWillAppear(_ animated: Bool) {
+  }
+
+  /// Notifies the view controller that its view was added to a view hierarchy.
+  public func viewDidAppear(_ animated: Bool) {
+  }
+
+  /// Notifies the view controller that its view is about to be removed from a
+  /// view hierarchy.
+  public func viewWillDisappear(_ animated: Bool) {
+  }
+
+  /// Notifies the view controller that its view was removed from a view
+  /// hierarchy.
+  public func viweDidDisappear(_ animated: Bool) {
+  }
+
+  /// A Boolean value indicating whether the view controller is being dismissed.
+  public private(set) var isBeingDismissed: Bool = false
+
+  /// A Boolean value indicating whether the view controller is being presented.
+  public private(set) var isBeingPresented: Bool = false
+
+  /// A Boolean value indicating whether the view controller is being removed
+  /// from a parent view controller.
+  public private(set) var isMovingFromParent: Bool = false
+
+  /// A Boolean value indicating whether the view controller is being moved to a
+  /// parent view controller.
+  public private(set) var isMovingToParent: Bool = false
+
   override public init() {
   }
 
-  // Responder Chain
+  // MARK - Responder Chain
+
   override public var next: Responder? {
     return view?.superview
   }
