@@ -9,15 +9,17 @@ import WinSDK
 
 private let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let button: Button? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Button
+
   switch uMsg {
-  case UINT(WM_LBUTTONDOWN):
+  case UINT(WM_LBUTTONUP):
     button?.sendActions(for: .primaryActionTriggered)
-    return 0
   default:
     break
   }
+
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
 }
+
 
 public class Button: Control {
   private static let `class`: WindowClass = WindowClass(named: WC_BUTTON)
@@ -26,8 +28,9 @@ public class Button: Control {
 
   public init(frame: Rect) {
     super.init(frame: frame, class: Button.class, style: Button.style)
-    SetWindowSubclass(hWnd, SwiftButtonProc, UINT_PTR(1),
-                      unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
+
+    _ = SetWindowSubclass(hWnd, SwiftButtonProc, UINT_PTR(1),
+                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
   // FIXME(compnerd) handle title setting for different states
