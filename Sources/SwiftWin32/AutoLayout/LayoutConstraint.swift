@@ -5,9 +5,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  **/
 
-@_implementationOnly
-import Cassowary
-
 extension LayoutConstraint {
   /// The relation between the first attribute and the modified second attribute
   /// in a constraint.
