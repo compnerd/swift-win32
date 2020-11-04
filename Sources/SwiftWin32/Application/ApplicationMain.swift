@@ -39,6 +39,25 @@ private let pApplicationWindowProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, 
   return CallNextHookEx(nil, nCode, wParam, lParam)
 }
 
+private let pApplicationStateChangeRoutine: PAPPSTATE_CHANGE_ROUTINE = { (quiesced: UInt8, context: PVOID?) in
+  guard let delegate = Application.shared.delegate else { return }
+
+  let foregrounding: Bool = quiesced == 0
+  if foregrounding {
+    NotificationCenter.default
+        .post(name: type(of: delegate).willEnterForegroundNotification,
+              object: Application.shared)
+
+    delegate.applicationWillEnterForeground(Application.shared)
+  } else {
+    NotificationCenter.default
+        .post(name: type(of: delegate).didEnterBackgroundNotification,
+              object: Application.shared)
+
+    delegate.applicationDidEnterBackground(Application.shared)
+  }
+}
+
 // Waits for a message on the message queue, returning when either a message has
 // arrived or the timeout specified has expired.
 private func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
@@ -98,6 +117,15 @@ public func ApplicationMain(_ argc: Int32,
                            dwICC: dwICC)
   InitCommonControlsEx(&ICCE)
 
+  var pAppRegistration: PAPPSTATE_REGISTRATION?
+  let ulStatus =
+      RegisterAppStateChangeNotification(pApplicationStateChangeRoutine, nil,
+                                         &pAppRegistration)
+  if ulStatus != ERROR_SUCCESS {
+    log.error("RegisterAppStateChangeNotification: \(Error(win32: GetLastError()))")
+  }
+  defer { UnregisterAppStateChangeNotification(pAppRegistration) }
+
   var hSwiftWin32: HMODULE?
   let dwFlags: DWORD = DWORD(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT)
                      | DWORD(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS)
@@ -106,6 +134,8 @@ public func ApplicationMain(_ argc: Int32,
     log.error("GetModuleHandleExW: \(Error(win32: GetLastError()))")
   }
 
+  // TODO(compnerd) remove the application window proc hook, we now have scenes
+  // and the Window can report the event via the scene.
   let hWindowProcedureHook: HHOOK? =
       SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32,
                         GetCurrentThreadId())
@@ -126,6 +156,9 @@ public func ApplicationMain(_ argc: Int32,
                      didFinishLaunchingWithOptions: nil) == false {
     return EXIT_FAILURE
   }
+
+  Application.shared.delegate?
+      .applicationDidBecomeActive(Application.shared)
 
   // TODO(compnerd) populate these based on the application instantiation
   let options: Scene.ConnectionOptions = Scene.ConnectionOptions()
