@@ -41,7 +41,7 @@ extension InterfaceOrientation {
 
 /// A set of methods used to manage shared behaviours for the application.
 public protocol ApplicationDelegate: class, _TriviallyConstructible {
-  /// Initializing the App
+  // MARK - Initializing the App
 
   /// Indicates to the delegate that the application launch process has begun.
   func application(_ application: Application,
@@ -54,7 +54,7 @@ public protocol ApplicationDelegate: class, _TriviallyConstructible {
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?)
       -> Bool
 
-  /// Responding to App Life-Cycle Events
+  // MARK - Responding to App Life-Cycle Events
 
   /// Indicates to the delegate that the application has become active.
   func applicationDidBecomeActive(_ application: Application)
@@ -77,7 +77,7 @@ public protocol ApplicationDelegate: class, _TriviallyConstructible {
   func applicationDidRecieveMemoryWarning(_ application: Application)
   func applicationSignificantTimeChange(_ application: Application)
 
-  /// Configuring and Discarding Scenes
+  // MARK - Configuring and Discarding Scenes
 
   /// Returns the configuration data to use when creating a new scene.
   func application(_ application: Application,
