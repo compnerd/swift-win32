@@ -103,5 +103,9 @@ let SwiftWin32 = Package(
         ]),
       ]
     ),
+    .testTarget(
+      name: "AutoLayoutTests",
+      dependencies: ["SwiftWin32"]
+    ),
   ]
 )
