@@ -24,11 +24,9 @@ let SwiftWin32 = Package(
         .product(name: "Logging", package: "swift-log"),
         .product(name: "cassowary", package: "cassowary")
       ],
-      path: "Sources",
+      path: "Sources/SwiftWin32",
       exclude: [
         "CMakeLists.txt",
-        "CWinRT",
-        "SwiftUIWin32",
       ],
       swiftSettings: [
         .define("WITH_SWIFT_LOG"),
