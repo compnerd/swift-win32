@@ -53,16 +53,17 @@ target_sources(SwiftWin32 PRIVATE
   CG/Rect.swift
   CG/Size.swift)
 target_sources(SwiftWin32 PRIVATE
-  Support/BatteryMonitor.swift
-  Support/Error.swift
+  Platform/BatteryMonitor.swift
+  Platform/Error.swift
+  Platform/PropertyWrappers.swift
+  Platform/WindowClass.swift
+  Platform/WindowsHandle.swift)
+target_sources(SwiftWin32 PRIVATE
   Support/IndexPath+UIExtensions.swift
   Support/Logging.swift
   Support/Rect+UIExtensions.swift
   Support/Point+UIExtensions.swift
-  Support/PropertyWrappers.swift
   Support/String+UIExtensions.swift
-  Support/WindowClass.swift
-  Support/WindowsHandle.swift
   Support/WindowsHandle+UIExtensions.swift
   Support/WinSDK+Extensions.swift)
 target_compile_options(SwiftWin32 PRIVATE
