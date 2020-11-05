@@ -32,10 +32,8 @@ ninja -C build SwiftWin32 UICatalog
 
 Building this project with swift-package-manager is experimental and does not fully function.  In particular, it is not possible to deploy auxiliary files which are required for Swift/Win32 based applications to function to the correct location.  However, the swift-package-manager build can be used with additional manual steps.  This also enables the use of VSCode and SourceKit-LSP to develop Swift/Win32 as well as applications using this library.
 
-LLD is the recommended linker to use when using swift-package-manager.
-
 ```cmd
-swift build -Xswiftc -use-ld=lld --target UICatalog
+swift build --product UICatalog
 copy Examples\UICatalog\UICatalog.exe.manifest .build\x86_64-unknown-windows-msvc\debug\
 copy Examples\UICatalog\Info.plist .build\x86_64-unknown-windows-msvc\debug\
 .build\x86_64-unknown-windows-msvc\debug\UICatalog.exe
