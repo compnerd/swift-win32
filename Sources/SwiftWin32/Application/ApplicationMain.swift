@@ -9,53 +9,26 @@ import WinSDK
 import SwiftCOM
 import Foundation
 
-private let pApplicationWindowProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, lParam: LPARAM) -> LRESULT in
-  guard nCode == HC_ACTION else {
-    return CallNextHookEx(nil, nCode, wParam, lParam)
-  }
-
-  if let pMessage = UnsafeMutablePointer<CWPSTRUCT>(bitPattern: UInt(lParam)) {
-    switch pMessage.pointee.message {
-    case UINT(WM_ACTIVATEAPP):
-      let application: Application = Application.shared
-      let bActivation: Bool = pMessage.pointee.wParam > 0
-      if bActivation {
-        // quiesce foreground notifications
-        if application.state == .active { break }
-        application.delegate?.applicationWillEnterForeground(application)
-        application.state = .active
-        application.delegate?.applicationDidBecomeActive(application)
-      } else {
-        // quiesce background notifications
-        if application.state == .background { break }
-        application.delegate?.applicationWillResignActive(application)
-        Application.shared.state = .background
-        application.delegate?.applicationDidEnterBackground(application)
-      }
-    default:
-      break
-    }
-  }
-
-  return CallNextHookEx(nil, nCode, wParam, lParam)
-}
+internal final class Delegate: ApplicationDelegate {}
 
 private let pApplicationStateChangeRoutine: PAPPSTATE_CHANGE_ROUTINE = { (quiesced: UInt8, context: PVOID?) in
-  guard let delegate = Application.shared.delegate else { return }
-
   let foregrounding: Bool = quiesced == 0
   if foregrounding {
-    NotificationCenter.default
-        .post(name: type(of: delegate).willEnterForegroundNotification,
-              object: Application.shared)
+    Application.shared.delegate?
+        .applicationWillEnterForeground(Application.shared)
 
-    delegate.applicationWillEnterForeground(Application.shared)
+    // Post ApplicationDelegate.willEnterForegroundNotification
+    NotificationCenter.default
+        .post(name: Delegate.willEnterForegroundNotification,
+              object: Application.shared)
   } else {
-    NotificationCenter.default
-        .post(name: type(of: delegate).didEnterBackgroundNotification,
-              object: Application.shared)
+    Application.shared.delegate?
+        .applicationDidEnterBackground(Application.shared)
 
-    delegate.applicationDidEnterBackground(Application.shared)
+    // Post ApplicationDelegate.willEnterBackgroundNotification
+    NotificationCenter.default
+        .post(name: Delegate.didEnterBackgroundNotification,
+              object: Application.shared)
   }
 }
 
@@ -126,6 +99,12 @@ public func ApplicationMain(_ argc: Int32,
                            dwICC: dwICC)
   InitCommonControlsEx(&ICCE)
 
+  if Application.shared.delegate?
+        .application(Application.shared,
+                     willFinishLaunchingWithOptions: nil) == false {
+    return EXIT_FAILURE
+  }
+
   var pAppRegistration: PAPPSTATE_REGISTRATION?
   let ulStatus =
       RegisterAppStateChangeNotification(pApplicationStateChangeRoutine, nil,
@@ -135,36 +114,16 @@ public func ApplicationMain(_ argc: Int32,
   }
   defer { UnregisterAppStateChangeNotification(pAppRegistration) }
 
-  var hSwiftWin32: HMODULE?
-  let dwFlags: DWORD = DWORD(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT)
-                     | DWORD(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS)
-  if !GetModuleHandleExW(dwFlags, #dsohandle.assumingMemoryBound(to: WCHAR.self),
-                         &hSwiftWin32) {
-    log.error("GetModuleHandleExW: \(Error(win32: GetLastError()))")
-  }
-
-  // TODO(compnerd) remove the application window proc hook, we now have scenes
-  // and the Window can report the event via the scene.
-  let hWindowProcedureHook: HHOOK? =
-      SetWindowsHookExW(WH_CALLWNDPROC, pApplicationWindowProc, hSwiftWin32,
-                        GetCurrentThreadId())
-  if hWindowProcedureHook == nil {
-    log.error("SetWindowsHookExW(WH_CALLWNDPROC): \(Error(win32: GetLastError()))")
-  }
-
-  defer {
-    if let hWindowProcedureHook = hWindowProcedureHook {
-      if !UnhookWindowsHookEx(hWindowProcedureHook) {
-        log.error("UnhookWindowsHookEx(WndProc): \(Error(win32: GetLastError()))")
-      }
-    }
-  }
-
   if Application.shared.delegate?
         .application(Application.shared,
                      didFinishLaunchingWithOptions: nil) == false {
     return EXIT_FAILURE
   }
+
+  // Post ApplicationDelegate.didFinishLaunchingNotification
+  NotificationCenter.default
+      .post(name: Delegate.didFinishLaunchingNotification,
+            object: nil, userInfo: nil)
 
   Application.shared.delegate?
       .applicationDidBecomeActive(Application.shared)

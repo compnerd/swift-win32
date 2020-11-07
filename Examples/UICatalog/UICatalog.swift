@@ -150,11 +150,11 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     window.makeKeyAndVisible()
   }
 
-  func applicationDidBecomeActive(_: Application) {
+  func sceneDidBecomeActive(_: Scene) {
     print("Good morning!")
   }
 
-  func applicationDidEnterBackground(_: Application) {
+  func sceneWillResignActive(_: Scene) {
     print("Good night!")
   }
 

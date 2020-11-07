@@ -13,6 +13,30 @@ private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
   let window: Window? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Window
 
   switch uMsg {
+  case UINT(WM_ACTIVATEAPP):
+    guard let window = window else { break }
+
+    if wParam == 0 {
+      if let windowScene = window.windowScene {
+        windowScene.delegate?.sceneWillResignActive(windowScene)
+      } else if window.isKeyWindow {
+        Application.shared.delegate?.applicationWillResignActive(Application.shared)
+
+        // Post ApplicationDelegate.willResignActiveNotification
+        NotificationCenter.default
+            .post(name: Delegate.willResignActiveNotification, object: nil)
+      }
+    } else {
+      if let windowScene = window.windowScene {
+        windowScene.delegate?.sceneDidBecomeActive(windowScene)
+      } else if window.isKeyWindow {
+        Application.shared.delegate?.applicationDidBecomeActive(Application.shared)
+
+        // Post ApplicationDelegate.didBecomeActiveNotification
+        NotificationCenter.default
+            .post(name: Delegate.didBecomeActiveNotification, object: nil)
+      }
+    }
   case UINT(WM_DESTROY):
     // TODO(compnerd) we should handle multiple scenes, which can have multiple
     // Windows, so the destruction of a window should not post the quit message
