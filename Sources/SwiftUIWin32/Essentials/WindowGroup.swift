@@ -10,7 +10,7 @@ public struct WindowGroup<Content: View>: Scene {
     fatalError("\(#function) not yet implemented")
   }
 
-  /// Creating a Window Group
+  // MARK - Creating a Window Group
 
   public init(@ViewBuilder content: () -> Content) {
   }
