@@ -9,7 +9,7 @@ import SwiftWin32
 
 /// A type that represents the structure and behaviour of an application.
 public protocol Application {
-  /// Implementing an Application
+  // MARK - Implementing an Application
 
   /// The type of scene representing the content of the application.
   associatedtype Body: Scene
@@ -18,7 +18,7 @@ public protocol Application {
   @SceneBuilder
   var body: Self.Body { get }
 
-  /// Running an Application
+  // MARK - Running an Application
 
   /// Creates an instance of the application using the body as the content.
   init()
