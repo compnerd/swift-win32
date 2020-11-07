@@ -30,7 +30,12 @@ ninja -C build SwiftWin32 UICatalog
 
 ### Experimental (Swift Package Manager)
 
-Building this project with swift-package-manager is experimental and does not fully function.  In particular, it is not possible to deploy auxiliary files which are required for Swift/Win32 based applications to function to the correct location.  However, the swift-package-manager build can be used with additional manual steps.  This also enables the use of VSCode and SourceKit-LSP to develop Swift/Win32 as well as applications using this library.
+Building this project with swift-package-manager is supported on an experimental basis.  The SPM based build is required for code completion via SourceKit-LSP.  It also allows for the use of Swift/Win32 in other applications using SPM.  In order to use SPM to build this project additional post-build steps are required to use the demo applications.
+
+The following known limitations are known:
+
+1. It is not possible to deploy auxiliary files which are required for Swift/Win32 based applications to function to the correct location.
+2. It is not possible to build and run multiple demo projects as the auxiliary files collide.
 
 ```cmd
 swift build --product UICatalog
