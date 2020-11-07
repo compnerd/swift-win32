@@ -13,6 +13,16 @@ private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
   let window: Window? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Window
 
   switch uMsg {
+  case UINT(WM_ACTIVATE):
+    guard let window = window, let windowScene = window.windowScene else { break }
+    switch LOWORD(wParam) {
+    case WORD(WA_ACTIVE), WORD(WA_CLICKACTIVE):
+      windowScene.delegate?.sceneDidBecomeActive(windowScene)
+    case WORD(WA_INACTIVE):
+      windowScene.delegate?.sceneDidEnterBackground(windowScene)
+    default:
+      fatalError("WM_ACTIVATE wParam: 0x\(String(wParam, radix: 16)), lParam: 0x\(String(lParam, radix: 16))")
+    }
   case UINT(WM_ACTIVATEAPP):
     guard let window = window else { break }
 
@@ -87,16 +97,6 @@ private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
         POINT(from: ClientSizeToWindowSize(restrictions.maximumSize))
 
     return LRESULT(0)
-  case UINT(WM_ACTIVATE):
-    guard let window = window, let windowScene = window.windowScene else { break }
-    switch LOWORD(wParam) {
-    case WORD(WA_ACTIVE), WORD(WA_CLICKACTIVE):
-      windowScene.delegate?.sceneDidBecomeActive(windowScene)
-    case WORD(WA_INACTIVE):
-      windowScene.delegate?.sceneDidEnterBackground(windowScene)
-    default:
-      fatalError("WM_ACTIVATE wParam: 0x\(String(wParam, radix: 16)), lParam: 0x\(String(lParam, radix: 16))")
-    }
   default:
     break
   }
