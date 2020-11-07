@@ -8,8 +8,6 @@
 import SwiftWin32
 import Foundation
 
-import let WinSDK.CW_USEDEFAULT
-
 private extension View {
   func addSubviews(_ views: [View]) {
     _ = views.map { self.addSubview($0) }
@@ -63,9 +61,7 @@ private struct CalculatorState {
 private class Calculator {
   private var state: CalculatorState = CalculatorState()
 
-  private var window: Window =
-      Window(frame: Rect(x: Double(CW_USEDEFAULT), y: Double(CW_USEDEFAULT),
-                         width: 192, height: 264))
+  private var window: Window
 
   private var txtResult: TextField =
       TextField(frame: Rect(x: 34, y: 32, width: 128, height: 24))
@@ -97,7 +93,9 @@ private class Calculator {
       Button(frame: Rect(x: 128, y: 192, width: 32, height: 32), title: "="),
   ]
 
-  public init() {
+  public init(windowScene: WindowScene) {
+    self.window = Window(windowScene: windowScene)
+
     self.window.rootViewController = ViewController()
     self.window.rootViewController?.title = "Calculator"
 
@@ -178,12 +176,17 @@ private class Calculator {
 }
 
 @main
-final class CalculatorDelegate: ApplicationDelegate {
+final class CalculatorDelegate: ApplicationDelegate, SceneDelegate {
   private var calculator: Calculator?
 
-  func application(_: Application,
-                   didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?) -> Bool {
-    calculator = Calculator()
-    return true
+  func scene(_ scene: Scene, willConnectTo session: SceneSession,
+             options: Scene.ConnectionOptions) {
+    guard let windowScene = scene as? WindowScene else { return }
+
+    let size: Size = Size(width: 192, height: 264)
+    windowScene.sizeRestrictions?.minimumSize = size
+    windowScene.sizeRestrictions?.maximumSize = size
+
+    self.calculator = Calculator(windowScene: windowScene)
   }
 }
