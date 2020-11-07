@@ -53,6 +53,7 @@ let SwiftWin32 = Package(
       exclude: [
         "CMakeLists.txt",
         "Calculator.exe.manifest",
+        "Info.plist",
       ],
       swiftSettings: [
         .unsafeFlags([
