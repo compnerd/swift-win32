@@ -360,6 +360,22 @@ public class View: Responder {
     return nil
   }
 
+  // MARK - Identifying the View at Runtime
+
+  /// An integer that you can use to identify view objects in your application.
+  public var tag: Int = 0
+
+  /// Returns the view whose tag matches the specified value.
+  public func viewWithTag(_ tag: Int) -> View? {
+    if self.tag == tag { return self }
+    // TODO(compnerd) this is a poor equivalent of a level-order traversal of
+    // the view hierachy.  We could implement this properly, but, this provides
+    // a functional implementation that is brief and is unlikely to be a hot
+    // path.  Convert to a proper level-order traversal.
+    return self.subviews.first(where: { $0.tag == tag }) ??
+        self.subviews.lazy.compactMap { $0.viewWithTag(tag) }.first
+  }
+
   // MARK - Trait Environment
 
   // NOTE: this must be in the class to permit deviced types to override the
