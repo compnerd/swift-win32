@@ -127,10 +127,9 @@ private class Calculator {
 
     self.state[keyPath: self.state.operand] += String(input)
 
-    let value: Double = Double(self.state[keyPath: self.state.operand])!
     self.txtResult.text =
-        NumberFormatter.localizedString(from: NSNumber(value: value),
-                                        number: .decimal)
+        (NSDecimalNumber(string: self.state[keyPath: self.state.operand])
+            as Decimal).description
   }
 
   private func onOperationPress(_ sender: Button, _: Control.Event) {
@@ -139,13 +138,12 @@ private class Calculator {
       self.state = CalculatorState()
       self.txtResult.text = "0"
     case 1: /* +/- */
-      let value: Double = Double(self.state[keyPath: self.state.operand])!
-      let number: NSNumber = NSNumber(value: -1.0 * value)
-
-      self.state[keyPath: self.state.operand] =
-          NumberFormatter.localizedString(from: number, number: .decimal)
-      self.txtResult.text =
-          NumberFormatter.localizedString(from: number, number: .decimal)
+      var value: Decimal =
+          NSDecimalNumber(string: self.state[keyPath: self.state.operand])
+              as Decimal
+      value.negate()
+      self.state[keyPath: self.state.operand] = value.description
+      self.txtResult.text = value.description
     case 3: /* ÷ */
       self.state.operation = .division
     case 4: /* x */
@@ -160,10 +158,9 @@ private class Calculator {
       self.state.rhs = "100"
       fallthrough
     case 7: /* = */
-      let value: Double = Double(self.state.evaluate())!
       self.txtResult.text =
-          NumberFormatter.localizedString(from: NSNumber(value: value),
-                                          number: .decimal)
+          (NSDecimalNumber(string: self.state.evaluate()) as Decimal)
+              .description
     default:
       fatalError("unknown operation \(self.btnOperations.firstIndex(of: sender)!)")
     }
