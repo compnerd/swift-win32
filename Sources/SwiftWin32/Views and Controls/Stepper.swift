@@ -64,6 +64,7 @@ private let SwiftStepperProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
 }
 
+/// A control for incrementing or decrementing a value.
 public class Stepper: Control {
   private static let `class`: WindowClass = WindowClass(named: UPDOWN_CLASS)
   private static let style: WindowStyle =
@@ -71,13 +72,22 @@ public class Stepper: Control {
 
   private static var proxy: StepperProxy = StepperProxy()
 
-  /// Configuring the Stepper
+  // MARK - Configuring the Stepper
+
   public var isContinuous: Bool { fatalError("not yet implemented") }
   public var autorepeat: Bool { fatalError("not yet implemented") }
+
+  /// A Boolean value that determines whether the stepper can wrap its value to
+  /// the minimum or maximum value when incrementing and decrementing the value.
   public var wraps: Bool {
     get { self.GWL_STYLE & UDS_WRAP == UDS_WRAP }
-    set { self.GWL_STYLE = newValue ? self.GWL_STYLE | UDS_WRAP : self.GWL_STYLE & ~UDS_WRAP }
+    set {
+      self.GWL_STYLE = newValue ? self.GWL_STYLE | UDS_WRAP
+                                : self.GWL_STYLE & ~UDS_WRAP
+    }
   }
+
+  /// The lowest possible numeric value for the stepper.
   public var minimumValue: Double {
     get {
       var value: CInt = 0
@@ -88,10 +98,15 @@ public class Stepper: Control {
       return Double(value)
     }
     set {
+      let newMaximum =
+          self.maximumValue >= newValue ? self.minimumValue : newValue
+
       _ = SendMessageW(self.hWnd, UINT(UDM_SETRANGE32),
-                       WPARAM(CInt(newValue)), LPARAM(CInt(self.maximumValue)))
+                       WPARAM(CInt(newValue)), LPARAM(CInt(newMaximum)))
     }
   }
+
+  /// The highest possible numeric value for the stepper.
   public var maximumValue: Double {
     get {
       var value: CInt = 0
@@ -102,10 +117,15 @@ public class Stepper: Control {
       return Double(value)
     }
     set {
+      let newMinimum =
+          self.minimumValue <= newValue ? self.minimumValue : newValue
+
       _ = SendMessageW(self.hWnd, UINT(UDM_SETRANGE32),
-                       WPARAM(CInt(self.minimumValue)), LPARAM(CInt(newValue)))
+                       WPARAM(CInt(newMinimum)), LPARAM(CInt(newValue)))
     }
   }
+
+  /// The step, or increment, value for the stepper.
   public var stepValue: Double {
     get {
       var value: UDACCEL = UDACCEL(nSec: 0, nInc: 0)
@@ -130,7 +150,9 @@ public class Stepper: Control {
     }
   }
 
-  /// Accessing the Stepper's Value
+  // MARK - Accessing the Stepper's Value
+
+  /// The numeric value of the stepper.
   public var value: Double {
     get {
       let lResult: LRESULT = SendMessageW(self.hWnd, UINT(UDM_GETPOS32), 0, 0)
