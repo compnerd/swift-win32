@@ -1,3 +1,6 @@
 [submodule "Packages/cassowary"]
 	path = Packages/cassowary
 	url = https://github.com/compnerd/cassowary
+[submodule "Packages/SwiftCOM"]
+	path = Packages/SwiftCOM
+	url = https://github.com/compnerd/swift-com
