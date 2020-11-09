@@ -50,12 +50,15 @@ public func ApplicationMain(_ argc: Int32,
     log.error("unable to load `msftedit.dll`: \(Error(win32: GetLastError()))")
   }
 
+  // Setup Application
   if let application = application {
     guard let instance = NSClassFromString(application) else {
       fatalError("unable to find application class: \(application)")
     }
     Application.shared = (instance as! Application.Type).init()
   }
+
+  // Setup ApplicationDelegate
   if let delegate = delegate {
     guard let instance = NSClassFromString(delegate) else {
       fatalError("unable to find delegate class: \(delegate)")
@@ -67,6 +70,7 @@ public func ApplicationMain(_ argc: Int32,
     }
   }
 
+  // Load Info.plist to instantiate ApplicationInformation
   if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
       if let contents = FileManager.default.contents(atPath: path) {
         Application.shared.information =
