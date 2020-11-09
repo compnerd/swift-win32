@@ -1,0 +1,3 @@
+[submodule "Packages/cassowary"]
+	path = Packages/cassowary
+	url = https://github.com/compnerd/cassowary
