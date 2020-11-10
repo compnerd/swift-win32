@@ -45,5 +45,5 @@ add_subdirectory(Examples)
 message("-- Building with sub-modules:")
 message("--   Cassowary rG${CASSOWARY_GIT_REVISION}")
 message("--   Swift/COM rG${SWIFT_COM_GIT_REVISION}")
-export(TARGETS SwiftWin32
+export(TARGETS SwiftCOM SwiftWin32
   FILE SwiftWin32Config.cmake)

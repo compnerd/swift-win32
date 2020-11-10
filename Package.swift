@@ -16,13 +16,16 @@ let SwiftWin32 = Package(
     // new CRT module.
     .package(url: "https://github.com/apple/swift-log.git", .branch("main")),
     .package(url: "https://github.com/compnerd/cassowary.git", .branch("master")),
+    .package(name: "SwiftCOM", url: "https://github.com/compnerd/swift-com.git",
+             .branch("master")),
   ],
   targets: [
     .target(
       name: "SwiftWin32",
       dependencies: [
         .product(name: "Logging", package: "swift-log"),
-        .product(name: "cassowary", package: "cassowary")
+        .product(name: "cassowary", package: "cassowary"),
+        .product(name: "SwiftCOM", package: "SwiftCOM"),
       ],
       path: "Sources/SwiftWin32",
       exclude: [
