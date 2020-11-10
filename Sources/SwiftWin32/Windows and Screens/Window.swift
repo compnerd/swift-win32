@@ -17,7 +17,7 @@ private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
     guard let window = window, let windowScene = window.windowScene else { break }
     switch LOWORD(wParam) {
     case WORD(WA_ACTIVE), WORD(WA_CLICKACTIVE):
-      windowScene.delegate?.sceneDidBecomeActive(windowScene)
+      windowScene.delegate?.sceneWillEnterForeground(windowScene)
     case WORD(WA_INACTIVE):
       windowScene.delegate?.sceneDidEnterBackground(windowScene)
     default:
