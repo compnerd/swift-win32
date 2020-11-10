@@ -133,7 +133,8 @@ public struct Device {
     }
   }
 
-  public var isGeneratingDeviceOrientationNotifications: Bool = false
+  public private(set) var isGeneratingDeviceOrientationNotifications: Bool =
+      false
 
   public func beginGeneratingDeviceOrientationNotifications() {
     // TODO(compnerd) implement this
