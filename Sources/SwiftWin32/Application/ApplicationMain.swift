@@ -6,6 +6,7 @@
  **/
 
 import WinSDK
+import SwiftCOM
 import Foundation
 
 private let pApplicationWindowProc: HOOKPROC = { (nCode: Int32, wParam: WPARAM, lParam: LPARAM) -> LRESULT in
@@ -99,6 +100,14 @@ public func ApplicationMain(_ argc: Int32,
             try? PropertyListDecoder().decode(Application.Information.self,
                                               from: contents)
       }
+  }
+
+  // Initialize COM
+  do {
+    try CoInitializeEx(COINIT_MULTITHREADED)
+  } catch {
+    log.error("CoInitializeEx: \(error)")
+    return EXIT_FAILURE
   }
 
   // Enable Per Monitor DPI Awareness

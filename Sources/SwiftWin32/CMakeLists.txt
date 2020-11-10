@@ -83,6 +83,8 @@ target_link_libraries(SwiftWin32 PUBLIC
   ComCtl32
   User32)
 target_link_libraries(SwiftWin32 PUBLIC
+  SwiftCOM)
+target_link_libraries(SwiftWin32 PUBLIC
   $<$<NOT:$<PLATFORM_ID:Darwin>>:dispatch>
   $<$<NOT:$<PLATFORM_ID:Darwin>>:Foundation>)
 if(WITH_SWIFT_LOG)
