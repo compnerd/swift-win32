@@ -63,8 +63,13 @@ private class Calculator {
 
   private var window: Window
 
-  private var txtResult: TextField =
-      TextField(frame: Rect(x: 34, y: 32, width: 128, height: 24))
+  private var txtResult: TextField = {
+    let txtResult = TextField(frame: Rect(x: 34, y: 32, width: 128, height: 24))
+    txtResult.font = Font(name: "Consolas", size: Font.systemFontSize)
+    txtResult.textAlignment = .right
+    txtResult.text = "0"
+    return txtResult
+  }()
 
   private var btnDigits: [Button] = [
       Button(frame: Rect(x: 32, y: 192, width: 64, height: 32), title: "0"),
@@ -100,21 +105,17 @@ private class Calculator {
     self.window.rootViewController?.title = "Calculator"
 
     self.window.addSubview(self.txtResult)
-    self.txtResult.font = Font(name: "Consolas", size: Font.systemFontSize)
-    self.txtResult.textAlignment = .right
-    self.txtResult.text = "0"
 
     self.window.addSubviews(self.btnDigits)
-    _ = self.btnDigits.map {
+    self.btnDigits.forEach {
       $0.addTarget(self, action: Calculator.onDigitPress(_:_:),
                    for: .primaryActionTriggered)
     }
     self.window.addSubviews(self.btnOperations)
-    _ = self.btnOperations.map {
+    self.btnOperations.forEach {
       $0.addTarget(self, action: Calculator.onOperationPress(_:_:),
                    for: .primaryActionTriggered)
     }
-
     self.window.addSubview(self.btnDecimal)
     self.btnDecimal.addTarget(self, action: Calculator.onDecimalPress(_:_:),
                               for: .primaryActionTriggered)
@@ -123,7 +124,9 @@ private class Calculator {
   }
 
   private func onDigitPress(_ sender: Button, _: Control.Event) {
-    let input = self.btnDigits.firstIndex(of: sender)!
+    guard let input = self.btnDigits.firstIndex(of: sender) else {
+      fatalError("invalid target: \(self) for sender: \(sender)")
+    }
 
     self.state[keyPath: self.state.operand] += String(input)
 
