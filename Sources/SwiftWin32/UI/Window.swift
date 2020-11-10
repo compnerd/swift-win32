@@ -102,7 +102,7 @@ public class Window: View {
                           unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
     if let restrictions = windowScene.sizeRestrictions,
         restrictions.minimumSize == restrictions.maximumSize {
-      self.GWL_STYLE &= ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
+      self.GWL_STYLE &= ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX)
     }
 
     windowScene.windows.append(self)
