@@ -39,6 +39,29 @@ target_sources(SwiftCOM PRIVATE
   ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IRunningObjectTable.swift
   ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IShellItem.swift
   ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IStream.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmap.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapClipper.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapCodecInfo.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapDecoder.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapDecoderInfo.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapEncoder.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapEncoderInfo.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapFlipRotator.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapFrameDecode.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapFrameEncode.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapLock.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapScaler.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICBitmapSource.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICColorContext.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICColorTransform.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICComponentInfo.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICFastMetadataEncoder.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICFormatConverter.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICImagingFactory.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICMetadataQueryReader.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICMetadataQueryWriter.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICPalette.swift
+  ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/Human/IWICStream.swift
   ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/ITypeComp.swift
   ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/ITypeInfo.swift
   ../Packages/SwiftCOM/Sources/SwiftCOM/Interfaces/ITypeLib.swift
