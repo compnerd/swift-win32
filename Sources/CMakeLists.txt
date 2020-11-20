@@ -71,6 +71,8 @@ target_sources(SwiftCOM PRIVATE
   ../Packages/SwiftCOM/Sources/SwiftCOM/Support/RawTyped.swift)
 target_link_libraries(SwiftCOM PUBLIC
   Ole32)
+set_target_properties(SwiftCOM PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 swift_install(TARGETS SwiftCOM)
 
 add_subdirectory(CWinRT)

@@ -21,7 +21,8 @@ target_sources(SwiftWin32 PRIVATE
   UI/Button.swift
   UI/Color.swift
   UI/ContentContainer.swift
-  UI/ContentsizeCategoryAdjusting.swift
+  UI/ContentSizeCategoryAdjusting.swift
+  UI/ContentSizeCategoryImageAdjusting.swift
   UI/Control.swift
   UI/CoordinateSpace.swift
   UI/DatePicker.swift
@@ -31,7 +32,11 @@ target_sources(SwiftWin32 PRIVATE
   UI/Font.swift
   UI/FontDescriptor.swift
   UI/FontMetrics.swift
+  UI/Image.swift
+  UI/ImageView.swift
   UI/Label.swift
+  UI/Menu.swift
+  UI/MenuElement.swift
   UI/ProgressView.swift
   UI/Responder.swift
   UI/Scene.swift

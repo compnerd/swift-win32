@@ -67,13 +67,22 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
       TableView(frame: Rect(x: 4.0, y: 330.0, width: 254.0, height: 48.0),
                 style: .plain)
 
+  lazy var imageview: ImageView = {
+    let image: Image? =
+        Image(contentsOfFile: Bundle.main.url(forResource: "CoffeeCup",
+                                              withExtension: "jpg")!.path)
+    let view = ImageView(image: image)
+    view.frame = Rect(x: 64.0, y: 384.0, width: 128.0, height: 128.0)
+    return view
+  }()
+
   func scene(_ scene: Scene, willConnectTo session: SceneSession,
              options: Scene.ConnectionOptions) {
     guard let windowScene = scene as? WindowScene else { return }
 
     // Set the preferred window size and restrict resizing by setting the
     // minimum and maximum to the same value.
-    let size: Size = Size(width: 265, height: 384)
+    let size: Size = Size(width: 265, height: 516)
     windowScene.sizeRestrictions?.minimumSize = size
     windowScene.sizeRestrictions?.maximumSize = size
 
@@ -94,6 +103,7 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
     window.addSubview(self.stepperLabel)
     window.addSubview(self.stepper)
     window.addSubview(self.tableview)
+    window.addSubview(self.imageview)
 
     self.label.font = Font(name: "Consolas", size: 10)!
 
