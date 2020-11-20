@@ -19,6 +19,8 @@ public class Image {
   private var WICBitmapFrame: SwiftCOM.IWICBitmapFrameDecode?
   private var WICFormatConverter: SwiftCOM.IWICFormatConverter?
 
+  internal var bitmap: SwiftCOM.IWICBitmapSource? { WICFormatConverter }
+
   // MARK - Creating and Initializing Image Objects
 
   /// Initializes and returns the image object with the contents of the
