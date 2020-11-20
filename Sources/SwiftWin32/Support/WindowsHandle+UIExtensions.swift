@@ -28,3 +28,13 @@ extension HDC__: HandleValue {
 }
 
 internal typealias DeviceContextHandle = ManagedHandle<HDC__>
+
+extension HBITMAP__: HandleValue {
+  typealias HandleType = HBITMAP
+  internal static func release(_ hBitmap: HandleType?) {
+    if let hBitmap = hBitmap {
+      DeleteObject(hBitmap)
+    }
+  }
+}
+internal typealias BitmapHandle = ManagedHandle<HBITMAP__>
