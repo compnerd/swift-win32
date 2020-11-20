@@ -91,6 +91,9 @@ let SwiftWin32 = Package(
         "Info.plist",
         "UICatalog.exe.manifest",
       ],
+      resources: [
+        .copy("Assets/CoffeeCup.jpg"),
+      ],
       swiftSettings: [
         .unsafeFlags([
           "-parse-as-library",
