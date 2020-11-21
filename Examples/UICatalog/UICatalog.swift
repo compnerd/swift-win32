@@ -68,9 +68,14 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
                 style: .plain)
 
   lazy var imageview: ImageView = {
+#if SWIFT_PACKAGE
+    let bundle = Bundle.module
+#else
+    let bundle = Bundle.main
+#endif
     let image: Image? =
-        Image(contentsOfFile: Bundle.main.url(forResource: "CoffeeCup",
-                                              withExtension: "jpg")!.path)
+        Image(contentsOfFile: bundle.url(forResource: "CoffeeCup",
+                                         withExtension: "jpg")!.path)
     let view = ImageView(image: image)
     view.frame = Rect(x: 64.0, y: 384.0, width: 128.0, height: 128.0)
     return view
