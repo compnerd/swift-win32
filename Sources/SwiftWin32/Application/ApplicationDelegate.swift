@@ -154,7 +154,7 @@ extension ApplicationDelegate {
 
 extension ApplicationDelegate {
   public static var didFinishLaunchingNotification: NSNotification.Name {
-    NSNotification.Name(rawValue: "UIApplicationDidFinishLaunchingNotificaton")
+    NSNotification.Name(rawValue: "UIApplicationDidFinishLaunchingNotification")
   }
 }
 
