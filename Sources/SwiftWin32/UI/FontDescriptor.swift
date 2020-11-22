@@ -176,14 +176,25 @@ extension FontDescriptor {
 }
 
 extension FontDescriptor.SystemDesign {
-  public static let `default`: FontDescriptor.SystemDesign =
-        FontDescriptor.SystemDesign(rawValue: "default")
-  public static let monospaced: FontDescriptor.SystemDesign =
-        FontDescriptor.SystemDesign(rawValue: "monospaced")
-  public static let rounded: FontDescriptor.SystemDesign =
-        FontDescriptor.SystemDesign(rawValue: "rounded")
-  public static let serif: FontDescriptor.SystemDesign =
-        FontDescriptor.SystemDesign(rawValue: "serif")
+  /// The default typeface for an app's user interface.
+  public static var `default`: FontDescriptor.SystemDesign {
+    FontDescriptor.SystemDesign(rawValue: "default")
+  }
+
+  /// The monospace variant of the default typeface.
+  public static var monospaced: FontDescriptor.SystemDesign {
+    FontDescriptor.SystemDesign(rawValue: "monospaced")
+  }
+
+  /// The rounded variant of the default typeface.
+  public static var rounded: FontDescriptor.SystemDesign {
+    FontDescriptor.SystemDesign(rawValue: "rounded")
+  }
+
+  /// The serif variant of the default typeface.
+  public static var serif: FontDescriptor.SystemDesign {
+    FontDescriptor.SystemDesign(rawValue: "serif")
+  }
 }
 
 extension FontDescriptor {
@@ -200,47 +211,114 @@ extension FontDescriptor {
 }
 
 extension FontDescriptor.SymbolicTraits {
-  public static let traitItalic: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 1 << 0)
-  public static let traitBold: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 1 << 1)
-  public static let traitExpanded: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 1 << 5)
-  public static let traitCondensed: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 1 << 6)
-  public static let traitMonoSpace: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 1 << 10)
-  public static let traitVertical: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 1 << 11)
-  public static let traitUIOptimized: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 1 << 12)
-  public static let traitTightLeading: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 1 << 15)
-  public static let traitLooseLeading: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 1 << 16)
+  /// The font's style is italic.
+  public static var traitItalic: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 1 << 0)
+  }
 
-  public static let classMask: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 15 << 28)
-  public static let classOldStyleSerifs: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 1 << 28)
-  public static let classTransitionalSerifs: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 2 << 28)
-  public static let classModernSerifs: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 3 << 28)
-  public static let classClarendonSerifs: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 4 << 28)
-  public static let classSlabSerifs: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 5 << 28)
-  public static let classFreeformSerifs: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 7 << 28)
-  public static let classSansSerif: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 8 << 28)
-  public static let classOrnamentals: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 9 << 28)
-  public static let classScripts: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 10 << 28)
-  public static let classSymbolic: FontDescriptor.SymbolicTraits =
-      FontDescriptor.SymbolicTraits(rawValue: 12 << 28)
+  /// The font's style is bold.
+  public static var traitBold: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 1 << 1)
+  }
+
+  /// The font's characters have an expanded width.
+  public static var traitExpanded: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 1 << 5)
+  }
+
+  /// The font's characters have a condensed width.
+  public static var traitCondensed: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 1 << 6)
+  }
+
+  /// The font's characters all have the same width.
+  public static var traitMonoSpace: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 1 << 10)
+  }
+
+  /// The font uses vertical glyph variants and metrics.
+  public static var traitVertical: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 1 << 11)
+  }
+
+  /// The font synthesizes appropriate attributes for user interface rendering,
+  /// such as in control titles, if necessary.
+  public static var traitUIOptimized: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 1 << 12)
+  }
+
+  /// The font uses a leading value that's less than the default.
+  public static var traitTightLeading: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 1 << 15)
+  }
+
+  /// The font uses a leading value that’s greater than the default.
+  public static var traitLooseLeading: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 1 << 16)
+  }
+
+
+  /// The font family class mask that you use to access font descriptor values.
+  public static var classMask: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 15 << 28)
+  }
+
+  /// The font's characters include serifs, and reflect the Latin printing style
+  /// of the 15th to 17th centuries.
+  public static var classOldStyleSerifs: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 1 << 28)
+  }
+
+  /// The font's characters include serifs, and reflect the Latin printing style
+  /// of the 18th to 19th centuries.
+  public static var classTransitionalSerifs: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 2 << 28)
+  }
+
+  /// The font's characters include serifs, and reflect the Latin printing style
+  /// of the 20th century.
+  public static var classModernSerifs: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 3 << 28)
+  }
+
+  /// The font's characters include variations of old style and transitional
+  /// serifs.
+  public static var classClarendonSerifs: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 4 << 28)
+  }
+
+  /// The font's characters use square transitions, without brackets, between
+  /// strokes and serifs.
+  public static var classSlabSerifs: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 5 << 28)
+  }
+
+  /// The font's characters include serifs, and don’t generally fit within other
+  /// serif design classifications.
+  public static var classFreeformSerifs: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 7 << 28)
+  }
+
+  /// The font's characters don’t have serifs.
+  public static var classSansSerif: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 8 << 28)
+  }
+
+  /// The font's characters use highly decorated or stylized character shapes.
+  public static var classOrnamentals: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 9 << 28)
+  }
+
+  /// The font's characters simulate handwriting.
+  public static var classScripts: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 10 << 28)
+  }
+
+  /// The font's characters consist mainly of symbols rather than letters and
+  /// numbers.
+  public static var classSymbolic: FontDescriptor.SymbolicTraits {
+    FontDescriptor.SymbolicTraits(rawValue: 12 << 28)
+  }
 }
 
 extension FontDescriptor {
@@ -257,32 +335,70 @@ extension FontDescriptor {
 }
 
 extension FontDescriptor.AttributeName {
-  public static let cascadeList: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontCascadeListAttribute")
-  public static let characterSet: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontCharacterSetAttribute")
-  public static let face: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontFaceAttribute")
-  public static let family: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontFamilyAttribute")
-  public static let featureSettings: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontFeatureSettingsAttribute")
-  public static let fixedAdvance: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontFixedAdvanceAttribute")
-  public static let matrix: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontMatrixAttribute")
-  public static let name: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontNameAttribute")
-  public static let size: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontSizeAttribute")
-  public static let symbolic: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontSymbolicAttribute")
-  public static let textStyle: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontTextStyleAttribute")
-  public static let traits: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontTraitsAttribute")
-  public static let visibleName: FontDescriptor.AttributeName =
-      FontDescriptor.AttributeName(rawValue: "NSCTFontVisibleNameAttribute")
+  /// The cascading list attribute.
+  public static var cascadeList: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontCascadeListAttribute")
+  }
+
+  /// The character set attribute.
+  public static var characterSet: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontCharacterSetAttribute")
+  }
+
+  /// The font face attribute.
+  public static var face: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontFaceAttribute")
+  }
+
+  /// The font family attribute.
+  public static var family: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontFamilyAttribute")
+  }
+
+  /// The font feature settings attribute.
+  public static var featureSettings: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontFeatureSettingsAttribute")
+  }
+
+  /// The glyph advancement attribute.
+  public static var fixedAdvance: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontFixedAdvanceAttribute")
+  }
+
+  /// The font's transformation matrix attribute.
+  public static var matrix: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontMatrixAttribute")
+  }
+
+  /// The font name attribute.
+  public static var name: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontNameAttribute")
+  }
+
+  /// The font size attribute.
+  public static var size: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontSizeAttribute")
+  }
+
+  /// The font's stylistic properties attribute.
+  public static var symbolic: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontSymbolicAttribute")
+  }
+
+  /// The text style attribute.
+  public static var textStyle: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontTextStyleAttribute")
+  }
+
+  /// The font traits dictionary attribute.
+  public static var traits: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontTraitsAttribute")
+  }
+
+  /// The font's visible name attribute.
+  public static var visibleName: FontDescriptor.AttributeName {
+    FontDescriptor.AttributeName(rawValue: "NSCTFontVisibleNameAttribute")
+  }
 }
 
 extension FontDescriptor {
@@ -305,10 +421,16 @@ extension FontDescriptor.FeatureKey {
 }
 
 extension FontDescriptor.FeatureKey {
-  public static let featureIdentifier: FontDescriptor.FeatureKey =
-      FontDescriptor.FeatureKey(rawValue: "CTFeatureTypeIdentifier")
-  public static let typeIdentifier: FontDescriptor.FeatureKey =
-      FontDescriptor.FeatureKey(rawValue: "CTFeatureSelectorIdentifier")
+  /// A key for identifying a font feature type such as ligature or character
+  /// shape.
+  public static var featureIdentifier: FontDescriptor.FeatureKey {
+    FontDescriptor.FeatureKey(rawValue: "CTFeatureTypeIdentifier")
+  }
+
+  /// A key for identifying the font feature selector.
+  public static var typeIdentifier: FontDescriptor.FeatureKey {
+    FontDescriptor.FeatureKey(rawValue: "CTFeatureSelectorIdentifier")
+  }
 }
 
 extension FontDescriptor {
@@ -325,12 +447,23 @@ extension FontDescriptor {
 }
 
 extension FontDescriptor.TraitKey {
-  public static let slant: FontDescriptor.TraitKey =
-      FontDescriptor.TraitKey(rawValue: "NSCTFontSlantTrait")
-  public static let symbolic: FontDescriptor.TraitKey =
-      FontDescriptor.TraitKey(rawValue: "NSCTFontSymbolicTrait")
-  public static let weight: FontDescriptor.TraitKey =
-      FontDescriptor.TraitKey(rawValue: "NSCTFontWeightTrait")
-  public static let width: FontDescriptor.TraitKey =
-      FontDescriptor.TraitKey(rawValue: "NSCTFontWidthTrait")
+  /// The relative slant angle of the font.
+  public static var slant: FontDescriptor.TraitKey {
+    FontDescriptor.TraitKey(rawValue: "NSCTFontSlantTrait")
+  }
+
+  /// The symbolic font traits.
+  public static var symbolic: FontDescriptor.TraitKey {
+    FontDescriptor.TraitKey(rawValue: "NSCTFontSymbolicTrait")
+  }
+
+  /// The normalized font weight.
+  public static var weight: FontDescriptor.TraitKey {
+    FontDescriptor.TraitKey(rawValue: "NSCTFontWeightTrait")
+  }
+
+  /// The inter-glyph spacing of the font.
+  public static var width: FontDescriptor.TraitKey {
+    FontDescriptor.TraitKey(rawValue: "NSCTFontWidthTrait")
+  }
 }
