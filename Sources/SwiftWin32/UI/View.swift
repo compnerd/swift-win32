@@ -50,7 +50,7 @@ public class View: Responder {
   private static let style: WindowStyle = (base: 0, extended: 0)
 
   internal var hWnd: HWND!
-  internal var win32: (window: (`class`: WindowClass, style: WindowStyle), _: ())
+  internal var WndClass: WindowClass
 
   internal var GWL_STYLE: LONG {
     get { GetWindowLongW(self.hWnd, WinSDK.GWL_STYLE) }
@@ -95,7 +95,8 @@ public class View: Responder {
       // Scale window for DPI
       var client: Rect = self.frame
       ScaleClient(rect: &client, for: GetDpiForWindow(self.hWnd),
-                  self.win32.window.style)
+                  WindowStyle(DWORD(bitPattern: self.GWL_STYLE),
+                              DWORD(bitPattern: self.GWL_EXSTYLE)))
 
       // Resize and Position the Window
       _ = SetWindowPos(self.hWnd, nil,
@@ -125,8 +126,8 @@ public class View: Responder {
 
   internal init(frame: Rect, `class`: WindowClass, style: WindowStyle,
                 parent: HWND? = nil) {
-    self.win32.window = (class: `class`, style: style)
-    _ = self.win32.window.class.register()
+    self.WndClass = `class`
+    _ = self.WndClass.register()
 
     let bOverlappedWindow: Bool =
         style.base & DWORD(WS_OVERLAPPEDWINDOW) == DWORD(WS_OVERLAPPEDWINDOW)
@@ -141,9 +142,7 @@ public class View: Responder {
     // Only request the window size, not the location, the location will be
     // mapped when reparenting.
     self.hWnd =
-        CreateWindowExW(self.win32.window.style.extended,
-                        self.win32.window.class.name, nil,
-                        self.win32.window.style.base,
+        CreateWindowExW(style.extended, self.WndClass.name, nil, style.base,
                         Int32(bOverlappedWindow ? client.origin.x : 0),
                         Int32(bOverlappedWindow ? client.origin.y : 0),
                         Int32(client.size.width),
@@ -191,7 +190,7 @@ public class View: Responder {
   deinit {
     _ = UnregisterTouchWindow(self.hWnd)
     _ = DestroyWindow(self.hWnd)
-    _ = self.win32.window.class.unregister()
+    _ = self.WndClass.unregister()
   }
 
   // MARK - Configuring the Event-Related Behaviour
@@ -230,14 +229,13 @@ public class View: Responder {
     // `WM_UPDATEUISTATE`.
 
     // Update the window style.
-    let dwPrevStyle: DWORD = view.win32.window.style.base
-    let dwNewStyle: DWORD = (dwPrevStyle & ~DWORD(WS_POPUP)) | DWORD(WS_CHILD)
-    if SetWindowLongPtrW(view.hWnd, WinSDK.GWL_STYLE, LONG_PTR(dwNewStyle)) == 0 {
-      log.warning("SetWindowLongPtrW: \(Error(win32: GetLastError()))")
-      view.GWL_STYLE = LONG(dwPrevStyle)
-      return
+    view.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | DWORD(WS_CAPTION))
+    view.GWL_STYLE |= WS_CHILD
+    // FIXME(compnerd) can this be avoided somehow?
+    if view is TextField || view is TextView || view is TableView {
+      view.GWL_STYLE |= WS_BORDER
+      view.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
     }
-    view.win32.window.style.base = dwNewStyle
 
     // Reparent the window.
     guard let _ = SetParent(view.hWnd, self.hWnd) else {
