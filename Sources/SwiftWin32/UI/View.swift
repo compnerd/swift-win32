@@ -216,11 +216,18 @@ public class View: Responder {
     // Notify the old parent that it is about to loose the child.
     view.superview?.willRemoveSubview(view)
 
-    // Reparent the window.
-    guard let _ = SetParent(view.hWnd, self.hWnd) else {
-      log.warning("SetParent: \(Error(win32: GetLastError()))")
-      return
-    }
+    // MSDN:
+    // For compatibility reasons, `SetParent` does not modify the `WS_CHILD` or
+    // `WS_POPUP` window styles of the window whose parent is being changed.
+    // Therefore, if `hWndNewParent` is `NULL`, you should also clear the
+    // `WS_CHILD` bit and set the `WS_POPUP` style after calling `SetParent`.
+    // Conversely, if `hWndNewParent` is not `NULL` and the window was
+    // previously a child of the desktop, you should clear the `WS_POPUP` style
+    // and set the `WS_CHILD` style before calling `SetParent`.
+    //
+    // When you change the parent, you should synchronize the `UISTATE` of both
+    // windows.  For more information, see `WM_CHANGEUISTATE` and
+    // `WM_UPDATEUISTATE`.
 
     // Update the window style.
     let dwPrevStyle: DWORD = view.win32.window.style.base
@@ -231,6 +238,13 @@ public class View: Responder {
       return
     }
     view.win32.window.style.base = dwNewStyle
+
+    // Reparent the window.
+    guard let _ = SetParent(view.hWnd, self.hWnd) else {
+      log.warning("SetParent: \(Error(win32: GetLastError()))")
+      return
+    }
+
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
     // changes take effect.
     if !SetWindowPos(view.hWnd, nil, 0, 0, 0, 0,
