@@ -10,7 +10,7 @@ import struct Foundation.IndexPath
 public protocol TableViewDataSource: class {
   /// Providng the Number of Rows and Sections
 
-  /// Tells the data source to return the number of rows in a given section of
+  /// Informs the data source to return the number of rows in a given section of
   /// a table view.
   func tableView(_ tableView: TableView, numberOfRowsInSection section: Int)
       -> Int

@@ -43,12 +43,12 @@ extension InterfaceOrientation {
 public protocol ApplicationDelegate: class, _TriviallyConstructible {
   // MARK - Initializing the App
 
-  /// Indicates to the delegate that the application launch process has begun.
+  /// Informs the delegate that the application launch process has begun.
   func application(_ application: Application,
                    willFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?)
       -> Bool
 
-  /// Indicates to the delegate that the application launch process has ended and
+  /// Informs the delegate that the application launch process has ended and
   /// the application is almost ready to run.
   func application(_ application: Application,
                    didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?)
@@ -56,19 +56,19 @@ public protocol ApplicationDelegate: class, _TriviallyConstructible {
 
   // MARK - Responding to App Life-Cycle Events
 
-  /// Indicates to the delegate that the application has become active.
+  /// Informs the delegate that the application has become active.
   func applicationDidBecomeActive(_ application: Application)
 
-  /// Indicates to the delgate that the application is about to become inactive.
+  /// Informs the delgate that the application is about to become inactive.
   func applicationWillResignActive(_ application: Application)
 
-  /// Indicates to the delegate that the application is now in the background.
+  /// Informs the delegate that the application is now in the background.
   func applicationDidEnterBackground(_ application: Application)
 
-  /// Indicates to the delegate that the application is about to enter the foreground.
+  /// Informs the delegate that the application is about to enter the foreground.
   func applicationWillEnterForeground(_ application: Application)
 
-  /// Indicates to the delegate that the application is about to terminate.
+  /// Informs the delegate that the application is about to terminate.
   func applicationWillTerminate(_ application: Application)
 
   /// Responding to Environment Changes
@@ -84,7 +84,7 @@ public protocol ApplicationDelegate: class, _TriviallyConstructible {
                    configurationForConnecting connectingSceneSession: SceneSession,
                    options: Scene.ConnectionOptions) -> SceneConfiguration
 
-  /// Tells the delegate that the user closed one or more of teh application's
+  /// Informs the delegate that the user closed one or more of the application's
   /// scenes.
   func application(_ application: Application,
                    didDiscardSceneSessions sceneSessions: Set<SceneSession>)

@@ -349,20 +349,20 @@ public class View: Responder {
 
   // MARK - Observing View-Related Changes
 
-  /// Tells the view that a subview was added.
+  /// Informs the view that a subview was added.
   public func didAddSubview(_ subview: View) {
   }
 
-  /// Tells the view that a subview is about to be removed.
+  /// Informs the view that a subview is about to be removed.
   public func willRemoveSubview(_ subview: View) {
   }
 
-  /// Tells the view that its superview is about to change to the specified
+  /// Informs the view that its superview is about to change to the specified
   /// superview.
   public func willMove(toSuperview: View?) {
   }
 
-  /// Tells the view that its superview changed.
+  /// Informs the view that its superview changed.
   public func didMoveToSuperview() {
   }
 
