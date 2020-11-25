@@ -123,19 +123,81 @@ public class ViewController: Responder {
   public func viweDidDisappear(_ animated: Bool) {
   }
 
-  /// A Boolean value indicating whether the view controller is being dismissed.
+  /// A boolean value indicating whether the view controller is being dismissed.
   public private(set) var isBeingDismissed: Bool = false
 
-  /// A Boolean value indicating whether the view controller is being presented.
+  /// A boolean value indicating whether the view controller is being presented.
   public private(set) var isBeingPresented: Bool = false
 
-  /// A Boolean value indicating whether the view controller is being removed
+  /// A boolean value indicating whether the view controller is being removed
   /// from a parent view controller.
   public private(set) var isMovingFromParent: Bool = false
 
-  /// A Boolean value indicating whether the view controller is being moved to a
+  /// A boolean value indicating whether the view controller is being moved to a
   /// parent view controller.
   public private(set) var isMovingToParent: Bool = false
+
+  // MARK - Extending the View's Safe Area
+
+  /// The inset distances for views.
+  public var additionalSafeAreaInsets: EdgeInsets = .zero {
+    didSet { self.viewSafeAreaInsetsDidChange() }
+  }
+
+  /// Notifies the view controller that the safe area insets of its root view
+  /// changed.
+  public func viewSafeAreaInsetsDidChange() {
+  }
+
+  // MARK - Managing the View's Margins
+
+  /// A boolean value indicating whether the view controller's view uses the
+  /// system-defined minimum layout margins.
+  public var viewRespectsSystemMinimumLayoutMargins: Bool = true
+
+  /// The minimum layout margins for the view controller's root view.
+  public private(set) var systemMinimumLayoutMargins: DirectionalEdgeInsets = .zero {
+    didSet { self.viewLayoutMarginsDidChange() }
+  }
+
+  /// Notifies the view controller that the layout margins of its root view
+  /// changed.
+  public func viewLayoutMarginsDidChange() {
+  }
+
+  // MARK - Configuring the View's Layout Behavior
+
+  /// The edges that you extend for your view controller.
+  public var edgesForExtendedLayout: RectEdge = .all
+
+  /// A boolean value indicating whether or not the extended layout includes
+  /// opaque bars.
+  public var extendedLayoutIncludesOpaqueBars: Bool = false
+
+  /// Notifies the view controller that its view is about to layout its
+  /// subviews.
+  public func viewWillLayoutSubviews() {
+  }
+
+  /// Notifes the view controller that its view has just laid out its subviews.
+  public func viewDidLayoutSubviews() {
+  }
+
+  /// Called when the view controller's view needs to update its constraints.
+  public func updateViewConstraints() {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  // MARK - Configuring the View Rotation Settings
+
+  /// A boolean value that indicates whether the view controller's contents
+  /// should autorotate.
+  public private(set) var shouldAutorotate: Bool = true
+
+  /// The interface orientations that the view controller supports.
+  public private(set) var supportedInterfaceOrientations: InterfaceOrientationMask = .all
+
+  // MARK -
 
   override public init() {
   }
