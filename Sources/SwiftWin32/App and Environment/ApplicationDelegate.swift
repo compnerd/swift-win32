@@ -39,6 +39,58 @@ extension InterfaceOrientation {
   }
 }
 
+/// These constants are mask bits for specifying a view controller's supported
+/// interface orientations.
+public struct InterfaceOrientationMask: OptionSet {
+  public typealias RawValue = UInt
+
+  public let rawValue: RawValue
+
+  public init(rawValue: RawValue) {
+    self.rawValue = rawValue
+  }
+}
+
+extension InterfaceOrientationMask {
+  /// The view controller supports a portrait interface orientation.
+  public static var portrait: InterfaceOrientationMask {
+    InterfaceOrientationMask(rawValue: 1 << InterfaceOrientation.portrait.rawValue)
+  }
+
+  /// The view controller supports a landscape-left interface orientation.
+  public static var landscapeLeft: InterfaceOrientationMask {
+    InterfaceOrientationMask(rawValue: 1 << InterfaceOrientation.landscapeLeft.rawValue)
+  }
+
+  /// The view controller supports a landscape-right interface orientation.
+  public static var landscapeRight: InterfaceOrientationMask {
+    InterfaceOrientationMask(rawValue: 1 << InterfaceOrientation.landscapeRight.rawValue)
+  }
+
+  /// The view controller supports an upside-down portrait interface
+  /// orientation.
+  public static var portraitUpsideDown: InterfaceOrientationMask {
+    InterfaceOrientationMask(rawValue: 1 << InterfaceOrientation.portraitUpsideDown.rawValue)
+  }
+
+  /// The view controller supports both landscape-left and landscape-right
+  /// interface orientation.
+  public static var landscape: InterfaceOrientationMask {
+    InterfaceOrientationMask(rawValue: self.landscapeLeft.rawValue | self.landscapeRight.rawValue)
+  }
+
+  /// The view controller supports all interface orientations.
+  public static var all: InterfaceOrientationMask {
+    InterfaceOrientationMask(rawValue: self.portrait.rawValue | self.landscapeLeft.rawValue | self.landscapeRight.rawValue | self.portraitUpsideDown.rawValue)
+  }
+
+  /// The view controller supports all but the upside-down portrait interface
+  /// orientation.
+  public static var allButUpsideDown: InterfaceOrientationMask {
+    InterfaceOrientationMask(rawValue: self.portrait.rawValue | self.landscapeLeft.rawValue | self.landscapeRight.rawValue)
+  }
+}
+
 /// A set of methods used to manage shared behaviours for the application.
 public protocol ApplicationDelegate: AnyObject, _TriviallyConstructible {
   // MARK - Initializing the App
