@@ -103,7 +103,8 @@ public class ViewController: Responder {
 
   /// The preferred size for the view controller's view.
   public var preferredContentSize: Size {
-    fatalError("not yet implemented")
+    get { fatalError("\(#function) not yet implemented") }
+    set { fatalError("\(#function) not yet implemented") }
   }
 
   // MARK - Responding to View Related Events
