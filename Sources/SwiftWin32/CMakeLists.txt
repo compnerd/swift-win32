@@ -91,6 +91,7 @@ target_sources(SwiftWin32 PRIVATE
   "Views and Controls/Button.swift"
   "Views and Controls/Control.swift"
   "Views and Controls/DatePicker.swift"
+  "Views and Controls/DirectionalEdgeInsets.swift"
   "Views and Controls/EdgeInsets.swift"
   "Views and Controls/ImageView.swift"
   "Views and Controls/Label.swift"
