@@ -16,7 +16,8 @@ public struct Device {
 
   /// The name identifyying the device
   public var name: String {
-    let value: [WCHAR] = Array<WCHAR>(unsafeUninitializedCapacity: Int(MAX_COMPUTERNAME_LENGTH) + 1) {
+    let value: [WCHAR] =
+        Array<WCHAR>(unsafeUninitializedCapacity: Int(MAX_COMPUTERNAME_LENGTH) + 1) {
       var nSize: DWORD = DWORD($0.count)
       $1 = GetComputerNameW($0.baseAddress!, &nSize) ? Int(nSize) : 0
     }
