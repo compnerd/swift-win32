@@ -84,7 +84,8 @@ target_sources(SwiftWin32 PRIVATE
   CG/AffineTransform.swift
   CG/Point.swift
   CG/Rect.swift
-  CG/Size.swift)
+  CG/Size.swift
+  CG/Vector.swift)
 target_sources(SwiftWin32 PRIVATE
   Platform/BatteryMonitor.swift
   Platform/Error.swift
