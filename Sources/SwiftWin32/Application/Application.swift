@@ -26,7 +26,7 @@ public class Application: Responder {
 
   /// A boolean indicating whether the application may display multiple scenes.
   public var supportsMultipleScenes: Bool {
-    Application.shared.information?.scene?.supportsMultipleScenes ?? false
+    information?.scene?.supportsMultipleScenes ?? false
   }
 
   /// The application's currently connected scenes.
