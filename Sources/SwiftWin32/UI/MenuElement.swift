@@ -55,14 +55,14 @@ public class MenuElement {
   /// Getting the Element Attributes
 
   /// The title of the menu element.
-  public var title: String
+  public let title: String
 
   /// The image to display alongside the menu element's title.
-  public var image: Image?
+  public let image: Image?
 
   /// Creating a Menu Element
 
-  internal init(title: String, image: Image?) {
+  public init(title: String, image: Image? = nil) {
     self.title = title
     self.image = image
   }
