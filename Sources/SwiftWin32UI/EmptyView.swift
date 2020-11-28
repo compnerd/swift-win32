@@ -9,10 +9,6 @@
 public struct EmptyView: View {
   public typealias Body = Never
 
-  public var body: Self.Body {
-    fatalError("\(#function) not yet implemented")
-  }
-
   @inlinable
   public init() {
   }
