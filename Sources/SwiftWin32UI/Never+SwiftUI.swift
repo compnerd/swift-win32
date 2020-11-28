@@ -13,8 +13,10 @@ extension Never: Scene {
 
 extension Never {
   public typealias Body = Never
+}
 
+extension View where Body == Never {
   public var body: Never {
-    fatalError("\(#function) not yet implemented")
+    fatalError("\(#function): View \(type(of: self)) does not have a body")
   }
 }
