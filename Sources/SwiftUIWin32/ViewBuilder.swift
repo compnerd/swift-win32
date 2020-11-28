@@ -12,6 +12,6 @@ public struct ViewBuilder {
   }
 
   public static func buildBlock<Content: View>(_ content: Content) -> Content {
-    fatalError("\(#function) not yet implemented")
+    return content
   }
 }
