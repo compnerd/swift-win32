@@ -34,6 +34,7 @@ target_sources(SwiftWin32 PRIVATE
   UI/FontMetrics.swift
   UI/Image.swift
   UI/ImageView.swift
+  UI/Interaction.swift
   UI/Label.swift
   UI/Menu.swift
   UI/MenuElement.swift
