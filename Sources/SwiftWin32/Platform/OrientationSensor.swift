@@ -11,7 +11,7 @@ import SwiftCOM
 internal class OrientationSensorEventListener: SwiftCOM.ISensorEvents {
   public func OnEvent(_ pSensor: SwiftCOM.ISensor, _ eventID: REFGUID,
                       _ pEventData: SwiftCOM.IPortableDeviceValues) -> HRESULT {
-    switch eventID {
+    switch eventID.pointee {
     case SENSOR_EVENT_PROPERTY_CHANGED:
       break
     default:
