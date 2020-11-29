@@ -28,9 +28,9 @@ ninja -C build SwiftWin32 UICatalog
 %CD%\build\bin\UICatalog.exe
 ```
 
-### Experimental (Swift Package Manager)
+### Swift Package Manager
 
-Building this project with swift-package-manager is supported on an experimental basis.  The SPM based build is required for code completion via SourceKit-LSP.  It also allows for the use of Swift/Win32 in other applications using SPM.  In order to use SPM to build this project additional post-build steps are required to use the demo applications.
+Building this project with swift-package-manager is supported although CMake is recommended for ease.  The Swift Package Manager based build is required for code completion via SourceKit-LSP.  It also allows for the use of Swift/Win32 in other applications using SPM.  In order to use SPM to build this project additional post-build steps are required to use the demo applications.
 
 The following known limitations are known:
 
@@ -41,5 +41,5 @@ The following known limitations are known:
 swift build --product UICatalog
 copy Examples\UICatalog\UICatalog.exe.manifest .build\x86_64-unknown-windows-msvc\debug\
 copy Examples\UICatalog\Info.plist .build\x86_64-unknown-windows-msvc\debug\
-.build\x86_64-unknown-windows-msvc\debug\UICatalog.exe
+swift run UICatalog
 ```
