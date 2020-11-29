@@ -77,3 +77,4 @@ swift_install(TARGETS SwiftCOM)
 
 add_subdirectory(CWinRT)
 add_subdirectory(SwiftWin32)
+add_subdirectory(SwiftWin32UI)
