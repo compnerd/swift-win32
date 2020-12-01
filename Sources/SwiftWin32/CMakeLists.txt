@@ -67,6 +67,8 @@ target_sources(SwiftWin32 PRIVATE
   UI/TableView.swift
   UI/TableViewCell.swift
   UI/TableViewDataSource.swift
+  UI/TableViewDelegate.swift
+  UI/TableViewFocusUpdateContext.swift
   UI/TargetedPreview.swift
   UI/TextField.swift
   UI/TextInputTraits.swift
