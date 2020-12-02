@@ -45,7 +45,10 @@ let SwiftWin32 = Package(
       dependencies: [
         "SwiftWin32",
       ],
-      path: "Sources/SwiftWin32UI"
+      path: "Sources/SwiftWin32UI",
+      exclude: [
+        "CMakeLists.txt",
+      ]
     ),
     .target(
       name: "Calculator",
