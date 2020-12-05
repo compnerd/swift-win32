@@ -40,7 +40,7 @@ extension InterfaceOrientation {
 }
 
 /// A set of methods used to manage shared behaviours for the application.
-public protocol ApplicationDelegate: class, _TriviallyConstructible {
+public protocol ApplicationDelegate: AnyObject, _TriviallyConstructible {
   // MARK - Initializing the App
 
   /// Informs the delegate that the application launch process has begun.

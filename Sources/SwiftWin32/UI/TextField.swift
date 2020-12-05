@@ -7,7 +7,7 @@
 
 import WinSDK
 
-public protocol TextFieldDelegate: class {
+public protocol TextFieldDelegate: AnyObject {
 }
 
 private let SwiftTextFieldProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
