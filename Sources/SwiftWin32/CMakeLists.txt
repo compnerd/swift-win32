@@ -18,12 +18,14 @@ target_sources(SwiftWin32 PRIVATE
   UI/AlertAction.swift
   UI/AlertController.swift
   UI/AnimationCurve.swift
+  UI/BezierPath.swift
   UI/Button.swift
   UI/Color.swift
   UI/ContentContainer.swift
   UI/ContentSizeCategoryAdjusting.swift
   UI/ContentSizeCategoryImageAdjusting.swift
   UI/ContextMenuConfiguration.swift
+  UI/ContextMenuInteractionAnimating.swift
   UI/Control.swift
   UI/CoordinateSpace.swift
   UI/DatePicker.swift
@@ -39,6 +41,8 @@ target_sources(SwiftWin32 PRIVATE
   UI/Label.swift
   UI/Menu.swift
   UI/MenuElement.swift
+  UI/PreviewParameters.swift
+  UI/PreviewTarget.swift
   UI/ProgressView.swift
   UI/Responder.swift
   UI/Scene.swift
@@ -53,6 +57,7 @@ target_sources(SwiftWin32 PRIVATE
   UI/TableView.swift
   UI/TableViewCell.swift
   UI/TableViewDataSource.swift
+  UI/TargetedPreview.swift
   UI/TextField.swift
   UI/TextInputTraits.swift
   UI/TextView.swift
