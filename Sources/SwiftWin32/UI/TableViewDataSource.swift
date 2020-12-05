@@ -7,7 +7,7 @@
 
 import struct Foundation.IndexPath
 
-public protocol TableViewDataSource: class {
+public protocol TableViewDataSource: AnyObject {
   /// Providng the Number of Rows and Sections
 
   /// Informs the data source to return the number of rows in a given section of
