@@ -47,6 +47,23 @@ internal func HIWORD<T: FixedWidthInteger>(_ dword: T) -> WORD {
   return WORD(DWORD_PTR(dword) >> 16 & 0xffff)
 }
 
+// wingdi.h
+
+@_transparent
+internal func GetRValue(_ rgb: DWORD) -> DWORD {
+  return (rgb >>  0) & 0xff
+}
+
+@_transparent
+internal func GetGValue(_ rgb: DWORD) -> DWORD {
+  return (rgb >>  8) & 0xff
+}
+
+@_transparent
+internal func GetBValue(_ rgb: DWORD) -> DWORD {
+  return (rgb >> 16) & 0xff
+}
+
 // WinUser.h
 internal let ENUM_CURRENT_SETTINGS: DWORD = DWORD(bitPattern: -1)
 internal let HWND_MESSAGE: HWND = HWND(bitPattern: -3)!

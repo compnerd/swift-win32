@@ -31,6 +31,7 @@ target_sources(SwiftWin32 PRIVATE
   UI/ContextMenuInteractionAnimating.swift
   UI/ContextMenuInteractionCommitAnimating.swift
   UI/ContextMenuInteractionDelegate.swift
+  UI/ContextualAction.swift
   UI/Control.swift
   UI/CoordinateSpace.swift
   UI/DatePicker.swift
@@ -59,7 +60,9 @@ target_sources(SwiftWin32 PRIVATE
   UI/SceneSizeRestrictions.swift
   UI/Screen.swift
   UI/Slider.swift
+  UI/SpringLoadedInteractionContext.swift
   UI/Stepper.swift
+  UI/SwipeActionsConfiguration.swift
   UI/Switch.swift
   UI/TableView.swift
   UI/TableViewCell.swift

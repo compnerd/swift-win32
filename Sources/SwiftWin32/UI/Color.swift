@@ -76,6 +76,13 @@ public func ==(lhs: Color, rhs: Color) -> Bool {
   return lhs.COLORREF == rhs.COLORREF
 }
 
+extension Color {
+  internal init(color: COLORREF) {
+    self.init(red: Int(GetRValue(color)), green: Int(GetGValue(color)),
+              blue: Int(GetBValue(color)))
+  }
+}
+
 /// Fixed Colors
 public extension Color {
   static var black: Color = Color(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
