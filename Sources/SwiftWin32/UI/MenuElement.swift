@@ -57,10 +57,10 @@ public class MenuElement {
   /// Getting the Element Attributes
 
   /// The title of the menu element.
-  public let title: String
+  public internal(set) var title: String
 
   /// The image to display alongside the menu element's title.
-  public let image: Image?
+  public internal(set) var image: Image?
 
   /// Creating a Menu Element
 

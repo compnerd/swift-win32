@@ -15,12 +15,14 @@ target_sources(SwiftWin32 PRIVATE
   AutoLayout/LayoutXAxisAnchor.swift
   AutoLayout/LayoutYAxisAnchor.swift)
 target_sources(SwiftWin32 PRIVATE
+  UI/Action.swift
   UI/AlertAction.swift
   UI/AlertController.swift
   UI/AnimationCurve.swift
   UI/BezierPath.swift
   UI/Button.swift
   UI/Color.swift
+  UI/Command.swift
   UI/ContentContainer.swift
   UI/ContentSizeCategoryAdjusting.swift
   UI/ContentSizeCategoryImageAdjusting.swift
@@ -43,7 +45,9 @@ target_sources(SwiftWin32 PRIVATE
   UI/Interaction.swift
   UI/Label.swift
   UI/Menu.swift
+  UI/MenuBuilder.swift
   UI/MenuElement.swift
+  UI/MenuSystem.swift
   UI/PreviewParameters.swift
   UI/PreviewTarget.swift
   UI/ProgressView.swift
