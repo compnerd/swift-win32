@@ -29,7 +29,7 @@ public class LayoutYAxisAnchor: LayoutAnchor<LayoutYAxisAnchor> {
 
   /// Returns a constraint that defines the maximum distance by which the
   /// current anchor is positioned below the specified anchor.
-  public func constraint(lessThanOrEqualToSystemSpacingHBelow anchor: LayoutYAxisAnchor,
+  public func constraint(lessThanOrEqualToSystemSpacingBelow anchor: LayoutYAxisAnchor,
                          multiplier: Double) -> LayoutConstraint {
     return LayoutConstraint(anchor: self, relatedBy: .lessThanOrEqual,
                             toAnchor: anchor, multiplier: multiplier,
