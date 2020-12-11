@@ -29,7 +29,7 @@ public class LayoutXAxisAnchor: LayoutAnchor<LayoutXAxisAnchor> {
 
   /// Returns a constraint that defines the minimum distance by which the
   /// current anchor is positioned below the specified anchor.
-  public func constraint(lessThanOrEqualToSystemSpacingHBelow anchor: LayoutXAxisAnchor,
+  public func constraint(lessThanOrEqualToSystemSpacingBelow anchor: LayoutXAxisAnchor,
                          multiplier: Double) -> LayoutConstraint {
     return LayoutConstraint(anchor: self, relatedBy: .lessThanOrEqual,
                             toAnchor: anchor, multiplier: multiplier,
