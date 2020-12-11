@@ -22,18 +22,18 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
   public func constraint(equalTo anchor: LayoutDimension, multiplier: Double,
                          constant offset: Double) -> LayoutConstraint {
     return LayoutConstraint(item: self, attribute: self.attribute,
-                            relatedBy: .equal, toItem: anchor.item,
-                            attribute: self.attribute, multiplier: multiplier,
-                            constant: offset)
+                            relatedBy: .equal,
+                            toItem: anchor.item, attribute: anchor.attribute,
+                            multiplier: multiplier, constant: offset)
   }
 
   /// Returns a constraint that defines a constant size for the anchor's size
   /// attribute.
   public func constraint(equalToConstant constant: Double) -> LayoutConstraint {
     return LayoutConstraint(item: self, attribute: self.attribute,
-                            relatedBy: .equal, toItem: nil,
-                            attribute: .notAnAttribute, multiplier: 1.0,
-                            constant: constant)
+                            relatedBy: .equal,
+                            toItem: nil, attribute: .notAnAttribute,
+                            multiplier: 1.0, constant: constant)
   }
 
   /// Returns a constraint that defines the anchor's size attribute as greater
@@ -51,9 +51,9 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
                          multiplier: Double, constant offset: Double)
       -> LayoutConstraint {
     return LayoutConstraint(item: self, attribute: self.attribute,
-                            relatedBy: .greaterThanOrEqual, toItem: anchor.item,
-                            attribute: self.attribute, multiplier: multiplier,
-                            constant: offset)
+                            relatedBy: .greaterThanOrEqual,
+                            toItem: anchor.item, attribute: anchor.attribute,
+                            multiplier: multiplier, constant: offset)
   }
 
   /// Returns a constraint that defines the minimum size for the anchor's size
@@ -61,9 +61,9 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
   public func constraint(greaterThanOrEqualToConstant constant: Double)
       -> LayoutConstraint {
     return LayoutConstraint(item: self, attribute: self.attribute,
-                            relatedBy: .greaterThanOrEqual, toItem: nil,
-                            attribute: .notAnAttribute, multiplier: 1.0,
-                            constant: constant)
+                            relatedBy: .greaterThanOrEqual,
+                            toItem: nil, attribute: .notAnAttribute,
+                            multiplier: 1.0, constant: constant)
   }
 
   /// Returns a constraint that defines the anchor's size attribute as less than
@@ -81,9 +81,9 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
                          multiplier: Double, constant offset: Double)
       -> LayoutConstraint {
     return LayoutConstraint(item: self, attribute: self.attribute,
-                            relatedBy: .lessThanOrEqual, toItem: anchor.item,
-                            attribute: self.attribute, multiplier: multiplier,
-                            constant: offset)
+                            relatedBy: .lessThanOrEqual,
+                            toItem: anchor.item, attribute: anchor.attribute,
+                            multiplier: multiplier, constant: offset)
   }
 
   /// Returns a constraint that defines the maximum size for teh anchor's size
@@ -91,8 +91,8 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
   public func constraint(lessThanOrEqualToConstant constant: Double)
       -> LayoutConstraint {
     return LayoutConstraint(item: self, attribute: self.attribute,
-                            relatedBy: .lessThanOrEqual, toItem: nil,
-                            attribute: .notAnAttribute, multiplier: 1.0,
-                            constant: constant)
+                            relatedBy: .lessThanOrEqual,
+                            toItem: nil, attribute: .notAnAttribute,
+                            multiplier: 1.0, constant: constant)
   }
 }

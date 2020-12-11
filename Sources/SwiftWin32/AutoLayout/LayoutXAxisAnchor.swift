@@ -14,7 +14,9 @@ public class LayoutXAxisAnchor: LayoutAnchor<LayoutXAxisAnchor> {
   /// the specified anchor.
   public func constraint(equalToSystemSpacingBelow anchor: LayoutXAxisAnchor,
                          multiplier: Double) -> LayoutConstraint {
-    return LayoutConstraint(anchor: self, relatedBy: .equal, toAnchor: anchor,
+    return LayoutConstraint(item: self.item, attribute: self.attribute,
+                            relatedBy: .equal,
+                            toItem: anchor.item, attribute: anchor.attribute,
                             multiplier: multiplier, constant: 8.0)
   }
 
@@ -22,18 +24,20 @@ public class LayoutXAxisAnchor: LayoutAnchor<LayoutXAxisAnchor> {
   /// the specified anchor.
   public func constraint(greaterThanOrEqualToSystemSpacingBelow anchor: LayoutXAxisAnchor,
                          multiplier: Double) -> LayoutConstraint {
-    return LayoutConstraint(anchor: self, relatedBy: .greaterThanOrEqual,
-                            toAnchor: anchor, multiplier: multiplier,
-                            constant: 8.0)
+    return LayoutConstraint(item: self.item, attribute: self.attribute,
+                            relatedBy: .greaterThanOrEqual,
+                            toItem: anchor.item, attribute: anchor.attribute,
+                            multiplier: multiplier, constant: 8.0)
   }
 
   /// Returns a constraint that defines the minimum distance by which the
   /// current anchor is positioned below the specified anchor.
   public func constraint(lessThanOrEqualToSystemSpacingBelow anchor: LayoutXAxisAnchor,
                          multiplier: Double) -> LayoutConstraint {
-    return LayoutConstraint(anchor: self, relatedBy: .lessThanOrEqual,
-                            toAnchor: anchor, multiplier: multiplier,
-                            constant: 8.0)
+    return LayoutConstraint(item: self.item, attribute: self.attribute,
+                            relatedBy: .lessThanOrEqual,
+                            toItem: anchor.item, attribute: anchor.attribute,
+                            multiplier: multiplier, constant: 8.0)
   }
 
   // MARK - Creating a Layout Dimension

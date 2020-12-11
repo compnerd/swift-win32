@@ -110,42 +110,29 @@ public class LayoutConstraint {
 
   /// Creates a constraint that defines the relationship between the specified
   /// attributes of the given views.
-  public convenience init(item firstItem: AnyObject,
-                          attribute firstAttribute: LayoutConstraint.Attribute,
-                          relatedBy relation: LayoutConstraint.Relation,
-                          toItem secondItem: AnyObject?,
-                          attribute secondAttribute: LayoutConstraint.Attribute,
-                          multiplier: Double, constant: Double) {
-    let firstAnchor: LayoutAnchor<AnyObject> =
+  public /*convenience*/ init(item firstItem: AnyObject,
+                              attribute firstAttribute: LayoutConstraint.Attribute,
+                              relatedBy relation: LayoutConstraint.Relation,
+                              toItem secondItem: AnyObject?,
+                              attribute secondAttribute: LayoutConstraint.Attribute,
+                              multiplier: Double, constant: Double) {
+    self.firstAnchor =
         LayoutAnchor<AnyObject>(item: firstItem, attribute: firstAttribute)
-    let secondAnchor: LayoutAnchor<AnyObject> =
-        LayoutAnchor<AnyObject>(item: secondItem, attribute: secondAttribute)
 
-    self.init(anchor: firstAnchor, relatedBy: relation, toAnchor: secondAnchor,
-              multiplier: multiplier, constant: constant)
-  }
+    if let item = secondItem {
+      self.secondAnchor =
+          LayoutAnchor<AnyObject>(item: item, attribute: secondAttribute)
+    }
 
-  internal init<AnchorType>(anchor firstAnchor: LayoutAnchor<AnchorType>,
-                            relatedBy relation: LayoutConstraint.Relation,
-                            toAnchor secondAnchor: LayoutAnchor<AnchorType>,
-                            multiplier: Double, constant: Double) {
-    self.isActive = false
-    self.firstAnchor = firstAnchor.generic
-    self.firstItem = firstAnchor.item
-    self.firstAttribute = firstAnchor.attribute
     self.relation = relation
-    self.secondAnchor = secondAnchor.generic
-    self.secondItem = secondAnchor.item
-    self.secondAttribute = secondAnchor.attribute
     self.multiplier = multiplier
     self.constant = constant
-    self.priority = .required
   }
 
   // MARK - Activating and Deactivating Constraints
 
   /// The active state of the constraint.
-  public var isActive: Bool
+  public var isActive: Bool = false
 
   /// Activates each constraint in the specified array.
   public class func activate(_ constraints: [LayoutConstraint]) {
@@ -160,19 +147,27 @@ public class LayoutConstraint {
   // MARK - Accessing Constraint Data
 
   /// The first object participating in the constraint.
-  public private(set) unowned(unsafe) var firstItem: AnyObject?
+  public unowned(unsafe) var firstItem: AnyObject? {
+    firstAnchor.item
+  }
 
   /// The attribute of the first object participating in the constraint.
-  public private(set) var firstAttribute: LayoutConstraint.Attribute
+  public var firstAttribute: LayoutConstraint.Attribute {
+    firstAnchor.attribute
+  }
 
   /// The relationship between the two attributes in the constraint.
   public private(set) var relation: LayoutConstraint.Relation
 
   /// The second object participating in the constraint.
-  public private(set) unowned(unsafe) var secondItem: AnyObject?
+  public unowned(unsafe) var secondItem: AnyObject? {
+    secondAnchor?.item
+  }
 
   /// The attribute of the second object participating in the constraint.
-  public private(set) var secondAttribute: LayoutConstraint.Attribute
+  public var secondAttribute: LayoutConstraint.Attribute {
+    secondAnchor?.attribute ?? .notAnAttribute
+  }
 
   /// The multiplier applied to the second attribute participating in the
   /// constraint.
@@ -191,7 +186,7 @@ public class LayoutConstraint {
   // MARK - Getting the Layout Priority
 
   /// The priority of the constraint.
-  public var priority: LayoutPriority
+  public var priority: LayoutPriority = .required
 
   // MARK - Identifying a Constraint
 
