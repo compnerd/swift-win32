@@ -284,11 +284,6 @@ extension Menu.Options {
 /// A container for grouping related menu elements in an application menu or
 /// contextual menu.
 public class Menu: MenuElement {
-  internal let children: [MenuElement]
-
-  public let identifier: Menu.Identifier
-  public let options: Menu.Options
-
   /// Creating a Menu Object
 
   /// Creates a new menu with the specified values.
@@ -300,6 +295,25 @@ public class Menu: MenuElement {
     self.options = options
     super.init(title: title, image: image)
   }
+
+  // MARK - Accessing the Child Elements
+
+  /// The contents of the menu.
+  public let children: [MenuElement]
+
+  /// Creates a new menu with the same configuration as the current menu, but
+  /// with a new set of child elements.
+  public func replacingChildren(_ newChildren: [MenuElement]) -> Menu {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  // MARK - Getting the Menu Details
+
+  /// The unique identifier for the current menu.
+  public let identifier: Menu.Identifier
+
+  /// The configuration options for the current menu.
+  public let options: Menu.Options
 }
 
 internal struct Win32Menu {
