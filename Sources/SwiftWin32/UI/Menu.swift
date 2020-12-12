@@ -6,6 +6,7 @@
  **/
 
 import WinSDK
+import class Foundation.NSUUID
 
 extension Menu {
   /// Constants for identifying an application's standard menus.
@@ -246,6 +247,12 @@ extension Menu.Identifier {
   }
 }
 
+extension Menu.Identifier {
+  fileprivate static var generated: Menu.Identifier {
+    Menu.Identifier(rawValue: "org.compnerd.swift-win32.menu.generated.\(NSUUID())")
+  }
+}
+
 
 extension Menu {
   /// Options for configuring a menu's appearance.
@@ -279,6 +286,9 @@ extension Menu.Options {
 public class Menu: MenuElement {
   internal let children: [MenuElement]
 
+  public let identifier: Menu.Identifier
+  public let options: Menu.Options
+
   /// Creating a Menu Object
 
   /// Creates a new menu with the specified values.
@@ -286,6 +296,8 @@ public class Menu: MenuElement {
               identifier: Menu.Identifier? = nil, options: Menu.Options = [],
               children: [MenuElement] = []) {
     self.children = children
+    self.identifier = identifier ?? .generated
+    self.options = options
     super.init(title: title, image: image)
   }
 }
