@@ -395,7 +395,16 @@ public class View: Responder {
   public func didMoveToSuperview() {
   }
 
+  /// Informs the view that its window object is about to change.
+  public func willMove(toWindow: Window?) {
+  }
+
+  /// Informs the view that its window object changed.
+  public func diMoveToWindow() {
+  }
+
   // MARK - Responder Chain
+
   public override var next: Responder? {
     if let parent = self.superview { return parent }
     return nil
