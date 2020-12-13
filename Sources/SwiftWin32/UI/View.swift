@@ -19,7 +19,7 @@ private let SwiftViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubc
     let point = Point(x: Int(x), y: Int(y))
     let menuConfiguration = menuInteraction.delegate?.contextMenuInteraction(menuInteraction,
                                                                              configurationForMenuAtLocation: point)
-    if let menu = menuConfiguration?.provideActions() {
+    if let menu = menuConfiguration?.actionProvider?([]) {
       view.win32ContextMenu = Win32Menu(MenuHandle(owning: CreatePopupMenu()),
                                         children: menu.children)
     } else {

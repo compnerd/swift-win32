@@ -8,8 +8,13 @@
 import class Foundation.NSUUID
 import protocol Foundation.NSCopying
 
+/// Returns the configuration data to use when previewing the content.
 public class ContextMenuConfiguration {
-  /// Creating the Menu Configuration Object
+  internal var previewProvider: ContextMenuContentPreviewProvider
+
+  internal var actionProvider: ContextMenuActionProvider?
+
+  // MARK - Creating the Menu Configuration Object
 
   /// Returns the custom view controller to use when previewing your content.
   public typealias ContextMenuContentPreviewProvider = () -> ViewController?
@@ -37,15 +42,8 @@ public class ContextMenuConfiguration {
     self.actionProvider = actionProvider
   }
 
-  /// Getting the Configuration Identifier
+  // MARK - Getting the Configuration Identifier
 
   /// The unique identifier for this configuration object.
   public let identifier: NSCopying
-
-  private var previewProvider: ContextMenuContentPreviewProvider
-  private var actionProvider: ContextMenuActionProvider?
-
-  internal func provideActions() -> Menu? {
-    actionProvider?([]) // TODO suggest default actions
-  }
 }
