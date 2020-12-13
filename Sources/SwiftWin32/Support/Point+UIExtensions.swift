@@ -30,3 +30,9 @@ extension POINT {
     self.init(x: LONG(from.width), y: LONG(from.height))
   }
 }
+
+extension Point {
+  internal init<Integer: FixedWidthInteger>(x: Integer, y: Integer) {
+    self.init(x: Int(x), y: Int(y))
+  }
+}
