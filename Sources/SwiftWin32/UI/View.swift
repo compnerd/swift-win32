@@ -166,7 +166,7 @@ public class View: Responder {
                  CInt(client.size.width), CInt(client.size.height),
                  UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
 
-    self.frame = client
+    self.frame = frame
 
     super.init()
 

@@ -37,34 +37,35 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
   lazy var button: Button =
       Button(frame: Rect(x: 72.0, y: 4.0, width: 96.0, height: 32.0),
              title: "Press Me!")
+
   lazy var checkbox: Switch =
       Switch(frame: Rect(x: 4.0, y: 40.0, width: 256.0, height: 24.0))
 
   lazy var progress: ProgressView =
-      ProgressView(frame: Rect(x: 4.0, y: 64.0, width: 256.0, height: 20.0))
+      ProgressView(frame: Rect(x: 4.0, y: 68.0, width: 256.0, height: 20.0))
 
   lazy var textfield: TextField =
-      TextField(frame: Rect(x: 4.0, y: 94.0, width: 254.0, height: 16.0))
+      TextField(frame: Rect(x: 4.0, y: 92.0, width: 254.0, height: 20.0))
 
   lazy var password: TextField =
-      TextField(frame: Rect(x: 4.0, y: 120.0, width: 254.0, height: 16.0))
+      TextField(frame: Rect(x: 4.0, y: 116.0, width: 254.0, height: 20.0))
 
   lazy var textview: TextView =
-      TextView(frame: Rect(x: 4.0, y: 144.0, width: 254.0, height: 72.0))
+      TextView(frame: Rect(x: 4.0, y: 140.0, width: 254.0, height: 72.0))
 
   lazy var slider: Slider =
-      Slider(frame: Rect(x: 4.0, y: 224.0, width: 256.0, height: 24.0))
+      Slider(frame: Rect(x: 4.0, y: 216.0, width: 256.0, height: 24.0))
 
   lazy var picker: DatePicker =
-      DatePicker(frame: Rect(x: 4.0, y: 254.0, width: 256.0, height: 32.0))
+      DatePicker(frame: Rect(x: 4.0, y: 244.0, width: 256.0, height: 32.0))
 
   lazy var stepperLabel: Label =
-      Label(frame: Rect(x: 4.0, y: 292.0, width: 128.0, height: 32.0))
+      Label(frame: Rect(x: 4.0, y: 280.0, width: 128.0, height: 32.0))
   lazy var stepper: Stepper =
-      Stepper(frame: Rect(x: 197.0, y: 290.0, width: 64.0, height: 32.0))
+      Stepper(frame: Rect(x: 197.0, y: 280.0, width: 64.0, height: 32.0))
 
   lazy var tableview: TableView =
-      TableView(frame: Rect(x: 4.0, y: 330.0, width: 254.0, height: 48.0),
+      TableView(frame: Rect(x: 4.0, y: 316.0, width: 254.0, height: 48.0),
                 style: .plain)
 
   lazy var imageview: ImageView = {
@@ -77,7 +78,7 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
         Image(contentsOfFile: bundle.url(forResource: "CoffeeCup",
                                          withExtension: "jpg")!.path)
     let view = ImageView(image: image)
-    view.frame = Rect(x: 64.0, y: 384.0, width: 128.0, height: 128.0)
+    view.frame = Rect(x: 64.0, y: 368.0, width: 128.0, height: 128.0)
     return view
   }()
 
@@ -87,7 +88,7 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
 
     // Set the preferred window size and restrict resizing by setting the
     // minimum and maximum to the same value.
-    let size: Size = Size(width: 265, height: 516)
+    let size: Size = Size(width: 265, height: 500)
     windowScene.sizeRestrictions?.minimumSize = size
     windowScene.sizeRestrictions?.maximumSize = size
 
