@@ -36,9 +36,15 @@ internal func MAKELANGID(_ p: WORD, _ s: WORD) -> DWORD {
 }
 
 // minwindef.h
+
 @_transparent
 internal func LOWORD<T: FixedWidthInteger>(_ dword: T) -> WORD {
-  return WORD(DWORD_PTR(dword) & 0xffff)
+  return WORD(DWORD_PTR(dword) >>  0 & 0xffff)
+}
+
+@_transparent
+internal func HIWORD<T: FixedWidthInteger>(_ dword: T) -> WORD {
+  return WORD(DWORD_PTR(dword) >> 16 & 0xffff)
 }
 
 // WinUser.h
