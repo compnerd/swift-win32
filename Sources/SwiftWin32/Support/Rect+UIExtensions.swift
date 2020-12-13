@@ -9,17 +9,17 @@ import WinSDK
 
 extension Rect {
   internal init(from: RECT) {
-    self.origin = Point(x: Double(from.left), y: Double(from.top))
-    self.size = Size(width: Double(from.right - from.left),
-                     height: Double(from.bottom - from.top))
+    self.origin = Point(x: from.left, y: from.top)
+    self.size = Size(width: from.right - from.left,
+                     height: from.bottom - from.top)
   }
 }
 
 extension RECT {
   internal init(from: Rect) {
-    self.init(left: Int32(from.origin.x),
-              top: Int32(from.origin.y),
-              right: Int32(from.origin.x + from.size.width),
-              bottom: Int32(from.origin.y + from.size.height))
+    self.init(left: LONG(from.origin.x),
+              top: LONG(from.origin.y),
+              right: LONG(from.origin.x + from.size.width),
+              bottom: LONG(from.origin.y + from.size.height))
   }
 }

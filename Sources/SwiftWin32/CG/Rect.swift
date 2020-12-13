@@ -22,7 +22,7 @@ public struct Rect {
   }
 
   public init(x: Int, y: Int, width: Int, height: Int) {
-    self.init(origin: Point(x: Double(x), y: Double(y)),
+    self.init(origin: Point(x: x, y: y),
               size: Size(width: Double(width), height: Double(height)))
   }
 

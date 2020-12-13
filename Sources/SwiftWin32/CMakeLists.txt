@@ -93,6 +93,7 @@ target_sources(SwiftWin32 PRIVATE
   Support/Logging.swift
   Support/Rect+UIExtensions.swift
   Support/Point+UIExtensions.swift
+  Support/Size+UIExtensions.swift
   Support/String+UIExtensions.swift
   Support/WindowsHandle+UIExtensions.swift
   Support/WinSDK+Extensions.swift)
