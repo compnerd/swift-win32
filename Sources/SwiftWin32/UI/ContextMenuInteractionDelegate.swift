@@ -7,7 +7,7 @@
 
 /// The methods for providing the set of actions to perform on your content,
 /// and for customizing the preview of that content.
-public protocol ContextMenuInteractionDelegate: class {
+public protocol ContextMenuInteractionDelegate: AnyObject {
   // MARK - Providing the Preview Configuration Data
 
   /// Returns the configuration data to use when previewing the content.

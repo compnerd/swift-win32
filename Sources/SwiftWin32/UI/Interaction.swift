@@ -6,7 +6,7 @@
  **/
 
 /// The protocol that an interaction implements to access the view that owns it.
-public protocol Interaction: class {
+public protocol Interaction: AnyObject {
   // MARK - Getting the View
 
   /// The view that owns the interaction.
