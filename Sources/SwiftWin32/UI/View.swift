@@ -89,6 +89,8 @@ public class View: Responder {
     }
   }
 
+  internal var win32ContextMenu: Win32Menu? = nil
+
   // MARK - Creating a View Object
 
   // FIXME(compnerd) should this be marked as a convenience initializer?
@@ -191,16 +193,6 @@ public class View: Responder {
   public var isUserInteractionEnabled: Bool {
     get { return IsWindowEnabled(self.hWnd) }
     set { _ = EnableWindow(self.hWnd, newValue) }
-  }
-
-  public private(set) var interactions: [Interaction] = []
-  internal var win32ContextMenu: Win32Menu? = nil
-
-  public func addInteraction(_ interaction: Interaction) {
-    interaction.willMove(to: self)
-    interaction.view?.interactions.removeAll(where: { $0 === interaction })
-    interactions.append(interaction)
-    interaction.didMove(to: self)
   }
 
   // MARK - Configuring the Bounds and Frame Rectangles
@@ -402,6 +394,24 @@ public class View: Responder {
   public var widthAnchor: LayoutDimension {
     LayoutDimension(item: self, attribute: .width)
   }
+
+  // MARK - Adding and Removing Interactions
+
+  /// Adds an interaction to the view.
+  public func addInteraction(_ interaction: Interaction) {
+    interaction.willMove(to: self)
+    interaction.view?.interactions.removeAll(where: { $0 === interaction })
+    interactions.append(interaction)
+    interaction.didMove(to: self)
+  }
+
+  /// Removes an interaction from the view.
+  public func removeInteraction(_ interaction: Interaction) {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// The array of interactions for the view.
+  public var interactions: [Interaction] = []
 
   // MARK - Identifying the View at Runtime
 
