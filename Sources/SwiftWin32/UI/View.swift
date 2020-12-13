@@ -89,50 +89,6 @@ public class View: Responder {
     }
   }
 
-  // MARK - Configuring a View's Visual Appearance
-
-  /// A boolean that determines if the view is hidden.
-  public var isHidden: Bool {
-    get { IsWindowVisible(self.hWnd) }
-    set(hidden) {
-      let pEnumFunc: WNDENUMPROC = { (hWnd, lParam) -> WindowsBool in
-        ShowWindow(hWnd, CInt(lParam))
-        return true
-      }
-      _ = EnumChildWindows(self.hWnd, pEnumFunc,
-                           LPARAM(hidden ? SW_HIDE : SW_RESTORE))
-      ShowWindow(self.hWnd, hidden ? SW_HIDE : SW_RESTORE)
-    }
-  }
-
-  // MARK - Configuring the Bounds and Frame Rectangles
-
-  /// The frame rectangle, which describes the view's location and size in it's
-  /// superview's coordinate system.
-  public var frame: Rect {
-    didSet {
-      // Scale window for DPI
-      var client: Rect = self.frame
-      ScaleClient(rect: &client, for: GetDpiForWindow(self.hWnd),
-                  WindowStyle(DWORD(bitPattern: self.GWL_STYLE),
-                              DWORD(bitPattern: self.GWL_EXSTYLE)))
-
-      // Resize and Position the Window
-      _ = SetWindowPos(self.hWnd, nil,
-                       CInt(client.origin.x), CInt(client.origin.y),
-                       CInt(client.size.width), CInt(client.size.height),
-                       UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
-    }
-  }
-
-  /// The center point of the view's frame rectangle
-  public var center: Point {
-    get { return Point(x: self.frame.midX, y: self.frame.midY) }
-    set { self.frame = Rect(origin: Point(x: self.frame.origin.x - newValue.x,
-                                          y: self.frame.origin.y - newValue.y),
-                            size: self.frame.size) }
-  }
-
   // MARK - Creating a View Object
 
   // FIXME(compnerd) should this be marked as a convenience initializer?
@@ -212,6 +168,22 @@ public class View: Responder {
     _ = self.WndClass.unregister()
   }
 
+  // MARK - Configuring a View's Visual Appearance
+
+  /// A boolean that determines if the view is hidden.
+  public var isHidden: Bool {
+    get { IsWindowVisible(self.hWnd) }
+    set(hidden) {
+      let pEnumFunc: WNDENUMPROC = { (hWnd, lParam) -> WindowsBool in
+        ShowWindow(hWnd, CInt(lParam))
+        return true
+      }
+      _ = EnumChildWindows(self.hWnd, pEnumFunc,
+                           LPARAM(hidden ? SW_HIDE : SW_RESTORE))
+      ShowWindow(self.hWnd, hidden ? SW_HIDE : SW_RESTORE)
+    }
+  }
+
   // MARK - Configuring the Event-Related Behaviour
 
   /// A boolean value that determines whether user events are ignored and removed
@@ -229,6 +201,34 @@ public class View: Responder {
     interaction.view?.interactions.removeAll(where: { $0 === interaction })
     interactions.append(interaction)
     interaction.didMove(to: self)
+  }
+
+  // MARK - Configuring the Bounds and Frame Rectangles
+
+  /// The frame rectangle, which describes the view's location and size in it's
+  /// superview's coordinate system.
+  public var frame: Rect {
+    didSet {
+      // Scale window for DPI
+      var client: Rect = self.frame
+      ScaleClient(rect: &client, for: GetDpiForWindow(self.hWnd),
+                  WindowStyle(DWORD(bitPattern: self.GWL_STYLE),
+                              DWORD(bitPattern: self.GWL_EXSTYLE)))
+
+      // Resize and Position the Window
+      _ = SetWindowPos(self.hWnd, nil,
+                       CInt(client.origin.x), CInt(client.origin.y),
+                       CInt(client.size.width), CInt(client.size.height),
+                       UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
+    }
+  }
+
+  /// The center point of the view's frame rectangle
+  public var center: Point {
+    get { return Point(x: self.frame.midX, y: self.frame.midY) }
+    set { self.frame = Rect(origin: Point(x: self.frame.origin.x - newValue.x,
+                                          y: self.frame.origin.y - newValue.y),
+                            size: self.frame.size) }
   }
 
   // MARK - Managing the View Hierarchy
@@ -293,6 +293,33 @@ public class View: Responder {
 
     // Notify the view that it has been reparented.
     view.didMoveToSuperview()
+  }
+
+  // MARK - Observing View-Related Changes
+
+  /// Informs the view that a subview was added.
+  public func didAddSubview(_ subview: View) {
+  }
+
+  /// Informs the view that a subview is about to be removed.
+  public func willRemoveSubview(_ subview: View) {
+  }
+
+  /// Informs the view that its superview is about to change to the specified
+  /// superview.
+  public func willMove(toSuperview: View?) {
+  }
+
+  /// Informs the view that its superview changed.
+  public func didMoveToSuperview() {
+  }
+
+  /// Informs the view that its window object is about to change.
+  public func willMove(toWindow: Window?) {
+  }
+
+  /// Informs the view that its window object changed.
+  public func diMoveToWindow() {
   }
 
   // MARK - Managing the View's Constraints
@@ -376,40 +403,6 @@ public class View: Responder {
     LayoutDimension(item: self, attribute: .width)
   }
 
-  // MARK - Observing View-Related Changes
-
-  /// Informs the view that a subview was added.
-  public func didAddSubview(_ subview: View) {
-  }
-
-  /// Informs the view that a subview is about to be removed.
-  public func willRemoveSubview(_ subview: View) {
-  }
-
-  /// Informs the view that its superview is about to change to the specified
-  /// superview.
-  public func willMove(toSuperview: View?) {
-  }
-
-  /// Informs the view that its superview changed.
-  public func didMoveToSuperview() {
-  }
-
-  /// Informs the view that its window object is about to change.
-  public func willMove(toWindow: Window?) {
-  }
-
-  /// Informs the view that its window object changed.
-  public func diMoveToWindow() {
-  }
-
-  // MARK - Responder Chain
-
-  public override var next: Responder? {
-    if let parent = self.superview { return parent }
-    return nil
-  }
-
   // MARK - Identifying the View at Runtime
 
   /// An integer that you can use to identify view objects in your application.
@@ -424,6 +417,13 @@ public class View: Responder {
     // path.  Convert to a proper level-order traversal.
     return self.subviews.first(where: { $0.tag == tag }) ??
         self.subviews.lazy.compactMap { $0.viewWithTag(tag) }.first
+  }
+
+  // MARK - Responder Chain
+
+  public override var next: Responder? {
+    if let parent = self.superview { return parent }
+    return nil
   }
 
   // MARK - Trait Environment
