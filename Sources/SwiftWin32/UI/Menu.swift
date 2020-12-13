@@ -255,7 +255,7 @@ extension Menu.Identifier {
 
 
 extension Menu {
-  /// Options for configuring a menu's appearance.
+  // MARK - Options for configuring a menu's appearance.
   public struct Options: OptionSet {
     public typealias RawValue = UInt
 
@@ -284,7 +284,7 @@ extension Menu.Options {
 /// A container for grouping related menu elements in an application menu or
 /// contextual menu.
 public class Menu: MenuElement {
-  /// Creating a Menu Object
+  // MARK - Creating a Menu Object
 
   /// Creates a new menu with the specified values.
   public init(title: String = "", image: Image? = nil,
@@ -318,15 +318,14 @@ public class Menu: MenuElement {
 
 internal struct Win32Menu {
   internal let hMenu: MenuHandle
-  private let children: [Win32MenuElement]
 
-  internal init(_ hMenu: MenuHandle, children: [MenuElement]) {
+  private let items: [Win32MenuElement]
+
+  internal init(_ hMenu: MenuHandle, items: [MenuElement]) {
     self.hMenu = hMenu
-    self.children = children.map { Win32MenuElement.of($0) }
-    for (index, child) in self.children.enumerated() {
-      InsertMenuItemW(hMenu.value,
-                      UINT(index), true,
-                      &(child.info))
+    self.items = items.map { Win32MenuElement($0) }
+    for (index, child) in self.items.enumerated() {
+      InsertMenuItemW(hMenu.value, UINT(index), true, &child.info)
     }
   }
 }

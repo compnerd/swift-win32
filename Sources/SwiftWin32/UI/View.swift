@@ -7,34 +7,50 @@
 
 import WinSDK
 
+extension View {
+  internal func interaction<InteractionType: Interaction>() -> InteractionType? {
+    // TODO: how do we handle overlapping entries in the `interactions` array?
+    if let interaction = interactions.first(where: { $0 is InteractionType }) {
+      return interaction as? InteractionType
+    }
+    return nil
+  }
+}
+
 private let SwiftViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let view: View? = unsafeBitCast(dwRefData, to: AnyObject.self) as? View
+
   switch uMsg {
   case UINT(WM_CONTEXTMENU):
     guard let view = view,
-          let menuInteraction = view.interactions.first(where: { $0 is ContextMenuInteraction })
-              as? ContextMenuInteraction else { break }
-    let x = Int16(truncatingIfNeeded: lParam)
-    let y = Int16(truncatingIfNeeded: lParam >> 16)
-    let point = Point(x: Int(x), y: Int(y))
-    let menuConfiguration = menuInteraction.delegate?.contextMenuInteraction(menuInteraction,
-                                                                             configurationForMenuAtLocation: point)
-    if let menu = menuConfiguration?.actionProvider?([]) {
-      view.win32ContextMenu = Win32Menu(MenuHandle(owning: CreatePopupMenu()),
-                                        children: menu.children)
-    } else {
-      view.win32ContextMenu = nil
+          let interaction: ContextMenuInteraction = view.interaction() else {
+      break
     }
-    let hMenu = view.win32ContextMenu?.hMenu.value
-    TrackPopupMenu(hMenu, UINT(TPM_RIGHTBUTTON),
-                   Int32(x), Int32(y), 0, view.hWnd, nil)
+
+    let x = LOWORD(lParam), y = HIWORD(lParam)
+
+    // Clear any existing menu.
+    view.menu = nil
+
+    if let actions = interaction.delegate?
+                        .contextMenuInteraction(interaction,
+                                                configurationForMenuAtLocation: Point(x: x, y: y))?
+                        .actionProvider?([]) {
+      // TODO: handle a possible failure in `CreatePopupMenu`
+      view.menu = Win32Menu(MenuHandle(owning: CreatePopupMenu()),
+                            items: actions.children)
+      _ = TrackPopupMenu(view.menu?.hMenu.value, UINT(TPM_RIGHTBUTTON),
+                        Int32(x), Int32(y), 0, view.hWnd, nil)
+    }
+
     return 0
   case UINT(WM_COMMAND):
-    // TODO handle menu actions
+    // TODO: handle menu actions
     break
   default:
     break
   }
+
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
 }
 
@@ -89,7 +105,7 @@ public class View: Responder {
     }
   }
 
-  internal var win32ContextMenu: Win32Menu? = nil
+  internal var menu: Win32Menu? = nil
 
   // MARK - Creating a View Object
 

@@ -71,44 +71,45 @@ public class MenuElement {
 }
 
 internal class Win32MenuElement {
+  private var title: [WCHAR]
+  private let submenu: Win32Menu?
+
   internal var info: MENUITEMINFOW
-  private var titleW: [WCHAR]
-  private let subMenu: Win32Menu?
 
-  private init(title: String, subMenu: Win32Menu?, fType: Int32) {
-    self.titleW = title.LPCWSTR
-    let titleSize = titleW.count
-
-    self.subMenu = subMenu
-    self.info = titleW.withUnsafeMutableBufferPointer {
+  private init(title: String, submenu: Win32Menu?, fType: Int32) {
+    self.title = title.LPCWSTR
+    self.submenu = submenu
+    self.info = self.title.withUnsafeMutableBufferPointer {
       MENUITEMINFOW(cbSize: UINT(MemoryLayout<MENUITEMINFOW>.size),
                     fMask: UINT(MIIM_FTYPE | MIIM_STATE | MIIM_ID | MIIM_STRING | MIIM_SUBMENU | MIIM_DATA),
                     fType: UINT(fType),
                     fState: UINT(MFS_ENABLED),
                     wID: UInt32.random(in: .min ... .max),
-                    hSubMenu: subMenu?.hMenu.value,
+                    hSubMenu: submenu?.hMenu.value,
                     hbmpChecked: nil,
                     hbmpUnchecked: nil,
                     dwItemData: 0,
                     dwTypeData: $0.baseAddress,
-                    cch: UINT(titleSize),
+                    cch: UINT(title.count),
                     hbmpItem: nil)
     }
   }
 
-  internal static func of(_ element: MenuElement) -> Win32MenuElement {
-    let subMenu: Win32Menu?
+  internal convenience init(_ element: MenuElement) {
     if let menu = element as? Menu {
-      subMenu = Win32Menu(MenuHandle(owning: CreatePopupMenu()),
-                          children: menu.children)
+      self.init(title: element.title,
+                submenu: Win32Menu(MenuHandle(owning: CreatePopupMenu()),
+                                   items: menu.children),
+                fType: MFT_STRING)
     } else {
-      subMenu = nil
+      self.init(title: element.title, submenu: nil, fType: MFT_STRING)
     }
-    return Win32MenuElement(title: element.title, subMenu: subMenu, fType: MFT_STRING)
   }
+}
 
+extension Win32MenuElement {
   internal static var separator: Win32MenuElement {
-    Win32MenuElement(title: "", subMenu: nil, fType: MFT_SEPARATOR)
+    Win32MenuElement(title: "", submenu: nil, fType: MFT_SEPARATOR)
   }
 
   internal var isSeparator: Bool {
