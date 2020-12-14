@@ -8,10 +8,33 @@
 import WinSDK
 
 extension Color {
-  private enum Representation {
+  fileprivate enum Representation {
   case rgba(Double, Double, Double, Double)
   case hsba(Double, Double, Double, Double)
   case gray(Double, Double)
+  }
+}
+
+extension Color.Representation: Hashable {
+  public func hash(into hasher: inout Hasher) {
+    switch self {
+    case .rgba(let r, let g, let b, let a):
+      hasher.combine(0) // colorspace
+      hasher.combine(r)
+      hasher.combine(g)
+      hasher.combine(b)
+      hasher.combine(a)
+    case .hsba(let h, let s, let b, let a):
+      hasher.combine(1) // colorspace
+      hasher.combine(h)
+      hasher.combine(s)
+      hasher.combine(b)
+      hasher.combine(a)
+    case .gray(let white, let alpha):
+      hasher.combine(2) // colorspace
+      hasher.combine(white)
+      hasher.combine(alpha)
+    }
   }
 }
 
@@ -69,11 +92,16 @@ extension Color: _ExpressibleByColorLiteral {
 }
 
 extension Color: Equatable {
+  public static func ==(lhs: Color, rhs: Color) -> Bool {
+    // TODO(compnerd) make this more accurate
+    return lhs.COLORREF == rhs.COLORREF
+  }
 }
 
-public func ==(lhs: Color, rhs: Color) -> Bool {
-  // TODO(compnerd) make this more accurate
-  return lhs.COLORREF == rhs.COLORREF
+extension Color: Hashable {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.value)
+  }
 }
 
 extension Color {
