@@ -580,7 +580,9 @@ public class View: Responder {
 
   /// Removes an interaction from the view.
   public func removeInteraction(_ interaction: Interaction) {
-    fatalError("\(#function) not yet implemented")
+    interaction.willMove(to: nil)
+    self.interactions.removeAll(where: { $0 === interaction })
+    interaction.didMove(to: nil)
   }
 
   /// The array of interactions for the view.
