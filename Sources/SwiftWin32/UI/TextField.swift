@@ -33,11 +33,7 @@ private let SwiftTextFieldProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uI
 
     // Get the Client Rect
     var rctClient: RECT = RECT()
-    _ = withUnsafeMutablePointer(to: &rctClient) {
-      SendMessageW(hWnd, UINT(EM_GETRECT), 0,
-                   LPARAM(bitPattern: UInt64(Int(bitPattern: $0))))
-    }
-
+    _ = GetClientRect(hWnd, &rctClient)
     _ = SetTextColor(hDC, GetSysColor(COLOR_GRAYTEXT))
     _ = SetBkMode(hDC, TRANSPARENT)
     _ = DrawTextW(hDC, placeholder.LPCWSTR, -1, &rctClient,

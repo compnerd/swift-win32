@@ -48,8 +48,12 @@ private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPar
 
     if let view = unsafeBitCast(lpMeasurement.pointee.itemData,
                                 to: AnyObject.self) as? View {
-      lpMeasurement.pointee.itemHeight = UINT(view.frame.size.height)
-      lpMeasurement.pointee.itemWidth = UINT(view.frame.size.width)
+      var r: RECT = RECT()
+      _ = GetClientRect(view.hWnd, &r)
+      var client: Rect = Rect(from: r)
+
+      lpMeasurement.pointee.itemHeight = UINT(client.size.height)
+      lpMeasurement.pointee.itemWidth = UINT(client.size.width)
     }
 
     return LRESULT(1)
