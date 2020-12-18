@@ -287,10 +287,18 @@ public class View: Responder {
       log.warning("SetWindowPos: \(Error(win32: GetLastError()))")
     }
 
-    // TODO(compnerd) check for error
+    // Scale window for DPI
+    let style: WindowStyle =
+        WindowStyle(DWORD(bitPattern: view.GWL_STYLE),
+                    DWORD(bitPattern: view.GWL_EXSTYLE))
+
+    var client: Rect = view.frame
+    ScaleClient(rect: &client, for: GetDpiForWindow(view.hWnd), style)
+
+    // Resize and Position the Window
     _ = SetWindowPos(view.hWnd, nil,
-                     CInt(view.frame.origin.x), CInt(view.frame.origin.y),
-                     CInt(view.frame.size.width), CInt(view.frame.size.height),
+                     CInt(client.origin.x), CInt(client.origin.y),
+                     CInt(client.size.width), CInt(client.size.height),
                      UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
 
     view.superview = self
