@@ -45,27 +45,27 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
       ProgressView(frame: Rect(x: 4.0, y: 68.0, width: 256.0, height: 20.0))
 
   lazy var textfield: TextField =
-      TextField(frame: Rect(x: 4.0, y: 92.0, width: 254.0, height: 20.0))
+      TextField(frame: Rect(x: 4.0, y: 92.0, width: 254.0, height: 17.0))
 
   lazy var password: TextField =
-      TextField(frame: Rect(x: 4.0, y: 116.0, width: 254.0, height: 20.0))
+      TextField(frame: Rect(x: 4.0, y: 113.0, width: 254.0, height: 17.0))
 
   lazy var textview: TextView =
-      TextView(frame: Rect(x: 4.0, y: 140.0, width: 254.0, height: 72.0))
+      TextView(frame: Rect(x: 4.0, y: 134.0, width: 254.0, height: 72.0))
 
   lazy var slider: Slider =
-      Slider(frame: Rect(x: 4.0, y: 216.0, width: 256.0, height: 24.0))
+      Slider(frame: Rect(x: 4.0, y: 210.0, width: 256.0, height: 24.0))
 
   lazy var picker: DatePicker =
-      DatePicker(frame: Rect(x: 4.0, y: 244.0, width: 256.0, height: 32.0))
+      DatePicker(frame: Rect(x: 4.0, y: 238.0, width: 256.0, height: 32.0))
 
   lazy var stepperLabel: Label =
-      Label(frame: Rect(x: 4.0, y: 280.0, width: 128.0, height: 32.0))
+      Label(frame: Rect(x: 4.0, y: 274.0, width: 128.0, height: 32.0))
   lazy var stepper: Stepper =
-      Stepper(frame: Rect(x: 197.0, y: 280.0, width: 64.0, height: 32.0))
+      Stepper(frame: Rect(x: 197.0, y: 274.0, width: 64.0, height: 32.0))
 
   lazy var tableview: TableView =
-      TableView(frame: Rect(x: 4.0, y: 316.0, width: 254.0, height: 48.0),
+      TableView(frame: Rect(x: 4.0, y: 310.0, width: 254.0, height: 48.0),
                 style: .plain)
 
   lazy var imageview: ImageView = {
@@ -80,7 +80,7 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
     }
     let image: Image? = Image(contentsOfFile: resource.path)
     let view = ImageView(image: image)
-    view.frame = Rect(x: 64.0, y: 368.0, width: 128.0, height: 128.0)
+    view.frame = Rect(x: 64.0, y: 362.0, width: 128.0, height: 128.0)
     return view
   }()
 
@@ -90,7 +90,7 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
 
     // Set the preferred window size and restrict resizing by setting the
     // minimum and maximum to the same value.
-    let size: Size = Size(width: 265, height: 500)
+    let size: Size = Size(width: 265, height: 494)
     windowScene.sizeRestrictions?.minimumSize = size
     windowScene.sizeRestrictions?.maximumSize = size
 
