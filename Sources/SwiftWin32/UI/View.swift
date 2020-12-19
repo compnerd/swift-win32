@@ -241,10 +241,16 @@ public class View: Responder {
 
   // MARK - Managing the View Hierarchy
 
+  /// The receiver's superview, or `nil` if it has none.
   public private(set) var superview: View?
+
+  /// The receiver's immediate subviews.
   public private(set) var subviews: [View] = []
+
+  /// The receiver's window object, or `nil` if it has none.
   public private(set) var window: Window?
 
+  /// Add a subview to the end of the reciever's list of subviews.
   public func addSubview(_ view: View) {
     // Notify the view that it is about to be reparented.
     view.willMove(toSuperview: self)
