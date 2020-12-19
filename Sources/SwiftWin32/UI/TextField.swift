@@ -34,10 +34,16 @@ private let SwiftTextFieldProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uI
     // Get the Client Rect
     var rctClient: RECT = RECT()
     _ = GetClientRect(hWnd, &rctClient)
+
+    let hPrevFont = SelectObject(hDC, textfield.font?.hFont.value)
     _ = SetTextColor(hDC, GetSysColor(COLOR_GRAYTEXT))
     _ = SetBkMode(hDC, TRANSPARENT)
+
     _ = DrawTextW(hDC, placeholder.LPCWSTR, -1, &rctClient,
                   UINT(DT_EDITCONTROL | DT_NOCLIP | DT_NOPREFIX | DT_SINGLELINE | DT_VCENTER))
+
+    _ = SelectObject(hDC, hPrevFont)
+
 
     _ = ReleaseDC(hWnd, hDC)
 
