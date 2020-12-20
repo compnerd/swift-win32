@@ -81,6 +81,13 @@ target_sources(SwiftWin32 PRIVATE
   UI/Window.swift
   UI/WindowScene.swift)
 target_sources(SwiftWin32 PRIVATE
+  "UI/Focus-Based Navigation/FocusAnimationCoordinator.swift"
+  "UI/Focus-Based Navigation/FocusEnvironment.swift"
+  "UI/Focus-Based Navigation/FocusItem.swift"
+  "UI/Focus-Based Navigation/FocusItemContainer.swift"
+  "UI/Focus-Based Navigation/FocusMovementHint.swift"
+  "UI/Focus-Based Navigation/FocusUpdateContext.swift")
+target_sources(SwiftWin32 PRIVATE
   CA/Transform3D.swift)
 target_sources(SwiftWin32 PRIVATE
   CG/AffineTransform.swift
