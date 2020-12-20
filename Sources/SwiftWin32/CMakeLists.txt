@@ -81,6 +81,8 @@ target_sources(SwiftWin32 PRIVATE
   UI/Window.swift
   UI/WindowScene.swift)
 target_sources(SwiftWin32 PRIVATE
+  CA/Transform3D.swift)
+target_sources(SwiftWin32 PRIVATE
   CG/AffineTransform.swift
   CG/Point.swift
   CG/Rect.swift
