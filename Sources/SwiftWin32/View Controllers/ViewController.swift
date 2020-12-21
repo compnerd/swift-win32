@@ -6,6 +6,15 @@
  **/
 
 import WinSDK
+import class Foundation.NSNotification
+
+/// Transition styles available when presenting view controllers.
+public enum ModalTransitionStyle: Int {
+  case coverVertical
+  case flipHorizontal
+  case crossDissolve
+  case partialCurl
+}
 
 
 /// Constants that specify the edges of a rectangle.
@@ -196,6 +205,71 @@ public class ViewController: Responder {
 
   /// The interface orientations that the view controller supports.
   public private(set) var supportedInterfaceOrientations: InterfaceOrientationMask = .all
+
+  /// The interface orientation to use when presenting the view controller.
+  public private(set) var preferredInterfaceOrientationForPresentation: InterfaceOrientation = .portrait
+
+  /// Attempts to rotate all windows to the orientation of the device.
+  public class func attemptRotationToDeviceOrientation() {
+  }
+
+  // MARK - Presenting a View Controller
+
+  /// Presents a view controller in a primary context.
+  public func show(_ viewController: ViewController, sender: Any?) {
+  }
+
+  /// Presents a view controller in a secondary (or detail) context.
+  public func showDetailViewController(_ viewController: ViewController,
+                                       sender: Any?) {
+  }
+
+  /// Presents a view controller modally.
+  public func present(_ viewController: ViewController, animated flag: Bool,
+                      completion: (() -> Void)? = nil) {
+  }
+
+  /// Dismisses the view controller that was presented modally by the view
+  /// controller.
+  public func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+  }
+
+  /// The presentation style for modal view controllers.
+  public var modalPresentationStyle: ModalPresentationStyle = .automatic {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
+
+  /// The transition style to use when presenting the view controller.
+  public var modalTransitionStyle: ModalTransitionStyle = .coverVertical
+
+  /// A boolean value indicating whether the view controller enforces a modal
+  /// behavior.
+  public var isModalInPresentation: Bool = false {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
+
+  /// A boolean value that indicates whether this view controller's view is
+  /// covered when the view controller or one of its descendants presents a view
+  /// controller.
+  public var definesPresentationContext: Bool = false {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
+
+  /// A boolean value that indicates whether the view controller specifies the
+  /// transition style for view controllers it presents.
+  public var providesPresentationContextTransitionStyle: Bool = false {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
+
+  /// Returns a boolean indicating whether the current input view is dismissed
+  /// automatically when changing controls.
+  var disablesAutomaticKeyboardDismissal: Bool {
+    return self.modalPresentationStyle == .formSheet
+  }
+
+  public class var showDetailTargetDidChangeNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIViewControllerShowDetailTargetDidChangeNotification")
+  }
 
   // MARK -
 
