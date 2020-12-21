@@ -1,7 +1,5 @@
 add_library(SwiftWin32 SHARED
   Application/_TriviallyConstructible.swift
-  Application/Application.swift
-  Application/ApplicationDelegate.swift
   Application/ApplicationMain.swift
   Application/Information.swift
   Application/LaunchKeyOptions.swift)
@@ -15,80 +13,107 @@ target_sources(SwiftWin32 PRIVATE
   AutoLayout/LayoutXAxisAnchor.swift
   AutoLayout/LayoutYAxisAnchor.swift)
 target_sources(SwiftWin32 PRIVATE
-  UI/Action.swift
-  UI/AlertAction.swift
-  UI/AlertController.swift
   UI/AnimationCurve.swift
-  UI/BezierPath.swift
-  UI/Button.swift
-  UI/Color.swift
-  UI/Command.swift
-  UI/ContentContainer.swift
   UI/ContentSizeCategoryAdjusting.swift
   UI/ContentSizeCategoryImageAdjusting.swift
-  UI/ContextMenuConfiguration.swift
-  UI/ContextMenuInteraction.swift
-  UI/ContextMenuInteractionAnimating.swift
-  UI/ContextMenuInteractionCommitAnimating.swift
-  UI/ContextMenuInteractionDelegate.swift
-  UI/ContextualAction.swift
-  UI/Control.swift
-  UI/CoordinateSpace.swift
-  UI/DatePicker.swift
-  UI/Device.swift
-  UI/EdgeInsets.swift
-  UI/Event.swift
-  UI/Font.swift
-  UI/FontDescriptor.swift
-  UI/FontMetrics.swift
   UI/Image.swift
-  UI/ImageView.swift
   UI/Interaction.swift
-  UI/Label.swift
-  UI/Menu.swift
-  UI/MenuBuilder.swift
-  UI/MenuElement.swift
-  UI/MenuSystem.swift
-  UI/PreviewParameters.swift
-  UI/PreviewTarget.swift
-  UI/ProgressView.swift
-  UI/Responder.swift
-  UI/Scene.swift
-  UI/SceneConfiguration.swift
-  UI/SceneDelegate.swift
-  UI/SceneSession.swift
-  UI/SceneSizeRestrictions.swift
-  UI/Screen.swift
-  UI/Slider.swift
-  UI/SpringLoadedInteractionContext.swift
-  UI/Stepper.swift
-  UI/SwipeActionsConfiguration.swift
-  UI/Switch.swift
-  UI/TableView.swift
-  UI/TableViewCell.swift
-  UI/TableViewDataSource.swift
-  UI/TableViewDelegate.swift
-  UI/TableViewFocusUpdateContext.swift
-  UI/TargetedPreview.swift
-  UI/TextField.swift
-  UI/TextInputTraits.swift
-  UI/TextView.swift
-  UI/Touch.swift
-  UI/TraitCollection.swift
-  UI/TraitEnvironment.swift
-  UI/View.swift
-  UI/ViewController.swift
-  UI/ViewControllerTransitionCoordinator.swift
-  UI/ViewControllerTransitionCoordinatorContext.swift
-  UI/Window.swift
-  UI/WindowScene.swift)
+  UI/SceneSizeRestrictions.swift)
 target_sources(SwiftWin32 PRIVATE
-  "UI/Focus-Based Navigation/FocusAnimationCoordinator.swift"
-  "UI/Focus-Based Navigation/FocusEnvironment.swift"
-  "UI/Focus-Based Navigation/FocusItem.swift"
-  "UI/Focus-Based Navigation/FocusItemContainer.swift"
-  "UI/Focus-Based Navigation/FocusMovementHint.swift"
-  "UI/Focus-Based Navigation/FocusUpdateContext.swift")
+  "Animation and Haptics/View Controller Transitions/ViewControllerTransitionCoordinator.swift"
+  "Animation and Haptics/View Controller Transitions/ViewControllerTransitionCoordinatorContext.swift")
+target_sources(SwiftWin32 PRIVATE
+  "App and Environment/Application.swift"
+  "App and Environment/ApplicationDelegate.swift"
+  "App and Environment/Device.swift"
+  "App and Environment/TraitCollection.swift"
+  "App and Environment/TraitEnvironment.swift")
+target_sources(SwiftWin32 PRIVATE
+  "App and Environment/Scenes/Scene.swift"
+  "App and Environment/Scenes/SceneConfiguration.swift"
+  "App and Environment/Scenes/SceneDelegate.swift"
+  "App and Environment/Scenes/SceneSession.swift"
+  "App and Environment/Scenes/WindowScene.swift"
+  "App and Environment/Scenes/WindowSceneDelegate.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Appearance Customization/Configurations/CellConfigurationState.swift"
+  "Appearance Customization/Configurations/ConfigurationState.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Drag and Drop/SpringLoadedInteractionContext.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Drawing/BezierPath.swift"
+  "Drawing/Color.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Focus-Based Navigation/FocusAnimationCoordinator.swift"
+  "Focus-Based Navigation/FocusEnvironment.swift"
+  "Focus-Based Navigation/FocusItem.swift"
+  "Focus-Based Navigation/FocusItemContainer.swift"
+  "Focus-Based Navigation/FocusMovementHint.swift"
+  "Focus-Based Navigation/FocusUpdateContext.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Keyboards and Input/TextInputTraits.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Menus and Shortcuts/Action.swift"
+  "Menus and Shortcuts/Command.swift"
+  "Menus and Shortcuts/ContextMenuConfiguration.swift"
+  "Menus and Shortcuts/ContextMenuInteractionAnimating.swift"
+  "Menus and Shortcuts/ContextMenuInteractionCommitAnimating.swift"
+  "Menus and Shortcuts/ContextMenuInteraction.swift"
+  "Menus and Shortcuts/ContextMenuInteractionDelegate.swift"
+  "Menus and Shortcuts/Menu.swift"
+  "Menus and Shortcuts/MenuBuilder.swift"
+  "Menus and Shortcuts/MenuElement.swift"
+  "Menus and Shortcuts/MenuSystem.swift"
+  "Menus and Shortcuts/PreviewParameters.swift"
+  "Menus and Shortcuts/PreviewTarget.swift"
+  "Menus and Shortcuts/TargetedPreview.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Pointer Interactions/PointerInteraction.swift"
+  "Pointer Interactions/PointerInteractionAnimating.swift"
+  "Pointer Interactions/PointerInteractionDelegate.swift"
+  "Pointer Interactions/PointerRegion.swift"
+  "Pointer Interactions/PointerRegionRequest.swift"
+  "Pointer Interactions/PointerStyle.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Text Display and Fonts/Font.swift"
+  "Text Display and Fonts/FontDescriptor.swift"
+  "Text Display and Fonts/FontMetrics.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Touches, Presses, and Gestures/Event.swift"
+  "Touches, Presses, and Gestures/Responder.swift"
+  "Touches, Presses, and Gestures/Touch.swift")
+target_sources(SwiftWin32 PRIVATE
+  "View Controllers/ContentContainer.swift"
+  "View Controllers/ViewController.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Views and Controls/Axis.swift"
+  "Views and Controls/Button.swift"
+  "Views and Controls/Control.swift"
+  "Views and Controls/DatePicker.swift"
+  "Views and Controls/EdgeInsets.swift"
+  "Views and Controls/ImageView.swift"
+  "Views and Controls/Label.swift"
+  "Views and Controls/ProgressView.swift"
+  "Views and Controls/Slider.swift"
+  "Views and Controls/Stepper.swift"
+  "Views and Controls/Switch.swift"
+  "Views and Controls/TextField.swift"
+  "Views and Controls/TextView.swift"
+  "Views and Controls/View.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Views and Controls/Table Views/ContextualAction.swift"
+  "Views and Controls/Table Views/SwipeActionsConfiguration.swift"
+  "Views and Controls/Table Views/TableView.swift"
+  "Views and Controls/Table Views/TableViewCell.swift"
+  "Views and Controls/Table Views/TableViewDataSource.swift"
+  "Views and Controls/Table Views/TableViewDelegate.swift"
+  "Views and Controls/Table Views/TableViewFocusUpdateContext.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Windows and Screens/AlertAction.swift"
+  "Windows and Screens/AlertController.swift"
+  "Windows and Screens/CoordinateSpace.swift"
+  "Windows and Screens/Screen.swift"
+  "Windows and Screens/Window.swift")
 target_sources(SwiftWin32 PRIVATE
   CA/Transform3D.swift)
 target_sources(SwiftWin32 PRIVATE
