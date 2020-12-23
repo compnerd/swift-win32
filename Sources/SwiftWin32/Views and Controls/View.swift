@@ -76,6 +76,102 @@ private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) 
   rect = Rect(from: r)
 }
 
+extension View {
+  /// Options to specify how a view adjusts its content when its size changes.
+  public enum ContentMode: Int {
+    /// Scale the content to fit the size of itself by changing the aspect ratio
+    /// of the content if necessary.
+    case scaleToFill
+
+    /// Scale the content to fit the size of the view by maintaining the aspect
+    /// ratio.  Any remaining area of the view's bounds is transparent.
+    case scaleAspectFill
+
+    /// Scale the content to fill the size of the view.  Some portion of the
+    /// content may be clipped to fill the view's bounds.
+    case redraw
+
+    /// center the content in the view's bounds, keeping the proportions the
+    /// same.
+    case center
+
+    /// Center the content aligned to the top in the view's bounds.
+    case top
+
+    /// Center the content aligned at the bottom in the view's bounds.
+    case bottom
+
+    /// Align the content on the left of the view.
+    case left
+
+    /// Align the content on the right of the view.
+    case right
+
+    /// Align the content in the top-left corner of the view.
+    case topLeft
+
+    /// Align the content in the top-right corner of the view.
+    case topRight
+
+    /// Align the content in the bottom-left corner of the view.
+    case bottomLeft
+
+    /// Align the content in the bottom-right corner of the view.
+    case bottomRight
+  }
+}
+
+extension View {
+  /// Options for automatic view resizing.
+  public struct AutoresizingMask: OptionSet {
+    public let rawValue: UInt
+
+    public init(rawValue: UInt) {
+      self.rawValue = rawValue
+    }
+  }
+}
+
+extension View.AutoresizingMask {
+  public static var none: View.AutoresizingMask {
+    View.AutoresizingMask(rawValue: 0 << 0)
+  }
+
+  /// Resizing performed by expanding or shrinking a view in the direction of
+  /// the left margin.
+  public static var flexibleLeftMargin: View.AutoresizingMask {
+    View.AutoresizingMask(rawValue: 1 << 0)
+  }
+
+  /// Resizing performed by expanding or shrinking a view's width.
+  public static var flexibleWidth: View.AutoresizingMask {
+    View.AutoresizingMask(rawValue: 1 << 1)
+  }
+
+  /// Resizing performed by expanding or shrinking a view in the direction of
+  /// the right margin.
+  public static var flexibleRightMargin: View.AutoresizingMask {
+    View.AutoresizingMask(rawValue: 1 << 2)
+  }
+
+  /// Resizing performed by expanding or shrinking a view in the direction of
+  /// the top margin.
+  public static var flexibleTopMargin: View.AutoresizingMask {
+    View.AutoresizingMask(rawValue: 1 << 3)
+  }
+
+  /// Resizing performed by expanding or shrinking a view's height.
+  public static var flexibleHeight: View.AutoresizingMask {
+    View.AutoresizingMask(rawValue: 1 << 4)
+  }
+
+  /// Resizing performed by expanding or shrinking a view in the direction of
+  /// the bottom margin.
+  public static var flexibleBottomMargin: View.AutoresizingMask {
+    View.AutoresizingMask(rawValue: 1 << 5)
+  }
+}
+
 public class View: Responder {
   private static let `class`: WindowClass =
       WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.View",
@@ -423,6 +519,53 @@ public class View: Responder {
   /// A layout anchor representing the trailing edge of the view's frame.
   public var widthAnchor: LayoutDimension {
     LayoutDimension(item: self, attribute: .width)
+  }
+
+  // MARK - Configuring the Resizing Behaviour
+
+  // Determine how a view lays out its content when its bounds changes.
+  public var contentMode: View.ContentMode = .scaleToFill
+
+  /// Asks the view to calculate and return the size that best fits the
+  /// specified size.
+  public func sizeThatFits(_ size: Size) -> Size {
+    return self.frame.size
+  }
+
+  /// Resizes and moves the receiver view so it just encloses its subviews.
+  public func sizeToFit() {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Determines whether the receiver automatically resizes its subviews when
+  /// its bounds changes.
+  public var autoresizesSubviews: Bool = true
+
+  /// A bitmask that determines how the receiver resizes itself when its
+  /// superview's bounds changes.
+  public var autoresizingMask: View.AutoresizingMask = .none
+
+  // MARK - Drawing and Updating the View
+
+  /// Draws the receiver's image within the passed-in rectangle.
+  public func draw(_ rect: Rect) {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Mark the receiver's entire bounds rectangle as needing to be redrawn.
+  public func setNeedsDisplay() {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Marks the specified rectangle of the receiver as needing to be redrawn.
+  public func setNeedsDisplay(_ rect: Rect) {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// The scale factor applied to the view.
+  public var contentScaleFactor: Float {
+    get { 1.0 }
+    set { fatalError("\(#function) not yet implemented") }
   }
 
   // MARK - Adding and Removing Interactions
