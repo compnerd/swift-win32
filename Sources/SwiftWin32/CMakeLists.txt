@@ -16,7 +16,6 @@ target_sources(SwiftWin32 PRIVATE
   UI/AnimationCurve.swift
   UI/ContentSizeCategoryAdjusting.swift
   UI/ContentSizeCategoryImageAdjusting.swift
-  UI/Image.swift
   UI/Interaction.swift
   UI/SceneSizeRestrictions.swift)
 target_sources(SwiftWin32 PRIVATE
@@ -50,6 +49,8 @@ target_sources(SwiftWin32 PRIVATE
   "Focus-Based Navigation/FocusItemContainer.swift"
   "Focus-Based Navigation/FocusMovementHint.swift"
   "Focus-Based Navigation/FocusUpdateContext.swift")
+target_sources(SwiftWin32 PRIVATE
+  "Images and PDF/Image.swift")
 target_sources(SwiftWin32 PRIVATE
   "Keyboards and Input/TextInputTraits.swift")
 target_sources(SwiftWin32 PRIVATE
