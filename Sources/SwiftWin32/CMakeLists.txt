@@ -36,6 +36,7 @@ target_sources(SwiftWin32 PRIVATE
   "App and Environment/Scenes/WindowSceneDelegate.swift")
 target_sources(SwiftWin32 PRIVATE
   "Appearance Customization/Configurations/CellConfigurationState.swift"
+  "Appearance Customization/Configurations/ConfigurationColorTransformer.swift"
   "Appearance Customization/Configurations/ConfigurationState.swift")
 target_sources(SwiftWin32 PRIVATE
   "Drag and Drop/SpringLoadedInteractionContext.swift")
