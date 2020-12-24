@@ -48,12 +48,8 @@ private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPar
 
     if let view = unsafeBitCast(lpMeasurement.pointee.itemData,
                                 to: AnyObject.self) as? View {
-      var r: RECT = RECT()
-      _ = GetClientRect(view.hWnd, &r)
-      var client: Rect = Rect(from: r)
-
-      lpMeasurement.pointee.itemHeight = UINT(client.size.height)
-      lpMeasurement.pointee.itemWidth = UINT(client.size.width)
+      lpMeasurement.pointee.itemHeight = UINT(view.frame.size.height)
+      lpMeasurement.pointee.itemWidth = UINT(view.frame.size.width)
     }
 
     return LRESULT(1)
@@ -151,6 +147,9 @@ public class TableView: View {
             dataSource.tableView(self,
                                  cellForRowAt: IndexPath(row: row,
                                                          section: section))
+        // Resize the frame to the size that fits the content
+        cell.frame.size = cell.sizeThatFits(cell.frame.size)
+
         _ = SendMessageW(self.hWnd, UINT(LB_INSERTSTRING),
                          WPARAM(bitPattern: -1),
                          unsafeBitCast(cell as AnyObject, to: LPARAM.self))
