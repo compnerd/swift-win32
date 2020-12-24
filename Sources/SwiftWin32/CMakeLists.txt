@@ -35,6 +35,7 @@ target_sources(SwiftWin32 PRIVATE
   "App and Environment/Scenes/WindowScene.swift"
   "App and Environment/Scenes/WindowSceneDelegate.swift")
 target_sources(SwiftWin32 PRIVATE
+  "Appearance Customization/Configurations/BackgroundConfiguration.swift"
   "Appearance Customization/Configurations/CellConfigurationState.swift"
   "Appearance Customization/Configurations/ConfigurationColorTransformer.swift"
   "Appearance Customization/Configurations/ConfigurationState.swift")
@@ -103,7 +104,8 @@ target_sources(SwiftWin32 PRIVATE
   "Views and Controls/Switch.swift"
   "Views and Controls/TextField.swift"
   "Views and Controls/TextView.swift"
-  "Views and Controls/View.swift")
+  "Views and Controls/View.swift"
+  "Views and Controls/VisualEffect.swift")
 target_sources(SwiftWin32 PRIVATE
   "Views and Controls/Table Views/ContextualAction.swift"
   "Views and Controls/Table Views/SwipeActionsConfiguration.swift"
