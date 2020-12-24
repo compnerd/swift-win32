@@ -51,6 +51,11 @@ public class TableViewCell: View {
                   hCursor: LoadCursorW(nil, IDC_ARROW))
   private static let style: WindowStyle = (base: 0, extended: 0)
 
+  public override func sizeThatFits(_ size: Size) -> Size {
+    // TODO(compnerd) this should size the content view
+    return self.subviews.first?.sizeThatFits(size) ?? .zero
+  }
+
   // MARK - Creating a Table View Cell
 
   /// Initializes a table cell with a style and a reuse identifier and returns it

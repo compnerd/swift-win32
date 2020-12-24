@@ -183,7 +183,6 @@ extension UICatalog: TableViewDataSource {
     let cell = TableViewCell(style: .default, reuseIdentifier: nil)
     cell.addSubview(Button(frame: Rect(x: 0, y: 0, width: 80, height: 32),
                            title: "Button \(indexPath.row)"))
-    cell.frame = Rect(x: 0, y: 0, width: 80, height: 32)
     return cell
   }
 }
