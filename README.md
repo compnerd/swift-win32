@@ -22,6 +22,8 @@ This project requires the latest Swift snapshot (November 08, 2020 or newer). Yo
 The following example session shows how to build with CMake 3.16 or newer.
 
 ```cmd
+git clone git://github.com/compnerd/swift-win32
+cd swift-win32
 cmake -B build -D BUILD_SHARED_LIBS=YES -D CMAKE_BUILD_TYPE=Release -D CMAKE_Swift_FLAGS="-sdk %SDKROOT%" -G Ninja -S .
 ninja -C build SwiftWin32 UICatalog
 
