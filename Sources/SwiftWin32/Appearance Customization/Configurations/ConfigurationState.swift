@@ -5,23 +5,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  **/
 
-/// A key that defines a custom state for a view.
-public struct ConfigurationStateCustomKey: Equatable, Hashable, RawRepresentable {
-  public typealias RawValue = String
-
-  public let rawValue: RawValue
-
-  public init(rawValue: String) {
-    self.rawValue = rawValue
-  }
-}
-
-extension ConfigurationStateCustomKey {
-  public init(_ rawValue: String) {
-    self.rawValue = rawValue
-  }
-}
-
 /// The requirements for an object that encapsulate a view's state.
 public protocol ConfigurationState {
   // MARK - Managing Configuration States
