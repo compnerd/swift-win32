@@ -38,7 +38,8 @@ target_sources(SwiftWin32 PRIVATE
   "Appearance Customization/Configurations/BackgroundConfiguration.swift"
   "Appearance Customization/Configurations/CellConfigurationState.swift"
   "Appearance Customization/Configurations/ConfigurationColorTransformer.swift"
-  "Appearance Customization/Configurations/ConfigurationState.swift")
+  "Appearance Customization/Configurations/ConfigurationState.swift"
+  "Appearance Customization/Configurations/ConfigurationStateCustomKey.swift")
 target_sources(SwiftWin32 PRIVATE
   "Drag and Drop/SpringLoadedInteractionContext.swift")
 target_sources(SwiftWin32 PRIVATE
