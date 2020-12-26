@@ -205,6 +205,9 @@ public class View: Responder {
 
   // MARK - Configuring a View's Visual Appearance
 
+  /// The view's background color.
+  public var backgroundColor: Color?
+
   /// A boolean that determines if the view is hidden.
   public var isHidden: Bool {
     get { IsWindowVisible(self.hWnd) }
