@@ -7,6 +7,46 @@
 
 import WinSDK
 
+
+/// Constants that specify the edges of a rectangle.
+public struct RectEdge: OptionSet {
+  public typealias RawValue = UInt
+
+  public let rawValue: RawValue
+
+  public init(rawValue: RawValue) {
+    self.rawValue = rawValue
+  }
+}
+
+extension RectEdge {
+  /// The top edge of the rectangle.
+  public static var top: RectEdge {
+    RectEdge(rawValue: 1 << 0)
+  }
+
+  /// The left edge of the rectangle.
+  public static var left: RectEdge {
+    RectEdge(rawValue: 1 << 1)
+  }
+
+  /// The bottom edge of the rectangle.
+  public static var bottom: RectEdge {
+    RectEdge(rawValue: 1 << 2)
+  }
+
+  /// The right edge of the rectangle.
+  public static var right: RectEdge {
+    RectEdge(rawValue: 1 << 3)
+  }
+
+  /// All edges of the rectangle.
+  public static var all: RectEdge {
+    RectEdge(rawValue: 0xf)
+  }
+}
+
+
 public class ViewController: Responder {
   // MARK - Managing the View
 
