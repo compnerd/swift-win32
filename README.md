@@ -2,7 +2,7 @@ Swift/Win32 - A Swift Application Framework for Windows
 -------------------------------------------------------
 
 <p align="center">
-  <img alt="Swift/Win32 Screenshot" src="screenshot.png"/>
+  <img alt="Swift/Win32 Screenshot" src="Documentation/Images/screenshot.png" width="299" height="588"/>
 </p>
 
 Swift/Win32 aims to provide a [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) model for writing applications on Windows.  It provides Swift friendly wrapping of the Win32 APIs much like [MFC](https://en.wikipedia.org/wiki/Microsoft_Foundation_Class_Library) did for C++.
@@ -22,8 +22,6 @@ This project requires the latest Swift snapshot (November 08, 2020 or newer). Yo
 The following example session shows how to build with CMake 3.16 or newer.
 
 ```cmd
-git clone git://github.com/compnerd/swift-win32
-cd swift-win32
 cmake -B build -D BUILD_SHARED_LIBS=YES -D CMAKE_BUILD_TYPE=Release -D CMAKE_Swift_FLAGS="-sdk %SDKROOT%" -G Ninja -S .
 ninja -C build SwiftWin32 UICatalog
 
