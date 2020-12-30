@@ -21,7 +21,7 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
   /// the specified size attribute multiplied by a constant plus an offset.
   public func constraint(equalTo anchor: LayoutDimension, multiplier: Double,
                          constant offset: Double) -> LayoutConstraint {
-    return LayoutConstraint(item: self, attribute: self.attribute,
+    return LayoutConstraint(item: self.item, attribute: self.attribute,
                             relatedBy: .equal,
                             toItem: anchor.item, attribute: anchor.attribute,
                             multiplier: multiplier, constant: offset)
@@ -30,7 +30,7 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
   /// Returns a constraint that defines a constant size for the anchor's size
   /// attribute.
   public func constraint(equalToConstant constant: Double) -> LayoutConstraint {
-    return LayoutConstraint(item: self, attribute: self.attribute,
+    return LayoutConstraint(item: self.item, attribute: self.attribute,
                             relatedBy: .equal,
                             toItem: nil, attribute: .notAnAttribute,
                             multiplier: 1.0, constant: constant)
@@ -50,7 +50,7 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
   public func constraint(greaterThanOrEqualTo anchor: LayoutDimension,
                          multiplier: Double, constant offset: Double)
       -> LayoutConstraint {
-    return LayoutConstraint(item: self, attribute: self.attribute,
+    return LayoutConstraint(item: self.item, attribute: self.attribute,
                             relatedBy: .greaterThanOrEqual,
                             toItem: anchor.item, attribute: anchor.attribute,
                             multiplier: multiplier, constant: offset)
@@ -60,7 +60,7 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
   /// attribute.
   public func constraint(greaterThanOrEqualToConstant constant: Double)
       -> LayoutConstraint {
-    return LayoutConstraint(item: self, attribute: self.attribute,
+    return LayoutConstraint(item: self.item, attribute: self.attribute,
                             relatedBy: .greaterThanOrEqual,
                             toItem: nil, attribute: .notAnAttribute,
                             multiplier: 1.0, constant: constant)
@@ -80,7 +80,7 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
   public func constraint(lessThanOrEqualTo anchor: LayoutDimension,
                          multiplier: Double, constant offset: Double)
       -> LayoutConstraint {
-    return LayoutConstraint(item: self, attribute: self.attribute,
+    return LayoutConstraint(item: self.item, attribute: self.attribute,
                             relatedBy: .lessThanOrEqual,
                             toItem: anchor.item, attribute: anchor.attribute,
                             multiplier: multiplier, constant: offset)
@@ -90,7 +90,7 @@ public class LayoutDimension: LayoutAnchor<LayoutDimension> {
   /// attribute.
   public func constraint(lessThanOrEqualToConstant constant: Double)
       -> LayoutConstraint {
-    return LayoutConstraint(item: self, attribute: self.attribute,
+    return LayoutConstraint(item: self.item, attribute: self.attribute,
                             relatedBy: .lessThanOrEqual,
                             toItem: nil, attribute: .notAnAttribute,
                             multiplier: 1.0, constant: constant)
