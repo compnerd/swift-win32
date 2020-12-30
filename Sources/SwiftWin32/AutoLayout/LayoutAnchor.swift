@@ -70,7 +70,7 @@ public class LayoutAnchor<AnchorType: AnyObject> {
   /// Returns a constraint that defines one item's attribute as less than or
   /// equal to another item's attribute plus a constant offset.
   public func constraint(lessThanOrEqualTo anchor: LayoutAnchor<AnchorType>,
-                         constannt offset: Double) -> LayoutConstraint {
+                         constant offset: Double) -> LayoutConstraint {
     return LayoutConstraint(item: self.item, attribute: self.attribute,
                             relatedBy: .lessThanOrEqual,
                             toItem: anchor.item, attribute: self.attribute,
