@@ -21,10 +21,7 @@ public class LayoutAnchor<AnchorType: AnyObject> {
   /// another.
   public func constraint(equalTo anchor: LayoutAnchor<AnchorType>)
       -> LayoutConstraint {
-    return LayoutConstraint(item: self.item, attribute: self.attribute,
-                            relatedBy: .equal,
-                            toItem: anchor.item, attribute: anchor.attribute,
-                            multiplier: 1.0, constant: 0.0)
+    return constraint(equalTo: anchor, constant: 0.0)
   }
 
   /// Returns a constraint that defines one item's attribute as equal to another
@@ -41,10 +38,7 @@ public class LayoutAnchor<AnchorType: AnyObject> {
   /// equal to another.
   public func constraint(greaterThanOrEqualTo anchor: LayoutAnchor<AnchorType>)
       -> LayoutConstraint {
-    return LayoutConstraint(item: self.item, attribute: self.attribute,
-                            relatedBy: .greaterThanOrEqual,
-                            toItem: anchor.item, attribute: anchor.attribute,
-                            multiplier: 1.0, constant: 0.0)
+    return constraint(greaterThanOrEqualTo: anchor, constant: 0.0)
   }
 
   /// Returns a constraint that defines one item's attribute as greater than or
@@ -61,10 +55,7 @@ public class LayoutAnchor<AnchorType: AnyObject> {
   /// equal to another.
   public func constraint(lessThanOrEqualTo anchor: LayoutAnchor<AnchorType>)
       -> LayoutConstraint {
-    return LayoutConstraint(item: self.item, attribute: self.attribute,
-                            relatedBy: .lessThanOrEqual,
-                            toItem: anchor.item, attribute: anchor.attribute,
-                            multiplier: 1.0, constant: 0.0)
+    return constraint(lessThanOrEqualTo: anchor, constant: 0.0)
   }
 
   /// Returns a constraint that defines one item's attribute as less than or
