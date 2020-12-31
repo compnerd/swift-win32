@@ -6,7 +6,7 @@
  **/
 
 open class Responder {
-  /// Managing the Responder Chain
+  // MARK - Managing the Responder Chain
 
   /// Returns the next responder in the responder chain, or `nil` if there is no
   /// next responder.
@@ -35,7 +35,7 @@ open class Responder {
     return true
   }
 
-  /// Responding to Touch Events
+  // MARK - Responding to Touch Events
 
   /// Informs the responder that one or more new touches occurrd in a view or a
   /// window.
