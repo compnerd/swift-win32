@@ -22,14 +22,14 @@ extension Menu {
 }
 
 extension Menu.Identifier {
-  /// Root Menu
+  // MARK - Root Menu
 
   /// The root menu.
   public static var root: Menu.Identifier {
     Menu.Identifier(rawValue: "org.compnerd.swift-win32.menu.root")
   }
 
-  /// Top-Level Menus
+  // MARK - Top-Level Menus
 
   /// The standard application menu.
   public static var application: Menu.Identifier {
@@ -61,7 +61,7 @@ extension Menu.Identifier {
     Menu.Identifier(rawValue: "org.compnerd.swift-win32.menu.help")
   }
 
-  /// Application Menu Commands
+  // MARK - Application Menu Commands
 
   /// The About menu.
   public static var about: Menu.Identifier {
@@ -88,7 +88,7 @@ extension Menu.Identifier {
     Menu.Identifier(rawValue: "org.compnerd.swift-win32.menu.quit")
   }
 
-  /// File Menus
+  // MARK - File Menus
 
   /// The New Scene menu.
   public static var newScene: Menu.Identifier {
@@ -105,7 +105,7 @@ extension Menu.Identifier {
     Menu.Identifier(rawValue: "org.compnerd.swift-win32.menu.print")
   }
 
-  /// Edit Menus
+  // MARK - Edit Menus
 
   /// The Undo/Redo menu.
   public static var undoRedo: Menu.Identifier {
@@ -222,7 +222,7 @@ extension Menu.Identifier {
     Menu.Identifier(rawValue: "org.compnerd.swift-win32.menu.alignment")
   }
 
-  /// View Menus
+  // MARK - View Menus
 
   /// The Toolbar menu group.
   public static var toolbar: Menu.Identifier {
@@ -234,7 +234,7 @@ extension Menu.Identifier {
     Menu.Identifier(rawValue: "org.compnerd.swift-win32.menu.fullscreen")
   }
 
-  /// Window Menus
+  // MARK - Window Menus
 
   /// The Bring All to Front menu.
   public static var bringAllToFront: Menu.Identifier {
