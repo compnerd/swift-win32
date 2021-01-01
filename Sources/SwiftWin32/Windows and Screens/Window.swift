@@ -210,7 +210,7 @@ public class Window: View {
 extension Window {
   /// Posted whn a `Window` object becomes visible.
   public class var didBecomeVisibleNotification: NSNotification.Name {
-    NSNotification.Name(rawValue: "UIWindowDIdBecomeVisibleNotification")
+    NSNotification.Name(rawValue: "UIWindowDidBecomeVisibleNotification")
   }
 
   /// Posted when a `Window` object becomes hidden.
