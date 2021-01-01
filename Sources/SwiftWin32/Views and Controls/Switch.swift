@@ -18,8 +18,12 @@ private let SwiftSwitchProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
 
 public class Switch: Control {
   private static let `class`: WindowClass = WindowClass(named: WC_BUTTON)
+  // MSDN:
+  // A button sends the `BN_DISABLE`, `BN_PUSHED`, `BN_KILLFOCUS`, `BN_PAINT`,
+  // `BN_SETFOCUS`, and `BN_UNPUSHED` notification codes only if it has the
+  // `BS_NOFITY` style.
   private static let style: WindowStyle =
-      (base: DWORD(WS_TABSTOP | BS_AUTOCHECKBOX), extended: 0)
+      (base: DWORD(WS_TABSTOP | BS_AUTOCHECKBOX | BS_NOTIFY), extended: 0)
 
   /// Customizing the Appearance of the Switch
   @_Win32WindowText

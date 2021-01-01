@@ -23,8 +23,12 @@ private let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
 
 public class Button: Control {
   private static let `class`: WindowClass = WindowClass(named: WC_BUTTON)
+  // MSDN:
+  // A button sends the `BN_DISABLE`, `BN_PUSHED`, `BN_KILLFOCUS`, `BN_PAINT`,
+  // `BN_SETFOCUS`, and `BN_UNPUSHED` notification codes only if it has the
+  // `BS_NOFITY` style.
   private static let style: WindowStyle =
-      (base: DWORD(WS_TABSTOP | BS_MULTILINE | BS_PUSHBUTTON), extended: 0)
+      (base: DWORD(WS_TABSTOP | BS_MULTILINE | BS_NOTIFY | BS_PUSHBUTTON), extended: 0)
 
   public init(frame: Rect) {
     super.init(frame: frame, class: Button.class, style: Button.style)
