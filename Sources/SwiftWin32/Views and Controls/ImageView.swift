@@ -9,8 +9,8 @@ import WinSDK
 import SwiftCOM
 
 extension BitmapHandle {
-  fileprivate convenience init?(from pBitmap: SwiftCOM.IWICBitmapSource?,
-                                hWnd: HWND? = nil) {
+  internal convenience init?(from pBitmap: SwiftCOM.IWICBitmapSource?,
+                             hWnd: HWND? = nil) {
     guard let pBitmap = pBitmap,
           let size: (UINT, UINT) = try? pBitmap.GetSize() else {
       return nil
