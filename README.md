@@ -9,9 +9,11 @@ Swift/Win32 aims to provide a [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93
 
 ## Build Requirements
 
-- Latest Swift Snapshot (11/08 or later)
+- Latest Swift **Development** Snapshot (11/08 or later)<sup>[1](#snapshot-requirements)</sup>
 - Windows SDK 10.0.107763 or newer
 - CMake 3.16 or newer
+
+<sup><a name="snapshot-requirements">1</a></sup> Stable releases are not currently supported as they are built from release branches, and this project requires the latest development snapshot from the `main` branch.<br/>
 
 ## Building
 
