@@ -15,5 +15,9 @@ extension Array where Element == UInt16 {
         $1 = $0.count
       }
     }
+
+extension Array where Element: Equatable {
+  mutating func remove(object: Element) {
+    if let index = firstIndex(of: object) { remove(at: index) }
   }
 }
