@@ -17,7 +17,7 @@ let SwiftWin32 = Package(
     .package(url: "https://github.com/apple/swift-log.git", .branch("main")),
     .package(url: "https://github.com/compnerd/cassowary.git", .branch("master")),
     .package(name: "SwiftCOM", url: "https://github.com/compnerd/swift-com.git",
-             .branch("master")),
+             .branch("main")),
   ],
   targets: [
     .target(
