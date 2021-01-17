@@ -20,8 +20,10 @@ extension HelloWorld: SceneDelegate {
     let window = Window(windowScene: windowScene)
     self.window = window
 
-    // Add a title
+    // the rootViewController allows add a title and some controls
     window.rootViewController = ViewController()
+
+    // Add a title
     window.rootViewController?.title = "swift-win32 Hello World"
 
     // Add a hello world label
