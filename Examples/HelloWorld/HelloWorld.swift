@@ -17,7 +17,21 @@ extension HelloWorld: SceneDelegate {
              options: Scene.ConnectionOptions) {
     guard let windowScene = scene as? WindowScene else { return }
 
-    self.window = Window(windowScene: windowScene)
-    self.window?.makeKeyAndVisible()
+    let window = Window(windowScene: windowScene)
+    self.window = window
+
+    // The rootViewController allows to set a title and add controls
+    window.rootViewController = ViewController()
+
+    // Add a title
+    window.rootViewController?.title = "swift-win32 Hello World"
+
+    // Add a hello world label
+    let label = Label(frame: Rect(x: 50.0, y: 100.0, width: 300.0, height: 30.0))
+    label.text = "Hello World"
+    window.addSubview(label)
+
+    // Show the window
+    window.makeKeyAndVisible()
   }
 }
