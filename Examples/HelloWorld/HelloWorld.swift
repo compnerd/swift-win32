@@ -9,7 +9,7 @@ import SwiftWin32
 
 @main
 final class HelloWorld: ApplicationDelegate {
-  var window: Window?
+  var window: Window!
 }
 
 extension HelloWorld: SceneDelegate {
@@ -17,21 +17,20 @@ extension HelloWorld: SceneDelegate {
              options: Scene.ConnectionOptions) {
     guard let windowScene = scene as? WindowScene else { return }
 
-    let window = Window(windowScene: windowScene)
-    self.window = window
+    self.window = Window(windowScene: windowScene)
 
     // The rootViewController allows to set a title and add controls
-    window.rootViewController = ViewController()
+    self.window.rootViewController = ViewController()
 
     // Add a title
-    window.rootViewController?.title = "swift-win32 Hello World"
+    self.window.rootViewController?.title = "swift-win32 Hello World"
 
     // Add a hello world label
     let label = Label(frame: Rect(x: 50.0, y: 100.0, width: 300.0, height: 30.0))
     label.text = "Hello World"
-    window.addSubview(label)
+    self.window.addSubview(label)
 
     // Show the window
-    window.makeKeyAndVisible()
+    self.window.makeKeyAndVisible()
   }
 }
