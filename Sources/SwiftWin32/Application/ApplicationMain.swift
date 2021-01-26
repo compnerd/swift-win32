@@ -43,8 +43,7 @@ private func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
 @discardableResult
 public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
-                            _ application: String?,
-                            _ delegate: String?) -> Int32 {
+                            _ application: String?) -> Int32 {
   let hRichEdit: HMODULE? = LoadLibraryW("msftedit.dll".LPCWSTR)
   if hRichEdit == nil {
     log.error("unable to load `msftedit.dll`: \(Error(win32: GetLastError()))")
@@ -58,8 +57,17 @@ public func ApplicationMain(_ argc: Int32,
     Application.shared = (instance as! Application.Type).init()
   }
 
-  // Setup ApplicationDelegate
-  if let delegate = delegate {
+  // Load Info.plist to instantiate ApplicationInformation
+  if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
+      if let contents = FileManager.default.contents(atPath: path) {
+        Application.shared.information =
+            try? PropertyListDecoder().decode(Application.Information.self,
+                                              from: contents)
+      }
+  }
+
+  // Setup ApplicationDelegate using the 'SceneDelegateClassName' info from the plist
+  if let delegate = Application.shared.information?.scene?.configurations?[SceneSession.Role.windowApplication.rawValue]?.first?.delegate {
     guard let instance = NSClassFromString(delegate) else {
       fatalError("unable to find delegate class: \(delegate)")
     }
@@ -68,15 +76,6 @@ public func ApplicationMain(_ argc: Int32,
     } else {
       Application.shared.delegate = Application.shared as? ApplicationDelegate
     }
-  }
-
-  // Load Info.plist to instantiate ApplicationInformation
-  if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
-      if let contents = FileManager.default.contents(atPath: path) {
-        Application.shared.information =
-            try? PropertyListDecoder().decode(Application.Information.self,
-                                              from: contents)
-      }
   }
 
   // Initialize COM
@@ -219,7 +218,6 @@ public func ApplicationMain(_ argc: Int32,
 
 extension ApplicationDelegate {
   public static func main() {
-    ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
-                    String(describing: String(reflecting: Self.self)))
+    ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil)
   }
 }
