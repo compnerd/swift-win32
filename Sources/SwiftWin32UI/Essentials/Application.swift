@@ -27,7 +27,6 @@ public protocol Application {
 extension Application {
   /// Initializes and runs the application.
   public static func main() {
-    ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
-                    String(describing: String(reflecting: Self.self)))
+    ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil)
   }
 }
