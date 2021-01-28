@@ -10,8 +10,6 @@ import SwiftCOM
 
 private let WICImagingFactory: SwiftCOM.IWICImagingFactory? =
     try? IWICImagingFactory.CreateInstance(class: CLSID_WICImagingFactory)
-// FIXME(compnerd) we are currently leaking the WICImagingFactory
-// defer { WICImagingFactory?.Release() }
 
 /// An object that manages image data in your app.
 public class Image {
@@ -47,12 +45,6 @@ public class Image {
       log.error("\(#function): \(error)")
       return nil
     }
-  }
-
-  deinit {
-    _ = try? self.WICFormatConverter?.Release()
-    _ = try? self.WICBitmapFrame?.Release()
-    _ = try? self.WICBitmapDecoder?.Release()
   }
 
   // MARK - Getting the Image Size and Scale

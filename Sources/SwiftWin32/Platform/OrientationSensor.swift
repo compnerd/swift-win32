@@ -76,7 +76,5 @@ internal class OrientationSensorManager {
 
   deinit {
     _ = try? self.OrientationSensor?.SetEventSink(nil)
-    _ = try? self.OrientationSensor?.Release()
-    _ = try? self.SensorManager?.Release()
   }
 }
