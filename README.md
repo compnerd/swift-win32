@@ -9,7 +9,7 @@ Swift/Win32 aims to provide a [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93
 
 ## Build Requirements
 
-- Latest Swift **Development** Snapshot (11/08 or later)<sup>[1](#snapshot-requirements)</sup>
+- Latest Swift **Development** Snapshot (2021-01-26 or later)<sup>[1](#snapshot-requirements)</sup>
 - Windows SDK 10.0.107763 or newer
 - CMake 3.16 or newer
 
@@ -17,7 +17,7 @@ Swift/Win32 aims to provide a [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93
 
 ## Building
 
-This project requires the latest Swift snapshot (November 08, 2020 or newer). You can use the the snapshot binaries from [swift.org](https://swift.org/download/) or download the nightly build from [Azure](https://dev.azure.com/compnerd/swift-build).
+This project requires the latest Swift snapshot (January 26, 2021 or newer). You can use the the snapshot binaries from [swift.org](https://swift.org/download/) or download the nightly build from [Azure](https://dev.azure.com/compnerd/swift-build).
 
 ### Recommended (CMake)
 
