@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.4
 
 import PackageDescription
 
@@ -50,7 +50,7 @@ let SwiftWin32 = Package(
         "CMakeLists.txt",
       ]
     ),
-    .target(
+    .executableTarget(
       name: "Calculator",
       dependencies: [
         "SwiftWin32",
@@ -67,7 +67,7 @@ let SwiftWin32 = Package(
         ]),
       ]
     ),
-    .target(
+    .executableTarget(
       name: "HelloWorld",
       dependencies: [
         "SwiftWin32",
@@ -83,7 +83,7 @@ let SwiftWin32 = Package(
         ]),
       ]
     ),
-    .target(
+    .executableTarget(
       name: "UICatalog",
       dependencies: [
         "SwiftWin32",
