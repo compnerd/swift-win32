@@ -40,6 +40,25 @@ private func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
   return WinSDK.WaitMessage()
 }
 
+// Loads info.plist if available into Application.Information
+private func loadInfoPlist() -> Application.Information? {
+  guard let path = Bundle.main.path(forResource: "Info", ofType: "plist") else {
+    log.warning("Failed to find info.plist")
+    return nil
+  }
+  guard let contents = FileManager.default.contents(atPath: path) else {
+    log.warning("Failed to load contents of info.plist")
+    return nil
+  }
+
+  return try? PropertyListDecoder().decode(Application.Information.self, from: contents)
+}
+
+// Gets application class name by prioritizing the userPassedApp class name
+func getApplicationClassName(userPassedApp: String?, appInformation: Application.Information?) -> String?{
+  userPassedApp != nil ? userPassedApp : appInformation?.principalClass
+}
+
 @discardableResult
 public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
@@ -50,12 +69,16 @@ public func ApplicationMain(_ argc: Int32,
     log.error("unable to load `msftedit.dll`: \(Error(win32: GetLastError()))")
   }
 
-  // Setup Application
-  if let application = application {
+  let appInformation = loadInfoPlist()
+
+  // Setup Custom Application class if available
+  if let application = getApplicationClassName(userPassedApp: application, appInformation: appInformation) {
     guard let instance = NSClassFromString(application) else {
       fatalError("unable to find application class: \(application)")
     }
     Application.shared = (instance as! Application.Type).init()
+  }else {
+    Application.shared = Application()
   }
 
   // Setup ApplicationDelegate
@@ -70,13 +93,9 @@ public func ApplicationMain(_ argc: Int32,
     }
   }
 
-  // Load Info.plist to instantiate ApplicationInformation
-  if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
-      if let contents = FileManager.default.contents(atPath: path) {
-        Application.shared.information =
-            try? PropertyListDecoder().decode(Application.Information.self,
-                                              from: contents)
-      }
+  // sets appliction information from loaded info.plist
+  if let appInformation = appInformation {
+    Application.shared.information = appInformation
   }
 
   // Initialize COM
