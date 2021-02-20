@@ -43,20 +43,15 @@ private func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
 // Loads info.plist if available into Application.Information
 private func loadInfoPlist() -> Application.Information? {
   guard let path = Bundle.main.path(forResource: "Info", ofType: "plist") else {
-    log.warning("Failed to find info.plist")
+    log.debug("unable to locate info.plist")
     return nil
   }
   guard let contents = FileManager.default.contents(atPath: path) else {
-    log.warning("Failed to load contents of info.plist")
+    log.debug("unable to load contents of info.plist")
     return nil
   }
 
   return try? PropertyListDecoder().decode(Application.Information.self, from: contents)
-}
-
-// Gets application class name by prioritizing the userPassedApp class name
-func getApplicationClassName(userPassedApp: String?, appInformation: Application.Information?) -> String?{
-  userPassedApp != nil ? userPassedApp : appInformation?.principalClass
 }
 
 @discardableResult
@@ -69,17 +64,21 @@ public func ApplicationMain(_ argc: Int32,
     log.error("unable to load `msftedit.dll`: \(Error(win32: GetLastError()))")
   }
 
-  let appInformation = loadInfoPlist()
+  let information = loadInfoPlist()
 
-  // Setup Custom Application class if available
-  if let application = getApplicationClassName(userPassedApp: application, appInformation: appInformation) {
+  // Setup Custom Application class if available by giving priority to user passed app.
+  // Otherwise, use NSPrincipal class specified in 'info.plist'. Otherwise, use Application
+  if let application = application != nil ? application : information?.principalClass {
     guard let instance = NSClassFromString(application) else {
       fatalError("unable to find application class: \(application)")
     }
     Application.shared = (instance as! Application.Type).init()
-  }else {
+  } else {
     Application.shared = Application()
   }
+
+  // sets appliction information from loaded info.plist
+  Application.shared.information = information
 
   // Setup ApplicationDelegate
   if let delegate = delegate {
@@ -91,11 +90,6 @@ public func ApplicationMain(_ argc: Int32,
     } else {
       Application.shared.delegate = Application.shared as? ApplicationDelegate
     }
-  }
-
-  // sets appliction information from loaded info.plist
-  if let appInformation = appInformation {
-    Application.shared.information = appInformation
   }
 
   // Initialize COM

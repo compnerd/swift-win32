@@ -15,9 +15,9 @@ extension Application {
 
 extension Application.SceneConfiguration: Decodable {
   enum CodingKeys: String, CodingKey {
-    case name = "SceneConfigurationName"
-    case `class` = "SceneClassName"
-    case delegate = "SceneDelegateClassName"
+  case name = "SceneConfigurationName"
+  case `class` = "SceneClassName"
+  case delegate = "SceneDelegateClassName"
   }
 }
 
@@ -32,8 +32,8 @@ extension Application {
 
 extension Application.SceneManifest: Decodable {
   enum CodingKeys: String, CodingKey {
-    case supportsMultipleScenes = "ApplicationSupportsMultipleScenes"
-    case configurations = "SceneConfigurations"
+  case supportsMultipleScenes = "ApplicationSupportsMultipleScenes"
+  case configurations = "SceneConfigurations"
   }
 }
 
@@ -46,7 +46,7 @@ extension Application {
 
 extension Application.Information: Decodable {
   enum CodingKeys: String, CodingKey {
-    case scene = "ApplicationSceneManifest"
-    case principalClass = "NSPrincipalClass"
+  case scene = "ApplicationSceneManifest"
+  case principalClass = "NSPrincipalClass"
   }
 }
