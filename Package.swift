@@ -10,7 +10,6 @@ let SwiftWin32 = Package(
     .executable(name: "UICatalog", targets: ["UICatalog"]),
     .executable(name: "Calculator", targets: ["Calculator"]),
     .executable(name: "HelloWorld", targets: ["HelloWorld"]),
-    .executable(name: "CustomPrincipalClass", targets: ["CustomPrincipalClass"]),
   ],
   dependencies: [
     // NOTE(compnerd) require main as no current release has support for the
@@ -97,22 +96,6 @@ let SwiftWin32 = Package(
       ],
       resources: [
         .copy("Assets/CoffeeCup.jpg"),
-      ],
-      swiftSettings: [
-        .unsafeFlags([
-          "-parse-as-library",
-        ]),
-      ]
-    ),
-    .executableTarget(
-      name: "CustomPrincipalClass",
-      dependencies: [
-        "SwiftWin32",
-      ],
-      path: "Examples/CustomPrincipalClass",
-      exclude: [
-        "CMakeLists.txt",
-        "Info.plist",
       ],
       swiftSettings: [
         .unsafeFlags([
