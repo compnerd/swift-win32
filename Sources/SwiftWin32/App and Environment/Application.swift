@@ -6,7 +6,7 @@
  **/
 
 /// The centralised point of control and coordination for running applications.
-public class Application: Responder {
+open class Application: Responder {
   /// Getting the Application Instance
 
   /// Returns the singleton application instance.

@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  **/
 
-public class Responder {
+open class Responder {
   /// Managing the Responder Chain
 
   /// Returns the next responder in the responder chain, or `nil` if there is no
