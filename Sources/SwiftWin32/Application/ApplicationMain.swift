@@ -68,14 +68,11 @@ public func ApplicationMain(_ argc: Int32,
 
   // Setup Custom Application class if available by giving priority to user passed app.
   // Otherwise, use NSPrincipal class specified in 'info.plist'. Otherwise, use Application
-  if let application = application != nil ? application : information?.principalClass {
-    guard let instance = NSClassFromString(application) else {
-      fatalError("unable to find application class: \(application)")
-    }
-    Application.shared = (instance as! Application.Type).init()
-  } else {
-    Application.shared = Application()
+  let `class`: String = application ?? (information?.principalClass ?? NSStringFromClass(Application.self))
+  guard let instance = NSClassFromString(`class`) else {
+    fatalError("unable to find application class: \(`class`)")
   }
+  Application.shared = (instance as! Application.Type).init()
 
   // sets appliction information from loaded info.plist
   Application.shared.information = information
