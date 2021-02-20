@@ -40,20 +40,6 @@ private func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
   return WinSDK.WaitMessage()
 }
 
-// Loads info.plist if available into Application.Information
-private func loadInfoPlist() -> Application.Information? {
-  guard let path = Bundle.main.path(forResource: "Info", ofType: "plist") else {
-    log.debug("unable to locate info.plist")
-    return nil
-  }
-  guard let contents = FileManager.default.contents(atPath: path) else {
-    log.debug("unable to load contents of info.plist")
-    return nil
-  }
-
-  return try? PropertyListDecoder().decode(Application.Information.self, from: contents)
-}
-
 @discardableResult
 public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
@@ -64,13 +50,18 @@ public func ApplicationMain(_ argc: Int32,
     log.error("unable to load `msftedit.dll`: \(Error(win32: GetLastError()))")
   }
 
-  let information = loadInfoPlist()
+  var information: Application.Information?
+  if let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
+      let contents = FileManager.default.contents(atPath: path) {
+    information = try? PropertyListDecoder().decode(Application.Information.self, from: contents)
+  }
 
   // Setup Custom Application class if available by giving priority to user passed app.
   // Otherwise, use NSPrincipal class specified in 'info.plist'. Otherwise, use Application
-  let `class`: String = application ?? (information?.principalClass ?? NSStringFromClass(Application.self))
-  guard let instance = NSClassFromString(`class`) else {
-    fatalError("unable to find application class: \(`class`)")
+  let application = application ?? (information?.principalClass ?? NSStringFromClass(Application.self))
+  guard let instance = NSClassFromString(application) else {
+    log.error("unable to find application class \(application)")
+    exit(EXIT_FAILURE)
   }
   Application.shared = (instance as! Application.Type).init()
 
