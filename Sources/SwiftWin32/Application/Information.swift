@@ -40,11 +40,13 @@ extension Application.SceneManifest: Decodable {
 extension Application {
   internal struct Information {
     let scene: Application.SceneManifest?
+    let principalClass: String?
   }
 }
 
 extension Application.Information: Decodable {
   enum CodingKeys: String, CodingKey {
     case scene = "ApplicationSceneManifest"
+    case principalClass = "NSPrincipalClass"
   }
 }

@@ -50,13 +50,23 @@ public func ApplicationMain(_ argc: Int32,
     log.error("unable to load `msftedit.dll`: \(Error(win32: GetLastError()))")
   }
 
-  // Setup Application
-  if let application = application {
-    guard let instance = NSClassFromString(application) else {
-      fatalError("unable to find application class: \(application)")
-    }
-    Application.shared = (instance as! Application.Type).init()
+  var information: Application.Information?
+  if let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
+      let contents = FileManager.default.contents(atPath: path) {
+    information = try? PropertyListDecoder().decode(Application.Information.self, from: contents)
   }
+
+  // Setup Custom Application class if available by giving priority to user passed app.
+  // Otherwise, use NSPrincipal class specified in 'info.plist'. Otherwise, use Application
+  let application = application ?? (information?.principalClass ?? NSStringFromClass(Application.self))
+  guard let instance = NSClassFromString(application) else {
+    log.error("unable to find application class \(application)")
+    exit(EXIT_FAILURE)
+  }
+  Application.shared = (instance as! Application.Type).init()
+
+  // sets appliction information from loaded info.plist
+  Application.shared.information = information
 
   // Setup ApplicationDelegate
   if let delegate = delegate {
@@ -68,15 +78,6 @@ public func ApplicationMain(_ argc: Int32,
     } else {
       Application.shared.delegate = Application.shared as? ApplicationDelegate
     }
-  }
-
-  // Load Info.plist to instantiate ApplicationInformation
-  if let path = Bundle.main.path(forResource: "Info", ofType: "plist") {
-      if let contents = FileManager.default.contents(atPath: path) {
-        Application.shared.information =
-            try? PropertyListDecoder().decode(Application.Information.self,
-                                              from: contents)
-      }
   }
 
   // Initialize COM
