@@ -53,11 +53,19 @@ public func ApplicationMain(_ argc: Int32,
   var information: Application.Information?
   if let path = Bundle.main.path(forResource: "Info", ofType: "plist"),
       let contents = FileManager.default.contents(atPath: path) {
-    information = try? PropertyListDecoder().decode(Application.Information.self, from: contents)
+    information = try? PropertyListDecoder().decode(Application.Information.self,
+                                                    from: contents)
   }
 
-  // Setup Custom Application class if available by giving priority to user passed app.
-  // Otherwise, use NSPrincipal class specified in 'info.plist'. Otherwise, use Application
+  // Setup the main application class.  The following order describes how the
+  // user may actually configure the selected class:
+  //
+  //    1. `application`: the parameter passd to `ApplicationMain(_:_:_:_:)`
+  //    2. `PrincipalClass`: the value configured in `Info.plist`
+  //    3. `Application`: the default application class provided by Swift/Win32
+  //
+  // We must have an application class to instantiate as this is the main entry
+  // point which is executed by this framework.
   let application = application ?? (information?.principalClass ?? NSStringFromClass(Application.self))
   guard let instance = NSClassFromString(application) else {
     log.error("unable to find application class \(application)")
@@ -65,10 +73,13 @@ public func ApplicationMain(_ argc: Int32,
   }
   Application.shared = (instance as! Application.Type).init()
 
-  // sets appliction information from loaded info.plist
+  // Setup the application's information which was loaded.  Because the
+  // configuration can indicate the principal class it is loaded prior to the
+  // construction of the shared application's construction.  Now that the
+  // application has been construted, we can instill the configuration.
   Application.shared.information = information
 
-  // Setup ApplicationDelegate
+  // Setup the application's delegate.
   if let delegate = delegate {
     guard let instance = NSClassFromString(delegate) else {
       fatalError("unable to find delegate class: \(delegate)")
