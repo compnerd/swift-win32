@@ -47,6 +47,6 @@ extension Application {
 extension Application.Information: Decodable {
   enum CodingKeys: String, CodingKey {
     case scene = "ApplicationSceneManifest"
-    case principalClass = "NSPrincipalClass"
+    case principalClass = "PrincipalClass"
   }
 }
