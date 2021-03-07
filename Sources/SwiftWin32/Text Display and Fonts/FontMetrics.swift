@@ -44,7 +44,7 @@ public class FontMetrics {
   public func scaledFont(for font: Font, maximumPointSize: Double,
                          compatibleWith traitCollection: TraitCollection?)
       -> Font {
-    let traitCollection = traitCollection ?? TraitCollection.current
+    let _ = traitCollection ?? TraitCollection.current
     // TODO(compnerd) adjust the font size for the trait collection and cap the
     // size.
     fatalError("\(#function) not yet implemented")
