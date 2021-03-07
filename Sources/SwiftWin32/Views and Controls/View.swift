@@ -203,25 +203,6 @@ public class View: Responder {
 
   internal var menu: Win32Menu? = nil
 
-  // MARK - Configuring a View's Visual Appearance
-
-  /// The view's background color.
-  public var backgroundColor: Color?
-
-  /// A boolean that determines if the view is hidden.
-  public var isHidden: Bool {
-    get { IsWindowVisible(self.hWnd) }
-    set(hidden) {
-      let pEnumFunc: WNDENUMPROC = { (hWnd, lParam) -> WindowsBool in
-        ShowWindow(hWnd, CInt(lParam))
-        return true
-      }
-      _ = EnumChildWindows(self.hWnd, pEnumFunc,
-                           LPARAM(hidden ? SW_HIDE : SW_RESTORE))
-      ShowWindow(self.hWnd, hidden ? SW_HIDE : SW_RESTORE)
-    }
-  }
-
   // MARK - Creating a View Object
 
   // FIXME(compnerd) should this be marked as a convenience initializer?
@@ -299,6 +280,25 @@ public class View: Responder {
     _ = UnregisterTouchWindow(self.hWnd)
     _ = DestroyWindow(self.hWnd)
     _ = self.WndClass.unregister()
+  }
+
+  // MARK - Configuring a View's Visual Appearance
+
+  /// The view's background color.
+  public var backgroundColor: Color?
+
+  /// A boolean that determines if the view is hidden.
+  public var isHidden: Bool {
+    get { IsWindowVisible(self.hWnd) }
+    set(hidden) {
+      let pEnumFunc: WNDENUMPROC = { (hWnd, lParam) -> WindowsBool in
+        ShowWindow(hWnd, CInt(lParam))
+        return true
+      }
+      _ = EnumChildWindows(self.hWnd, pEnumFunc,
+                           LPARAM(hidden ? SW_HIDE : SW_RESTORE))
+      ShowWindow(self.hWnd, hidden ? SW_HIDE : SW_RESTORE)
+    }
   }
 
   // MARK - Configuring the Event-Related Behaviour
