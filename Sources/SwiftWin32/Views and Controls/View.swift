@@ -351,6 +351,66 @@ public class View: Responder {
 
   /// Add a subview to the end of the reciever's list of subviews.
   public func addSubview(_ view: View) {
+    self.insertSubview(view, at: self.subviews.endIndex)
+  }
+
+  /// Moves the specified subview so that it appears on top of its siblings.
+  public func bringSubviewToFront(_ view: View) {
+    if let index = self.subviews.firstIndex(of: view) {
+      self.subviews.append(self.subviews.remove(at: index))
+    }
+  }
+
+  /// Moves the specified subview so that it appears behind its siblings.
+  public func sendSubviewToBack(_ view: View) {
+    if let index = self.subviews.lastIndex(of: view) {
+      self.subviews.insert(self.subviews.remove(at: index),
+                           at: self.subviews.startIndex)
+    }
+  }
+
+  /// Unlinks the view from its superview and its window, and removes it from
+  /// the responder chain.
+  public func removeFromSuperview() {
+    guard let superview = self.superview else { return }
+
+    self.willMove(toSuperview: nil)
+
+    superview.willRemoveSubview(self)
+
+    // Update the Window style.
+    self.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | DWORD(WS_CAPTION))
+    self.GWL_STYLE &= ~WS_CHILD
+    // FIXME(compnerd) can this be avoided somehow?
+    if self is TextField || self is TextView || self is TableView {
+      self.GWL_STYLE |= WS_BORDER
+      self.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
+    }
+
+    // Reparent the window.
+    guard let _ = SetParent(self.hWnd, nil) else {
+      log.warning("SetParent: \(Error(win32: GetLastError()))")
+      return
+    }
+
+    // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
+    // changes take effect.
+    if !SetWindowPos(self.hWnd, nil, 0, 0, 0, 0,
+                      UINT(SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED)) {
+      log.warning("SetWindowPos: \(Error(win32: GetLastError()))")
+    }
+
+    self.superview = nil
+
+    if let index = superview.subviews.firstIndex(of: self) {
+      superview.subviews.remove(at: index)
+    }
+
+    self.didMoveToSuperview()
+  }
+
+  /// Inserts a subview at the specified index.
+  public func insertSubview(_ view: View, at index: Int) {
     // Notify the view that it is about to be reparented.
     view.willMove(toSuperview: self)
 
@@ -407,13 +467,54 @@ public class View: Responder {
                      UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
 
     view.superview = self
-    subviews.append(view)
+    self.subviews.insert(view, at: index)
 
     // Notify any subclassed types for observation.
     self.didAddSubview(view)
 
     // Notify the view that it has been reparented.
     view.didMoveToSuperview()
+  }
+
+  /// Inserts a view above another view in the view hierarchy.
+  public func insertSubview(_ view: View, aboveSubview subview: View) {
+    let index: Array<View>.Index
+    if let offset = self.subviews.firstIndex(of: subview) {
+      index = self.subviews.index(after: offset)
+    } else {
+      index = self.subviews.endIndex
+    }
+    self.insertSubview(view, at: index)
+  }
+
+  /// Inserts a view below another view in the view hierarchy.
+  public func insertSubview(_ view: View, belowSubview subview: View) {
+    let index: Array<View>.Index
+    if let offset = self.subviews.firstIndex(of: subview) {
+      index = self.subviews.index(before: offset)
+    } else {
+      index = self.subviews.endIndex
+    }
+    self.insertSubview(view, at: index)
+  }
+
+  /// Exchanges the subviews at the specified indices.
+  public func exchangeSubview(at index1: Int, withSubviewAt index2: Int) {
+    self.subviews.swapAt(self.subviews.index(self.subviews.startIndex,
+                                             offsetBy: index1),
+                         self.subviews.index(self.subviews.startIndex,
+                                             offsetBy: index2))
+  }
+
+  /// Returns a boolean value indicating whether the receiver is a subview of a
+  /// given view or identical to that view.
+  public func isDescendant(of view: View) -> Bool {
+    var parent: View? = self
+    while parent != nil {
+      if parent == view { return true }
+      parent = parent?.superview
+    }
+    return false
   }
 
   // MARK - Observing View-Related Changes
