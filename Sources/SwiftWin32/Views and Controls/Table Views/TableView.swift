@@ -91,6 +91,7 @@ extension TableView {
 }
 
 
+/// A view that presents data using rows arranged in a single column.
 public class TableView: View {
   private static let `class`: WindowClass = WindowClass(named: WC_LISTBOX)
   private static let style: WindowStyle =
@@ -99,7 +100,7 @@ public class TableView: View {
 
   private static let proxy: TableViewProxy = TableViewProxy()
 
-  /// Creating a Table View
+  // MARK - Creating a Table View
 
   /// Initializes and returns a table view having the given frame and style.
   public init(frame: Rect, style: TableView.Style) {
@@ -108,19 +109,19 @@ public class TableView: View {
                parent: TableView.proxy.hWnd)
   }
 
-  /// Providing the Table's Data and Cells
+  // MARK - Providing the Table's Data and Cells
 
   /// The object that acts as the data source of the table view.
   public weak var dataSource: TableViewDataSource? {
     didSet { self.reloadData() }
   }
 
-  /// Configuring the Table's Appearance
+  // MARK - Configuring the Table's Appearance
 
   /// The style of the table view.
   public let style: TableView.Style
 
-  /// Selecting Rows
+  // MARK - Selecting Rows
 
   /// A boolean value that determines whether users can select more than one row
   /// outside of editing mode.
@@ -132,7 +133,7 @@ public class TableView: View {
     }
   }
 
-  /// Reloading the Table View
+  // MARK - Reloading the Table View
 
   /// Reloads the rows and sections of the table view.
   public func reloadData() {
