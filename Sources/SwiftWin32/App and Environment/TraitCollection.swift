@@ -119,8 +119,8 @@ private func GetCurrentColorScheme() -> UserInterfaceStyle {
 
   let lStatus: LSTATUS =
       RegGetValueW(HKEY_CURRENT_USER,
-                   "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize".LPCWSTR,
-                   "AppsUseLightTheme".LPCWSTR,
+                   "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize".wide,
+                   "AppsUseLightTheme".wide,
                    DWORD(RRF_RT_REG_DWORD), nil,
                    &dwAppsUseLightTheme, &cbAppsUseLightTheme)
   guard lStatus == S_OK else {

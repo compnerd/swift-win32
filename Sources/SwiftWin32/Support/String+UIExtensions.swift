@@ -5,16 +5,17 @@
  * SPDX-License-Identifier: BSD-3-Clause
  **/
 
-import ucrt
-
-public extension String {
-  var LPCWSTR: [UInt16] {
-    return self.withCString(encodedAs: UTF16.self) { buffer in
-      Array<UInt16>(unsafeUninitializedCapacity: self.utf16.count + 1) {
-        wcscpy_s($0.baseAddress, $0.count, buffer)
-        $1 = $0.count
-      }
+extension String {
+  internal init(from utf16: [UInt16]) {
+    self = utf16.withUnsafeBufferPointer {
+      String(decodingCString: $0.baseAddress!, as: UTF16.self)
     }
+  }
+}
+
+extension String {
+  public var wide: [UInt16] {
+    return Array<UInt16>(from: self)
   }
 }
 

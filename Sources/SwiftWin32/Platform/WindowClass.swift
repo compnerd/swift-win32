@@ -21,7 +21,7 @@ internal class WindowClass {
               WindowProc lpfnWindowProc: WindowProc? = DefWindowProcW,
               style: UInt32 = 0, hbrBackground: HBRUSH? = nil,
               hCursor: HCURSOR? = nil) {
-    self.name = name.LPCWSTR
+    self.name = name.wide
 
     self.hInstance = hInstance
     self.name.withUnsafeBufferPointer {
@@ -41,7 +41,7 @@ internal class WindowClass {
   }
 
   public init(named: String) {
-    self.name = named.LPCWSTR
+    self.name = named.wide
   }
 
   public func register() -> Bool {

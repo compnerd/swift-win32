@@ -32,8 +32,8 @@ public struct Device {
       var cbData: DWORD = DWORD(szBuffer.count * MemoryLayout<WCHAR>.size)
       let lStatus: LSTATUS =
           RegGetValueW(HKEY_LOCAL_MACHINE,
-                       "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion".LPCWSTR,
-                       "ProductName".LPCWSTR,
+                       "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion".wide,
+                       "ProductName".wide,
                        DWORD(RRF_RT_REG_SZ | RRF_ZEROONFAILURE),
                        nil, &szBuffer, &cbData)
       if lStatus == ERROR_MORE_DATA {
@@ -55,8 +55,8 @@ public struct Device {
       var cbData: DWORD = DWORD(szBuffer.count * MemoryLayout<WCHAR>.size)
       let lStatus: LSTATUS =
           RegGetValueW(HKEY_LOCAL_MACHINE,
-                       "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion".LPCWSTR,
-                       "CurrentBuildNumber".LPCWSTR,
+                       "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion".wide,
+                       "CurrentBuildNumber".wide,
                        DWORD(RRF_RT_REG_SZ | RRF_ZEROONFAILURE),
                        nil, &szBuffer, &cbData)
       if lStatus == ERROR_MORE_DATA {

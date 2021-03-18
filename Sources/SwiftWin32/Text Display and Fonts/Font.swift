@@ -220,7 +220,7 @@ public class Font {
                                                 DWORD(CLIP_DEFAULT_PRECIS),
                                                 DWORD(DEFAULT_QUALITY),
                                                 DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
-                                                name.LPCWSTR))
+                                                name.wide))
   }
 
   // public init(descriptor: FontDescriptor, size pointSize: Double)
@@ -369,7 +369,7 @@ public class Font {
     }
 
     _ = withUnsafeMutablePointer(to: &arrFonts) {
-      EnumFontsW(hDC, family.LPCWSTR, pfnEnumerateFonts,
+      EnumFontsW(hDC, family.wide, pfnEnumerateFonts,
                  LPARAM(Int(bitPattern: $0)))
     }
     return Array<String>(arrFonts)
@@ -465,7 +465,7 @@ public class Font {
     let _ = SelectObject(hDC.value, self.hFont.value)
 
     var size: SIZE = SIZE()
-    if !GetTextExtentPoint32W(hDC.value, "u{0048}".LPCWSTR, 1, &size) {
+    if !GetTextExtentPoint32W(hDC.value, "u{0048}".wide, 1, &size) {
       log.warning("GetTextExtentPoint32W: \(Error(win32: GetLastError()))")
       return 0.0
     }
@@ -479,7 +479,7 @@ public class Font {
     let _ = SelectObject(hDC.value, self.hFont.value)
 
     var size: SIZE = SIZE()
-    if !GetTextExtentPoint32W(hDC.value, "u{0078}".LPCWSTR, 1, &size) {
+    if !GetTextExtentPoint32W(hDC.value, "u{0078}".wide, 1, &size) {
       log.warning("GetTextExtentPoint32W: \(Error(win32: GetLastError()))")
       return 0.0
     }
@@ -545,7 +545,7 @@ public class Font {
                                     DWORD(CLIP_DEFAULT_PRECIS),
                                     DWORD(DEFAULT_QUALITY),
                                     DWORD((FF_DONTCARE << 2) | DEFAULT_PITCH),
-                                    fontName.LPCWSTR))
+                                    fontName.wide))
   }
 }
 

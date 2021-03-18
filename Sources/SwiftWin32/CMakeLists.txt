@@ -136,6 +136,7 @@ target_sources(SwiftWin32 PRIVATE
   Platform/WindowClass.swift
   Platform/WindowsHandle.swift)
 target_sources(SwiftWin32 PRIVATE
+  Support/Array+Extensions.swift
   Support/IndexPath+UIExtensions.swift
   Support/Logging.swift
   Support/Rect+UIExtensions.swift

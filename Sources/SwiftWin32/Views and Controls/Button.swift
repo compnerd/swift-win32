@@ -39,6 +39,6 @@ public class Button: Control {
 
   // FIXME(compnerd) handle title setting for different states
   public func setTitle(_ title: String?, forState _: Control.State) {
-    SetWindowTextW(hWnd, title?.LPCWSTR)
+    SetWindowTextW(hWnd, title?.wide)
   }
 }

@@ -163,8 +163,8 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
   }
 
   private func pressMe(_: Button?) {
-    MessageBoxW(nil, "Swift/Win32 Demo!".LPCWSTR,
-                "Swift/Win32 MessageBox!".LPCWSTR, UINT(MB_OK))
+    MessageBoxW(nil, "Swift/Win32 Demo!".wide,
+                "Swift/Win32 MessageBox!".wide, UINT(MB_OK))
   }
 
   private func stepperValueDidChange(_ stepper: Stepper) {

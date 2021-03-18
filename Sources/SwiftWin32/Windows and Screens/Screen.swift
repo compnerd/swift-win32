@@ -56,7 +56,7 @@ public final class Screen {
       }
 
       let _: DeviceContextHandle =
-          ManagedHandle(owning: CreateDCW(szDevice.LPCWSTR, nil, nil, nil))
+          ManagedHandle(owning: CreateDCW(szDevice.wide, nil, nil, nil))
 
       var dsfDeviceScaleFactor: DEVICE_SCALE_FACTOR = SCALE_100_PERCENT
       _ = GetScaleFactorForMonitor(hMonitor, &dsfDeviceScaleFactor)

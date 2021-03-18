@@ -39,7 +39,7 @@ private let SwiftTextFieldProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uI
     _ = SetTextColor(hDC, GetSysColor(COLOR_GRAYTEXT))
     _ = SetBkMode(hDC, TRANSPARENT)
 
-    _ = DrawTextW(hDC, placeholder.LPCWSTR, -1, &rctClient,
+    _ = DrawTextW(hDC, placeholder.wide, -1, &rctClient,
                   UINT(DT_EDITCONTROL | DT_NOCLIP | DT_NOPREFIX | DT_SINGLELINE | DT_VCENTER))
 
     _ = SelectObject(hDC, hPrevFont)
