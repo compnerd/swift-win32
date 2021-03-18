@@ -28,7 +28,7 @@ public struct _Win32WindowText {
       return String(decodingCString: buffer, as: UTF16.self)
     }
     set(value) {
-      SetWindowTextW(view.hWnd, value?.LPCWSTR)
+      SetWindowTextW(view.hWnd, value?.wide)
     }
   }
 

@@ -78,7 +78,7 @@ internal class Win32MenuElement {
   internal var info: MENUITEMINFOW
 
   private init(title: String, image: Image?, submenu: Win32Menu?, fType: Int32) {
-    self.title = title.LPCWSTR
+    self.title = title.wide
     self.submenu = submenu
 
     let imageHandle: BitmapHandle?

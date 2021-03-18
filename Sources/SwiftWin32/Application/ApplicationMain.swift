@@ -45,7 +45,7 @@ public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
                             _ application: String?,
                             _ delegate: String?) -> Int32 {
-  let hRichEdit: HMODULE? = LoadLibraryW("msftedit.dll".LPCWSTR)
+  let hRichEdit: HMODULE? = LoadLibraryW("msftedit.dll".wide)
   if hRichEdit == nil {
     log.error("unable to load `msftedit.dll`: \(Error(win32: GetLastError()))")
   }
