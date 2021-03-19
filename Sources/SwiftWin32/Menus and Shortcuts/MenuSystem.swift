@@ -11,12 +11,12 @@ public class MenuSystem {
 
   /// The main menu system.
   public class var main: MenuSystem {
-    fatalError()
+    fatalError("\(#function) not yet implemented")
   }
 
   /// The context menu system.
   public class var context: MenuSystem {
-    fatalError()
+    fatalError("\(#function) not yet implemented")
   }
 
   // MARK - Rebuilding a Menu System
