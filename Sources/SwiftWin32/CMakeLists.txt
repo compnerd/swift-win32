@@ -168,4 +168,4 @@ set_target_properties(SwiftWin32 PROPERTIES
   INTERFACE_LINK_DIRECTORIES $<TARGET_LINKER_FILE_DIR:SwiftWin32>)
 
 
-swift_install(TARGETS SwiftWin32)
+_install_target(SwiftWin32)
