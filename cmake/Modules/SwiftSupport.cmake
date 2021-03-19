@@ -1,3 +1,10 @@
+#[[
+Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
+All rights reserved.
+
+SPDX-License-Identifier: BSD-3-Clause
+#]]
+
 # Returns the architecture name in a variable
 #
 # Usage:
