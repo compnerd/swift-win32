@@ -1,3 +1,10 @@
+#[[
+Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
+All rights reserved.
+
+SPDX-License-Identifier: BSD-3-Clause
+#]]
+
 add_library(Cassowary SHARED
   ${PROJECT_SOURCE_DIR}/Packages/cassowary/Sources/Cassowary/Constraint.swift
   ${PROJECT_SOURCE_DIR}/Packages/cassowary/Sources/Cassowary/Errors.swift
