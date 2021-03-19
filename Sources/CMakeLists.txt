@@ -9,7 +9,7 @@ add_library(Cassowary SHARED
   ${PROJECT_SOURCE_DIR}/Packages/cassowary/Sources/Cassowary/Symbolics.swift
   ${PROJECT_SOURCE_DIR}/Packages/cassowary/Sources/Cassowary/Term.swift
   ${PROJECT_SOURCE_DIR}/Packages/cassowary/Sources/Cassowary/Variable.swift)
-swift_install(TARGETS Cassowary)
+_install_target(Cassowary)
 
 add_library(SwiftCOM SHARED
   ${PROJECT_SOURCE_DIR}/Packages/SwiftCOM/Sources/SwiftCOM/COMBase.swift
@@ -73,7 +73,7 @@ target_link_libraries(SwiftCOM PUBLIC
   Ole32)
 set_target_properties(SwiftCOM PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-swift_install(TARGETS SwiftCOM)
+_install_target(SwiftCOM)
 
 add_subdirectory(CWinRT)
 add_subdirectory(SwiftWin32)

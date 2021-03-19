@@ -15,4 +15,4 @@ set_target_properties(SwiftWin32UI PROPERTIES
   INTERFACE_LINK_DIRECTORIES $<TARGET_LINKER_FILE_DIR:SwiftWin32UI>)
 
 
-swift_install(TARGETS SwiftWin32UI)
+_install_target(SwiftWin32UI)
