@@ -14,14 +14,7 @@ public class MyApplication: Application {
 }
 ```
 
-- If you use CMake, do not forget to register `MyApplication.swift` in CMakeLists.txt.
-
-```txt
-add_executable(...
-... MyApplication.swift)
-```
-
-- In `Info.plist`, define a `PrincipalClass` entry with a String value of `{AppName}.{CustomClassName}`. For example, if the application is named `CustomPrincipalClass`, then we can register `MyApplication` (defined above) as follows:
+- In `Info.plist`, define a `PrincipalClass` entry with a String value of `{Module}.{CustomClassName}`. For example, if the product module name is `CustomPrincipalClass`, then we can register `MyApplication` (defined above) as follows:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -33,12 +26,4 @@ add_executable(...
     <!-- other content -->
   </dict>
 </plist>
-```
-
-- You can reference your custom application subclass anywhere in you app by casting `Application.shared` to your custom application class. For example, here is how to print the `message` property of the `MyApplication` subclass defined above:
-
-```swift
-if let application = Application.shared as? MyApplication {
-    print(application.message)
-}
 ```
