@@ -132,7 +132,25 @@ public class LayoutConstraint {
   // MARK - Activating and Deactivating Constraints
 
   /// The active state of the constraint.
-  public var isActive: Bool = false
+  public var isActive: Bool = false {
+    didSet {
+      var ancestor: View? = self.firstAnchor.item as? View
+      if let other = self.secondAnchor?.item as? View {
+        // TODO(compnerd) this has performance implications - O(n²) for the
+        // check for the common ancestor search.
+        while let parent = ancestor, !other.isDescendant(of: parent) {
+          ancestor = parent.superview
+        }
+      }
+
+      switch isActive {
+      case true:
+        ancestor?.addConstraint(self)
+      case false:
+        ancestor?.removeConstraint(self)
+      }
+    }
+  }
 
   /// Activates each constraint in the specified array.
   public class func activate(_ constraints: [LayoutConstraint]) {
