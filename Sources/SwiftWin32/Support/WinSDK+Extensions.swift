@@ -31,9 +31,22 @@ internal var MSFTEDIT_CLASS: String {
 }
 
 // winnt.h
+
 @_transparent
 internal func MAKELANGID(_ p: WORD, _ s: WORD) -> DWORD {
   return DWORD((s << 10) | p)
+}
+
+@_transparent
+internal var GUID_ACDC_POWER_SOURCE: GUID {
+  GUID(Data1: 0x5D3E9A59, Data2: 0xE9D5, Data3: 0x4B00,
+        Data4: (0xA6, 0xBD, 0xFF, 0x34, 0xFF, 0x51, 0x65, 0x48))
+}
+
+@_transparent
+internal var GUID_BATTERY_PERCENTAGE_REMAINING: GUID {
+  GUID(Data1: 0xA7AD8041, Data2: 0xB45A, Data3: 0x4CAE,
+        Data4: (0x87, 0xA3, 0xEE, 0xCB, 0xB4, 0x68, 0xA9, 0xE1))
 }
 
 // minwindef.h
@@ -66,15 +79,16 @@ internal func GetBValue(_ rgb: DWORD) -> DWORD {
 }
 
 // WinUser.h
-internal let ENUM_CURRENT_SETTINGS: DWORD = DWORD(bitPattern: -1)
-internal let HWND_MESSAGE: HWND = HWND(bitPattern: -3)!
 
-internal let GUID_ACDC_POWER_SOURCE: GUID =
-    GUID(Data1: 0x5D3E9A59, Data2: 0xE9D5, Data3: 0x4B00,
-         Data4: (0xA6, 0xBD, 0xFF, 0x34, 0xFF, 0x51, 0x65, 0x48))
-internal let GUID_BATTERY_PERCENTAGE_REMAINING: GUID =
-    GUID(Data1: 0xA7AD8041, Data2: 0xB45A, Data3: 0x4CAE,
-         Data4: (0x87, 0xA3, 0xEE, 0xCB, 0xB4, 0x68, 0xA9, 0xE1))
+@_transparent
+internal var ENUM_CURRENT_SETTINGS: DWORD {
+  DWORD(bitPattern: -1)
+}
+
+@_transparent
+internal var HWND_MESSAGE: HWND {
+  HWND(bitPattern: -3)!
+}
 
 @_transparent
 internal var WS_BORDER: DWORD {
