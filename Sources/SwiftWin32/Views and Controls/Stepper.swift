@@ -68,7 +68,7 @@ private let SwiftStepperProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdS
 public class Stepper: Control {
   private static let `class`: WindowClass = WindowClass(named: UPDOWN_CLASS)
   private static let style: WindowStyle =
-      (base: UInt32(UDS_HORZ) | WS_POPUP | DWORD(WS_TABSTOP), extended: 0)
+      (base: UInt32(UDS_HORZ) | WS_POPUP | WS_TABSTOP, extended: 0)
 
   private static var proxy: StepperProxy = StepperProxy()
 

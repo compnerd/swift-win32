@@ -111,7 +111,7 @@ public class Window: View {
                   hbrBackground: GetSysColorBrush(COLOR_3DFACE),
                   hCursor: LoadCursorW(nil, IDC_ARROW))
   private static let style: WindowStyle =
-      (base: DWORD(WS_OVERLAPPEDWINDOW), extended: 0)
+      (base: WS_OVERLAPPEDWINDOW, extended: 0)
 
   public init(frame: Rect) {
     super.init(frame: frame, class: Window.class, style: Window.style)

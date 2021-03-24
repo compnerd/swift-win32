@@ -95,7 +95,7 @@ extension TableView {
 public class TableView: View {
   private static let `class`: WindowClass = WindowClass(named: WC_LISTBOX)
   private static let style: WindowStyle =
-      (base: DWORD(WS_BORDER | WS_HSCROLL) | WS_POPUP | DWORD(WS_TABSTOP | WS_VSCROLL | LBS_NODATA | LBS_OWNERDRAWVARIABLE),
+      (base: WS_BORDER | WS_HSCROLL | WS_POPUP | WS_TABSTOP | WS_VSCROLL | DWORD(LBS_NODATA | LBS_OWNERDRAWVARIABLE),
        extended: 0)
 
   private static let proxy: TableViewProxy = TableViewProxy()

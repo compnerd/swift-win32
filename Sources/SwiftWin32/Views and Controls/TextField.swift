@@ -66,7 +66,7 @@ case justified
 public class TextField: Control {
   private static let `class`: WindowClass = WindowClass(named: MSFTEDIT_CLASS)
   private static let style: WindowStyle =
-      (base: DWORD(WS_BORDER) | WS_POPUP | DWORD(WS_TABSTOP | ES_AUTOHSCROLL),
+      (base: WS_BORDER | WS_POPUP | WS_TABSTOP | DWORD(ES_AUTOHSCROLL),
        extended: 0)
 
   public weak var delegate: TextFieldDelegate?
