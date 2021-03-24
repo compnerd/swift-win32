@@ -137,10 +137,9 @@ public class TableView: View {
 
   /// Reloads the rows and sections of the table view.
   public func reloadData() {
-    guard let dataSource = self.dataSource else { return }
-
     _ = SendMessageW(self.hWnd, UINT(LB_RESETCONTENT), 0, 0)
 
+    guard let dataSource = self.dataSource else { return }
     for section in 0 ..< dataSource.numberOfSections(in: self) {
       for row in 0 ..< dataSource.tableView(self,
                                             numberOfRowsInSection: section) {
