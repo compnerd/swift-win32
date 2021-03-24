@@ -75,6 +75,31 @@ internal let GUID_BATTERY_PERCENTAGE_REMAINING: GUID =
     GUID(Data1: 0xA7AD8041, Data2: 0xB45A, Data3: 0x4CAE,
          Data4: (0x87, 0xA3, 0xEE, 0xCB, 0xB4, 0x68, 0xA9, 0xE1))
 
+@_transparent
+internal var WS_BORDER: DWORD {
+  DWORD(WinSDK.WS_BORDER)
+}
+
+@_transparent
+internal var WS_HSCROLL: DWORD {
+  DWORD(WinSDK.WS_HSCROLL)
+}
+
+@_transparent
+internal var WS_TABSTOP: DWORD {
+  DWORD(WinSDK.WS_TABSTOP)
+}
+
+@_transparent
+internal var WS_VSCROLL: DWORD {
+  DWORD(WinSDK.WS_VSCROLL)
+}
+
+@_transparent
+internal var WS_OVERLAPPEDWINDOW: DWORD {
+  DWORD(WinSDK.WS_OVERLAPPEDWINDOW)
+}
+
 // `GetMessageW` returns `BOOL` but can return `-1` in the case of an error.
 // Explicitly convert the signature to unwrap the `BOOL` to `CInt`.
 func GetMessageW(_ lpMsg: LPMSG?, _ hWnd: HWND?, _ wMsgFilterMin: UINT,

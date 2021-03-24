@@ -24,7 +24,7 @@ public class Switch: Control {
   // `BN_SETFOCUS`, and `BN_UNPUSHED` notification codes only if it has the
   // `BS_NOFITY` style.
   private static let style: WindowStyle =
-      (base: DWORD(WS_TABSTOP | BS_AUTOCHECKBOX | BS_NOTIFY), extended: 0)
+      (base: WS_TABSTOP | DWORD(BS_AUTOCHECKBOX | BS_NOTIFY), extended: 0)
 
   // MARK - Setting the Off/On State
 

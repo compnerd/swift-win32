@@ -12,7 +12,7 @@ import Foundation
 public class TextView: View {
   private static let `class`: WindowClass = WindowClass(named: MSFTEDIT_CLASS)
   private static let style: WindowStyle =
-      (base: DWORD(WS_BORDER | WS_HSCROLL) | WS_POPUP | DWORD(WS_TABSTOP | WS_VSCROLL | ES_MULTILINE),
+      (base: WS_BORDER | WS_HSCROLL | WS_POPUP | WS_TABSTOP | WS_VSCROLL | DWORD(ES_MULTILINE),
        extended: 0)
 
   public var editable: Bool {
