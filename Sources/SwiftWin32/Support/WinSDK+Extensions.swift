@@ -24,10 +24,11 @@ public let HKEY_DYN_DATA: HKEY = HKEY(bitPattern: 0x80000006)!
 public let HKEY_CURRENT_USER_LOCAL_SETTINGS: HKEY = HKEY(bitPattern: 0x80000007)!
 #endif
 
-#if swift(<6.0)
 // Richedit.h
-public let MSFTEDIT_CLASS: String = "RICHEDIT50W"
-#endif
+@_transparent
+internal var MSFTEDIT_CLASS: String {
+  "RICHEDIT50W"
+}
 
 // winnt.h
 @_transparent
