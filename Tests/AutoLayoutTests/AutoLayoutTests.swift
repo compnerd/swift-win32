@@ -21,26 +21,30 @@ final class AutoLayoutTests: XCTestCase {
     let view: View = View(frame: .zero)
     let container: View = View(frame: .zero)
 
-    let constraint: LayoutConstraint =
-        LayoutConstraint(item: view, attribute: .top, relatedBy: .equal,
-                         toItem: container, attribute: .top, multiplier: 1,
-                         constant: 100)
-    constraint.isActive = true
-    XCTAssertTrue(constraint.isActive)
+    withExtendedLifetime(view) {
+      let constraint: LayoutConstraint =
+          LayoutConstraint(item: view, attribute: .top, relatedBy: .equal,
+                           toItem: container, attribute: .top, multiplier: 1,
+                           constant: 100)
+      constraint.isActive = true
+      XCTAssertTrue(constraint.isActive)
+    }
   }
 
   func testLayoutConstraintActivateList() {
     let view: View = View(frame: .zero)
     let container: View = View(frame: .zero)
 
-    let constraints: [LayoutConstraint] = [
-      LayoutConstraint(item: view, attribute: .top, relatedBy: .equal,
-                        toItem: container, attribute: .top, multiplier: 1,
-                        constant: 100)
-    ]
-    LayoutConstraint.activate(constraints)
+    withExtendedLifetime(view) {
+      let constraints: [LayoutConstraint] = [
+        LayoutConstraint(item: view, attribute: .top, relatedBy: .equal,
+                          toItem: container, attribute: .top, multiplier: 1,
+                          constant: 100)
+      ]
+      LayoutConstraint.activate(constraints)
 
-    XCTAssertTrue(constraints[0].isActive)
+      XCTAssertTrue(constraints[0].isActive)
+    }
   }
 
   static var allTests = [
