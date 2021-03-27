@@ -379,7 +379,7 @@ public class View: Responder {
     superview.willRemoveSubview(self)
 
     // Update the Window style.
-    self.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | DWORD(WS_CAPTION))
+    self.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | WS_CAPTION)
     self.GWL_STYLE &= ~WS_CHILD
     // FIXME(compnerd) can this be avoided somehow?
     if self is TextField || self is TextView || self is TableView {
@@ -431,7 +431,7 @@ public class View: Responder {
     // `WM_UPDATEUISTATE`.
 
     // Update the window style.
-    view.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | DWORD(WS_CAPTION))
+    view.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | WS_CAPTION)
     view.GWL_STYLE |= WS_CHILD
     // FIXME(compnerd) can this be avoided somehow?
     if view is TextField || view is TextView || view is TableView {

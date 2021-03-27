@@ -82,6 +82,11 @@ internal var WS_BORDER: DWORD {
 }
 
 @_transparent
+internal var WS_CAPTION: DWORD {
+  DWORD(WinSDK.WS_CAPTION)
+}
+
+@_transparent
 internal var WS_HSCROLL: DWORD {
   DWORD(WinSDK.WS_HSCROLL)
 }
