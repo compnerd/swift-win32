@@ -10,10 +10,15 @@ The root class for all views is the `View` class. Some views which are designed 
 
 ### Views and controls catalog
 
-| Control | win32 control | Description |
-| ---- | -- | ----------- |
-| Label | WC_STATIC | A view that displays text |
-| Button | WC_BUTTON |A control that executes code in response to clicks |
-| TextView | | A view that shows scrollable lines of text |
-| Slider | | A control that  |
-| ImageView |  |  |
+| Control      | win32 control      | Description                                              |
+| ------------ | ------------------ | -------------------------------------------------------- |
+| Label        | WC_STATIC          | A view that displays text                                |
+| TextView     | MSFTEDIT_CLASS     | A view that shows scrollable lines of text               |
+| ImageView    | WC_STATIC          | A view that display and image                            |
+| ProgressView | PROGRESS_CLASS     | A view that renders a progress bar                       |
+| Button       | WC_BUTTON          | A control that executes code in response to clicks       |
+| DatePicker   | DATETIMEPICK_CLASS | A control that lets the user choose a date               |
+| TextField    | MSFTEDIT_CLASS     | A control that lets the user enter text                  |
+| Slider       | TRACKBAR_CLASS     | A control that permits to selects a value in a range     |
+| Stepper      | UPDOWN_CLASS       | A control that allows to increment and decrement a value |
+| Swicth       | WC_BUTTON          | A control that offers two choices                        |
