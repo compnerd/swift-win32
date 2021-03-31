@@ -60,6 +60,9 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
       TableView(frame: Rect(x: 4.0, y: 310.0, width: 254.0, height: 48.0),
                 style: .plain)
 
+  lazy var pickerview: PickerView =
+      PickerView(frame: Rect(x: 4.0, y: 362.0, width: 256.0, height: 24.0))
+
   lazy var imageview: ImageView = {
 #if SWIFT_PACKAGE
     let bundle: Bundle = Bundle.module
@@ -72,7 +75,7 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
     }
     let image: Image? = Image(contentsOfFile: resource.path)
     let view = ImageView(image: image)
-    view.frame = Rect(x: 64.0, y: 362.0, width: 128.0, height: 128.0)
+    view.frame = Rect(x: 64.0, y: 394.0, width: 128.0, height: 128.0)
     return view
   }()
 
@@ -82,7 +85,7 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
 
     // Set the preferred window size and restrict resizing by setting the
     // minimum and maximum to the same value.
-    let size: Size = Size(width: 265, height: 494)
+    let size: Size = Size(width: 265, height: 530)
     windowScene.sizeRestrictions?.minimumSize = size
     windowScene.sizeRestrictions?.maximumSize = size
 
@@ -103,6 +106,7 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
     window.addSubview(self.stepperLabel)
     window.addSubview(self.stepper)
     window.addSubview(self.tableview)
+    window.addSubview(self.pickerview)
     window.addSubview(self.imageview)
 
     self.label.font = Font(name: "Consolas", size: 10)!
@@ -136,6 +140,10 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
                            for: .valueChanged)
 
     self.tableview.dataSource = self
+
+    self.pickerview.dataSource = self
+    self.pickerview.delegate = self
+    self.pickerview.reloadAllComponents()
 
     window.makeKeyAndVisible()
   }
@@ -173,5 +181,31 @@ extension UICatalog: TableViewDataSource {
     cell.addSubview(button)
 
     return cell
+  }
+}
+
+extension UICatalog: PickerViewDataSource {
+  public func numberOfComponents(in pickerView: PickerView) -> Int {
+    return 1
+  }
+
+  public func pickerView(_ pickerView: PickerView,
+                         numberOfRowsInComponent component: Int) -> Int {
+    return 7
+  }
+}
+
+extension UICatalog: PickerViewDelegate {
+  public func pickerView(_ pickerView: PickerView, titleForRow row: Int,
+                         forComponent component: Int) -> String? {
+    return [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ][row]
   }
 }
