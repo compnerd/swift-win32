@@ -76,19 +76,6 @@ private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) 
   rect = Rect(from: r)
 }
 
-internal func GetRect(hWnd: HWND) -> Rect {
-  var r: RECT = RECT()
-  if !GetClientRect(hWnd, &r) {
-    log.warning("GetClientRect: \(Error(win32: GetLastError()))")
-  }
-  _ = withUnsafeMutablePointer(to: &r) { [hWnd] in
-    $0.withMemoryRebound(to: POINT.self, capacity: 2) {
-      MapWindowPoints(hWnd, nil, $0, 2)
-    }
-  }
-  return Rect(from: r)
-}
-
 extension View {
   /// Options to specify how a view adjusts its content when its size changes.
   public enum ContentMode: Int {
@@ -254,7 +241,16 @@ public class View: Responder {
     // If `CW_USEDEFAULT` was used, query the actual allocated rect
     if frame.origin.x == Double(CW_USEDEFAULT) ||
        frame.size.width == Double(CW_USEDEFAULT) {
-      client = GetRect(hWnd: self.hWnd)
+      var r: RECT = RECT()
+      if !GetClientRect(self.hWnd, &r) {
+        log.warning("GetClientRect: \(Error(win32: GetLastError()))")
+      }
+      _ = withUnsafeMutablePointer(to: &r) { [hWnd = self.hWnd] in
+        $0.withMemoryRebound(to: POINT.self, capacity: 2) {
+          MapWindowPoints(hWnd, nil, $0, 2)
+        }
+      }
+      client = Rect(from: r)
     }
 
     // Scale window for DPI
