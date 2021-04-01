@@ -25,22 +25,24 @@ public class Label: Control {
       WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Label")
   private static let style: WindowStyle = (base: WS_TABSTOP, extended: 0)
 
-  private var staticHWnd: HWND!
+  private var hWnd_: HWND?
 
   public var text: String? {
     get {
-      let szLength: Int32 = GetWindowTextLengthW(self.staticHWnd)
+      let szLength: Int32 = GetWindowTextLengthW(self.hWnd_)
       let buffer: [WCHAR] = Array<WCHAR>(unsafeUninitializedCapacity: Int(szLength) + 1) {
-        $1 = Int(GetWindowTextW(self.staticHWnd, $0.baseAddress!, CInt($0.count)))
+        $1 = Int(GetWindowTextW(self.hWnd_, $0.baseAddress!, CInt($0.count)))
       }
       return String(decodingCString: buffer, as: UTF16.self)
     }
-    set(value) { _ = SetWindowTextW(self.staticHWnd, value?.wide) }
+    set(value) {
+      _ = SetWindowTextW(self.hWnd_, value?.wide)
+    }
   }
 
   public override var font: Font! {
     didSet {
-      SendMessageW(self.staticHWnd, UINT(WM_SETFONT),
+      SendMessageW(self.hWnd_, UINT(WM_SETFONT),
                    unsafeBitCast(self.font?.hFont.value, to: WPARAM.self),
                    LPARAM(1))
     }
@@ -48,10 +50,9 @@ public class Label: Control {
 
   public override var frame: Rect {
     didSet {
-      let rect = GetRect(hWnd: self.hWnd)
-      _ = SetWindowPos(self.staticHWnd, nil,
-                       CInt(rect.origin.x), CInt(rect.origin.y),
-                       CInt(rect.size.width), CInt(rect.size.height),
+      let size = self.frame.size
+      _ = SetWindowPos(self.hWnd_, nil,
+                       0, 0, CInt(size.width), CInt(size.height),
                        UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
     }
   }
@@ -61,21 +62,17 @@ public class Label: Control {
     _ = SetWindowSubclass(hWnd, SwiftLabelProc, UINT_PTR(1),
                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
 
-    let rect = GetRect(hWnd: self.hWnd)
-    self.staticHWnd = CreateWindowExW(0, WC_STATIC.wide, nil, 0,
-                                      0, 0,
-                                      Int32(rect.size.width),
-                                      Int32(rect.size.height),
-                                      nil, nil, GetModuleHandleW(nil), nil)!
-
-    _ = SetWindowLongW(self.staticHWnd, WinSDK.GWL_STYLE, WS_CHILD)
-    _ = SetParent(self.staticHWnd, self.hWnd)
-
-    self.font = Font.systemFont(ofSize: Font.systemFontSize)
+    let size = self.frame.size
+    self.hWnd_ = CreateWindowExW(0, WC_STATIC.wide, nil, DWORD(WS_CHILD),
+                                 0, 0, CInt(size.width), CInt(size.height),
+                                 self.hWnd, nil, GetModuleHandleW(nil), nil)!
+    // Perform the font setting in `defer` which ensures that the property
+    // observer is triggered.
+    defer { self.font = Font.systemFont(ofSize: Font.systemFontSize) }
   }
 
   deinit {
-    DestroyWindow(self.staticHWnd)
+    _ = DestroyWindow(self.hWnd_)
   }
 
   // ContentSizeCategoryAdjusting
