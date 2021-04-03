@@ -8,7 +8,7 @@ SPDX-License-Identifier: BSD-3-Clause
 cmake_minimum_required(VERSION 3.16.0)
 
 project(SwiftWin32
-  LANGUAGES C CXX Swift)
+  LANGUAGES Swift)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/Modules)
 

@@ -82,6 +82,5 @@ set_target_properties(SwiftCOM PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 _install_target(SwiftCOM)
 
-add_subdirectory(CWinRT)
 add_subdirectory(SwiftWin32)
 add_subdirectory(SwiftWin32UI)
