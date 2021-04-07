@@ -31,6 +31,8 @@ private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPar
         let rctRect: RECT = lpDrawItem.pointee.rcItem
         _ = SetWindowPos(view.hWnd, nil, rctRect.left, rctRect.top, 0, 0,
                          UINT(SWP_NOSIZE))
+        // TODO(rjpilgrim) figure out why this set to isHidden is needed on second call to reloadData()
+        view.isHidden = false
         return DefWindowProcW(view.hWnd, UINT(WM_PAINT), 0, 0)
       }
 
@@ -53,6 +55,16 @@ private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPar
     }
 
     return LRESULT(1)
+
+  case UINT(WM_DELETEITEM):
+    let lpDeleteItem: UnsafeMutablePointer<DELETEITEMSTRUCT> =
+        UnsafeMutablePointer<DELETEITEMSTRUCT>(bitPattern: UInt(lParam))!
+    if let view = unsafeBitCast(lpDeleteItem.pointee.itemData,
+                                  to: AnyObject.self) as? View {
+      view.removeFromSuperview()
+    }
+    return LRESULT(1)
+
   default: break
   }
 
