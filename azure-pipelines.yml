@@ -10,8 +10,9 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  toolchain.directory: ${{ replace($(Pipeline.Workspace)/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain, '/', '\\') }}
-  sdk.directory: ${{ replace($(Pipeline.Workspace)/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk, '/', '\\') }}
+  workspace: ${{ replace(variables['Pipeline.Workspace'], '/', '\\') }}
+  toolchain.directory: $(workspace)/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain
+  sdk.directory: $(workspace)/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
 
 steps:
 - script: |
