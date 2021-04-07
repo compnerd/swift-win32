@@ -10,9 +10,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  workspace: $[ replace(variables['Pipeline.Workspace'], '/', '\\') ]
-  toolchain.directory: $(workspace)/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain
-  sdk.directory: $(workspace)/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
+  toolchain.directory: $(Pipeline.Workspace)/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain
+  sdk.directory: $(Pipeline.Workspace)/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
 
 steps:
 - script: |
@@ -72,7 +71,6 @@ steps:
       -D CMAKE_C_COMPILER=cl
       -D CMAKE_CXX_COMPILER=cl
       -D CMAKE_INSTALL_PREFIX=$(Build.StagingDirectory)/swift-win32-windows-x64/Library/swift-win32-development/usr
-      -D CMAKE_Swift_FLAGS="-sdk $(sdk.directory) -resource-dir $(sdk.directory)/usr/lib/swift -I $(sdk.directory)/usr/lib/swift -L $(sdk.directory)/usr/lib/swift/windows"
       -G Ninja
       -S $(Build.SourcesDirectory)
 
