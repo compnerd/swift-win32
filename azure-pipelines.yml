@@ -71,7 +71,7 @@ steps:
       -D CMAKE_C_COMPILER=cl
       -D CMAKE_CXX_COMPILER=cl
       -D CMAKE_INSTALL_PREFIX=$(Build.StagingDirectory)/swift-win32-windows-x64/Library/swift-win32-development/usr
-      -D CMAKE_Swift_FLAGS="-sdk $(sdk.directory) -resource-dir $(sdk.directory)/usr/lib/swift -I $(sdk.directory)/usr/lib/swift -L $(sdk.directory)/usr/lib/swift/windows"
+      -D CMAKE_Swift_FLAGS="-sdk D:/a/1/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk -resource-dir D:/a/1/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift -LD:/a/1/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows"
       -G Ninja
       -S $(Build.SourcesDirectory)
 
