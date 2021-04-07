@@ -31,6 +31,7 @@ private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPar
         let rctRect: RECT = lpDrawItem.pointee.rcItem
         _ = SetWindowPos(view.hWnd, nil, rctRect.left, rctRect.top, 0, 0,
                          UINT(SWP_NOSIZE))
+        // TODO(rjpilgrim) figure out why this set to isHidden is needed on second call to reloadData()
         view.isHidden = false
         return DefWindowProcW(view.hWnd, UINT(WM_PAINT), 0, 0)
       }
