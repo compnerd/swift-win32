@@ -32,8 +32,8 @@ private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPar
         _ = SetWindowPos(view.hWnd, nil, rctRect.left, rctRect.top, 0, 0,
                          UINT(SWP_NOSIZE))
         // Setting isHidden is necessary for TableCells generated after initial call to Window.makeKeyAndVisible()
-        let parenthWnd = GetParent(view.hWnd)
-        if IsWindowVisible(parenthWnd) && !IsWindowVisible(view.hWnd) {
+        let hWndParent = GetParent(view.hWnd)
+        if IsWindowVisible(hWndParent) && !IsWindowVisible(view.hWnd) {
             view.isHidden = false
         }
         return DefWindowProcW(view.hWnd, UINT(WM_PAINT), 0, 0)
