@@ -159,7 +159,7 @@ public class Stepper: Control {
       return Double(lResult)
     }
     set {
-      _ = SendMessageW(self.hWnd, UINT(UDM_SETPOS32), WPARAM(DWORD(newValue)), 0)
+      _ = SendMessageW(self.hWnd, UINT(UDM_SETPOS32), 0, LPARAM(DWORD(newValue)))
     }
   }
 
