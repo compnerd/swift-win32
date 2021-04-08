@@ -157,6 +157,10 @@ public class TableView: View {
     _ = SendMessageW(self.hWnd, UINT(LB_RESETCONTENT), 0, 0)
 
     guard let dataSource = self.dataSource else { return }
+
+    // Suspend redraws while repopulating the view.
+    _ = SendMessageW(self.hWnd, UINT(WM_SETREDRAW), 0, 0)
+
     for section in 0 ..< dataSource.numberOfSections(in: self) {
       for row in 0 ..< dataSource.tableView(self,
                                             numberOfRowsInSection: section) {
@@ -173,5 +177,8 @@ public class TableView: View {
         addSubview(cell)
       }
     }
+
+    // Resume redraws.
+    _ = SendMessageW(self.hWnd, UINT(WM_SETREDRAW), 1, 0)
   }
 }
