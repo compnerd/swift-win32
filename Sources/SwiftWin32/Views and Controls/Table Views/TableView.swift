@@ -31,8 +31,11 @@ private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPar
         let rctRect: RECT = lpDrawItem.pointee.rcItem
         _ = SetWindowPos(view.hWnd, nil, rctRect.left, rctRect.top, 0, 0,
                          UINT(SWP_NOSIZE))
-        // TODO(rjpilgrim) figure out why this set to isHidden is needed on second call to reloadData()
-        view.isHidden = false
+        //setting isHidden is necessary for TableCells generated after initial call to Window.makeKeyAndVisible()
+        let parenthWnd = GetParent(view.hWnd)
+        if IsWindowVisible(parenthWnd) && !IsWindowVisible(view.hWnd) {
+            view.isHidden = false
+        }
         return DefWindowProcW(view.hWnd, UINT(WM_PAINT), 0, 0)
       }
 
@@ -64,6 +67,7 @@ private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPar
       view.removeFromSuperview()
     }
     return LRESULT(1)
+
 
   default: break
   }
@@ -101,6 +105,8 @@ extension TableView {
   case insetGrouped
   }
 }
+
+
 
 
 /// A view that presents data using rows arranged in a single column.
@@ -150,7 +156,7 @@ public class TableView: View {
   /// Reloads the rows and sections of the table view.
   public func reloadData() {
     _ = SendMessageW(self.hWnd, UINT(LB_RESETCONTENT), 0, 0)
-
+    
     guard let dataSource = self.dataSource else { return }
     for section in 0 ..< dataSource.numberOfSections(in: self) {
       for row in 0 ..< dataSource.tableView(self,
@@ -161,7 +167,6 @@ public class TableView: View {
                                                          section: section))
         // Resize the frame to the size that fits the content
         cell.frame.size = cell.sizeThatFits(cell.frame.size)
-
         _ = SendMessageW(self.hWnd, UINT(LB_INSERTSTRING),
                          WPARAM(bitPattern: -1),
                          unsafeBitCast(cell as AnyObject, to: LPARAM.self))
