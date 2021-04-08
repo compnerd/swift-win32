@@ -59,10 +59,12 @@ private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPar
   case UINT(WM_DELETEITEM):
     let lpDeleteItem: UnsafeMutablePointer<DELETEITEMSTRUCT> =
         UnsafeMutablePointer<DELETEITEMSTRUCT>(bitPattern: UInt(lParam))!
+
     if let view = unsafeBitCast(lpDeleteItem.pointee.itemData,
-                                  to: AnyObject.self) as? View {
+                                to: AnyObject.self) as? View {
       view.removeFromSuperview()
     }
+
     return LRESULT(1)
 
   default: break
