@@ -7,20 +7,7 @@
 
 import WinSDK
 
-private let SwiftLabelProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
-  let label: Label? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Label
-
-  switch uMsg {
-  case UINT(WM_LBUTTONUP):
-    label?.sendActions(for: .primaryActionTriggered)
-  default:
-    break
-  }
-
-  return DefSubclassProc(hWnd, uMsg, wParam, lParam)
-}
-
-public class Label: Control {
+public class Label: View {
   private static let `class`: WindowClass =
       WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Label")
   private static let style: WindowStyle = (base: WS_TABSTOP, extended: 0)
@@ -59,8 +46,6 @@ public class Label: Control {
 
   public init(frame: Rect) {
     super.init(frame: frame, class: Label.class, style: Label.style)
-    _ = SetWindowSubclass(hWnd, SwiftLabelProc, UINT_PTR(1),
-                         unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
 
     let size = self.frame.size
     self.hWnd_ = CreateWindowExW(0, WC_STATIC.wide, nil, DWORD(WS_CHILD),
