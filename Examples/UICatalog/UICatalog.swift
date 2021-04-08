@@ -141,6 +141,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     self.slider.maximumValue = 100.0
     self.slider.value = 48.0
 
+    self.stepper.value = 2
     self.stepperLabel.text = String(Int(self.stepper.value))
     self.stepper.addTarget(self, action: UICatalog.stepperValueDidChange(_:),
                            for: .valueChanged)
