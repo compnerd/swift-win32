@@ -378,6 +378,12 @@ public class View: Responder {
 
     superview.willRemoveSubview(self)
 
+    // Reparent the window.
+    guard let _ = SetParent(self.hWnd, nil) else {
+      log.warning("SetParent: \(Error(win32: GetLastError()))")
+      return
+    }
+
     // Update the Window style.
     self.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | WS_CAPTION)
     self.GWL_STYLE &= ~WS_CHILD
@@ -385,12 +391,6 @@ public class View: Responder {
     if self is TextField || self is TextView || self is TableView {
       self.GWL_STYLE |= WinSDK.WS_BORDER
       self.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
-    }
-
-    // Reparent the window.
-    guard let _ = SetParent(self.hWnd, nil) else {
-      log.warning("SetParent: \(Error(win32: GetLastError()))")
-      return
     }
 
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
@@ -417,6 +417,12 @@ public class View: Responder {
     // Notify the old parent that it is about to loose the child.
     view.superview?.willRemoveSubview(view)
 
+    // Reparent the window.
+    guard let _ = SetParent(view.hWnd, self.hWnd) else {
+      log.warning("SetParent: \(Error(win32: GetLastError()))")
+      return
+    }
+
     // MSDN:
     // For compatibility reasons, `SetParent` does not modify the `WS_CHILD` or
     // `WS_POPUP` window styles of the window whose parent is being changed.
@@ -437,12 +443,6 @@ public class View: Responder {
     if view is TextField || view is TextView || view is TableView {
       view.GWL_STYLE |= WinSDK.WS_BORDER
       view.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
-    }
-
-    // Reparent the window.
-    guard let _ = SetParent(view.hWnd, self.hWnd) else {
-      log.warning("SetParent: \(Error(win32: GetLastError()))")
-      return
     }
 
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
