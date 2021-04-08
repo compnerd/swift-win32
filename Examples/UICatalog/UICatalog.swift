@@ -169,13 +169,14 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
   private func stepperValueDidChange(_ stepper: Stepper) {
     self.stepperLabel.text = String(Int(stepper.value))
+    self.tableview.reloadData()
   }
 }
 
 extension UICatalog: TableViewDataSource {
   public func tableView(_ tableView: TableView,
                         numberOfRowsInSection section: Int) -> Int {
-    return 3
+    return Int(stepper.value)
   }
 
   public func tableView(_ tableView: TableView,
