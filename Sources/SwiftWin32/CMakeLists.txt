@@ -152,6 +152,8 @@ target_sources(SwiftWin32 PRIVATE
   Support/String+UIExtensions.swift
   Support/WindowsHandle+UIExtensions.swift
   Support/WinSDK+Extensions.swift)
+target_sources(SwiftWin32 PRIVATE
+  Support/Win32MessageDecoder.swift)
 target_compile_options(SwiftWin32 PRIVATE
   "SHELL:-Xfrontend -validate-tbd-against-ir=none")
 target_link_libraries(SwiftWin32 PUBLIC
