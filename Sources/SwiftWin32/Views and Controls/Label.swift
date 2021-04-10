@@ -71,19 +71,43 @@ public class Label: Control {
     defer { self.font = Font.systemFont(ofSize: Font.systemFontSize) }
   }
 
+  // MARK -
+
   deinit {
     _ = DestroyWindow(self.hWnd_)
   }
 
-  // ContentSizeCategoryAdjusting
+  // MARK - View Overrides
+
+  override public func sizeThatFits(_ size: Size) -> Size {
+    let hDC: DeviceContextHandle =
+        DeviceContextHandle(owning: GetDC(self.hWnd_))
+    _ = SelectObject(hDC.value, self.font.hFont.value)
+
+    return withExtendedLifetime(hDC) {
+      var sz: SIZE = SIZE()
+      if !GetTextExtentPoint32W(hDC.value, self.text?.wide ?? nil,
+                                CInt(self.text?.wide.count ?? 1) - 1, &sz) {
+        log.warning("GetTextExtentPoint32W: \(Error(win32: GetLastError()))")
+        return size
+      }
+      // TODO(compnerd) handle padding and margins
+      return Size(width: sz.cx, height: sz.cy)
+    }
+  }
+
+  // MARK - Label(ContentSizeCategoryAdjusting)
+
   public var adjustsFontForContentSizeCategory = false
 
-  // TraitEnvironment
+  // MARK - TraitEnvironment Overrides
+
   override public func traitCollectionDidChange(_ previousTraitCollection: TraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     guard self.adjustsFontForContentSizeCategory else { return }
-    self.font = FontMetrics.default.scaledFont(for: self.font,
-                                               compatibleWith: traitCollection)
+    self.font =
+        FontMetrics.default.scaledFont(for: self.font,
+                                       compatibleWith: traitCollection)
   }
 }
 
