@@ -544,6 +544,25 @@ public class View: Responder {
   public func diMoveToWindow() {
   }
 
+  // MARK - Configuring Content Margins
+
+  /// The default spacing to use when laying out content in a view, taking into
+  /// account the current language direction.
+  public var directionalLayoutMargins: DirectionalEdgeInsets =
+      DirectionalEdgeInsets(top: 8.0, leading: 8.0, bottom: 8.0, trailing: 8.0) {
+    didSet {
+      self.layoutMarginsDidChange()
+    }
+  }
+
+  /// A boolean value indicating whether the current view also respects the
+  /// margins of its superview.
+  public var preservesSuperviewLayoutMargins: Bool = false
+
+  /// Informs the view that its layout margins changed.
+  public func layoutMarginsDidChange() {
+  }
+
   // MARK - Managing the View's Constraints
 
   /// The constraints held by the view.
