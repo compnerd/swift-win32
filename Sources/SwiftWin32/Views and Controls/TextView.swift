@@ -37,6 +37,11 @@ public class TextView: View {
 
     // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance
     self.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
+
+    // Disable compatibility with the original Rich Edit and use the extended
+    // text limit.
+    _ = SendMessageW(self.hWnd, UINT(EM_EXLIMITTEXT),
+                     WPARAM(0), LPARAM(bitPattern: UInt64(bitPattern: -1)))
   }
 
   public func scrollRangeToVisible(_ range: NSRange) {
