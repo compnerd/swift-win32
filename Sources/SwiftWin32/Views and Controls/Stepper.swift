@@ -58,12 +58,6 @@ private class StepperProxy {
 }
 
 
-private let SwiftStepperProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
-  let stepper: Stepper? =
-      unsafeBitCast(dwRefData, to: AnyObject.self) as? Stepper
-  return DefSubclassProc(hWnd, uMsg, wParam, lParam)
-}
-
 /// A control for incrementing or decrementing a value.
 public class Stepper: Control {
   private static let `class`: WindowClass = WindowClass(named: UPDOWN_CLASS)
@@ -169,8 +163,6 @@ public class Stepper: Control {
 
     _ = SetWindowLongPtrW(self.hWnd, GWLP_USERDATA,
                           unsafeBitCast(self as AnyObject, to: LONG_PTR.self))
-    _ = SetWindowSubclass(self.hWnd, SwiftStepperProc, UINT_PTR(1),
-                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
 
     defer {
       self.wraps = false
