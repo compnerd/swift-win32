@@ -18,6 +18,7 @@ The root class for all views is the `View` class. Some views which are designed 
 | ProgressView | PROGRESS_CLASS     | A view that renders a progress bar                       |
 | Button       | WC_BUTTON          | A control that executes code in response to clicks       |
 | DatePicker   | DATETIMEPICK_CLASS | A control that lets the user choose a date               |
+| TableView    | WC_LISTBOX         | A view that shows a list of items                        |
 | TextField    | MSFTEDIT_CLASS     | A control that lets the user enter text                  |
 | Slider       | TRACKBAR_CLASS     | A control that permits to selects a value in a range     |
 | Stepper      | UPDOWN_CLASS       | A control that allows to increment and decrement a value |
