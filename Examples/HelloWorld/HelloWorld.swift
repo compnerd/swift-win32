@@ -28,9 +28,15 @@ extension HelloWorld: SceneDelegate {
     // Add a hello world label
     let label = Label(frame: Rect(x: 50.0, y: 100.0, width: 300.0, height: 30.0))
     label.text = "Hello World"
+    label.addTarget(self, action: HelloWorld.onLabelPress(_:_:),
+                              for: .primaryActionTriggered)
     self.window.addSubview(label)
 
     // Show the window
     self.window.makeKeyAndVisible()
+  }
+
+  private func onLabelPress(_ sender: Label, _: Control.Event) {
+    print("hello world");
   }
 }
