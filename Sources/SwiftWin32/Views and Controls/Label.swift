@@ -120,7 +120,6 @@ public class Label: View {
   public func addTarget<Source: Label, Target: AnyObject>(_ target: Target,
                                                             action: @escaping (Target) -> (_: Source, _: Control.Event) -> Void,
                                                             for controlEvents: Control.Event) {
-                                                              print("adding action")
     self.addAction(ControlEventCallback<Source, Target>(binding: action, on: target),
                    for: controlEvents)
   }
