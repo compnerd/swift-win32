@@ -78,6 +78,8 @@ public class ImageView: View {
     self.hBitmap = BitmapHandle(from: self.image?.bitmap, hWnd: self.hWnd)
     _ = SendMessageW(self.hWnd, UINT(STM_SETIMAGE), WPARAM(IMAGE_BITMAP),
                      unsafeBitCast(self.hBitmap?.value, to: LPARAM.self))
+
+    self.isUserInteractionEnabled = false
   }
 
   // MARK - Accessing the Displayed Images
