@@ -69,6 +69,8 @@ public class Label: Control {
     // Perform the font setting in `defer` which ensures that the property
     // observer is triggered.
     defer { self.font = Font.systemFont(ofSize: Font.systemFontSize) }
+
+    self.isUserInteractionEnabled = false
   }
 
   // MARK -
