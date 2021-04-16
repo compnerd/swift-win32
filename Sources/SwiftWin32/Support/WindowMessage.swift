@@ -13,7 +13,7 @@ struct WindowMessage {
   }
 
   static let messages : [Int : String] = {
-    var messages : [Int : String] = [:]
+    var messages: [Int:String] = [:]
     var keys = Set<Int>()
     for (key, value) in keyValues {
       if !keys.contains(key) {
