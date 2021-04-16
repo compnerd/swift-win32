@@ -9,10 +9,7 @@ import WinSDK
 
 struct WindowMessage {
   static func debugDescription(for uint: UINT) -> String {
-    if let message = messages[Int(uint)] {
-      return message
-    }
-    return "Unknown Message"
+    return messages[Int(uMsg)] ?? "Unknown Message"
   }
 
   static let messages : [Int : String] = {
