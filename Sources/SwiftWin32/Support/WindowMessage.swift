@@ -8,7 +8,7 @@
 import WinSDK
 
 struct WindowMessage {
-  static func debugDescription(for uint: UINT) -> String {
+  static func debugDescription(for uMsg: UINT) -> String {
     return messages[Int(uMsg)] ?? "Unknown Message"
   }
 
