@@ -8,8 +8,8 @@
 import SwiftWin32
 
 /// A type that represents the structure and behaviour of an application.
-public protocol Application {
-  // MARK - Implementing an Application
+public protocol App {
+  // MARK - Implementing an App
 
   /// The type of scene representing the content of the application.
   associatedtype Body: Scene
@@ -24,7 +24,7 @@ public protocol Application {
   init()
 }
 
-extension Application {
+extension App {
   /// Initializes and runs the application.
   public static func main() {
     ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
