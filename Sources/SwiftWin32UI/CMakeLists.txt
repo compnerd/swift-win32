@@ -12,7 +12,7 @@ add_library(SwiftWin32UI SHARED
   View.swift
   ViewBuilder.swift)
 target_sources(SwiftWin32UI PRIVATE
-  Essentials/Application.swift
+  Essentials/App.swift
   Essentials/Scene.swift
   Essentials/WindowGroup.swift)
 target_link_libraries(SwiftWin32UI PUBLIC
