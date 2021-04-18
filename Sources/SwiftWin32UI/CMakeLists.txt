@@ -15,6 +15,8 @@ target_sources(SwiftWin32UI PRIVATE
   Essentials/App.swift
   Essentials/Scene.swift
   Essentials/WindowGroup.swift)
+target_sources(SwiftWin32UI PRIVATE
+  "View Layout and Presentation/Group.swift")
 target_link_libraries(SwiftWin32UI PUBLIC
   SwiftWin32)
 set_target_properties(SwiftWin32UI PROPERTIES
