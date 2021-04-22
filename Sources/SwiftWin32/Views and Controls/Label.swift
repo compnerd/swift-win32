@@ -7,6 +7,19 @@
 
 import WinSDK
 
+private let SwiftLabelProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
+  let label: Label? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Label
+
+  switch uMsg {
+  case UINT(WM_LBUTTONUP):
+    label?.sendActions(for: .primaryActionTriggered)
+  default:
+    break
+  }
+
+  return DefSubclassProc(hWnd, uMsg, wParam, lParam)
+}
+
 public class Label: View {
   private static let `class`: WindowClass =
       WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Label")
@@ -46,14 +59,13 @@ public class Label: View {
 
   public init(frame: Rect) {
     super.init(frame: frame, class: Label.class, style: Label.style)
-
+    _ = SetWindowSubclass(hWnd, SwiftLabelProc, UINT_PTR(1),
+                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
+                          
     let size = self.frame.size
     self.hWnd_ = CreateWindowExW(0, WC_STATIC.wide, nil, DWORD(WS_CHILD),
                                  0, 0, CInt(size.width), CInt(size.height),
                                  self.hWnd, nil, GetModuleHandleW(nil), nil)!
-
-    _ = SetWindowSubclass(hWnd, SwiftLabelProc, UINT_PTR(1),
-                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
     // Perform the font setting in `defer` which ensures that the property
     // observer is triggered.
     defer { self.font = Font.systemFont(ofSize: Font.systemFontSize) }
@@ -164,18 +176,6 @@ private struct ControlEventCallback<Source: Label, Target: AnyObject>: ControlEv
   }
 }
 
-private let SwiftLabelProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
-  let label: Label? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Label
-
-  switch uMsg {
-  case UINT(WM_LBUTTONUP):
-    label?.sendActions(for: .primaryActionTriggered)
-  default:
-    break
-  }
-
-  return DefSubclassProc(hWnd, uMsg, wParam, lParam)
-}
 extension Label {
   /// Constants describing the types of events possible for controls.
   public struct Event: Equatable, Hashable, RawRepresentable {
