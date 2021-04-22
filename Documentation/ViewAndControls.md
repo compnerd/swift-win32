@@ -4,8 +4,7 @@ Swift-Win32 provides visual components such as labels and buttons.
 
 ![View and controls](./Images/views-and-controls.png)
 
-The visual component library API is inspired by [UIKit](https://developer.apple.com/documentation/uikit/views_and_controls) but its actual implementation is provided by the [Windows Common Controls](https://docs.
-microsoft.com/en-us/windows/win32/controls/common-control-window-classes) of the win32 API.
+The visual component library API is inspired by [UIKit](https://developer.apple.com/documentation/uikit/views_and_controls) but its actual implementation is provided by the [Windows Common Controls](https://docs.microsoft.com/en-us/windows/win32/controls/common-control-window-classes) of the win32 API.
 For example: the `Label` has a similar API than UIKit's `UILabel` and is drawn using the `WC_STATIC` Windows control.
 
 The root class for all views is the `View` class.
