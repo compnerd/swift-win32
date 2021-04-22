@@ -9,12 +9,13 @@ add_library(SwiftWin32UI SHARED
   EmptyView.swift
   Never+SwiftUI.swift
   SceneBuilder.swift
-  View.swift
   ViewBuilder.swift)
 target_sources(SwiftWin32UI PRIVATE
   Essentials/App.swift
   Essentials/Scene.swift
   Essentials/WindowGroup.swift)
+target_sources(SwiftWin32UI PRIVATE
+  "Views and Controls/View.swift")
 target_sources(SwiftWin32UI PRIVATE
   "View Layout and Presentation/Group.swift")
 target_link_libraries(SwiftWin32UI PUBLIC
