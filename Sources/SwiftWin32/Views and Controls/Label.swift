@@ -60,8 +60,8 @@ public class Label: View {
   public init(frame: Rect) {
     super.init(frame: frame, class: Label.class, style: Label.style)
     _ = SetWindowSubclass(hWnd, SwiftLabelProc, UINT_PTR(1),
-                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
-                          
+                        unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
+
     let size = self.frame.size
     self.hWnd_ = CreateWindowExW(0, WC_STATIC.wide, nil, DWORD(WS_CHILD),
                                  0, 0, CInt(size.width), CInt(size.height),
