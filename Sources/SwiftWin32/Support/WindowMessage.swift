@@ -1,9 +1,5 @@
-/**
- * Copyright © 2021 Ryan Allan <rjallan@g.ucla.edu>
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- **/
+// Copyright © 2021 Ryan Allan <rjallan@g.ucla.edu>
+// SPDX-License-Identifier: BSD-3-Clause
 
 import WinSDK
 

@@ -1,9 +1,5 @@
-/**
- * Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- **/
+// Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
+// SPDX-License-Identifier: BSD-3-Clause
 
 /// The set of actions to perform when swiping on rows of a table.
 public class SwipeActionsConfiguration {
