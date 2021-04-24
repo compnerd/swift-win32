@@ -1,9 +1,5 @@
-/**
- * Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- **/
+// Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
+// SPDX-License-Identifier: BSD-3-Clause
 
 /// Constants that specify an edge or a set of edges, taking the user interface
 /// layout direction into account.

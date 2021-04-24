@@ -1,9 +1,5 @@
-/**
- * Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- **/
+// Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
+// SPDX-License-Identifier: BSD-3-Clause
 
 /// A structure that encapsulates a cell's state.
 public struct CellConfigurationState: ConfigurationState {

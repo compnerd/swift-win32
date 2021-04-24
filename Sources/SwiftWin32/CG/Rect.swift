@@ -1,9 +1,5 @@
-/**
- * Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- **/
+// Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
+// SPDX-License-Identifier: BSD-3-Clause
 
 public struct Rect {
   public static let zero: Rect = Rect(x: 0, y: 0, width: 0, height: 0)

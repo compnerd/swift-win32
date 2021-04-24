@@ -1,9 +1,5 @@
-/**
- * Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>.
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- **/
+// Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>.
+// SPDX-License-Identifier: BSD-3-Clause
 
 /// A factory class for creating layout constraint objects using a fluent API.
 public class LayoutAnchor<AnchorType: AnyObject> {

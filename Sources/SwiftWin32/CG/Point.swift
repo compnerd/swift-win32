@@ -1,9 +1,5 @@
-/**
- * Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- **/
+// Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
+// SPDX-License-Identifier: BSD-3-Clause
 
 public struct Point {
   public static let zero: Point = Point(x: 0, y: 0)

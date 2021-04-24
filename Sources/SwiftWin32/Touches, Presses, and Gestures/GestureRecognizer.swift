@@ -1,9 +1,5 @@
-/**
- * Copyright © 2021 Saleem Abdulrasool <compnerd@compnerd.org>
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- **/
+// Copyright © 2021 Saleem Abdulrasool <compnerd@compnerd.org>
+// SPDX-License-Identifier: BSD-3-Clause
 
 // Class constrain the callable to ensure that the value is heap allocated,
 // permitting us to perform pointer equality for the callback to serve as

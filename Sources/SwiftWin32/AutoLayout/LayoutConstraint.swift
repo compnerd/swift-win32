@@ -1,9 +1,5 @@
-/**
- * Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>.
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- **/
+// Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>.
+// SPDX-License-Identifier: BSD-3-Clause
 
 extension LayoutConstraint {
   /// The relation between the first attribute and the modified second attribute
