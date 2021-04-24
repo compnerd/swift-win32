@@ -7,17 +7,58 @@ internal let IDC_ARROW: UnsafePointer<WCHAR> =
     UnsafePointer<WCHAR>(bitPattern: 32512)!
 
 #if swift(<6.0)
+
 // winreg.h
-public let HKEY_CLASSES_ROOT: HKEY = HKEY(bitPattern: 0x80000000)!
-public let HKEY_CURRENT_USER: HKEY = HKEY(bitPattern: 0x80000001)!
-public let HKEY_LOCAL_MACHINE: HKEY = HKEY(bitPattern: 0x80000002)!
-public let HKEY_USERS: HKEY = HKEY(bitPattern: 0x80000003)!
-public let HKEY_PERFORMANCE_DATA: HKEY = HKEY(bitPattern: 0x80000004)!
-public let HKEY_PERFORMANCE_TEXT: HKEY = HKEY(bitPattern: 0x80000050)!
-public let HKEY_PERFORMANCE_NLSTEXT: HKEY = HKEY(bitPattern: 0x80000060)!
-public let HKEY_CURRENT_CONFIG: HKEY = HKEY(bitPattern: 0x80000005)!
-public let HKEY_DYN_DATA: HKEY = HKEY(bitPattern: 0x80000006)!
-public let HKEY_CURRENT_USER_LOCAL_SETTINGS: HKEY = HKEY(bitPattern: 0x80000007)!
+@_transparent
+internal var HKEY_CLASSES_ROOT: HKEY? {
+  HKEY(bitPattern: 0x80000000)
+}
+
+@_transparent
+internal var HKEY_CURRENT_USER: HKEY? {
+  HKEY(bitPattern: 0x80000001)
+}
+
+@_transparent
+internal var HKEY_LOCAL_MACHINE: HKEY? {
+  HKEY(bitPattern: 0x80000002)
+}
+
+@_transparent
+internal var HKEY_USERS: HKEY? {
+  HKEY(bitPattern: 0x80000003)
+}
+
+@_transparent
+internal var HKEY_PERFORMANCE_DATA: HKEY? {
+  HKEY(bitPattern: 0x80000004)
+}
+
+@_transparent
+internal var HKEY_PERFORMANCE_TEXT: HKEY? {
+  HKEY(bitPattern: 0x80000050)
+}
+
+@_transparent
+internal var HKEY_PERFORMANCE_NLSTEXT: HKEY? {
+  HKEY(bitPattern: 0x80000060)
+}
+
+@_transparent
+internal var HKEY_CURRENT_CONFIG: HKEY? {
+  HKEY(bitPattern: 0x80000005)
+}
+
+@_transparent
+internal var HKEY_DYN_DATA: HKEY? {
+  HKEY(bitPattern: 0x80000006)
+}
+
+@_transparent
+internal var HKEY_CURRENT_USER_LOCAL_SETTINGS: HKEY? {
+  HKEY(bitPattern: 0x80000007)
+}
+
 #endif
 
 // Richedit.h
