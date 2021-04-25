@@ -3,27 +3,51 @@
 
 import WinSDK
 
+/// Constants that indicate the size class of a view.
 public enum UserInterfaceSizeClass: Int {
+/// Indicates the size class has not been specified.
 case unspecified
+
+/// Indicates a compact size class.
 case compact
+
+/// Indicates a regular size class.
 case regular
 }
 
+/// Constants that indicate the gamut of the current display.
 public enum DisplayGamut: Int {
+/// An unspecified gamut value.
 case unspecified
+
+/// The sRGB display gamut.
 case SRGB
+
+/// The P3 display gamut.
 case P3
 }
 
+/// Constants that indicate the interface style for the application.
 public enum UserInterfaceStyle: Int {
+/// An unspecified interface style.
 case unspecified
+
+/// The light interface style.
 case light
+
+/// The dark interface style.
 case dark
 }
 
+/// Constants that indicate whether the user interface has an active appearance.
 public enum UserInterfaceActiveAppearance: Int {
+/// The interface has an unspecified appearance.
 case unspecified
+
+/// The interface has an active appearance.
 case active
+
+/// The interface has an inactive appearance.
 case inactive
 }
 
