@@ -4,7 +4,7 @@
 import struct Foundation.IndexPath
 
 public protocol TableViewDataSource: AnyObject {
-  /// Providng the Number of Rows and Sections
+  // MARK - Providng the Number of Rows and Sections
 
   /// Informs the data source to return the number of rows in a given section of
   /// a table view.
@@ -14,7 +14,7 @@ public protocol TableViewDataSource: AnyObject {
   /// Asks the data source to return the number of sections in the table view.
   func numberOfSections(in tableView: TableView) -> Int
 
-  /// Providing Cells, Headers, and Footers
+  // MARK - Providing Cells, Headers, and Footers
 
   /// Asks the data source for a cell to insert in a particular location of the
   /// table view.

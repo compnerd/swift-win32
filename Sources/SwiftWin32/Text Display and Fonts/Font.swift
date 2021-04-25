@@ -302,7 +302,7 @@ public class Font {
                                     nil))
   }
 
-  /// Getting the Available Font Names
+  // MARK - Getting the Available Font Names
 
   /// Returns an array of font family names available on the system.
   public static var familyNames: [String] {
@@ -371,11 +371,11 @@ public class Font {
     return Array<String>(arrFonts)
   }
 
-  /// Getting Font Name Attributes
+  // MARK - Getting Font Name Attributes
 
   // public var familyName: String { }
 
-  /// THe font face name.
+  /// The font face name.
   public var fontName: String {
     var lfFont: LOGFONTW = LOGFONTW()
 
@@ -394,7 +394,7 @@ public class Font {
     }
   }
 
-  /// Getting Font Metrics
+  // MARK - Getting Font Metrics
 
   /// The font's point size, or the effective vertical point size for a font
   /// with a non-standard matrix.
@@ -485,7 +485,7 @@ public class Font {
   /// The height, in points, of text lines.
   // public var lineHeight: Double { }
 
-  /// Getting System Font Information
+  // MARK - Getting System Font Information
 
   /// The standard font size, in points, for labels.
   public static var labelFontSize: Double { 17.0 }
