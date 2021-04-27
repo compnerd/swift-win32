@@ -212,22 +212,22 @@ public struct Device {
 
 extension Device {
   public enum BatteryState: Int {
-  case unknown
-  case unplugged
-  case charging
-  case full
+    case unknown
+    case unplugged
+    case charging
+    case full
   }
 }
 
 extension Device {
   public enum Orientation: Int {
-  case unknown
-  case portrait
-  case portraitUpsideDown
-  case landscapeLeft
-  case landscapeRight
-  case faceUp
-  case faceDown
+    case unknown
+    case portrait
+    case portraitUpsideDown
+    case landscapeLeft
+    case landscapeRight
+    case faceUp
+    case faceDown
   }
 }
 
