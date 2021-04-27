@@ -176,18 +176,6 @@ private struct ControlEventCallback<Source: Label, Target: AnyObject>: ControlEv
   }
 }
 
-extension Label {
-  /// Constants describing the types of events possible for controls.
-  public struct Event: Equatable, Hashable, RawRepresentable {
-    public typealias RawValue = Int
-
-    public let rawValue: RawValue
-
-    public init(rawValue: RawValue) {
-      self.rawValue = rawValue
-    }
-  }
-}
 extension Label.Event {
     /// A semantic action triggered by buttons.
   public static var primaryActionTriggered: Control.Event {
