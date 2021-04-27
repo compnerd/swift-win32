@@ -58,14 +58,14 @@ open class Application: Responder {
 extension Application {
   /// The running states of the application
   public enum State: Int {
-  /// The application is running in the foreground and currently receiving
-  /// events.
-  case active
+    /// The application is running in the foreground and currently receiving
+    /// events.
+    case active
 
-  /// The application is running in the foreground but is not receiving events.
-  case inactive
+    /// The application is running in the foreground but is not receiving events.
+    case inactive
 
-  /// The application is running in the background.
-  case background
+    /// The application is running in the background.
+    case background
   }
 }

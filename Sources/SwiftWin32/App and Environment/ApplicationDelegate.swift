@@ -5,16 +5,20 @@ import class Foundation.NSNotification
 
 /// The orientation of the application's user interface
 public enum InterfaceOrientation: Int {
-/// The orientation of the device is unknown.
-case unknown
-/// The device is in portrait mode, with the device upright.
-case portrait
-/// The device is in portrait mode, with the device upside down.
-case portraitUpsideDown
-/// The device is in landscape mode, with the device upright.
-case landscapeLeft
-/// The device is in landscape mode, with the device upright.
-case landscapeRight
+  /// The orientation of the device is unknown.
+  case unknown
+
+  /// The device is in portrait mode, with the device upright.
+  case portrait
+
+  /// The device is in portrait mode, with the device upside down.
+  case portraitUpsideDown
+
+  /// The device is in landscape mode, with the device upright.
+  case landscapeLeft
+
+  /// The device is in landscape mode, with the device upright.
+  case landscapeRight
 }
 
 extension InterfaceOrientation {
