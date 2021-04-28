@@ -66,7 +66,7 @@ extension Event {
 }
 
 public class Event {
-  /// Getting Event Attributes
+  // MARK - Getting Event Attributes
 
   /// The time when the event occurred.
   public var timestamp: TimeInterval
