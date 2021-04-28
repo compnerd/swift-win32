@@ -53,14 +53,14 @@ public class Switch: Control {
 extension Switch {
   /// Styles that determine the appearance of the switch.
   public enum Style: Int {
-  /// A style indicating that the system chooses the appearance of the switch
-  /// according to the current user interface idiom.
-  case automatic
+    /// A style indicating that the system chooses the appearance of the switch
+    /// according to the current user interface idiom.
+    case automatic
 
-  /// A style indicating that the switch appears as a checkbox.
-  case checkbox
+    /// A style indicating that the switch appears as a checkbox.
+    case checkbox
 
-  /// A style indicating that the switch appears as an on/off slider.
-  case sliding
+    /// A style indicating that the switch appears as an on/off slider.
+    case sliding
   }
 }
