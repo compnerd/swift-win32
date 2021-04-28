@@ -3,15 +3,6 @@
 
 import WinSDK
 
-private let SwiftSwitchProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
-  let button: Switch? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Switch
-  switch uMsg {
-  default:
-    break
-  }
-  return DefSubclassProc(hWnd, uMsg, wParam, lParam)
-}
-
 /// A control that offers a binary choice, such as on/off.
 public class Switch: Control {
   private static let `class`: WindowClass = WindowClass(named: WC_BUTTON)
@@ -56,8 +47,6 @@ public class Switch: Control {
   /// Returns an initialized switch object.
   public init(frame: Rect) {
     super.init(frame: frame, class: Switch.class, style: Switch.style)
-    SetWindowSubclass(hWnd, SwiftSwitchProc, UINT_PTR(1),
-                      unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 }
 
