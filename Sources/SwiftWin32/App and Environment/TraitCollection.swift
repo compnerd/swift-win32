@@ -5,89 +5,89 @@ import WinSDK
 
 /// Constants that indicate the size class of a view.
 public enum UserInterfaceSizeClass: Int {
-/// Indicates the size class has not been specified.
-case unspecified
+  /// Indicates the size class has not been specified.
+  case unspecified
 
-/// Indicates a compact size class.
-case compact
+  /// Indicates a compact size class.
+  case compact
 
-/// Indicates a regular size class.
-case regular
+  /// Indicates a regular size class.
+  case regular
 }
 
 /// Constants that indicate the gamut of the current display.
 public enum DisplayGamut: Int {
-/// An unspecified gamut value.
-case unspecified
+  /// An unspecified gamut value.
+  case unspecified
 
-/// The sRGB display gamut.
-case SRGB
+  /// The sRGB display gamut.
+  case SRGB
 
-/// The P3 display gamut.
-case P3
+  /// The P3 display gamut.
+  case P3
 }
 
 /// Constants that indicate the interface style for the application.
 public enum UserInterfaceStyle: Int {
-/// An unspecified interface style.
-case unspecified
+  /// An unspecified interface style.
+  case unspecified
 
-/// The light interface style.
-case light
+  /// The light interface style.
+  case light
 
-/// The dark interface style.
-case dark
+  /// The dark interface style.
+  case dark
 }
 
 /// Constants that indicate whether the user interface has an active appearance.
 public enum UserInterfaceActiveAppearance: Int {
-/// The interface has an unspecified appearance.
-case unspecified
+  /// The interface has an unspecified appearance.
+  case unspecified
 
-/// The interface has an active appearance.
-case active
+  /// The interface has an active appearance.
+  case active
 
-/// The interface has an inactive appearance.
-case inactive
+  /// The interface has an inactive appearance.
+  case inactive
 }
 
 public enum UserInterfaceIdiom: Int {
-case unspecified
-case phone
-case pad
-case tv
-case car
-case mac
+  case unspecified
+  case phone
+  case pad
+  case tv
+  case car
+  case mac
 }
 
 public enum UserInterfaceLevel: Int {
-case unspecified
-case base
-case elevated
+  case unspecified
+  case base
+  case elevated
 }
 
 public enum TraitEnvironmentLayoutDirection: Int {
-case unspecified
-case leftToRight
-case rightToLeft
+  case unspecified
+  case leftToRight
+  case rightToLeft
 }
 
 public enum AccessibilityContrast: Int {
-case unspecified
-case normal
-case high
+  case unspecified
+  case normal
+  case high
 }
 
 public enum LegibilityWeight: Int {
-case unspecified
-case regular
-case bold
+  case unspecified
+  case regular
+  case bold
 }
 
 public enum ForceTouchCapability: Int {
-case unspecified
-case available
-case unavailable
+  case unspecified
+  case available
+  case unavailable
 }
 
 public struct ContentSizeCategory: Equatable, Hashable, RawRepresentable {
