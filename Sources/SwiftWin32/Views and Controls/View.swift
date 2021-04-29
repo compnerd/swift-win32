@@ -364,6 +364,12 @@ public class View: Responder {
                             size: self.frame.size) }
   }
 
+  /// Specifies the transform applied to the view, relative to the center of its
+  /// bounds.
+  public var transform: AffineTransform = .identity {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
+
   // MARK - Managing the View Hierarchy
 
   /// The receiver's superview, or `nil` if it has none.
