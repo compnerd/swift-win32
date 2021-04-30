@@ -38,7 +38,7 @@ jobs:
 
     - name: Install swift-format
       run: |
-        Invoke-WebRequest -Uri https://github.com/compnerd/swift-build/suites/2597000479/artifacts/56763894 -OutFile $env:Temp\swift-format.zip
+        Invoke-WebRequest -Uri "https://github.com/compnerd/swift-build/suites/2597000479/artifacts/56763894" -OutFile $env:Temp\swift-format.zip
         Expand-Archive -Path $env:Temp\swift-format.zip -Destination $env:Temp -Force
         Move-Item -Force -Path $env:Temp\swift-format\swift-format.exe -Destination C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin 
     - uses: wearerequired/lint-action@v1
