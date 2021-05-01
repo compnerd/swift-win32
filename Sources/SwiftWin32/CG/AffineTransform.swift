@@ -61,15 +61,19 @@ public struct AffineTransform {
   }
 
   public func inverted() -> AffineTransform {
-    let determinant = a * d - b * c
-    let (newA, newB, newC, newD) = (d/determinant, -b/determinant,
-                                   -c/determinant,  a/determinant)
-    let (newTX, newTY) = (-newA * tx - newC * ty, -newB * tx - newD * ty)
-    let invertedTransform = 
-      AffineTransform( a: newA,  b: newB,
-                       c: newC,  d: newD,
-                      tx: newTX, ty: newTY)
-    return invertedTransform
+    let determinant = self.a * self.d - self.b * self.c
+
+    // The matrix is in-invertible if the determinant is 0.
+    if determinant == 0 { return self }
+  
+    let a = self.d / determinant
+    let b = -self.b / determinant
+    let c = -self.c / determinant
+    let d = self.a / determinant
+  
+    return AffineTransform(a: a, b: b, c: c, d: d,
+                           tx: -a * self.tx - c * self.ty,
+                           ty: -b * self.tx - d * self.ty)
   }
 }
 
