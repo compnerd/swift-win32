@@ -3,9 +3,10 @@
 
 import XCTest
 
-@testable
-import AutoLayoutTests
+@testable import AutoLayoutTests
+@testable import CoreGraphicsTests
 
 XCTMain([
   testCase(AutoLayoutTests.allTests),
+  testCase(CoreGraphicsTests.allTests)
 ])
