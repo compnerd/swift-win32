@@ -59,6 +59,22 @@ public struct AffineTransform {
                            tx: self.tx * transform.a + self.ty * transform.c + transform.tx,
                            ty: self.tx * transform.b + self.ty * transform.d + transform.ty)
   }
+
+  public func inverted() -> AffineTransform {
+    let determinant = self.a * self.d - self.b * self.c
+
+    // The matrix is in-invertible if the determinant is 0.
+    if determinant == 0 { return self }
+  
+    let a = self.d / determinant
+    let b = -self.b / determinant
+    let c = -self.c / determinant
+    let d = self.a / determinant
+  
+    return AffineTransform(a: a, b: b, c: c, d: d,
+                           tx: -a * self.tx - c * self.ty,
+                           ty: -b * self.tx - d * self.ty)
+  }
 }
 
 extension AffineTransform: Equatable {
