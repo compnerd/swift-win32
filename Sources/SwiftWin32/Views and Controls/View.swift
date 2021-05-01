@@ -72,6 +72,30 @@ private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) 
   rect = Rect(from: r)
 }
 
+private func UndoTransform(view: View, for point: Point) -> Point {
+  let myDeterminant = view.transform.a * view.transform.d - view.transform.b * view.transform.c
+  let (newA, newB, newC, newD) = (view.transform.d/myDeterminant, -view.transform.b/myDeterminant, -view.transform.c/myDeterminant, view.transform.a/myDeterminant)
+  let (newTX, newTY) = (-newA * view.transform.tx - newC * view.transform.ty, -newB * view.transform.tx - newD * view.transform.ty)
+  let myTransformInverted = 
+    AffineTransform( a: newA,  b: newB,
+                     c: newC,  d: newD,
+                    tx: newTX, ty: newTY)
+
+  return point.applying(myTransformInverted)
+}
+
+private func UndoTransform(view: View, for rect: Rect) -> Rect {
+  let myDeterminant = view.transform.a * view.transform.d - view.transform.b * view.transform.c
+  let (newA, newB, newC, newD) = (view.transform.d/myDeterminant, -view.transform.b/myDeterminant, -view.transform.c/myDeterminant, view.transform.a/myDeterminant)
+  let (newTX, newTY) = (-newA * view.transform.tx - newC * view.transform.ty, -newB * view.transform.tx - newD * view.transform.ty)
+  let myTransformInverted = 
+    AffineTransform( a: newA,  b: newB,
+                     c: newC,  d: newD,
+                    tx: newTX, ty: newTY)
+
+  return rect.applying(myTransformInverted)
+}
+
 extension View {
   /// Options to specify how a view adjusts its content when its size changes.
   public enum ContentMode: Int {
@@ -332,6 +356,13 @@ public class View: Responder {
     set { self.frame = Rect(origin: Point(x: self.frame.origin.x - newValue.x,
                                           y: self.frame.origin.y - newValue.y),
                             size: self.frame.size) }
+  }
+
+  /// Specifies the transform applied to the view, relative to the center of its bounds
+  public var transform: AffineTransform = AffineTransform.identity {
+    didSet {
+      fatalError("\(#function) not yet implemented")
+    }
   }
 
   // MARK - Managing the View Hierarchy
@@ -721,6 +752,167 @@ public class View: Responder {
     // path.  Convert to a proper level-order traversal.
     return self.subviews.first(where: { $0.tag == tag }) ??
         self.subviews.lazy.compactMap { $0.viewWithTag(tag) }.first
+  }
+
+  // MARK - Converting Between View Coordinate Systems
+
+  /// Converts a point from the receiver's coordinate system to that of the specified view.
+  public func convert(_ point: Point, to view: View?) -> Point {
+    var newPoint = UndoTransform(view: self, for: point)
+
+    var myRECT : RECT = RECT()
+    _ = GetWindowRect(self.hWnd, &myRECT)
+
+    var xTranslate = myRECT.left
+    var yTranslate = myRECT.top
+
+    if let convertView = view {
+      var convertRECT : RECT = RECT()
+      _ = GetWindowRect(convertView.hWnd, &convertRECT)
+
+      xTranslate = xTranslate - convertRECT.left
+      yTranslate = yTranslate - convertRECT.top
+    }
+
+    newPoint.x = newPoint.x + Double(xTranslate)
+    newPoint.y = newPoint.y + Double(yTranslate)
+
+    if let convertView = view {
+        newPoint = newPoint.applying(convertView.transform)
+    }
+
+    return newPoint
+  }
+
+  /// Converts a point from the coordinate system of a given view to that of the receiver.
+  public func convert(_ point: Point, from view: View?) -> Point {
+    var newPoint = point
+
+    if let convertView = view {
+      newPoint = UndoTransform(view: convertView, for: newPoint)
+    }
+
+    var myRECT : RECT = RECT()
+    _ = GetWindowRect(self.hWnd, &myRECT)
+
+    var xTranslate = -myRECT.left
+    var yTranslate = -myRECT.top
+
+    if let convertView = view {
+      var convertRECT : RECT = RECT()
+      _ = GetWindowRect(convertView.hWnd, &convertRECT)
+
+      xTranslate = xTranslate + convertRECT.left
+      yTranslate = yTranslate + convertRECT.top
+    }
+
+    newPoint.x = newPoint.x + Double(xTranslate)
+    newPoint.y = newPoint.y + Double(yTranslate)
+
+    return newPoint.applying(self.transform)
+  }
+
+  /// Converts a rectangle from the receiver's coordinate system to that of another view.
+  public func convert(_ rect: Rect, to view: View?) -> Rect {
+    var newRect : Rect = UndoTransform(view: self, for: rect)
+
+    var myRECT : RECT = RECT()
+    _ = GetWindowRect(self.hWnd, &myRECT)
+
+    var xTranslate = myRECT.left
+    var yTranslate = myRECT.top
+
+    if let convertView = view {
+      var convertRECT : RECT = RECT()
+      _ = GetWindowRect(convertView.hWnd, &convertRECT)
+
+      xTranslate = xTranslate - convertRECT.left
+      yTranslate = yTranslate - convertRECT.top
+    }
+
+    newRect.origin.x = newRect.origin.x + Double(xTranslate)
+    newRect.origin.y = newRect.origin.y + Double(yTranslate)
+
+    if let convertView = view {
+        newRect = newRect.applying(convertView.transform)
+    }
+
+    return newRect
+  }
+
+  /// Converts a rectangle from the coordinate system of another view to that of the receiver.
+  public func convert(_ rect: Rect, from view: View?) -> Rect {
+    var newRect = rect
+
+    if let convertView = view {
+      newRect = UndoTransform(view: convertView, for: newRect)
+    }
+
+    var myRECT : RECT = RECT()
+    _ = GetWindowRect(self.hWnd, &myRECT)
+
+    var xTranslate = -myRECT.left
+    var yTranslate = -myRECT.top
+
+    if let convertView = view {
+      var convertRECT : RECT = RECT()
+      _ = GetWindowRect(convertView.hWnd, &convertRECT)
+
+      xTranslate = xTranslate + convertRECT.left
+      yTranslate = yTranslate + convertRECT.top
+    }
+
+    newRect.origin.x = newRect.origin.x + Double(xTranslate)
+    newRect.origin.y = newRect.origin.y + Double(yTranslate)
+
+    return newRect.applying(self.transform)
+  }
+
+  // MARK - Hit-Testing in a View
+
+  /// Returns the farthest descendant of the receiver in the view hierarchy (including itself) 
+  /// that contains a specified point.
+  public func hitTest(_ point: Point, with event: Event?) -> View? {
+    var newPoint : Point = point
+    var myPOINT = POINT(from: newPoint)
+    var hWndDescendant = ChildWindowFromPointEx(hWnd, myPOINT, UINT(CWP_SKIPDISABLED | CWP_SKIPINVISIBLE | CWP_SKIPTRANSPARENT))
+    var hWndNext = hWndDescendant
+    var parentView = self
+    var childView : View?
+
+    while hWndNext != nil {
+
+      guard let hWndUnwrap = hWndDescendant else {
+        return nil
+      }
+
+      for subview in parentView.subviews {
+        if subview.hWnd == hWndUnwrap {
+          childView = subview
+          break
+        }
+      }
+
+      guard let childView = childView else {
+        return nil
+      }
+
+      // TODO: How does the chosen transform implementation play with `ChildWindowFromPointEx`?
+      newPoint = parentView.convert(newPoint, to: childView)
+      myPOINT = POINT(from: newPoint)
+
+      hWndNext = ChildWindowFromPointEx(hWndDescendant, myPOINT, UINT(CWP_SKIPDISABLED | CWP_SKIPINVISIBLE | CWP_SKIPTRANSPARENT))
+      if (hWndNext != nil) {
+        hWndDescendant = hWndNext
+        parentView = childView
+      }
+    }
+
+    guard let childView = childView else { 
+      return nil
+    }
+
+    return childView
   }
 
   // MARK - Responder Chain
