@@ -32,6 +32,7 @@ jobs:
         Copy-Item "$env:SDKROOT\usr\share\winsdk.modulemap" -destination "$env:UniversalCRTSdkDir\Include\$env:UCRTVersion\um\module.modulemap"
 
     - name: Build
-      run: swift build -v
+      run: swift build
+
     - name: Run tests
-      run: swift test -v
+      run: swift test
