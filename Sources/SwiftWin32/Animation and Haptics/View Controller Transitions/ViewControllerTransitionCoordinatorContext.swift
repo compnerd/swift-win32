@@ -116,7 +116,7 @@ public protocol ViewControllerTransitionCoordinatorContext {
   var transitionDuration: TimeInterval { get }
 
   /// Returns the completion curve associated with the transition.
-  var completionCurve: AnimationCurve { get }
+  var completionCurve: View.AnimationCurve { get }
 
   /// Returns the starting velocity to use for any final animations.
   var completionVelocity: Double { get }

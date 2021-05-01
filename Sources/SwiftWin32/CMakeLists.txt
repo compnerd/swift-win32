@@ -20,7 +20,6 @@ target_sources(SwiftWin32 PRIVATE
   AutoLayout/LayoutXAxisAnchor.swift
   AutoLayout/LayoutYAxisAnchor.swift)
 target_sources(SwiftWin32 PRIVATE
-  UI/AnimationCurve.swift
   UI/ContentSizeCategoryAdjusting.swift
   UI/ContentSizeCategoryImageAdjusting.swift
   UI/Interaction.swift
