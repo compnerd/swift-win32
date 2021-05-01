@@ -9,11 +9,11 @@ public struct AffineTransform {
   // MARK -
 
   /// The identity transform.
-  public static let identity: AffineTransform =
-      AffineTransform( a: 1.0,  b: 0.0,
-                       c: 0.0,  d: 1.0,
-                      tx: 0.0, ty: 0.0)
-
+  public static var identity: AffineTransform {
+    AffineTransform( a: 1.0,  b: 0.0,
+                     c: 0.0,  d: 1.0,
+                    tx: 0.0, ty: 0.0)
+  }
 
   // MARK -
 
