@@ -39,6 +39,52 @@ private class GestureRecognizerCallback<Target: AnyObject>: GestureRecognizerCal
   }
 }
 
+extension GestureRecognizer {
+  /// The current state a gesture recognizer is in.
+  public enum State: Int {
+    /// The gesture recognizer has not yet recognized its gesture, but may be
+    /// evaluating touch events. This is the default state.
+    case possible
+
+    /// The gesture recognizer has received touch objects recognized as a
+    /// continuous gesture. It sends its action message (or messages) at the
+    /// next cycle of the run loop.
+    case began
+
+    /// The gesture recognizer has received touches recognized as a change to a
+    /// continuous gesture. It sends its action message (or messages) at the
+    /// next cycle of the run loop.
+    case changed
+
+    /// The gesture recognizer has received touches recognized as the end of a
+    /// continuous gesture. It sends its action message (or messages) at the
+    /// next cycle of the run loop and resets its state to
+    /// `GestureRecognizer.State.possible`.
+    case ended
+
+    /// The gesture recognizer has received touches resulting in the
+    /// cancellation of a continuous gesture. It sends its action message (or
+    /// messages) at the next cycle of the run loop and resets its state to
+    /// `GestureRecognizer.State.possible`.
+    case cancelled
+
+    /// The gesture recognizer has received a multi-touch sequence that it
+    /// cannot recognize as its gesture. No action message is sent and the
+    /// gesture recognizer is reset to `GestureRecognizer.State.possible`.
+    case failed
+  }
+}
+
+extension GestureRecognizer.State {
+  /// The gesture recognizer has received a multi-touch sequence that it
+  /// recognizes as its gesture. It sends its action message (or messages) at
+  /// the next cycle of the run loop and resets its state to
+  /// `GestureRecognizer.State.possible`.
+  public static var recognized: GestureRecognizer.State {
+    .ended
+  }
+}
+
 public class GestureRecognizer {
   private var actions: [GestureRecognizerCallable]
 
@@ -131,42 +177,6 @@ public class GestureRecognizer {
   /// The name associated with the gesture recognizer.
   public var name: String?
 
-  // MARK - Constants
-
-  /// The current state a gesture recognizer is in.
-  public enum State: Int {
-  /// The gesture recognizer has not yet recognized its gesture, but may be
-  /// evaluating touch events. This is the default state.
-  case possible
-
-  /// The gesture recognizer has received touch objects recognized as a
-  /// continuous gesture. It sends its action message (or messages) at the next
-  /// cycle of the run loop.
-  case began
-
-  /// The gesture recognizer has received touches recognized as a change to a
-  /// continuous gesture. It sends its action message (or messages) at the next
-  /// cycle of the run loop.
-  case changed
-
-  /// The gesture recognizer has received touches recognized as the end of a
-  /// continuous gesture. It sends its action message (or messages) at the next
-  /// cycle of the run loop and resets its state to
-  /// `GestureRecognizer.State.possible`.
-  case ended
-
-  /// The gesture recognizer has received touches resulting in the cancellation
-  /// of a continuous gesture. It sends its action message (or messages) at the
-  /// next cycle of the run loop and resets its state to
-  /// `GestureRecognizer.State.possible`.
-  case cancelled
-
-  /// The gesture recognizer has received a multi-touch sequence that it cannot
-  /// recognize as its gesture. No action message is sent and the gesture
-  /// recognizer is reset to `GestureRecognizer.State.possible`.
-  case failed
-  }
-
   // MARK - Initializers
 
   public /* convenience */ init() {
@@ -177,15 +187,5 @@ public class GestureRecognizer {
 
   public func shouldReceive(_ event: Event) -> Bool {
     fatalError("\(#function) not yet implemented")
-  }
-}
-
-extension GestureRecognizer.State {
-  /// The gesture recognizer has received a multi-touch sequence that it
-  /// recognizes as its gesture. It sends its action message (or messages) at
-  /// the next cycle of the run loop and resets its state to
-  /// `GestureRecognizer.State.possible`.
-  public static var recognized: GestureRecognizer.State {
-    .ended
   }
 }
