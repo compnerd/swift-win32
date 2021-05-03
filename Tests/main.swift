@@ -5,8 +5,10 @@ import XCTest
 
 @testable import AutoLayoutTests
 @testable import CoreGraphicsTests
+@testable import UICoreTests
 
 XCTMain([
   testCase(AutoLayoutTests.allTests),
-  testCase(CoreGraphicsTests.allTests)
+  testCase(CoreGraphicsTests.allTests),
+  testCase(UICoreTests.allTests),
 ])
