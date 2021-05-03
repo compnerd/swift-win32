@@ -282,6 +282,7 @@ public class View: Responder {
                  UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
 
     self.frame = frame
+    self.bounds = Rect(origin: .zero, size: client.size)
 
     super.init()
 
@@ -347,6 +348,12 @@ public class View: Responder {
                        CInt(client.size.width), CInt(client.size.height),
                        UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
     }
+  }
+
+  /// The bounds rectangle, which describes the view’s location and size in its
+  /// own coordinate system.
+  public var bounds: Rect {
+    didSet { fatalError("\(#function) not yet implemented") }
   }
 
   /// The center point of the view's frame rectangle
