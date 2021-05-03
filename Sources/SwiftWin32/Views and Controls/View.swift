@@ -759,6 +759,91 @@ public class View: Responder {
         self.subviews.lazy.compactMap { $0.viewWithTag(tag) }.first
   }
 
+  // MARK - Converting Between View Coordinate Systems
+
+  /// Converts a point from the receiver’s coordinate system to that of the
+  /// specified view.
+  public func convert(_ point: Point, to view: View?) -> Point {
+    if let view = view {
+      // If the view is itself, then the point is already in the correct
+      // coordinate system.
+      if view == self { return point }
+
+      // In the case of an immediate relation to the view, just account for the
+      // frame offset.
+      if let superview = self.superview, superview == view {
+        // `p - self.bounds.origin` creates a vector from the top-left of
+        // `self`.  Apply the current transform to the vector, and then return
+        // the point relative to the top-left of `view`.
+
+        // +--- view ---+
+        // | +- self -+ |
+        // | |   p    | |
+        // | +--------+ |
+        // +------------+
+
+        // `bounds` is in the coordinate space of self and `frame` is in the
+        // coordinate space of the superview.  In this case, the superview is
+        // `view`, which is the destination coordinate space.  We simply map
+        // the transformed point p from the coordinate space of `self` into
+        // the destination coordinate space of `view` using `self.frame`.
+        return (point - self.bounds.origin).applying(self.transform) + self.frame.origin
+      } else if let superview = view.superview, superview == self {
+        // `p - view.frame.origin` creates a vector from the top-left of `self`.
+        // Invert any transformations of `self` to the vector, and then return
+        // the point relative to `view.`
+
+        // +--- self ---+
+        // | +- view -+ |
+        // | |   p    | |
+        // | +--------+ |
+        // +------------+
+
+        // `frame` is in the coordinate space of the superview.  Because `self`
+        // is the superview of `view`, `view.frame` is the coordinate space of
+        // `self`.  We locate `point` in the coordinate space of `self`, undo
+        // any local transformation, and then relocate it in the coordinate
+        // space of the destination view.
+        return (point - view.frame.origin).applying(self.transform.inverted()) + view.bounds.origin
+      }
+    }
+
+    func WindowBasedOrigin(for view: View?) -> Point {
+      var origin: Point = .zero
+      guard var view = view else { return origin }
+      while let superview = view.superview {
+        // Map the view's bounds to the superview and compute the vector for the
+        // location.  This must be transformed by the transformation matrix for
+        // the superview.
+        origin = origin
+               + (view.convert(view.bounds.origin, to: superview) - superview.bounds.origin)
+                    .applying(superview.transform)
+        view = superview
+      }
+      return origin
+    }
+
+    return point - (WindowBasedOrigin(for: view) - WindowBasedOrigin(for: self))
+  }
+
+  /// Converts a point from the coordinate system of a given view to that of the
+  /// receiver.
+  public func convert(_ point: Point, from view: View?) -> Point {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Converts a rectangle from the receiver’s coordinate system to that of
+  /// another view.
+  public func convert(_ rect: Rect, to view: View?) -> Rect {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Converts a rectangle from the coordinate system of another view to that of
+  /// the receiver.
+  public func convert(_ rect: Rect, from view: View?) -> Rect {
+    fatalError("\(#function) not yet implemented")
+  }
+
   // MARK - Responder Chain
 
   public override var next: Responder? {
