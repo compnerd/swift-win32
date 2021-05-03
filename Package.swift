@@ -110,6 +110,10 @@ let SwiftWin32 = Package(
     .testTarget(
       name: "CoreGraphicsTests",
       dependencies: ["SwiftWin32"]
+    ),
+    .testTarget(
+      name: "UICoreTests",
+      dependencies: ["SwiftWin32"]
     )
   ]
 )
