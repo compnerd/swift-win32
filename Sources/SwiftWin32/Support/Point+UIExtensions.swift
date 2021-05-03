@@ -32,3 +32,13 @@ extension Point {
     self.init(x: Int(x), y: Int(y))
   }
 }
+
+extension Point {
+  internal static func + (_ lhs: Point, _ rhs: Point) -> Point {
+    return Point(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+  }
+
+  internal static func - (_ lhs: Point, _ rhs: Point) -> Point {
+    return Point(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
+  }
+}
