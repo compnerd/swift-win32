@@ -57,3 +57,4 @@ jobs:
       if: ${{ matrix.branch == 'development' }}
       with:
         swift_format_official: true
+        github_token: ${{ secrets.GITHUB_TOKEN }}
