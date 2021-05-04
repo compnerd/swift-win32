@@ -6,16 +6,25 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
+    
+    strategy:
+      matrix:
+        include:
+          - tag: 5.4-RELEASE
+            branch: swift-5.4-release
+          - tag: 5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
+            branch: swift-5.5-branch
+          - tag: DEVELOPMENT-SNAPSHOT-2021-04-26-a
+            branch: development
 
     steps:
     - uses: actions/checkout@v2
     - uses: seanmiddleditch/gha-setup-vsdevenv@master
 
-    - name: Install swift-DEVELOPMENT-SNAPSHOT-2021-02-18-a
+    - name: Install Swift ${{ matrix.tag }}
       run: |
-        Install-Binary -Url "https://swift.org/builds/development/windows10/swift-DEVELOPMENT-SNAPSHOT-2021-02-18-a/swift-DEVELOPMENT-SNAPSHOT-2021-02-18-a-windows10.exe" -Name "installer.exe" -ArgumentList ("-q")
+        Install-Binary -Url "https://swift.org/builds/${{ matrix.branch }}/windows10/swift-${{ matrix.tag }}/swift-${{ matrix.tag }}-windows10.exe" -Name "installer.exe" -ArgumentList ("-q")
     - name: Set Environment Variables
       run: |
         echo "SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
@@ -32,7 +41,7 @@ jobs:
         Copy-Item "$env:SDKROOT\usr\share\winsdk.modulemap" -destination "$env:UniversalCRTSdkDir\Include\$env:UCRTVersion\um\module.modulemap"
 
     - name: Build
-      run: swift build
+      run: swift build -v
 
     - name: Run tests
-      run: swift test
+      run: swift test -v
