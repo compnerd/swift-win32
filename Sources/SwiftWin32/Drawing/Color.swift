@@ -37,7 +37,8 @@ extension Color.Representation: Hashable {
 public struct Color {
   private let value: Representation
 
-  /// Creating a Color from Component Values
+  // MARK - Creating a Color from Component Values
+
   public init(white: Double, alpha: Double) {
     self.value = .gray(white, alpha)
   }
@@ -107,7 +108,8 @@ extension Color {
   }
 }
 
-/// Fixed Colors
+// MARK - Fixed Colors
+
 public extension Color {
   static var black: Color = Color(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
   static var blue: Color = Color(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
@@ -133,7 +135,8 @@ extension Color {
   }
 }
 
-/// Adaptable Colors
+// MARK - Adaptable Colors
+
 extension Color {
   public static var systemBlue: Color {
     let traits: TraitCollection = TraitCollection.current
@@ -289,7 +292,8 @@ extension Color {
   }
 }
 
-/// Adaptable Grey Colors
+// MARK - Adaptable Grey Colors
+
 extension Color {
   public static var systemGray: Color {
     let traits: TraitCollection = TraitCollection.current
@@ -394,9 +398,10 @@ extension Color {
   }
 }
 
-/// UI Element Colors
+// MARK - UI Element Colors
+
 extension Color {
-  /// Label Colors
+  // MARK - Label Colors
 
   /// The Color for text labels that contain primary content.
   public static var label: Color {
@@ -466,7 +471,7 @@ extension Color {
     }
   }
 
-  /// Fill Colors
+  // MARK - Fill Colors
 
   /// An overlay fill color for thin and small shapes.
   public static var systemFill: Color {
@@ -540,7 +545,7 @@ extension Color {
     }
   }
 
-  /// Text Colors
+  // MARK - Text Colors
 
   /// The color for placeholder text in controls or text views.
   public static var placeholderText: Color {
@@ -680,7 +685,7 @@ extension Color {
     }
   }
 
-  /// Separator Colors
+  // MARK - Separator Colors
 
   /// The color for thin borders or divider lines that allows some underlying
   /// content to be visible.
@@ -719,7 +724,7 @@ extension Color {
     }
   }
 
-  /// Link Color
+  // MARK - Link Color
 
   /// The color for links.
   public static var link: Color {
@@ -739,7 +744,7 @@ extension Color {
     }
   }
 
-  /// Nonadaptable Colors
+  // MARK - Nonadaptable Colors
 
   /// The nonadaptable system color for text on a light background.
   public static var darkText: Color {

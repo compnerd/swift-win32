@@ -168,6 +168,29 @@ extension View.AutoresizingMask {
   }
 }
 
+extension View {
+  /// Specifies the supported animation curves.
+  public enum AnimationCurve: Int {
+    /// An ease-in ease-out curve causes the animation to begin slowly,
+    /// accelerate through the middle of its duration, and then slow again
+    /// before completing. This is the default curve for most animations.
+    case easeInOut
+
+    /// An ease-in curve causes the animation to begin slowly, and then speed up
+    /// as it progresses.
+    case easeIn
+
+    /// An ease-out curve causes the animation to begin quickly, and then slow
+    /// down as it completes.
+    case easeOut
+
+    /// A linear animation curve causes an animation to occur evenly over its
+    /// duration.
+    case linear
+  }
+}
+
+/// An object that manages the content for a rectangular area on the screen.
 public class View: Responder {
   private static let `class`: WindowClass =
       WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.View",
@@ -259,6 +282,7 @@ public class View: Responder {
                  UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
 
     self.frame = frame
+    self.bounds = Rect(origin: .zero, size: client.size)
 
     super.init()
 
@@ -326,12 +350,24 @@ public class View: Responder {
     }
   }
 
+  /// The bounds rectangle, which describes the view’s location and size in its
+  /// own coordinate system.
+  public var bounds: Rect {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
+
   /// The center point of the view's frame rectangle
   public var center: Point {
     get { return Point(x: self.frame.midX, y: self.frame.midY) }
     set { self.frame = Rect(origin: Point(x: self.frame.origin.x - newValue.x,
                                           y: self.frame.origin.y - newValue.y),
                             size: self.frame.size) }
+  }
+
+  /// Specifies the transform applied to the view, relative to the center of its
+  /// bounds.
+  public var transform: AffineTransform = .identity {
+    didSet { fatalError("\(#function) not yet implemented") }
   }
 
   // MARK - Managing the View Hierarchy
