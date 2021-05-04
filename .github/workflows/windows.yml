@@ -46,9 +46,14 @@ jobs:
     - name: Run tests
       run: swift test -v
 
-    - name: Install swift-format
-      run: |
-        Invoke-WebRequest -Uri "https://github.com/compnerd/swift-build/releases/download/untagged-1958c67abb2deedd747b/swift-format.exe" -OutFile C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\swift-format.exe
+    - uses: robinraju/release-downloader@v1
+      if: ${{ matrix.branch == development }}
+      with:
+        repository: compnerd/swift-build
+        tag: swift-format-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
+        fileName: swift-format.exe
+        out-file-path: C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\swift-format.exe
     - uses: wearerequired/lint-action@v1
+      if: ${{ matrix.branch == development }}
       with:
         swift_format_official: true
