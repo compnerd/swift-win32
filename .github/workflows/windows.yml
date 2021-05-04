@@ -47,13 +47,13 @@ jobs:
       run: swift test -v
 
     - uses: robinraju/release-downloader@v1
-      if: ${{ matrix.branch == "development" }}
+      if: ${{ matrix.branch == 'development' }}
       with:
         repository: compnerd/swift-build
         tag: swift-format-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
         fileName: swift-format.exe
         out-file-path: C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\swift-format.exe
     - uses: wearerequired/lint-action@v1
-      if: ${{ matrix.branch == development }}
+      if: ${{ matrix.branch == 'development' }}
       with:
         swift_format_official: true
