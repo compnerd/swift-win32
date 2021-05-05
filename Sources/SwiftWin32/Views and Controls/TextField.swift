@@ -40,7 +40,6 @@ private let SwiftTextFieldProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uI
 
     _ = SelectObject(hDC, hPrevFont)
 
-
     _ = ReleaseDC(hWnd, hDC)
 
     return lResult
@@ -52,11 +51,11 @@ private let SwiftTextFieldProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uI
 }
 
 public enum TextAlignment: Int {
-case natural
-case left
-case right
-case center
-case justified
+  case natural
+  case left
+  case right
+  case center
+  case justified
 }
 
 public class TextField: Control {

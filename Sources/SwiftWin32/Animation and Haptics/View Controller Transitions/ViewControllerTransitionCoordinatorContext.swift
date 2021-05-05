@@ -54,42 +54,42 @@ extension TransitionContextViewKey {
 
 /// Modal presentation styles available when presenting view controllers.
 public enum ModalPresentationStyle: Int {
-/// The default presentation style chosen by the system.
-case automatic
+  /// The default presentation style chosen by the system.
+  case automatic
 
-/// A presentation style that indicates no adaptations should be made.
-case none
+  /// A presentation style that indicates no adaptations should be made.
+  case none
 
-/// A presentation style in which the presented view covers the screen.
-case fullScreen
+  /// A presentation style in which the presented view covers the screen.
+  case fullScreen
 
-/// A presentation style that partially covers the underlying content.
-case pageSheet
+  /// A presentation style that partially covers the underlying content.
+  case pageSheet
 
-/// A presentation style that displays the content centered in the screen.
-case formSheet
+  /// A presentation style that displays the content centered in the screen.
+  case formSheet
 
-/// A presentation style where the content is displayed over another view
-/// controller's content.
-case currentContext
+  /// A presentation style where the content is displayed over another view
+  /// controller's content.
+  case currentContext
 
-/// A custom view presentation style that is managed by a custom presentation
-/// controller and one or more custom animator objects.
-case custom
+  /// A custom view presentation style that is managed by a custom presentation
+  /// controller and one or more custom animator objects.
+  case custom
 
-/// A view presentation style in which the presented view covers the screen.
-case overFullScreen
+  /// A view presentation style in which the presented view covers the screen.
+  case overFullScreen
 
-/// A presentation style where the content is displayed over another view
-/// controller's content.
-case overCurrentContext
+  /// A presentation style where the content is displayed over another view
+  /// controller's content.
+  case overCurrentContext
 
-/// A presentation style where the content is displayed in a popover view.
-case popover
+  /// A presentation style where the content is displayed in a popover view.
+  case popover
 
-/// A presentation style that blurs the underlying content before displaying new
-/// content in a full-screen presentation.
-case blurOverFullScreen
+  /// A presentation style that blurs the underlying content before displaying new
+  /// content in a full-screen presentation.
+  case blurOverFullScreen
 }
 
 /// A set of methods that provides information about an in-progress view
@@ -99,7 +99,7 @@ public protocol ViewControllerTransitionCoordinatorContext {
 
   /// Returns the view controllers involved in the transition.
   func viewController(forKey key: TransitionContextViewControllerKey)
-      -> ViewController?
+    -> ViewController?
 
   /// Returns the specified view involved in the transition.
   func view(forKey key: TransitionContextViewKey) -> View?
@@ -116,7 +116,7 @@ public protocol ViewControllerTransitionCoordinatorContext {
   var transitionDuration: TimeInterval { get }
 
   /// Returns the completion curve associated with the transition.
-  var completionCurve: AnimationCurve { get }
+  var completionCurve: View.AnimationCurve { get }
 
   /// Returns the starting velocity to use for any final animations.
   var completionVelocity: Double { get }

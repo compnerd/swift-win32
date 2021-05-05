@@ -200,7 +200,7 @@ public class ViewController: Responder {
   public private(set) var shouldAutorotate: Bool = true
 
   /// The interface orientations that the view controller supports.
-  public private(set) var supportedInterfaceOrientations: InterfaceOrientationMask = .all
+  public private(set) var supportedInterfaceOrientations: InterfaceOrientationMask = .allButUpsideDown
 
   /// The interface orientation to use when presenting the view controller.
   public private(set) var preferredInterfaceOrientationForPresentation: InterfaceOrientation = .portrait

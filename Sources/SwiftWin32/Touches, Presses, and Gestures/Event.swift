@@ -29,6 +29,37 @@ extension Event {
   }
 }
 
+extension Event {
+  /// Set of buttons pressed for the current event
+  public struct ButtonMask: OptionSet {
+    public typealias RawValue = Int
+
+    public let rawValue: RawValue
+
+    // MARK - Creating Button Masks
+
+    public init(rawValue: Int) {
+      self.rawValue = rawValue
+    }
+
+    /// Convenience initializer for a button mask where `buttonNumber` is a
+    /// one-based index of the button on the input device
+    public static func button(_ buttonNumber: Int) -> ButtonMask {
+      ButtonMask(rawValue: 1 << (buttonNumber - 1))
+    }
+
+    // MARK - Accessing Button Masks
+
+    public static var primary: ButtonMask {
+      ButtonMask(rawValue: 1 << 0)
+    }
+
+    public static var secondary: ButtonMask {
+      ButtonMask(rawValue: 1 << 1)
+    }
+  }
+}
+
 public class Event {
   /// Getting Event Attributes
 

@@ -41,7 +41,7 @@ The following known limitations are known:
 
 ```cmd
 swift build --product UICatalog
-copy Examples\UICatalog\UICatalog.exe.manifest .build\x86_64-unknown-windows-msvc\debug\
+mt -nologo -manifest Examples\UICatalog\UICatalog.exe.manifest -outputresource:.build\x86_64-unknown-windows-msvc\debug\UICatalog.exe
 copy Examples\UICatalog\Info.plist .build\x86_64-unknown-windows-msvc\debug\
-swift run UICatalog
+.build\x86_64-unknown-windows-msvc\debug\UICatalog.exe
 ```
