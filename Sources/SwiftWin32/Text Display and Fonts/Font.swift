@@ -557,38 +557,47 @@ public extension Font {
 }
 
 public extension Font.Weight {
+  /// The ultra-light font weight.
   static var ultraLight: Font.Weight {
     Font.Weight(rawValue: FW_ULTRALIGHT)
   }
 
+  /// The thin font weight.
   static var thin: Font.Weight {
     Font.Weight(rawValue: FW_THIN)
   }
 
+  /// The light font weight.
   static var light: Font.Weight {
     Font.Weight(rawValue: FW_LIGHT)
   }
 
+  /// The regular font weight.
   static var regular: Font.Weight {
     Font.Weight(rawValue: FW_REGULAR)
   }
 
+  /// The medium font weight.
   static var medium: Font.Weight {
     Font.Weight(rawValue: FW_MEDIUM)
   }
 
+  /// The semibold font weight.
   static var semibold: Font.Weight {
     Font.Weight(rawValue: FW_SEMIBOLD)
   }
 
+  /// The bold font weight.
   static var bold: Font.Weight {
     Font.Weight(rawValue: FW_BOLD)
   }
 
+  /// The heavy font weight.
   static var heavy: Font.Weight {
     Font.Weight(rawValue: FW_HEAVY)
   }
 
+  /// The black font weight.
   static var black: Font.Weight {
     Font.Weight(rawValue: FW_BLACK)
   }
@@ -606,46 +615,57 @@ public extension Font {
 }
 
 public extension Font.TextStyle {
+  /// The font for body text.
   static var body: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleBody")
   }
 
+  /// The font for callouts.
   static var callout: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleCallout")
   }
 
+  /// The font for standard captions.
   static var caption1: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleCaption1")
   }
 
+  /// The font for alternate captions.
   static var caption2: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleCaption2")
   }
 
+  /// The font for footnotes.
   static var footnote: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleFootnote")
   }
 
+  /// The font for headings.
   static var headline: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleHeadline")
   }
 
+  /// The font for subheadings.
   static var subheadline: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleSubhead")
   }
 
+  /// The font style for large titles.
   static var largeTitle: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleTitle0")
   }
 
+  /// The font for first-level hierarchical headings.
   static var title1: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleTitle1")
   }
 
+  /// The font for second-level hierarchical headings.
   static var title2: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleTitle2")
   }
 
+  /// The font for third-level hierarchical headings.
   static var title3: Font.TextStyle {
     Font.TextStyle(rawValue: "UICTFontTextStyleTitle3")
   }
