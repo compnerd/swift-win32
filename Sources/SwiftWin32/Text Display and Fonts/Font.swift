@@ -557,15 +557,41 @@ public extension Font {
 }
 
 public extension Font.Weight {
-  static let ultraLight: Font.Weight = Font.Weight(rawValue: FW_ULTRALIGHT)
-  static let thin: Font.Weight = Font.Weight(rawValue: FW_THIN)
-  static let light: Font.Weight = Font.Weight(rawValue: FW_LIGHT)
-  static let regular: Font.Weight = Font.Weight(rawValue: FW_REGULAR)
-  static let medium: Font.Weight = Font.Weight(rawValue: FW_MEDIUM)
-  static let semibold: Font.Weight = Font.Weight(rawValue: FW_SEMIBOLD)
-  static let bold: Font.Weight = Font.Weight(rawValue: FW_BOLD)
-  static let heavy: Font.Weight = Font.Weight(rawValue: FW_HEAVY)
-  static let black: Font.Weight = Font.Weight(rawValue: FW_BLACK)
+  static var ultraLight: Font.Weight {
+    Font.Weight(rawValue: FW_ULTRALIGHT)
+  }
+
+  static var thin: Font.Weight {
+    Font.Weight(rawValue: FW_THIN)
+  }
+
+  static var light: Font.Weight {
+    Font.Weight(rawValue: FW_LIGHT)
+  }
+
+  static var regular: Font.Weight {
+    Font.Weight(rawValue: FW_REGULAR)
+  }
+
+  static var medium: Font.Weight {
+    Font.Weight(rawValue: FW_MEDIUM)
+  }
+
+  static var semibold: Font.Weight {
+    Font.Weight(rawValue: FW_SEMIBOLD)
+  }
+
+  static var bold: Font.Weight {
+    Font.Weight(rawValue: FW_BOLD)
+  }
+
+  static var heavy: Font.Weight {
+    Font.Weight(rawValue: FW_HEAVY)
+  }
+
+  static var black: Font.Weight {
+    Font.Weight(rawValue: FW_BLACK)
+  }
 }
 
 public extension Font {
@@ -580,26 +606,47 @@ public extension Font {
 }
 
 public extension Font.TextStyle {
-  static let body: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleBody")
-  static let callout: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleCallout")
-  static let caption1: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleCaption1")
-  static let caption2: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleCaption2")
-  static let footnote: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleFootnote")
-  static let headline: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleHeadline")
-  static let subheadline: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleSubhead")
-  static let largeTitle: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleTitle0")
-  static let title1: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleTitle1")
-  static let title2: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleTitle2")
-  static let title3: Font.TextStyle =
-      Font.TextStyle(rawValue: "UICTFontTextStyleTitle3")
+  static var body: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleBody")
+  }
+
+  static var callout: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleCallout")
+  }
+
+  static var caption1: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleCaption1")
+  }
+
+  static var caption2: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleCaption2")
+  }
+
+  static var footnote: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleFootnote")
+  }
+
+  static var headline: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleHeadline")
+  }
+
+  static var subheadline: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleSubhead")
+  }
+
+  static var largeTitle: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleTitle0")
+  }
+
+  static var title1: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleTitle1")
+  }
+
+  static var title2: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleTitle2")
+  }
+
+  static var title3: Font.TextStyle {
+    Font.TextStyle(rawValue: "UICTFontTextStyleTitle3")
+  }
 }
