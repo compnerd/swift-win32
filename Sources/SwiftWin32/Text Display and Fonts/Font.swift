@@ -177,7 +177,7 @@ private func LogicalToPoint(_ logical: Int32) -> Double {
 public class Font {
   internal var hFont: FontHandle
 
-  /// Creating Fonts
+  // MARK - Creating Fonts
 
   /// Returns an instance of the system font for the specified text style with
   /// scaling for the user's selected content size category.
@@ -236,7 +236,7 @@ public class Font {
     return Font(owning: CreateFontIndirectW(&lfFont))
   }
 
-  /// Creating System Fonts
+  // MARK - Creating System Fonts
 
   /// Returns the font object for standard interface items in the specified
   /// size.
