@@ -37,7 +37,6 @@ final class CoreGraphicsTests: XCTestCase {
                         size: Size(width: 16, height: 16))
     XCTAssertEqual(r2.midX, 12)
     XCTAssertEqual(r2.midY, 12)
-
   }
 
   func testRectApplyAffineTransform() {
