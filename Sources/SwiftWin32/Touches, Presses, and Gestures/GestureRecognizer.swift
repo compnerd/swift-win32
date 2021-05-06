@@ -172,6 +172,25 @@ public class GestureRecognizer {
   /// receiver.
   public private(set) var numberOfTouches: Int = 0
 
+  // MARK - Getting the Recognizer’s State and View
+
+  /// The current state of the gesture recognizer.
+  public var state: GestureRecognizer.State = .possible
+
+  /// The view the gesture recognizer is attached to.
+  public internal(set) var view: View?
+
+  /// A boolean property that indicates whether the gesture recognizer is
+  /// enabled.
+  public var isEnabled: Bool = true
+
+  /// A bit mask of the button (or buttons) in the gesture represented by the
+  /// receiver.
+  public private(set) var buttonMask: Event.ButtonMask = []
+
+  /// Constants that indicate which modifier keys are pressed.
+  public private(set) var modifierFlags: KeyModifierFlags = []
+
   // MARK - Debugging Gesture Recognizers
 
   /// The name associated with the gesture recognizer.
