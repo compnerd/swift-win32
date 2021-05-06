@@ -80,7 +80,6 @@ final class CoreGraphicsTests: XCTestCase {
     XCTAssertEqual(rect.origin.y, -428.36482622296273, accuracy: accuracy)
     XCTAssertEqual(rect.size.width, 117.68398448828839, accuracy: accuracy)
     XCTAssertEqual(rect.size.height, 87.18621695814943, accuracy: accuracy)
-
   }
 
   static var allTests = [
