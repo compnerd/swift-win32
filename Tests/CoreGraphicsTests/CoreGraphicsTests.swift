@@ -42,6 +42,17 @@ final class CoreGraphicsTests: XCTestCase {
 
   func testRectApplyAffineTransform() {
     var rect: Rect =
+        Rect(origin: Point(x: -6, y: -7),
+             size: Size(width: 12, height: 14))
+            .applying(AffineTransform(rotationAngle: Double.pi/2))
+
+    XCTAssertEqual(rect.origin.x, -7)
+    XCTAssertEqual(rect.origin.y, -6)
+    XCTAssertEqual(rect.size.width, 14)
+    XCTAssertEqual(rect.size.height, 12)
+
+
+    rect =
         Rect(origin: Point(x: 45, y: 115),
              size: Size(width: 13, height: 14))
             .applying(AffineTransform(rotationAngle: 42))
