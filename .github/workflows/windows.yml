@@ -51,6 +51,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     - uses: seanmiddleditch/gha-setup-vsdevenv@master
 
     - name: Install Swift 5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
