@@ -22,9 +22,20 @@ public struct Rect {
               size: Size(width: Double(width), height: Double(height)))
   }
 
-  func applying(_ transform: AffineTransform) -> Rect {
-    return Rect(origin: self.origin.applying(transform),
-                size: self.size.applying(transform))
+  public func applying(_ transform: AffineTransform) -> Rect {
+    let points: [Point] = [
+      self.origin,
+      self.origin + Point(x: self.size.width, y: 0),
+      self.origin + Point(x: 0, y: self.size.height),
+      self.origin + Point(x: self.size.width, y: self.size.height),
+    ].map { $0.applying(transform) }
+
+    let xs: [Double] = points.map { $0.x }
+    let ys: [Double] = points.map { $0.y }
+    
+    return Rect(origin: Point(x: xs.min()!, y: ys.min()!),
+                size: Size( width: xs.max()! - xs.min()!,
+                            height: ys.max()! - ys.min()!))
   }
 }
 
