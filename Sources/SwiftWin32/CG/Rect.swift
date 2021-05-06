@@ -30,11 +30,11 @@ public struct Rect {
 
 extension Rect {
   public var midX: Double {
-    return (self.origin.x + self.size.width) / 2
+    return self.origin.x + (self.size.width / 2)
   }
 
   public var midY: Double {
-    return (self.origin.y + self.size.height) / 2
+    return self.origin.y + (self.size.height / 2)
   }
 }
 
