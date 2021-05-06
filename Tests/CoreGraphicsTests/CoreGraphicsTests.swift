@@ -28,6 +28,17 @@ final class CoreGraphicsTests: XCTestCase {
     XCTAssertFalse(SwiftWin32.AffineTransform().isIdentity)
   }
 
+  func testRectComputedProperties() {
+    let r1: Rect = Rect(origin: .zero, size: Size(width: 32, height: 32))
+    XCTAssertEqual(r1.midX, 16)
+    XCTAssertEqual(r1.midY, 16)
+
+    let r2: Rect = Rect(origin: Point(x: 4, y: 4),
+                        size: Size(width: 16, height: 16))
+    XCTAssertEqual(r2.midX, 12)
+    XCTAssertEqual(r2.midY, 12)
+  }
+
   static var allTests = [
     ("testAffineTransformIdentity", testAffineTransformIdentity),
     ("testAffineTransformIdentityIsIdentity", testAffineTransformIdentityIsIdentity)
