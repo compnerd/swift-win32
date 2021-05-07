@@ -369,9 +369,13 @@ public class View: Responder {
 
   /// The bounds rectangle, which describes the view’s location and size in its
   /// own coordinate system.
-  public var bounds: Rect /*{
-    didSet { fatalError("\(#function) not yet implemented") }
-  }*/
+  public var bounds: Rect {
+    didSet {
+      #if !ENABLE_TESTING
+        fatalError("\(#function) not yet implemented") 
+      #endif
+    }
+  }
 
   /// The center point of the view's frame rectangle
   public var center: Point {
@@ -383,9 +387,13 @@ public class View: Responder {
 
   /// Specifies the transform applied to the view, relative to the center of its
   /// bounds.
-  public var transform: AffineTransform = .identity /*{
-    didSet { fatalError("\(#function) not yet implemented") }
-  }*/
+  public var transform: AffineTransform = .identity {
+    didSet {
+      #if !ENABLE_TESTING
+        fatalError("\(#function) not yet implemented") 
+      #endif
+    }
+  }
 
   // MARK - Managing the View Hierarchy
 
