@@ -19,3 +19,9 @@ extension RECT {
               bottom: LONG(from.origin.y + from.size.height))
   }
 }
+
+extension Rect {
+  internal var center: Point {
+    Point(x: self.midX, y: self.midY)
+  }
+}
