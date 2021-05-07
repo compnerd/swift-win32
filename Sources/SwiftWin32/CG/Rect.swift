@@ -29,7 +29,8 @@ public struct Rect {
 
   /// The null rectangle, representing an invalid value.
   public static var null: Rect {
-    Rect(x: .infinity, y: .infinity, width: 0.0, height: 0.0)
+    Rect(x: .greatestFiniteMagnitude, y: .greatestFiniteMagnitude,
+         width: 0.0, height: 0.0)
   }
 
   /// The rectangle whose origin and size are both zero.
