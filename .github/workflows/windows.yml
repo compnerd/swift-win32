@@ -44,4 +44,4 @@ jobs:
       run: swift build -v
 
     - name: Run tests
-      run: swift test -v
+      run: swift test -v -Xswiftc -DENABLE_TESTING
