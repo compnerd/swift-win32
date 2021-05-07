@@ -73,7 +73,7 @@ private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) 
 }
 
 private func WindowBasedTransform(for view: View?) -> AffineTransform {
-  guard var view = view else {return AffineTransform.identity}
+  guard var view = view else { return AffineTransform.identity }
   var transform = AffineTransform.identity
   while let superview = view.superview {
     // Create a single transform that places this view in the coordinate
@@ -81,10 +81,9 @@ private func WindowBasedTransform(for view: View?) -> AffineTransform {
     transform = transform
         .concatenating(AffineTransform(translationX: -view.bounds.center.x,
                                        y: -view.bounds.center.y))
-    transform = transform.concatenating(view.transform)
-    transform = transform
+        .concatenating(view.transform)
         .concatenating(AffineTransform(translationX: view.center.x,
-                                      y: view.center.y))
+                                       y: view.center.y))
     view = superview
   }
   return transform
@@ -781,6 +780,8 @@ public class View: Responder {
 
   /// Converts a point from the receiver's coordinate system to that of the specified view.
   public func convert(_ point: Point, to view: View?) -> Point {
+    guard view != nil || self.window != nil else { return point }
+
     if let view = view {
       // If the view is itself, then the point is already in the correct
       // coordinate system.
@@ -828,18 +829,18 @@ public class View: Responder {
       }
     }
     
-    if view == nil && self.window == nil {
-      return point
-    }
 
     return point.applying(WindowBasedTransform(for: self))
                 .applying(WindowBasedTransform(for: view).inverted())
   }
+
   public func convert(_ point: Point, from view: View?) -> Point {
     return view?.convert(point, to: self) ?? self.window?.convert(point, to: self) ?? point
   }
   
   public func convert(_ rect: Rect, to view: View?) -> Rect {
+    guard view != nil || self.window != nil { return point }
+
     if let view = view {
       // If the view is itself, then the point is already in the correct
       // coordinate system.
@@ -896,7 +897,7 @@ public class View: Responder {
     }
 
     return rect.applying(WindowBasedTransform(for: self))
-                .applying(WindowBasedTransform(for: view).inverted())
+               .applying(WindowBasedTransform(for: view).inverted())
   }
   
   public func convert(_ rect: Rect, from view: View?) -> Rect {
