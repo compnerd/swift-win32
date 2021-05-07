@@ -42,7 +42,7 @@ public struct Rect {
 
   // MARK - Calculated Geometric Properties
 
-  /// Returns the x- coordinate that establishes the center of a rectangle.
+  /// Returns the x-coordinate that establishes the center of a rectangle.
   public var midX: Double {
     return self.origin.x + (self.size.width / 2)
   }
