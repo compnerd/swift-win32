@@ -828,18 +828,19 @@ public class View: Responder {
             + view.bounds.center
       }
     }
-    
 
     return point.applying(WindowBasedTransform(for: self))
                 .applying(WindowBasedTransform(for: view).inverted())
   }
 
+  /// Converts a point from the coordinate system of a given view to that of the receiver.
   public func convert(_ point: Point, from view: View?) -> Point {
     return view?.convert(point, to: self) ?? self.window?.convert(point, to: self) ?? point
   }
-  
+
+  /// Converts a rectangle from the receiver’s coordinate system to that of another view.
   public func convert(_ rect: Rect, to view: View?) -> Rect {
-    guard view != nil || self.window != nil { return point }
+    guard view != nil || self.window != nil else { return rect }
 
     if let view = view {
       // If the view is itself, then the point is already in the correct
@@ -892,14 +893,11 @@ public class View: Responder {
       }
     }
 
-    if view == nil && self.window == nil {
-      return rect
-    }
-
     return rect.applying(WindowBasedTransform(for: self))
                .applying(WindowBasedTransform(for: view).inverted())
   }
-  
+
+  /// Converts a rectangle from the coordinate system of another view to that of the receiver.
   public func convert(_ rect: Rect, from view: View?) -> Rect {
     return view?.convert(rect, to: self) ?? self.window?.convert(rect, to: self) ?? rect
   }
