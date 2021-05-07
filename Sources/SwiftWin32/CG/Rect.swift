@@ -27,6 +27,11 @@ public struct Rect {
 
   // MARK - Special Values
 
+  /// The null rectangle, representing an invalid value.
+  public static var null: Rect {
+    Rect(x: .infinity, y: .infinity, width: 0.0, height: 0.0)
+  }
+
   /// The rectangle whose origin and size are both zero.
   public static var zero: Rect {
     Rect(x: 0, y: 0, width: 0, height: 0)
@@ -69,6 +74,21 @@ public struct Rect {
     return Rect(origin: Point(x: xs.min()!, y: ys.min()!),
                 size: Size( width: xs.max()! - xs.min()!,
                             height: ys.max()! - ys.min()!))
+  }
+
+  /// Returns a rectangle with an origin that is offset from that of the source
+  /// rectangle.
+  public func offsetBy(dx: Double, dy: Double) -> Rect {
+    guard !self.isNull else { return self }
+    return Rect(x: self.origin.x + dx, y: self.origin.y + dy,
+                width: self.size.width, height: self.size.height)
+  }
+
+  // MARK - Checking Characteristics
+
+  /// Returns whether the rectangle is equal to the null rectangle.
+  public var isNull: Bool {
+    return self == .null
   }
 }
 

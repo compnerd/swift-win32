@@ -81,10 +81,28 @@ final class CoreGraphicsTests: XCTestCase {
     XCTAssertEqual(rect.size.height, 87.18621695814943, accuracy: accuracy)
   }
 
+  func testRectOffsetByNullRect() {
+    XCTAssertTrue(Rect.null.offsetBy(dx: 1.0, dy: 1.0).isNull)
+  }
+
+  func testRectOffsetBy() {
+    let r1: Rect = Rect.zero.offsetBy(dx: 4.0, dy: 4.0)
+    XCTAssertEqual(r1.origin, Point(x: 4.0, y: 4.0))
+    XCTAssertEqual(r1.size, .zero)
+
+    let r2: Rect = Rect(origin: Point(x: 4.0, y: 4.0),
+                        size: Size(width: 4.0, height: 4.0))
+                       .offsetBy(dx: 4.0, dy: 4.0)
+    XCTAssertEqual(r2.origin, Point(x: 8.0, y: 8.0))
+    XCTAssertEqual(r2.size, Size(width: 4.0, height: 4.0))
+  }
+
   static var allTests = [
     ("testAffineTransformIdentity", testAffineTransformIdentity),
     ("testAffineTransformIdentityIsIdentity", testAffineTransformIdentityIsIdentity),
     ("testRectComputedProperties", testRectComputedProperties),
     ("testRectApplyAffineTransform", testRectApplyAffineTransform),
+    ("testRectOffsetByNullRect", testRectOffsetByNullRect),
+    ("testRectOffsetBy", testRectOffsetBy),
   ]
 }
