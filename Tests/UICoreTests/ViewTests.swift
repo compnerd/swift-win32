@@ -1,8 +1,7 @@
-// Copyright © 2021 Ryan Allan <rjallan@g.ucla.edu>
+// Copyright © 2021 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
 import XCTest
-
 import SwiftWin32
 
 final class ViewTests: XCTestCase {
