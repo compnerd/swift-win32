@@ -73,7 +73,8 @@ private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) 
 }
 
 private func WindowBasedTransform(for view: View?) -> AffineTransform {
-  guard var view = view else { return AffineTransform.identity }
+  guard var view = view else { return .identity }
+
   var transform = AffineTransform.identity
   while let superview = view.superview {
     // Create a single transform that places this view in the coordinate
@@ -371,9 +372,9 @@ public class View: Responder {
   /// own coordinate system.
   public var bounds: Rect {
     didSet {
-      #if !ENABLE_TESTING
-        fatalError("\(#function) not yet implemented") 
-      #endif
+#if !ENABLE_TESTING
+      fatalError("\(#function) not yet implemented")
+#endif
     }
   }
 
@@ -389,9 +390,9 @@ public class View: Responder {
   /// bounds.
   public var transform: AffineTransform = .identity {
     didSet {
-      #if !ENABLE_TESTING
-        fatalError("\(#function) not yet implemented") 
-      #endif
+#if !ENABLE_TESTING
+      fatalError("\(#function) not yet implemented")
+#endif
     }
   }
 
@@ -800,8 +801,8 @@ public class View: Responder {
       // center offset and transform.
       if let superview = self.superview, superview == view {
         // `p - self.bounds.center` undos any translation done by the bounds of
-        // `self`. Apply the current transform to the shifted point, and 
-        // then return the point relative to `self.center`.
+        // `self`. Apply the current transform to the shifted point, and then
+        // return the point relative to `self.center`.
 
         // +--- view ---+
         // | +- self -+ |
@@ -811,15 +812,15 @@ public class View: Responder {
 
         // `bounds` is in the coordinate space of self and `center` is in the
         // coordinate space of the superview.  In this case, the superview is
-        // `view`, which is the destination coordinate space.  We simply map
-        // the transformed point p from the coordinate space of `self` into
-        // the destination coordinate space of `view` using `self.center`.
+        // `view`, which is the destination coordinate space.  We simply map the
+        // transformed point p from the coordinate space of `self` into the
+        // destination coordinate space of `view` using `self.center`.
         return (point - self.bounds.center).applying(self.transform)
             + self.center
       } else if let superview = view.superview, superview == self {
-        // `p - view.center` shifts the point relative to the center of `view` 
-        // as seen by `self`. Invert any transformations performed by `view` 
-        // on the point, and then return the point relative to the center of 
+        // `p - view.center` shifts the point relative to the center of `view`
+        // as seen by `self`. Invert any transformations performed by `view` on
+        // the point, and then return the point relative to the center of
         // `view.bounds.`
 
         // +--- self ---+
@@ -830,9 +831,9 @@ public class View: Responder {
 
         // `center` is in the coordinate space of the superview. Because `self`
         // is the superview of `view`, `view.center` is in the coordinate space
-        // of `self`.  We locate `point` in the coordinate space of `self`, 
-        // undo any local transformation, and then relocate it in the 
-        // coordinate space of the destination view.
+        // of `self`.  We locate `point` in the coordinate space of `self`, undo
+        // any local transformation, and then relocate it in the coordinate
+        // space of the destination view.
         return (point - view.center).applying(view.transform.inverted())
             + view.bounds.center
       }
@@ -845,7 +846,9 @@ public class View: Responder {
   /// Converts a point from the coordinate system of a given view to that of the
   /// receiver.
   public func convert(_ point: Point, from view: View?) -> Point {
-    return view?.convert(point, to: self) ?? self.window?.convert(point, to: self) ?? point
+    return view?.convert(point, to: self)
+              ?? self.window?.convert(point, to: self)
+              ?? point
   }
 
   /// Converts a rectangle from the receiver’s coordinate system to that of
@@ -863,8 +866,8 @@ public class View: Responder {
       if let superview = self.superview, superview == view {
         // `r.offsetBy(dx: self.bounds.center.x, dy: self.bounds.center.y)`
         // undos any translation done by the bounds property of `self`. Apply
-        // the current transform to the rect, and  then return the rect
-        // relative to the center of `self`.
+        // the current transform to the rect, and  then return the rect relative
+        // to the center of `self`.
 
         // +--- view ---+
         // | +- self -+ |
@@ -874,9 +877,9 @@ public class View: Responder {
 
         // `bounds` is in the coordinate space of self and `center` is in the
         // coordinate space of the superview.  In this case, the superview is
-        // `view`, which is the destination coordinate space.  We simply map
-        // the transformed rect r from the coordinate space of `self` into
-        // the destination coordinate space of `view` using `self.center`.
+        // `view`, which is the destination coordinate space.  We simply map the
+        // transformed rect r from the coordinate space of `self` into the
+        // destination coordinate space of `view` using `self.center`.
         return rect.offsetBy(dx: -self.bounds.center.x,
                              dy: -self.bounds.center.y)
             .applying(self.transform)
@@ -884,8 +887,8 @@ public class View: Responder {
       } else if let superview = view.superview, superview == self {
         // `r.offsetBy(dx: -view.center, dy: -view.center.y)` shifts the point
         // relative to the center of `view` as seen by `self`. Invert any
-        // transformations performed by `view` on the rect, and then return
-        // the rect relative to the bounds of `view`.
+        // transformations performed by `view` on the rect, and then return the
+        // rect relative to the bounds of `view`.
 
         // +--- self ---+
         // | +- view -+ |
@@ -895,9 +898,9 @@ public class View: Responder {
 
         // `center` is in the coordinate space of the superview. Because `self`
         // is the superview of `view`, `view.center` is in the coordinate space
-        // of `self`.  We locate `rect` in the coordinate space of `self`, 
-        // undo any local transformation, and then relocate it in the 
-        // coordinate space of the destination view.
+        // of `self`.  We locate `rect` in the coordinate space of `self`, undo
+        // any local transformation, and then relocate it in the coordinate
+        // space of the destination view.
         return rect.offsetBy(dx: -view.center.x, dy: -view.center.y)
             .applying(view.transform.inverted())
             .offsetBy(dx: view.bounds.center.x, dy: view.bounds.center.y)
@@ -911,7 +914,9 @@ public class View: Responder {
   /// Converts a rectangle from the coordinate system of another view to that of
   /// the receiver.
   public func convert(_ rect: Rect, from view: View?) -> Rect {
-    return view?.convert(rect, to: self) ?? self.window?.convert(rect, to: self) ?? rect
+    return view?.convert(rect, to: self)
+              ?? self.window?.convert(rect, to: self)
+              ?? rect
   }
 
   // MARK - Responder Chain
