@@ -92,19 +92,23 @@ public struct Rect {
 
   /// Applies an affine transform to a rectangle.
   public func applying(_ transform: AffineTransform) -> Rect {
+    if transform.isIdentity { return self }
+
     let points: [Point] = [
-      self.origin,
-      self.origin + Point(x: self.size.width, y: 0),
-      self.origin + Point(x: 0, y: self.size.height),
-      self.origin + Point(x: self.size.width, y: self.size.height),
+      Point(x: minX, y: minY),  // top left
+      Point(x: maxX, y: minY),  // top right
+      Point(x: minX, y: maxY),  // bottom left
+      Point(x: maxX, y: maxY),  // bottom right
     ].map { $0.applying(transform) }
 
-    let xs: [Double] = points.map { $0.x }
-    let ys: [Double] = points.map { $0.y }
-    
-    return Rect(origin: Point(x: xs.min()!, y: ys.min()!),
-                size: Size( width: xs.max()! - xs.min()!,
-                            height: ys.max()! - ys.min()!))
+    let (minX, minY, maxX, maxY): (Double, Double, Double, Double) =
+        points.map { ($0.x, $0.y) }
+              .reduce((.infinity, .infinity, -.infinity, -.infinity), {
+          (min($0.0, $1.0), min($0.1, $1.1), max($0.2, $1.0), max($0.3, $1.1))
+        })
+
+    return Rect(origin: Point(x: minX, y: minY),
+                size: Size(width: maxX - minX, height: maxY - minY))
   }
 
   /// Returns a rectangle with an origin that is offset from that of the source
