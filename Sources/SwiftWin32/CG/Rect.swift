@@ -48,14 +48,44 @@ public struct Rect {
 
   // MARK - Calculated Geometric Properties
 
+  /// Returns the height of a rectangle.
+  public var height: Double {
+    return self.size.height
+  }
+
+  /// Returns the width of a rectangle.
+  public var width: Double {
+    return self.size.width
+  }
+
+  /// Returns the smallest value for the x-coordinate of the rectangle.
+  public var minX: Double {
+    return self.origin.x
+  }
+
   /// Returns the x-coordinate that establishes the center of a rectangle.
   public var midX: Double {
     return self.origin.x + (self.size.width / 2)
   }
 
+  /// Returns the largest value of the x-coordinate for the rectangle.
+  public var maxX: Double {
+    return self.origin.x + self.size.width
+  }
+
+  /// Returns the smallest value for the y-coordinate of the rectangle.
+  public var minY: Double {
+    return self.origin.y
+  }
+
   /// Returns the y-coordinate that establishes the center of the rectangle.
   public var midY: Double {
     return self.origin.y + (self.size.height / 2)
+  }
+
+  /// Returns the largest value for the y-coordinate of the rectangle.
+  public var maxY: Double {
+    return self.origin.y + self.size.height
   }
 
   // MARK - Creating Derived Rectangles
