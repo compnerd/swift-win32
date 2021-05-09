@@ -1,6 +1,9 @@
 // Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+@_implementationOnly import func CRT.floor
+@_implementationOnly import func CRT.ceil
+
 /// A structure that contains the location and dimensions of a rectangle.
 public struct Rect {
   // MARK - Creating Rectangle Values
@@ -90,9 +93,33 @@ public struct Rect {
 
   // MARK - Creating Derived Rectangles
 
+  /// Returns a rectangle with a positive width and height.
+  public var standardized: Rect {
+    guard !self.isNull else { return .null }
+
+    guard self.size.width < 0 || self.size.height < 0 else { return self }
+    return Rect(x: self.origin.x + (self.width < 0 ? self.width : 0),
+                y: self.origin.y + (self.height < 0 ? self.height : 0),
+                width: abs(self.width), height: abs(self.height))
+  }
+
+  /// Returns the smallest rectangle that results from converting the source
+  /// rectangle values to integers.
+  public var integral: Rect {
+    guard !self.isNull else { return .null }
+
+    let standardized = self.standardized
+    let origin: Point = Point(x: floor(standardized.minX),
+                              y: floor(standardized.minY))
+    let size: Size = Size(width: ceil(standardized.maxX) - origin.x,
+                          height: ceil(standardized.maxY) - origin.y)
+    return Rect(origin: origin, size: size)
+  }
+
   /// Applies an affine transform to a rectangle.
   public func applying(_ transform: AffineTransform) -> Rect {
-    if transform.isIdentity { return self }
+    guard !self.isNull else { return .null }
+    if transform.isIdentity { return self.standardized }
 
     let points: [Point] = [
       Point(x: minX, y: minY),  // top left
@@ -111,15 +138,38 @@ public struct Rect {
                 size: Size(width: maxX - minX, height: maxY - minY))
   }
 
+  /// Returns a rectangle that is smaller or larger than the source rectangle,
+  /// with the same center point.
+  public func insetBy(dx: Double, dy: Double) -> Rect {
+    let standardized = self.standardized
+    let origin: Point =
+        Point(x: standardized.minX + dx, y: standardized.minY + dy)
+    let size: Size = Size(width: standardized.width - 2 * dx,
+                          height: standardized.height - 2 * dy)
+    guard size.width > 0, size.height > 0 else { return .null }
+    return Rect(origin: origin, size: size)
+  }
+
   /// Returns a rectangle with an origin that is offset from that of the source
   /// rectangle.
   public func offsetBy(dx: Double, dy: Double) -> Rect {
     guard !self.isNull else { return self }
-    return Rect(x: self.origin.x + dx, y: self.origin.y + dy,
-                width: self.size.width, height: self.size.height)
+
+    let standardized = self.standardized
+    return Rect(x: standardized.origin.x + dx,
+                y: standardized.origin.y + dy,
+                width: standardized.size.width,
+                height: standardized.size.height)
   }
 
   // MARK - Checking Characteristics
+
+
+  /// Returns whether a rectangle has zero width or height, or is a null
+  /// rectangle.
+  public var isEmpty: Bool {
+    return self.size.height == 0 || self.size.width == 0 || self.isNull
+  }
 
   /// Returns whether the rectangle is equal to the null rectangle.
   public var isNull: Bool {
