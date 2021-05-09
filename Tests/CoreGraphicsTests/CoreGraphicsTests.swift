@@ -5,9 +5,11 @@ import XCTest
 
 import SwiftWin32
 
+private typealias AffineTransform = SwiftWin32.AffineTransform
+
 final class CoreGraphicsTests: XCTestCase {
   func testAffineTransformIdentity() {
-    let identity: SwiftWin32.AffineTransform = .identity
+    let identity: AffineTransform = .identity
     XCTAssertEqual(identity.a, 1.0)
     XCTAssertEqual(identity.b, 0.0)
     XCTAssertEqual(identity.c, 0.0)
@@ -17,15 +19,16 @@ final class CoreGraphicsTests: XCTestCase {
   }
 
   func testAffineTransformIdentityIsIdentity() {
-    let transform: SwiftWin32.AffineTransform =
-        SwiftWin32.AffineTransform( a: 1.0,  b: 0.0,
-                                    c: 0.0,  d: 1.0,
-                                   tx: 0.0, ty: 0.0)
-
-    XCTAssertTrue(SwiftWin32.AffineTransform.identity.isIdentity)
+    let transform: AffineTransform = AffineTransform( a: 1.0,  b: 0.0,
+                                                      c: 0.0,  d: 1.0,
+                                                     tx: 0.0, ty: 0.0)
     XCTAssertTrue(transform.isIdentity)
 
-    XCTAssertFalse(SwiftWin32.AffineTransform().isIdentity)
+    XCTAssertTrue(AffineTransform.identity.isIdentity)
+  }
+
+  func testAffineTransformDefaultConstructor() {
+    XCTAssertFalse(AffineTransform().isIdentity)
   }
 
   func testRectComputedProperties() {
@@ -54,45 +57,38 @@ final class CoreGraphicsTests: XCTestCase {
     XCTAssertEqual(nonStandardizedOblong.applying(AffineTransform(rotationAngle: .pi / 2)),
                    Rect(x: 7.999999999999998, y: -32, width: 8, height: 16))
 
-    var rect: Rect =
-        Rect(origin: Point(x: -6, y: -7),
-             size: Size(width: 12, height: 14))
-            .applying(AffineTransform(rotationAngle: Double.pi/2))
+    var rect: Rect
 
-    XCTAssertEqual(rect.origin.x, -7)
-    XCTAssertEqual(rect.origin.y, -6)
-    XCTAssertEqual(rect.size.width, 14)
-    XCTAssertEqual(rect.size.height, 12)
+    rect = Rect(origin: Point(x: -6, y: -7),
+                size: Size(width: 12, height: 14))
+              .applying(AffineTransform(rotationAngle: .pi / 2))
+    XCTAssertEqual(rect, Rect(x: -7, y: -6, width: 14, height: 12))
 
+    rect = Rect(origin: Point(x: 45, y: 115),
+                size: Size(width: 13, height: 14))
+              .applying(AffineTransform(rotationAngle: 42))
+    XCTAssertEqual(rect.origin.x, 82.20082974097352,
+                   accuracy: .ulpOfOne.squareRoot())
+    XCTAssertEqual(rect.origin.y, -104.75635541260408,
+                   accuracy: .ulpOfOne.squareRoot())
+    XCTAssertEqual(rect.size.width, 18.031110765667435,
+                   accuracy: .ulpOfOne.squareRoot())
+    XCTAssertEqual(rect.size.height, 17.514574532740156,
+                   accuracy: .ulpOfOne.squareRoot())
 
-    rect =
-        Rect(origin: Point(x: 45, y: 115),
-             size: Size(width: 13, height: 14))
-            .applying(AffineTransform(rotationAngle: 42))
-
-    // Test data comes from the UIKit implementation, running on an iPhone,
-    // and so deviation is expected.
-    var accuracy = 1e-13
-                     
-    XCTAssertEqual(rect.origin.x, 82.20082974097352, accuracy: accuracy)
-    XCTAssertEqual(rect.origin.y, -104.75635541260408, accuracy: accuracy)
-    XCTAssertEqual(rect.size.width, 18.031110765667435, accuracy: accuracy)
-    XCTAssertEqual(rect.size.height, 17.514574532740156, accuracy: accuracy)
-
-    // Deviation increases with more operations
-    accuracy = 1e-12
-
-    rect =
-        Rect(origin: Point(x: 45, y: 115),
-             size: Size(width: 13, height: 14))
-            .applying(AffineTransform(rotationAngle: -104))
-            .applying(AffineTransform(translationX: -26, y: 22))
-            .applying(AffineTransform(scaleX: 7, y: 5))
-
-    XCTAssertEqual(rect.origin.x, -856.8534424207578, accuracy: accuracy)
-    XCTAssertEqual(rect.origin.y, -428.36482622296273, accuracy: accuracy)
-    XCTAssertEqual(rect.size.width, 117.68398448828839, accuracy: accuracy)
-    XCTAssertEqual(rect.size.height, 87.18621695814943, accuracy: accuracy)
+    rect = Rect(origin: Point(x: 45, y: 115),
+                size: Size(width: 13, height: 14))
+              .applying(AffineTransform(rotationAngle: -104))
+              .applying(AffineTransform(translationX: -26, y: 22))
+              .applying(AffineTransform(scaleX: 7, y: 5))
+    XCTAssertEqual(rect.origin.x, -856.8534424207578,
+                   accuracy: .ulpOfOne.squareRoot())
+    XCTAssertEqual(rect.origin.y, -428.36482622296273,
+                   accuracy: .ulpOfOne.squareRoot())
+    XCTAssertEqual(rect.size.width, 117.68398448828839,
+                   accuracy: .ulpOfOne.squareRoot())
+    XCTAssertEqual(rect.size.height, 87.18621695814943,
+                   accuracy: .ulpOfOne.squareRoot())
   }
 
   func testRectOffsetByNullRect() {
@@ -166,6 +162,7 @@ final class CoreGraphicsTests: XCTestCase {
   static var allTests = [
     ("testAffineTransformIdentity", testAffineTransformIdentity),
     ("testAffineTransformIdentityIsIdentity", testAffineTransformIdentityIsIdentity),
+    ("testAffineTransformDefaultConstructor", testAffineTransformDefaultConstructor),
     ("testRectComputedProperties", testRectComputedProperties),
     ("testRectApplyAffineTransform", testRectApplyAffineTransform),
     ("testRectOffsetByNullRect", testRectOffsetByNullRect),
