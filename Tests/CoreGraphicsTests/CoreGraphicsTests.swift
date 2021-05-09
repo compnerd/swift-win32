@@ -40,6 +40,20 @@ final class CoreGraphicsTests: XCTestCase {
   }
 
   func testRectApplyAffineTransform() {
+    let null: Rect = .null
+    XCTAssertEqual(null.applying(AffineTransform(rotationAngle: .pi)),
+                   Rect.null)
+
+    let nonStandardized: Rect =
+        Rect(origin: .zero, size: Size(width: -32, height: -32))
+    XCTAssertEqual(nonStandardized.applying(.identity),
+                   Rect(x: -32.0, y: -32.0, width: 32.0, height: 32.0))
+
+    let nonStandardizedOblong: Rect =
+        Rect(origin: Point(x: -16, y: -8), size: Size(width: -16, height: -8))
+    XCTAssertEqual(nonStandardizedOblong.applying(AffineTransform(rotationAngle: .pi / 2)),
+                   Rect(x: 7.999999999999998, y: -32, width: 8, height: 16))
+
     var rect: Rect =
         Rect(origin: Point(x: -6, y: -7),
              size: Size(width: 12, height: 14))
@@ -95,6 +109,58 @@ final class CoreGraphicsTests: XCTestCase {
                        .offsetBy(dx: 4.0, dy: 4.0)
     XCTAssertEqual(r2.origin, Point(x: 8.0, y: 8.0))
     XCTAssertEqual(r2.size, Size(width: 4.0, height: 4.0))
+
+    let nonStandardized: Rect =
+        Rect(origin: .zero, size: Size(width: -32, height: -32))
+    XCTAssertEqual(nonStandardized.offsetBy(dx: 16.0, dy: 16.0),
+                   Rect(x: -16.0, y: -16.0, width: 32.0, height: 32.0))
+  }
+
+  func testRectStandardizing() {
+    let null: Rect = .null
+    XCTAssertEqual(null.standardized, Rect.null)
+
+    let normal: Rect = Rect(x: 0, y: 0, width: 32, height: 32)
+    XCTAssertEqual(normal.standardized, normal)
+
+    let negativeHeight: Rect = Rect(x: 0, y: 0, width: -32, height: 32)
+    XCTAssertEqual(negativeHeight.standardized,
+                   Rect(x: -32, y: 0, width: 32, height: 32))
+
+    let negativeWidth: Rect = Rect(x: 0, y: 0, width: 32, height: -32)
+    XCTAssertEqual(negativeWidth.standardized,
+                   Rect(x: 0, y: -32, width: 32, height: 32))
+
+    let negativeHeightAndWidth: Rect = Rect(x: 0, y: 0, width: -32, height: -32)
+    XCTAssertEqual(negativeHeightAndWidth.standardized,
+                   Rect(x: -32, y: -32, width: 32, height: 32))
+
+    let positiveOrigin: Rect = Rect(x: 32, y: 32, width: -32, height: -32)
+    XCTAssertEqual(positiveOrigin.standardized,
+                   Rect(origin: .zero, size: Size(width: 32, height: 32)))
+
+    let negativeOrigin: Rect = Rect(x: -32, y: -32, width: -32, height: -32)
+    XCTAssertEqual(negativeOrigin.standardized,
+                   Rect(x: -64, y: -64, width: 32, height: 32))
+  }
+
+  func testRectIntegral() {
+    let null: Rect = .null
+    XCTAssertEqual(null.integral, Rect.null)
+  }
+
+  func testRectInsetBy() {
+    let null: Rect = .null
+    XCTAssertEqual(null.insetBy(dx: 0.0, dy: 0.0), Rect.null)
+
+    let normal: Rect = Rect(x: 4.0, y: 4.0, width: 16.0, height: 8.0)
+    XCTAssertEqual(normal.insetBy(dx: 2.0, dy: 2.0),
+                   Rect(x: 6.0, y: 6.0, width: 12.0, height: 4.0))
+
+    let nonStandardized: Rect =
+        Rect(origin: .zero, size: Size(width: -32, height: -32))
+    XCTAssertEqual(nonStandardized.insetBy(dx: 4.0, dy: 4.0),
+                   Rect(x: -28.0, y: -28.0, width: 24.0, height: 24.0))
   }
 
   static var allTests = [
@@ -104,5 +170,8 @@ final class CoreGraphicsTests: XCTestCase {
     ("testRectApplyAffineTransform", testRectApplyAffineTransform),
     ("testRectOffsetByNullRect", testRectOffsetByNullRect),
     ("testRectOffsetBy", testRectOffsetBy),
+    ("testRectStandardizing", testRectStandardizing),
+    ("testRectIntegral", testRectIntegral),
+    ("testRectInsetBy", testRectInsetBy),
   ]
 }
