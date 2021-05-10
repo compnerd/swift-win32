@@ -37,7 +37,7 @@ jobs:
         tag: swift-format-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
         fileName: swift-format.exe
         out-file-path: C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\
-    - uses: wearerequired/lint-action@v1
+    - uses: compnerd/lint-action@exec-windows
       with:
         swift_format_official: true
         github_token: ${{ secrets.GITHUB_TOKEN }}
