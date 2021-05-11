@@ -49,16 +49,29 @@ jobs:
         fileName: swift-doc.exe
         out-file-path: C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\
 
+    - name: Prepare
+      run: |
+        git config user.email "${{ github.actor }}@users.noreply.github.com"
+        git config user.name "Swift/Win32"
+        git worktree add --no-checkout --detach site
+        git -C site remote rm origin
+        git -C site remote add origin "https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}"
+        git -C site checkout --orphan gh-pages
+        git -C site reset --hard
+
     - name: Generate Documentation
       run: |
-        New-Item -Path . -Name root -ItemType Directory
-        git -C root init
-        git -C root config --local user.email "${{ github.actor }}@users.noreply.github.com"
-        git -C root config --local user.name "Swift/Win32"
-        git -C root remote add origin origin "https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}"
-        swift doc generate Sources\SwiftWin32\CG --module-name CoreGraphics --output root\CoreGraphics --format html --base-url https://compnerd.github.io/swift-win32/CoreGraphics
-        swift doc generate Sources\SwiftWin32 --module-name SwiftWin32 --output root\SwiftWin32 --format html --base-url https://compnerd.github.io/swift-win32/SwiftWin32
-        swift doc generate Sources\SwiftWin32UI --module-name SwiftWin32UI --output root\SwiftWin32UI --format html --base-url https://compnerd.github.io/swift-win32/SwiftWin32UI
-        git -C root add --all
-        git -C root commit -m "refresh content"
-        git -C root push origin "+HEAD:refs/heads/gh-pages"
+        New-Item -Path . -Name site -ItemType Directory
+        swift doc generate Sources\SwiftWin32\CG --module-name CoreGraphics --output site\CoreGraphics --format html --base-url https://compnerd.github.io/swift-win32/CoreGraphics
+        swift doc generate Sources\SwiftWin32 --module-name SwiftWin32 --output site\SwiftWin32 --format html --base-url https://compnerd.github.io/swift-win32/SwiftWin32
+        swift doc generate Sources\SwiftWin32UI --module-name SwiftWin32UI --output site\SwiftWin32UI --format html --base-url https://compnerd.github.io/swift-win32/SwiftWin32UI
+
+    - name: Deploy
+      run: |
+        git -C site add --all
+        git -C site commit --quiet --no-verify -m "${{ github.repository }}@${{ github.sha }}"
+        git -C site push origin --force-with-lease HEAD:refs/heads/gh-pages
+
+    - name: Cleanup
+      run: |
+        git worktree remove --force site
