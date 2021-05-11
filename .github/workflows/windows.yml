@@ -2,7 +2,10 @@ name: windows
 
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+    paths:
+      - '**/*.swift'
 
 jobs:
   build:
