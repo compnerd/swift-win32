@@ -53,9 +53,9 @@ jobs:
       run: |
         New-Item -Path . -Name root -ItemType Directory
         git -C root init
-        git -C root config --local user.email ${{ github.actor }}@users.noreply.github.com"
-        git -C root config --local user.email "Saleem Abdulrasool"
-        git -C root remote add origin origin https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}
+        git -C root config --local user.email "${{ github.actor }}@users.noreply.github.com"
+        git -C root config --local user.name "Swift/Win32"
+        git -C root remote add origin origin "https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}"
         swift doc generate Sources\SwiftWin32\CG --module-name CoreGraphics --output root\CoreGraphics --format html --base-url https://compnerd.github.io/swift-win32/CoreGraphics
         swift doc generate Sources\SwiftWin32 --module-name SwiftWin32 --output root\SwiftWin32 --format html --base-url https://compnerd.github.io/swift-win32/SwiftWin32
         swift doc generate Sources\SwiftWin32UI --module-name SwiftWin32UI --output root\SwiftWin32UI --format html --base-url https://compnerd.github.io/swift-win32/SwiftWin32UI
