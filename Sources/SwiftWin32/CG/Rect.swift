@@ -30,6 +30,12 @@ public struct Rect {
 
   // MARK - Special Values
 
+  /// A rectangle that has infinite extent.
+  public static var infinite: Rect {
+    Rect(x: -.leastNormalMagnitude, y: -.leastNormalMagnitude,
+         width: .greatestFiniteMagnitude, height:.greatestFiniteMagnitude)
+  }
+
   /// The null rectangle, representing an invalid value.
   public static var null: Rect {
     Rect(x: .greatestFiniteMagnitude, y: .greatestFiniteMagnitude,
@@ -39,6 +45,11 @@ public struct Rect {
   /// The rectangle whose origin and size are both zero.
   public static var zero: Rect {
     Rect(x: 0, y: 0, width: 0, height: 0)
+  }
+
+  /// Creates a rectangle with origin (0,0) and size (0,0).
+  public init() {
+    self = .zero
   }
 
   // MARK - Basic Geometric Properties
@@ -169,6 +180,11 @@ public struct Rect {
   /// rectangle.
   public var isEmpty: Bool {
     return self.size.height == 0 || self.size.width == 0 || self.isNull
+  }
+
+  /// Returns whether a rectangle is infinite.
+  public var isInfinite: Bool {
+    return self == .infinite
   }
 
   /// Returns whether the rectangle is equal to the null rectangle.
