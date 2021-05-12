@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'Sources/**/*.swift'
+      - .github/workflows/documentation.yml
 
 jobs:
   document:
