@@ -58,8 +58,7 @@ jobs:
         git worktree add --no-checkout --detach site
         git -C site remote rm origin
         git -C site remote add origin "https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}"
-        git -C site checkout --orphan gh-pages
-        git -C site reset --hard
+        git -C site checkout --orphan website
 
     - name: Generate Documentation
       run: |
