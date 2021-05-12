@@ -59,9 +59,10 @@ jobs:
         git worktree add --no-checkout --detach site
         git -C site remote rm origin
         git -C site remote add origin "https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}"
+        git -C site fetch origin
         git -C site checkout --orphan gh-pages
         git -C site reset --hard
-        git -C site read-tree --reset -u website
+        git -C site read-tree --reset -u origin/website
 
     - name: Generate Documentation
       run: |
@@ -73,7 +74,7 @@ jobs:
       run: |
         git -C site add --all
         git -C site commit --quiet --no-verify -m "${{ github.repository }}@${{ github.sha }}"
-        git -C site push origin --force-with-lease HEAD:refs/heads/gh-pages
+        git -C site push origin --force HEAD:refs/heads/gh-pages
 
     - name: Cleanup
       run: |
