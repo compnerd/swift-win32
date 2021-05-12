@@ -173,8 +173,25 @@ public struct Rect {
                 height: standardized.size.height)
   }
 
+  /// Returns the intersection of two rectangles.
+  public func intersection(_ rect: Rect) -> Rect {
+    guard !self.isNull, !rect.isNull else { return .null }
+    let lhs: Rect = self.standardized, rhs: Rect = rect.standardized
+
+    let origin: Point = Point(x: max(lhs.minX, rhs.minX),
+                              y: max(lhs.minY, rhs.minY))
+    let size: Size = Size(width: min(lhs.maxX, rhs.maxX) - origin.x,
+                          height: min(lhs.maxY, rhs.maxY) - origin.y)
+    guard size.width > 0, size.height > 0 else { return .null }
+    return Rect(origin: origin, size: size)
+  }
+
   // MARK - Checking Characteristics
 
+  /// Returns whether two rectangles intersect.
+  public func intersects(_ rect: Rect) -> Bool {
+    return !intersection(rect).isEmpty
+  }
 
   /// Returns whether a rectangle has zero width or height, or is a null
   /// rectangle.

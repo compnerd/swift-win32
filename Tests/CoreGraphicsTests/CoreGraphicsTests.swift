@@ -159,6 +159,50 @@ final class CoreGraphicsTests: XCTestCase {
                    Rect(x: -28.0, y: -28.0, width: 24.0, height: 24.0))
   }
 
+  func testRectIntersection() {
+    let r1: Rect = Rect(x: 0, y: 0, width: 100, height: 100)
+    let r2: Rect = Rect(x: 25, y: 25, width: 50, height: 50)
+    let r3: Rect = Rect(x: 75, y: 75, width: 50, height: 50)
+    let r4: Rect = Rect(x: 125, y: 125, width: 50, height: 50)
+    let r5: Rect = Rect(x: 75, y: 75, width: -50, height: -50)
+
+    // concentric overlap
+    XCTAssertEqual(r1.intersection(r2),
+                   Rect(x: 25, y: 25, width: 50, height: 50))
+
+    // communitivity
+    XCTAssertEqual(r1.intersection(r2), r2.intersection(r1))
+
+    // partial overlap
+    XCTAssertEqual(r1.intersection(r3),
+                   Rect(x: 75, y: 75, width: 25, height: 25))
+
+    // no overlap
+    XCTAssertTrue(r1.intersection(r4).isNull)
+
+    // non-standard
+    XCTAssertEqual(r5.intersection(r1),
+                   Rect(x: 25, y: 25, width: 50, height: 50))
+    XCTAssertEqual(r1.intersection(r5),
+                   Rect(x: 25, y: 25, width: 50, height: 50))
+  }
+
+  func testRectIntersects() {
+    let r1: Rect = Rect(x: 0, y: 0, width: 100, height: 100)
+    let r2: Rect = Rect(x: 25, y: 25, width: 50, height: 50)
+    let r3: Rect = Rect(x: 75, y: 75, width: 50, height: 50)
+    let r4: Rect = Rect(x: 125, y: 125, width: 50, height: 50)
+
+    XCTAssertTrue(r1.intersects(r2))
+    XCTAssertTrue(r2.intersects(r1))
+
+    XCTAssertTrue(r1.intersects(r3))
+    XCTAssertTrue(r3.intersects(r1))
+
+    XCTAssertFalse(r1.intersects(r4))
+    XCTAssertFalse(r4.intersects(r1))
+  }
+
   static var allTests = [
     ("testAffineTransformIdentity", testAffineTransformIdentity),
     ("testAffineTransformIdentityIsIdentity", testAffineTransformIdentityIsIdentity),
@@ -170,5 +214,7 @@ final class CoreGraphicsTests: XCTestCase {
     ("testRectStandardizing", testRectStandardizing),
     ("testRectIntegral", testRectIntegral),
     ("testRectInsetBy", testRectInsetBy),
+    ("testRectIntersection", testRectIntersection),
+    ("testRectIntersects", testRectIntersects),
   ]
 }
