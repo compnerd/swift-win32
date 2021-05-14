@@ -230,6 +230,43 @@ final class CoreGraphicsTests: XCTestCase {
     XCTAssertEqual(Rect.null.union(Rect.infinite), Rect.infinite)
   }
 
+  func testRectContains() {
+    let r1: Rect = Rect(x: 0, y: 0, width: 100, height: 100)
+    let r2: Rect = Rect(x: 25, y: 25, width: 50, height: 50)
+    let r3: Rect = Rect(x: 75, y: 75, width: 50, height: 50)
+    let r4: Rect = Rect(x: 125, y: 125, width: 50, height: 50)
+    let r5: Rect = Rect(x: 75, y: 75, width: -50, height: -50)
+
+
+    XCTAssertTrue(r1.contains(r2))
+    XCTAssertFalse(r2.contains(r1))
+
+    XCTAssertFalse(r1.contains(r3))
+    XCTAssertFalse(r3.contains(r1))
+
+    XCTAssertFalse(r1.contains(r4))
+    XCTAssertFalse(r4.contains(r1))
+
+    XCTAssertTrue(r1.contains(r5))
+    XCTAssertFalse(r5.contains(r1))
+
+    XCTAssertFalse(Rect.null.contains(r1))
+    XCTAssertTrue(r1.contains(Rect.null))
+    XCTAssertTrue(Rect.null.contains(Rect.null))
+    XCTAssertFalse(Rect.null.contains(Rect.zero))
+
+    XCTAssertFalse(Rect.zero.contains(r1))
+    XCTAssertTrue(r1.contains(Rect.zero))
+    XCTAssertTrue(Rect.zero.contains(Rect.zero))
+    XCTAssertTrue(Rect.zero.contains(Rect.null))
+
+    XCTAssertTrue(Rect.infinite.contains(Rect.infinite))
+    XCTAssertFalse(r1.contains(Rect.infinite))
+    XCTAssertTrue(Rect.infinite.contains(Rect.zero))
+    XCTAssertTrue(Rect.infinite.contains(Rect.null))
+
+  }
+
   func testRectNonstandardEquality() {
     let r1: Rect = Rect(x: 0, y: 0, width: 10, height: 10)
     let r2: Rect = Rect(x: 10, y: 10, width: -10, height: -10)
@@ -257,6 +294,7 @@ final class CoreGraphicsTests: XCTestCase {
     ("testRectIntersection", testRectIntersection),
     ("testRectIntersects", testRectIntersects),
     ("testRectUnion", testRectUnion),
+    ("testRectContains", testRectContains),
     ("testRectNonstandardEquality", testRectNonstandardEquality),
   ]
 }

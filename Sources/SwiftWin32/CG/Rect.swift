@@ -211,6 +211,19 @@ public struct Rect {
     return !intersection(rect).isEmpty
   }
 
+  /// Returns whether a rectangle contains a specified point.
+  public func contains(_ point: Point) -> Bool {
+    guard !self.isNull else { return false }
+    let standardized: Rect = self.standardized
+    return standardized.minX...standardized.maxX ~= point.x
+        && standardized.minY...standardized.maxY ~= point.y
+  }
+
+  /// Returns whether the first rectangle contains the second rectangle.
+  public func contains(_ rect2: Rect) -> Bool {
+    return self == self.union(rect2)
+  }
+
   /// Returns whether a rectangle has zero width or height, or is a null
   /// rectangle.
   public var isEmpty: Bool {
