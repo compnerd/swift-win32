@@ -206,11 +206,23 @@ public struct Rect {
 
   /// Returns whether the rectangle is equal to the null rectangle.
   public var isNull: Bool {
-    return self == .null
+    return self.pureEqualityCheck(.null)
+  }
+
+  @inline(__always) private func pureEqualityCheck(_ rhs: Rect) 
+      -> Bool {
+    return (self.origin == rhs.origin) && (self.size == rhs.size)
   }
 }
 
+
+
 extension Rect: Equatable {
+  // MARK - Operator Functions
+  public static func == (lhs: Rect, rhs: Rect) -> Bool {
+    let lhs: Rect = lhs.standardized, rhs: Rect = rhs.standardized
+    return lhs.pureEqualityCheck(rhs)
+  }
 }
 
 extension Rect: CustomDebugStringConvertible {
