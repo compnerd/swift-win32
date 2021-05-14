@@ -3,7 +3,7 @@
 
 /// A part of the application's user interface.
 public protocol Scene {
-  /// Creating a Scene
+  // MARK - Creating a Scene
 
   /// The type of scene representing the body of this scene.
   associatedtype Body: Scene

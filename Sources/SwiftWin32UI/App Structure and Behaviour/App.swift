@@ -18,10 +18,12 @@ public protocol App {
 
   /// Creates an instance of the application using the body as the content.
   init()
+
+  /// Initializes and runs the application.
+  static func main()
 }
 
 extension App {
-  /// Initializes and runs the application.
   public static func main() {
     ApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil,
                     String(describing: String(reflecting: Self.self)))

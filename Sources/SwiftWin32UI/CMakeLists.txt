@@ -11,9 +11,9 @@ add_library(SwiftWin32UI SHARED
   SceneBuilder.swift
   ViewBuilder.swift)
 target_sources(SwiftWin32UI PRIVATE
-  Essentials/App.swift
-  Essentials/Scene.swift
-  Essentials/WindowGroup.swift)
+  "App Structure and Behaviour/App.swift"
+  "App Structure and Behaviour/Scene.swift"
+  "App Structure and Behaviour/WindowGroup.swift")
 target_sources(SwiftWin32UI PRIVATE
   "Views and Controls/View.swift")
 target_sources(SwiftWin32UI PRIVATE
