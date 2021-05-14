@@ -230,6 +230,19 @@ final class CoreGraphicsTests: XCTestCase {
     XCTAssertEqual(Rect.null.union(Rect.infinite), Rect.infinite)
   }
 
+  func testRectNonstandardEquality() {
+    let r1: Rect = Rect(x: 0, y: 0, width: 10, height: 10)
+    let r2: Rect = Rect(x: 10, y: 10, width: -10, height: -10)
+    let r3: Rect = Rect(x: 10, y: 10, width: -9.9, height: -10)
+
+    XCTAssertTrue(r1 == r2)
+    XCTAssertFalse(r2 == r3)
+
+    let null1: Rect = Rect.null
+    let null2: Rect = Rect.null
+    XCTAssertTrue(null1 == null2)
+  }
+
   static var allTests = [
     ("testAffineTransformIdentity", testAffineTransformIdentity),
     ("testAffineTransformIdentityIsIdentity", testAffineTransformIdentityIsIdentity),
@@ -243,5 +256,7 @@ final class CoreGraphicsTests: XCTestCase {
     ("testRectInsetBy", testRectInsetBy),
     ("testRectIntersection", testRectIntersection),
     ("testRectIntersects", testRectIntersects),
+    ("testRectUnion", testRectUnion),
+    ("testRectNonstandardEquality", testRectNonstandardEquality),
   ]
 }
