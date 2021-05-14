@@ -173,6 +173,19 @@ public struct Rect {
                 height: standardized.size.height)
   }
 
+  /// Returns the smallest rectangle that contains the two source rectangles.
+  public func union(_ rect: Rect) -> Rect {
+    guard !self.isNull else { return rect }
+    guard !rect.isNull else { return self }
+    let lhs: Rect = self.standardized, rhs: Rect = rect.standardized
+
+    let origin: Point = Point(x: min(lhs.minX, rhs.minX),
+                              y: min(lhs.minY, rhs.minY))
+    let size: Size = Size(width: max(lhs.maxX, rhs.maxX) - origin.x,
+                          height: max(lhs.maxY, rhs.maxY) - origin.y)
+    return Rect(origin: origin, size: size)
+  }
+
   /// Returns the intersection of two rectangles.
   public func intersection(_ rect: Rect) -> Rect {
     guard !self.isNull, !rect.isNull else { return .null }

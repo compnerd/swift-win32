@@ -203,6 +203,33 @@ final class CoreGraphicsTests: XCTestCase {
     XCTAssertFalse(r4.intersects(r1))
   }
 
+  func testRectUnion() {
+    let r1: Rect = Rect(x: 0, y: 0, width: 50, height: 50)
+    let r2: Rect = Rect(x: 25, y: 25, width: 50, height: 50)
+    let r3: Rect = Rect(x: 100, y: 100, width: 50, height: 50)
+    let r4: Rect = Rect(x: 75, y: 75, width: -50, height: -50)
+
+    XCTAssertEqual(r1.union(r2), Rect(x: 0, y: 0, width: 75, height: 75))
+    XCTAssertEqual(r2.union(r1), Rect(x: 0, y: 0, width: 75, height: 75))
+
+    XCTAssertEqual(Rect.null.union(r1), Rect(x: 0, y: 0, width: 50, height: 50))
+    XCTAssertEqual(r1.union(Rect.null), Rect(x: 0, y: 0, width: 50, height: 50))
+
+    XCTAssertEqual(r1.union(r3), Rect(x: 0, y: 0, width: 150, height: 150))
+    XCTAssertEqual(r3.union(r1), Rect(x: 0, y: 0, width: 150, height: 150))
+
+    XCTAssertEqual(r1.union(r4), Rect(x: 0, y: 0, width: 75, height: 75))
+    XCTAssertEqual(r4.union(r1), Rect(x: 0, y: 0, width: 75, height: 75))
+
+    XCTAssertEqual(Rect.zero.union(Rect.zero), Rect.zero)
+
+    XCTAssertEqual(Rect.infinite.union(Rect.zero), Rect.infinite)
+    XCTAssertEqual(Rect.zero.union(Rect.infinite), Rect.infinite)
+
+    XCTAssertEqual(Rect.infinite.union(Rect.null), Rect.infinite)
+    XCTAssertEqual(Rect.null.union(Rect.infinite), Rect.infinite)
+  }
+
   func testRectNonstandardEquality() {
     let r1: Rect = Rect(x: 0, y: 0, width: 10, height: 10)
     let r2: Rect = Rect(x: 10, y: 10, width: -10, height: -10)
@@ -229,6 +256,7 @@ final class CoreGraphicsTests: XCTestCase {
     ("testRectInsetBy", testRectInsetBy),
     ("testRectIntersection", testRectIntersection),
     ("testRectIntersects", testRectIntersects),
+    ("testRectUnion", testRectUnion),
     ("testRectNonstandardEquality", testRectNonstandardEquality),
   ]
 }
