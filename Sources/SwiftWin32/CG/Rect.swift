@@ -4,6 +4,11 @@
 @_implementationOnly import func CRT.floor
 @_implementationOnly import func CRT.ceil
 
+@inline(__always)
+private func __equals(_ lhs: Rect, _ rhs: Rect) -> Bool {
+  return lhs.origin == rhs.origin && lhs.size == rhs.size
+}
+
 /// A structure that contains the location and dimensions of a rectangle.
 public struct Rect {
   // MARK - Creating Rectangle Values
@@ -219,22 +224,15 @@ public struct Rect {
 
   /// Returns whether the rectangle is equal to the null rectangle.
   public var isNull: Bool {
-    return self.pureEqualityCheck(.null)
-  }
-
-  @inline(__always) private func pureEqualityCheck(_ rhs: Rect) 
-      -> Bool {
-    return (self.origin == rhs.origin) && (self.size == rhs.size)
+    return __equals(self, .null)
   }
 }
-
-
 
 extension Rect: Equatable {
   // MARK - Operator Functions
   public static func == (lhs: Rect, rhs: Rect) -> Bool {
     let lhs: Rect = lhs.standardized, rhs: Rect = rhs.standardized
-    return lhs.pureEqualityCheck(rhs)
+    return __equals(lhs, rhs)
   }
 }
 
