@@ -66,9 +66,9 @@ jobs:
 
     - name: Generate Documentation
       run: |
-        swift doc generate Sources\SwiftWin32\CG --module-name CoreGraphics --output site\CoreGraphics --format html --base-url https://compnerd.github.io/swift-win32/CoreGraphics
-        swift doc generate Sources\SwiftWin32 --module-name SwiftWin32 --output site\SwiftWin32 --format html --base-url https://compnerd.github.io/swift-win32/SwiftWin32
-        swift doc generate Sources\SwiftWin32UI --module-name SwiftWin32UI --output site\SwiftWin32UI --format html --base-url https://compnerd.github.io/swift-win32/SwiftWin32UI
+        swift doc generate Sources\SwiftWin32\CG --module-name CoreGraphics --output site\CoreGraphics --base-url https://compnerd.github.io/swift-win32/CoreGraphics
+        swift doc generate Sources\SwiftWin32 --module-name SwiftWin32 --output site\SwiftWin32 --base-url https://compnerd.github.io/swift-win32/SwiftWin32
+        swift doc generate Sources\SwiftWin32UI --module-name SwiftWin32UI --output site\SwiftWin32UI --base-url https://compnerd.github.io/swift-win32/SwiftWin32UI
 
     - name: Deploy
       run: |
