@@ -41,6 +41,6 @@ jobs:
     #   with:
     #     swift_format_official: true
     #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: Iron-Ham/swift-format-linter-action@v5
+    - uses: compnerd/swift-format-linter-action@compnerd/windows
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
