@@ -267,6 +267,18 @@ public class ViewController: Responder {
     NSNotification.Name(rawValue: "UIViewControllerShowDetailTargetDidChangeNotification")
   }
 
+  // MARK - Responding to Containment Events
+
+  /// Called just before the view controller is added or removed from a
+  /// container view controller.
+  public func willMove(toParent viewController: ViewController?) {
+  }
+
+  /// Called after the view controller is added or removed from a container view
+  /// controller.
+  public func didMove(toParent viewController: ViewController?) {
+  }
+
   // MARK -
 
   override public init() {
