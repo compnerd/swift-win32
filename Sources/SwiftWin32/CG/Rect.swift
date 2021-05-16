@@ -9,6 +9,28 @@ private func __equals(_ lhs: Rect, _ rhs: Rect) -> Bool {
   return lhs.origin == rhs.origin && lhs.size == rhs.size
 }
 
+extension Rect {
+  /// Coordinates that establish the edges of a rectangle.
+  @frozen
+  public enum Edge: UInt32 {
+    /// The minimum value for the x-coordinate of the rectangle.  In the default
+    /// coordinate space, this is the left edge of the rectangle.
+    case minXEdge
+
+    /// The minimum value for the y-coordinate of the rectangle.  In the default
+    /// coordinate space, this is the top edge of the rectangle.
+    case minYEdge
+
+    /// The maximum value for the x-coordinate of the rectangle.  In the default
+    /// coordinate space, this is the right edge of the rectangle.
+    case maxXEdge
+
+    /// The maximum value for the y-coordinate of the rectangle.  In the default
+    /// coordinate space, this is the bottom edge of the rectangle.
+    case maxYEdge
+  }
+}
+
 /// A structure that contains the location and dimensions of a rectangle.
 public struct Rect {
   // MARK - Creating Rectangle Values
