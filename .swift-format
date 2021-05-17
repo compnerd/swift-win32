@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "rules": {
+    "AllPublicDeclarationsHaveDocumentation": true,
+    "AlwaysUseLowerCamelCase": false,
+    "UseShorthandTypeNames": false,
+    "ValidateDocumentationComments": true
+  }
+}
