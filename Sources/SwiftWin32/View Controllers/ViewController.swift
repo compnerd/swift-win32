@@ -51,7 +51,7 @@ extension RectEdge {
 }
 
 /// An object that manages a view hierarchy for your application.
-public class ViewController: Responder {
+open class ViewController: Responder {
   // MARK - Managing the View
 
   /// The view that the controller manages.
