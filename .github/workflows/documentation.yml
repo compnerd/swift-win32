@@ -74,7 +74,7 @@ jobs:
     - name: Post-Process
       run: |
         foreach ($module in "CoreGraphics","SwiftWin32","SwiftWin32UI") {
-          Get-ChildItem -Path site\$module -Recurse -File -Include "*.md" -Exclude _Footer.md,_Sidebar.md,index.md | ForEach-Object {
+          Get-ChildItem -Path site\$module -Recurse -File -Include "*.md" -Exclude Home.md,_Footer.md,_Sidebar.md,index.md | ForEach-Object {
             Set-Content $_.FullName -value @"
         ---
         layout: default
