@@ -78,7 +78,7 @@ jobs:
             Set-Content $_.FullName -value @"
         ---
         layout: default
-        title: $(_.BaseName -replace '(?<=\w)_','.')
+        title: $($_.BaseName -replace '(?<=\w)_','.')
         parent: $($_.Directory.BaseName)
         ---
         "@,$(Get-Content $_.FullName)
