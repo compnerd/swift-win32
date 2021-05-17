@@ -83,6 +83,14 @@ jobs:
         ---
         "@,$(Get-Content $_.FullName)
           }
+          Set-Content site\$module\Home.md -value @"
+        ---
+        layout: default
+        title: $module
+        has_children: true
+        ---
+        "@,$(Get-Content site\$module\Home.md)
+          Move-Item -Path site\$module\Home.md -Destination site\$module\index.md -Force
         }
 
     - name: Deploy
