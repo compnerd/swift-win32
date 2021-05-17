@@ -105,6 +105,7 @@ target_sources(SwiftWin32 PRIVATE
   "Views and Controls/EdgeInsets.swift"
   "Views and Controls/ImageView.swift"
   "Views and Controls/Label.swift"
+  "Views and Controls/Label+Temporary.swift"
   "Views and Controls/ProgressView.swift"
   "Views and Controls/Slider.swift"
   "Views and Controls/Stepper.swift"

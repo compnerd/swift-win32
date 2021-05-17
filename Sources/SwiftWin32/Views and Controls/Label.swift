@@ -16,7 +16,7 @@ private let SwiftLabelProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSub
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
 }
 
-public class Label: Control {
+public class Label: View {
   private static let `class`: WindowClass =
       WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Label")
   private static let style: WindowStyle = (base: WS_TABSTOP, extended: 0)
@@ -107,7 +107,106 @@ public class Label: Control {
         FontMetrics.default.scaledFont(for: self.font,
                                        compatibleWith: traitCollection)
   }
+
+
+  // MARK - Control API that should be removed when GestureRecognizer is implemented
+  private var actions: [Control.Event:[ControlEventCallable]] =
+      Dictionary<Control.Event, [ControlEventCallable]>(minimumCapacity: 16)
+
+  @inline(__always)
+  private func addAction(_ callable: ControlEventCallable,
+                         for controlEvents: Control.Event) {
+    for event in Label.Event.semanticEvents {
+      if controlEvents.rawValue & event.rawValue == event.rawValue {
+        self.actions[event, default: []].append(callable)
+      }
+    }
+  }
+
+  func sendActions(for controlEvents: Control.Event) {
+    for event in Label.Event.semanticEvents {
+      if controlEvents.rawValue & event.rawValue == event.rawValue {
+        _ = self.actions[event]?.map { $0(sender: self, event: controlEvents) }
+      }
+    }
+  }
+
+  public func addTarget<Target: AnyObject>(_ target: Target,
+                                           action: @escaping (Target) -> () -> Void,
+                                           for controlEvents: Control.Event) {
+    self.addAction(ControlEventCallback<Self, Target>(binding: action, on: target),
+                   for: controlEvents)
+  }
+
+  /// Associates a target object and action method with the control.
+  public func addTarget<Source: Label, Target: AnyObject>(_ target: Target,
+                                                            action: @escaping (Target) -> (_: Source) -> Void,
+                                                            for controlEvents: Control.Event) {
+    self.addAction(ControlEventCallback(binding: action, on: target),
+                   for: controlEvents)
+  }
+
+  /// Returns the events for which the control has associated actions.
+  public private(set) var allControlEvents: Control.Event =
+      Control.Event(rawValue: 0)
+
+  /// Associates a target object and action method with the control.
+  public func addTarget<Source: Label, Target: AnyObject>(_ target: Target,
+                                                            action: @escaping (Target) -> (_: Source, _: Control.Event) -> Void,
+                                                            for controlEvents: Control.Event) {
+    self.addAction(ControlEventCallback<Source, Target>(binding: action, on: target),
+                   for: controlEvents)
+  }
 }
 
 extension Label: ContentSizeCategoryAdjusting {
+}
+
+
+private protocol ControlEventCallable {
+  func callAsFunction(sender: Label, event: Control.Event)
+}
+
+private struct ControlEventCallback<Source: Label, Target: AnyObject>: ControlEventCallable {
+  private unowned(safe) let instance: Target
+  private let method: (Target) -> (_: Source, _: Control.Event) -> Void
+
+  public init(binding: @escaping (Target) -> (_: Source, _: Control.Event) -> Void,
+              on: Target) {
+    self.instance = on
+    self.method = binding
+  }
+
+  public init(binding: @escaping (Target) -> (_: Source) -> Void, on: Target) {
+    self.instance = on
+    self.method = { (target: Target) in { (sender: Source, _: Control.Event) in
+        binding(target)(sender)
+      }
+    }
+  }
+
+  public init(binding: @escaping (Target) -> () -> Void, on: Target) {
+    self.instance = on
+    self.method = { (target: Target) in { (_: Source, _: Control.Event) in
+        binding(target)()
+      }
+    }
+  }
+
+  public func callAsFunction(sender: Label, event: Control.Event) {
+    self.method(instance)(sender as! Source, event)
+  }
+}
+
+extension Label.Event {
+    /// A semantic action triggered by buttons.
+  public static var primaryActionTriggered: Control.Event {
+    Control.Event(rawValue: 1 << 13)
+  }
+
+  fileprivate static var semanticEvents: [Control.Event] {
+    return [
+      .primaryActionTriggered
+    ]
+  }
 }
