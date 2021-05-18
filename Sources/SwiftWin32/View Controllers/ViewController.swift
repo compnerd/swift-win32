@@ -50,7 +50,7 @@ extension RectEdge {
   }
 }
 
-
+/// An object that manages a view hierarchy for your application.
 public class ViewController: Responder {
   // MARK - Managing the View
 
