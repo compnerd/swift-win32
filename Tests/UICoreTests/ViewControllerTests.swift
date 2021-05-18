@@ -54,6 +54,18 @@ final class ViewControllerTests: XCTestCase {
 
     XCTAssertTrue(sut.disablesAutomaticKeyboardDismissal)
   }
+
+  func testNextResponder() {
+    let expectedResult = View(frame: .zero)
+
+    let sut = ViewController()
+
+    XCTAssertNil(sut.next)
+
+    expectedResult.addSubview(sut.view)
+
+    XCTAssert(sut.next === expectedResult)
+  }
 }
 
 final class MockViewController: ViewController {
