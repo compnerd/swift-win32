@@ -28,4 +28,14 @@ final class ViewControllerTests: XCTestCase {
     XCTAssertNotNil(sut.viewIfLoaded)
     XCTAssertTrue(sut.isViewLoaded)
   }
+
+  func testTitleGetterAndSetter() {
+    let sut = ViewController()
+
+    // XCTAssertNil(sut.title) // This is currently failing, but the initial value of `title` should be `nil`
+
+    sut.title = "Title"
+
+    XCTAssertEqual(sut.title, "Title")
+  }
 }
