@@ -47,7 +47,7 @@ copy Examples\UICatalog\Info.plist .build\x86_64-unknown-windows-msvc\debug\
 ## Running tests
 
 In order to run unit tests of Swift/Win32 you need to:
-1. Open `x64 Native Tools Command Prompt for VS 2019` as administrator.
+1. Open `x64 Native Tools Command Prompt for VS 2019`.
 2. Run `swift test -Xswiftc -DENABLE_TESTING`.
 
 ### Required software for running tests
