@@ -66,6 +66,47 @@ final class ViewControllerTests: XCTestCase {
 
     XCTAssert(sut.next === expectedResult)
   }
+
+  func testViewDidLoadMethodCalledAfterLazyViewLoad() {
+    let sut = MockViewController()
+
+    let expectation = self.expectation(description: "viewDidLoad should be called")
+
+    sut.viewDidLoadBlock = {
+      expectation.fulfill()
+    }
+
+    _ = sut.view
+
+    wait(for: [expectation], timeout: 0.1)
+  }
+
+  func testViewDidLoadMethodCalledAfterManualViewLoad() {
+    let sut = MockViewController()
+
+    let expectation = self.expectation(description: "viewDidLoad should be called")
+
+    sut.viewDidLoadBlock = {
+      expectation.fulfill()
+    }
+
+    sut.loadViewIfNeeded()
+
+    wait(for: [expectation], timeout: 0.1)
+  }
+
+  func testViewDidLoadMethodNotCalledIfViewNotLoaded() {
+    let sut = MockViewController()
+
+    let expectation = self.expectation(description: "viewDidLoad should not be called")
+    expectation.isInverted = true
+
+    sut.viewDidLoadBlock = {
+      expectation.fulfill()
+    }
+
+    wait(for: [expectation], timeout: 0.1)
+  }
 }
 
 final class MockViewController: ViewController {
