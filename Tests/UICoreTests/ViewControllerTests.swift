@@ -38,6 +38,22 @@ final class ViewControllerTests: XCTestCase {
 
     XCTAssertEqual(sut.title, "Title")
   }
+
+  func testValueOfDisablesAutomaticKeyboardDismissal() {
+    let sut = MockViewController()
+
+    sut.modalPresentationStyleGetter = {
+      return .automatic
+    }
+
+    XCTAssertFalse(sut.disablesAutomaticKeyboardDismissal)
+
+    sut.modalPresentationStyleGetter = {
+      return .formSheet
+    }
+
+    XCTAssertTrue(sut.disablesAutomaticKeyboardDismissal)
+  }
 }
 
 final class MockViewController: ViewController {
