@@ -12,7 +12,6 @@ public enum ModalTransitionStyle: Int {
   case partialCurl
 }
 
-
 /// Constants that specify the edges of a rectangle.
 public struct RectEdge: OptionSet {
   public typealias RawValue = UInt
@@ -263,6 +262,7 @@ public class ViewController: Responder {
     return self.modalPresentationStyle == .formSheet
   }
 
+  /// Posted when a split view controller is expanded or collapsed.
   public class var showDetailTargetDidChangeNotification: NSNotification.Name {
     NSNotification.Name(rawValue: "UIViewControllerShowDetailTargetDidChangeNotification")
   }
@@ -292,22 +292,29 @@ public class ViewController: Responder {
 }
 
 extension ViewController: ContentContainer {
+  /// Notifies the container that the size of its view is about to change.
   public func willTransition(to: Size,
                              with coodinator: ViewControllerTransitionCoordinator) {
   }
 
+  /// Notifies the container that its trait collection changed.
   public func willTransition(to: TraitCollection,
                              with coordinator: ViewControllerTransitionCoordinator) {
   }
 
+  /// Returns the size of the specified child view controller’s content.
   public func size(forChildContentContainer container: ContentContainer,
                    withParentContainerSize parentSize: Size) -> Size {
     return .zero
   }
 
+  /// Notifies an interested controller that the preferred content size of one
+  /// of its children changed.
   public func preferredContentSizeDidChange(forChildContentContainer container: ContentContainer) {
   }
 
+  /// Notifies the container that a child view controller was resized using auto
+  /// layout.
   public func systemLayoutFittingSizeDidChange(forChildContentContainer container: ContentContainer) {
   }
 }
