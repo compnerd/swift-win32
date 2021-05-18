@@ -44,8 +44,14 @@ copy Examples\UICatalog\Info.plist .build\x86_64-unknown-windows-msvc\debug\
 .build\x86_64-unknown-windows-msvc\debug\UICatalog.exe
 ```
 
-## Running tests
+In order to get access to the manifest tool (`mt`), the build and testing should occur in a "x64 Native Tools Command Prompt for VS2019"
 
-In order to run unit tests of Swift/Win32 you need to:
-1. Open `x64 Native Tools Command Prompt for VS 2019`.
-2. Run `swift test -Xswiftc -DENABLE_TESTING`.
+## Testing
+
+The current implementation is still under flux and many of the interfaces we expect to be present are not yet implemented.  Because clearly indicating the missing surface makes it easier to focus on what needs to be accomplished, there are many instances of interfaces being declared but not implemented.  Most of these sites will abort if they are reached.  In order to enable testing for scenarios which may interct with these cases, a special condition has been added as `ENABLE_TESTING` to allow us to bypass the missing functionality.
+
+You can run tests by adding that as a flag when invoking the SPM test command as:
+
+```cmd
+swift test -Xswiftc -DENABLE_TESTING
+```
