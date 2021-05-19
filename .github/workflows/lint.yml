@@ -41,6 +41,6 @@ jobs:
     #   with:
     #     swift_format_official: true
     #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: compnerd/swift-format-linter-action@compnerd/windows
+    - uses: compnerd/swift-format-linter-action@main
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
