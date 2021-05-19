@@ -9,7 +9,6 @@ let SwiftWin32 = Package(
     .library(name: "SwiftWin32UI", type: .dynamic, targets: ["SwiftWin32UI"]),
     .executable(name: "UICatalog", targets: ["UICatalog"]),
     .executable(name: "Calculator", targets: ["Calculator"]),
-    .executable(name: "HelloWorld", targets: ["HelloWorld"]),
   ],
   dependencies: [
     // NOTE(compnerd) require main as no current release has support for the
@@ -59,22 +58,6 @@ let SwiftWin32 = Package(
       exclude: [
         "CMakeLists.txt",
         "Calculator.exe.manifest",
-        "Info.plist",
-      ],
-      swiftSettings: [
-        .unsafeFlags([
-          "-parse-as-library",
-        ]),
-      ]
-    ),
-    .executableTarget(
-      name: "HelloWorld",
-      dependencies: [
-        "SwiftWin32",
-      ],
-      path: "Examples/HelloWorld",
-      exclude: [
-        "CMakeLists.txt",
         "Info.plist",
       ],
       swiftSettings: [
