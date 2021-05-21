@@ -26,28 +26,23 @@ case division
 }
 
 private struct CalculatorState {
-  var lhs: String = ""
-  var rhs: String = ""
-  var operand: WritableKeyPath<Self, String> = \.lhs
+  var lhs: NSDecimalNumber = .zero
+  var rhs: NSDecimalNumber = .zero
+  var operand: WritableKeyPath<Self, NSDecimalNumber> = \.lhs
   var operation: CalculatorOperation = .undefined {
     willSet { self.operand = (newValue == .undefined) ? \.lhs : \.rhs }
   }
 
-  mutating func evaluate() -> String {
-    var f: ((Double, Double) -> Double)?
-
+  mutating func evaluate() -> NSDecimalNumber {
     switch self.operation {
     case .undefined:      break
-    case .addition:       f = { $0 + $1 }
-    case .substraction:   f = { $0 - $1 }
-    case .multiplication: f = { $0 * $1 }
-    case .division:       f = { $0 / $1 }
+    case .addition:       lhs = lhs.adding(rhs)
+    case .substraction:   lhs = lhs.subtracting(rhs)
+    case .multiplication: lhs = lhs.multiplying(by: rhs)
+    case .division:       lhs = lhs.dividing(by: rhs)
     }
 
-    if let f = f {
-      lhs = String(f(Double(lhs)!, Double(rhs)!))
-    }
-    rhs = ""
+    rhs = .zero
     operation = .undefined
 
     return lhs
@@ -101,6 +96,10 @@ private class Calculator {
     self.window.rootViewController?.title = "Calculator"
 
     self.window.addSubview(self.txtResult)
+    self.txtResult.font = Font(name: "Consolas", size: Font.systemFontSize)
+    self.txtResult.textAlignment = .right
+    self.txtResult.text =
+        self.state.evaluate().description(withLocale: Locale.current)
 
     self.window.addSubviews(self.btnDigits)
     self.btnDigits.forEach {
@@ -124,25 +123,21 @@ private class Calculator {
       fatalError("invalid target: \(self) for sender: \(sender)")
     }
 
-    self.state[keyPath: self.state.operand] += String(input)
+    var operand = self.state[keyPath: self.state.operand] as Decimal
+    operand *= 10
+    operand += Decimal(input)
 
-    self.txtResult.text =
-        (NSDecimalNumber(string: self.state[keyPath: self.state.operand])
-            as Decimal).description
+    self.txtResult.text = operand.description
   }
 
   private func onOperationPress(_ sender: Button, _: Control.Event) {
     switch self.btnOperations.firstIndex(of: sender)! {
     case 0: /* AC */
       self.state = CalculatorState()
-      self.txtResult.text = "0"
+      self.txtResult.text = Decimal.zero.description
     case 1: /* +/- */
-      var value: Decimal =
-          NSDecimalNumber(string: self.state[keyPath: self.state.operand])
-              as Decimal
-      value.negate()
-      self.state[keyPath: self.state.operand] = value.description
-      self.txtResult.text = value.description
+      var operand = self.state[keyPath: self.state.operand] as Decimal
+      operand.negate()
     case 3: /* ÷ */
       self.state.operation = .division
     case 4: /* x */
@@ -152,22 +147,21 @@ private class Calculator {
     case 6: /* + */
       self.state.operation = .addition
     case 2: /* % */
-      if Double(self.state.lhs) == 0.0 { break }
+      if (self.state.lhs as Decimal).isZero { break }
       self.state.operation = .division
-      self.state.rhs = "100"
+      self.state.rhs = NSDecimalNumber(string: "100")
       fallthrough
     case 7: /* = */
       self.txtResult.text =
-          (NSDecimalNumber(string: self.state.evaluate()) as Decimal)
-              .description
+          self.state.evaluate().description(withLocale: Locale.current)
     default:
       fatalError("unknown operation \(self.btnOperations.firstIndex(of: sender)!)")
     }
   }
 
   private func onDecimalPress(_ sender: Button, _: Control.Event) {
-    self.state[keyPath: self.state.operand] += "."
-    self.txtResult.text = self.state[keyPath: self.state.operand]
+    self.txtResult.text =
+        (self.state[keyPath: self.state.operand] as Decimal).description
   }
 }
 
