@@ -16,6 +16,35 @@ private let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
 }
 
+extension Button {
+  /// Specifies the style of a button.
+  public enum ButtonType: Int {
+    /// No button style.
+    case custom
+
+    /// A system style button, such as those shown in navigation bars and
+    /// toolbars.
+    case system
+
+    /// A detail disclosure button.
+    case detailDisclosure
+
+    /// An information button that has a light background.
+    case infoLight
+
+    /// An information button that has a dark background.
+    case infoDark
+
+    /// A contact add button.
+    case contactAdd
+
+    /// A standard system button without a blurred background view.
+    case plain
+
+    /// A close button to dismiss panels and views.
+    case close
+  }
+}
 
 /// A control that executes your custom code in response to user interactions.
 public class Button: Control {
