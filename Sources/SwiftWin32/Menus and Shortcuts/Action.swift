@@ -21,7 +21,7 @@ extension Action.Identifier {
 }
 
 /// A menu element that performs its action in a closure.
-public class Action: MenuElement {
+open class Action: MenuElement {
   // MARK - Creating an Action
 
   /// Creates an action.
@@ -45,29 +45,29 @@ public class Action: MenuElement {
   // MARK - Getting Information About the Action
 
   /// The action's title.
-  public override var title: String {
+  open override var title: String {
     get { super.title }
     set { super.title = newValue }
   }
 
   /// The action's image.
-  public override var image: Image? {
+  open override var image: Image? {
     get { super.image }
     set { super.image = newValue }
   }
 
   /// The unique identifier for the action.
-  public private(set) var identifier: Action.Identifier
+  open private(set) var identifier: Action.Identifier
 
   /// An elaborated title that explains the purpose of the action.
-  public var discoverabilityTitle: String?
+  open var discoverabilityTitle: String?
 
   /// The attributes indicating the style of the action.
-  public var attributes: MenuElement.Attributes
+  open var attributes: MenuElement.Attributes
 
   /// The state of the action.
-  public var state: MenuElement.State
+  open var state: MenuElement.State
 
   /// The object responsible for the action handler.
-  public var sender: Any?
+  open internal(set) var sender: Any?
 }
