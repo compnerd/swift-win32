@@ -49,14 +49,14 @@ extension MenuElement {
 }
 
 /// An object representing a menu, action, or command.
-public class MenuElement {
+open class MenuElement {
   // MARK - Getting the Element Attributes
 
   /// The title of the menu element.
-  public internal(set) var title: String
+  open internal(set) var title: String
 
   /// The image to display alongside the menu element's title.
-  public internal(set) var image: Image?
+  open internal(set) var image: Image?
 
   // MARK - Creating a Menu Element
 
