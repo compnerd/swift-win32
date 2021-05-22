@@ -40,7 +40,7 @@ public class Button: Control {
   }
 
   /// Creates a new button with the specified frame, registers the primary
-  /// action event, and sets the title and image to the action’s title and
+  /// action event, and sets the title and image to the action's title and
   /// image.
   public convenience init(frame: Rect, primaryAction: Action?) {
     self.init(frame: frame)
