@@ -17,8 +17,10 @@ private let SwiftButtonProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
 }
 
 
+/// A control that executes your custom code in response to user interactions.
 public class Button: Control {
   private static let `class`: WindowClass = WindowClass(named: WC_BUTTON)
+
   // MSDN:
   // A button sends the `BN_DISABLE`, `BN_PUSHED`, `BN_KILLFOCUS`, `BN_PAINT`,
   // `BN_SETFOCUS`, and `BN_UNPUSHED` notification codes only if it has the
@@ -27,6 +29,9 @@ public class Button: Control {
       (base: WS_TABSTOP | DWORD(BS_MULTILINE | BS_NOTIFY | BS_PUSHBUTTON),
        extended: 0)
 
+  // MARK - Creating Buttons
+
+  /// Creates a new button with the specified frame.
   public init(frame: Rect) {
     super.init(frame: frame, class: Button.class, style: Button.style)
 
@@ -34,8 +39,12 @@ public class Button: Control {
                           unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
-  // FIXME(compnerd) handle title setting for different states
-  public func setTitle(_ title: String?, forState _: Control.State) {
+  // MARK - Configuring the Button Title
+
+  /// Sets the title to use for the specified state.
+  public func setTitle(_ title: String?, forState state: Control.State) {
+    // FIXME(compnerd) handle title setting for different states
+    assert(state == .normal, "state handling not yet implemented")
     SetWindowTextW(hWnd, title?.wide)
   }
 }
