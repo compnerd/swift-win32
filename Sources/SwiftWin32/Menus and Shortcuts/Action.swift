@@ -35,6 +35,7 @@ open class Action: MenuElement {
     self.discoverabilityTitle = discoverabilityTitle
     self.attributes = attributes
     self.state = state
+    self.handler = handler
 
     super.init(title: title, image: image)
   }
@@ -70,4 +71,6 @@ open class Action: MenuElement {
 
   /// The object responsible for the action handler.
   open internal(set) var sender: Any?
+
+  internal private(set) var handler: ActionHandler
 }

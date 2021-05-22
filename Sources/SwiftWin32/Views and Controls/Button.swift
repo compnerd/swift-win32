@@ -39,6 +39,17 @@ public class Button: Control {
                           unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
   }
 
+  /// Creates a new button with the specified frame, registers the primary
+  /// action event, and sets the title and image to the action’s title and
+  /// image.
+  public convenience init(frame: Rect, primaryAction: Action?) {
+    self.init(frame: frame)
+    if let action = primaryAction {
+      self.setTitle(action.title, forState: .normal)
+      self.addAction(action, for: .primaryActionTriggered)
+    }
+  }
+
   // MARK - Configuring the Button Title
 
   /// Sets the title to use for the specified state.
