@@ -36,6 +36,18 @@ private struct ControlEventCallback<Source: Control, Target: AnyObject>: Control
   }
 }
 
+extension ControlEventCallback where Target: Action {
+  fileprivate init(invoking action: Target) {
+    self.instance = action
+    self.method = { (_: Target) in { (sender: Source, _: Control.Event) in
+        action.sender = sender
+        defer { action.sender = nil }
+        action.handler(action)
+      }
+    }
+  }
+}
+
 @inline(__always)
 private var kTriggers: [Control.Event] {
   Control.Event.touchEvents + Control.Event.semanticEvents + Control.Event.editingEvents
@@ -54,6 +66,11 @@ public class Control: View {
                          for controlEvents: Control.Event) {
     kTriggers.filter { $0.rawValue & controlEvents.rawValue == $0.rawValue }
              .forEach { self.actions[$0, default: []].append(callable) }
+  }
+
+  internal func addAction(_ action: Action, for controlEvents: Control.Event) {
+    kTriggers.filter { $0.rawValue & controlEvents.rawValue == $0.rawValue }
+             .forEach { self.actions[$0, default: []].append(ControlEventCallback(invoking: action)) }
   }
 
   /// Associates a target object and action method with the control.
