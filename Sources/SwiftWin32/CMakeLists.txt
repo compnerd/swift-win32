@@ -7,7 +7,6 @@ SPDX-License-Identifier: BSD-3-Clause
 
 add_library(SwiftWin32 SHARED
   Application/_TriviallyConstructible.swift
-  Application/ApplicationMain.swift
   Application/Information.swift
   Application/LaunchKeyOptions.swift)
 target_sources(SwiftWin32 PRIVATE
@@ -30,6 +29,7 @@ target_sources(SwiftWin32 PRIVATE
 target_sources(SwiftWin32 PRIVATE
   "App and Environment/Application.swift"
   "App and Environment/ApplicationDelegate.swift"
+  "App and Environment/ApplicationMain.swift"
   "App and Environment/Device.swift"
   "App and Environment/TraitCollection.swift"
   "App and Environment/TraitEnvironment.swift")
