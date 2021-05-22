@@ -8,13 +8,6 @@ import func WinSDK.MessageBoxW
 import let WinSDK.MB_OK
 import struct WinSDK.UINT
 
-private extension Button {
-  convenience init(frame: Rect = .zero, title: String) {
-    self.init(frame: frame)
-    setTitle(title, forState: .normal)
-  }
-}
-
 private extension Label {
   convenience init(frame: Rect, title: String) {
     self.init(frame: frame)
@@ -32,7 +25,10 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
 
   lazy var button: Button =
       Button(frame: Rect(x: 72.0, y: 4.0, width: 96.0, height: 32.0),
-             title: "Press Me!")
+             primaryAction: Action(title: "Press Me!") { _ in
+        MessageBoxW(nil, "Swift/Win32 Demo!".wide,
+                    "Swift/Win32 MessageBox!".wide, UINT(MB_OK))
+      })
 
   lazy var checkbox: Switch =
       Switch(frame: Rect(x: 4.0, y: 40.0, width: 256.0, height: 24.0))
@@ -111,9 +107,6 @@ final class UICatalog: ApplicationDelegate, SceneDelegate {
 
     self.label.font = Font(name: "Consolas", size: 10)!
 
-    self.button.addTarget(self, action: UICatalog.pressMe(_:),
-                          for: .primaryActionTriggered)
-
     self.checkbox.title = "Check me out"
 
     self.textfield.text = "Introducing Swift/Win32"
@@ -159,11 +152,6 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
     print("Goodbye cruel world!")
   }
 
-  private func pressMe(_: Button?) {
-    MessageBoxW(nil, "Swift/Win32 Demo!".wide,
-                "Swift/Win32 MessageBox!".wide, UINT(MB_OK))
-  }
-
   private func stepperValueDidChange(_ stepper: Stepper) {
     self.stepperLabel.text = String(Int(stepper.value))
     self.tableview.reloadData()
@@ -179,8 +167,11 @@ extension UICatalog: TableViewDataSource {
   public func tableView(_ tableView: TableView,
                         cellForRowAt indexPath: IndexPath) -> TableViewCell {
     let cell = TableViewCell(style: .default, reuseIdentifier: nil)
-    cell.addSubview(Button(frame: Rect(x: 0, y: 0, width: 80, height: 32),
-                           title: "Button \(indexPath.row)"))
+
+    let button: Button = Button(frame: Rect(x: 0, y: 0, width: 80, height: 32))
+    button.setTitle("Button \(indexPath.row)", forState: .normal)
+    cell.addSubview(button)
+
     return cell
   }
 }
