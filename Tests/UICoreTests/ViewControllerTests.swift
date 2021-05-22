@@ -39,3 +39,32 @@ final class ViewControllerTests: XCTestCase {
     XCTAssertEqual(sut.title, "Title")
   }
 }
+
+final class MockViewController: ViewController {
+  var modalPresentationStyleGetter: () -> ModalPresentationStyle = {
+    XCTFail("Not implemented")
+    return .automatic
+  }
+
+  var modalPresentationStyleSetter: (ModalPresentationStyle) -> Void = { _ in
+    XCTFail("Not implemented")
+  }
+
+  var viewDidLoadBlock: () -> Void = {
+    XCTFail("Not implemented")
+  }
+
+  override var modalPresentationStyle: ModalPresentationStyle {
+    get {
+      return modalPresentationStyleGetter()
+    }
+    set {
+      modalPresentationStyleSetter(newValue)
+    }
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    viewDidLoadBlock()
+  }
+}
