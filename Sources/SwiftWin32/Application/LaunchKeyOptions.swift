@@ -24,7 +24,7 @@ extension Application.LaunchOptionsKey {
 
   /// A key indicating that the application was relaunched to handle
   /// bluetooth-related events.
-  public static var bluetootCentrals: Application.LaunchOptionsKey {
+  public static var bluetoothCentrals: Application.LaunchOptionsKey {
     Application.LaunchOptionsKey(rawValue: "Application.BluetoothCentrals")
   }
 
