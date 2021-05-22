@@ -37,20 +37,20 @@ extension MenuElement {
   /// Constants that indicate the state of an action-based or command-based
   /// menu element.
   public enum State: Int {
-  /// A constant indicating the menu element is in the "off" state.
-  case off
+    /// A constant indicating the menu element is in the "off" state.
+    case off
 
-  /// A constant indicating the menu element is in the "on" state.
-  case on
+    /// A constant indicating the menu element is in the "on" state.
+    case on
 
-  /// A constant indicating the menu element is in the "mixed" state.
-  case mixed
+    /// A constant indicating the menu element is in the "mixed" state.
+    case mixed
   }
 }
 
 /// An object representing a menu, action, or command.
 public class MenuElement {
-  /// Getting the Element Attributes
+  // MARK - Getting the Element Attributes
 
   /// The title of the menu element.
   public internal(set) var title: String
@@ -58,8 +58,10 @@ public class MenuElement {
   /// The image to display alongside the menu element's title.
   public internal(set) var image: Image?
 
-  /// Creating a Menu Element
+  // MARK - Creating a Menu Element
 
+  /// Creates and returns a `MenuElement` initialized with the given title and
+  /// image.
   public init(title: String, image: Image? = nil) {
     self.title = title
     self.image = image
