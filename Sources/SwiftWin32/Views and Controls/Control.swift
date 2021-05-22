@@ -36,6 +36,11 @@ private struct ControlEventCallback<Source: Control, Target: AnyObject>: Control
   }
 }
 
+@inline(__always)
+private var kTriggers: [Control.Event] {
+  Control.Event.touchEvents + Control.Event.semanticEvents + Control.Event.editingEvents
+}
+
 /// The base class for controls, which are visual elements that convey a
 /// specific action or intention in response to user interactions.
 public class Control: View {
@@ -47,11 +52,8 @@ public class Control: View {
   @inline(__always)
   private func addAction(_ callable: ControlEventCallable,
                          for controlEvents: Control.Event) {
-    for event in Control.Event.touchEvents + Control.Event.semanticEvents + Control.Event.editingEvents {
-      if controlEvents.rawValue & event.rawValue == event.rawValue {
-        self.actions[event, default: []].append(callable)
-      }
-    }
+    kTriggers.filter { $0.rawValue & controlEvents.rawValue == $0.rawValue }
+             .forEach { self.actions[$0, default: []].append(callable) }
   }
 
   /// Associates a target object and action method with the control.
@@ -86,11 +88,8 @@ public class Control: View {
 
   /// Calls the action methods associated with the specified events.
   func sendActions(for controlEvents: Control.Event) {
-    for event in Control.Event.touchEvents + Control.Event.semanticEvents + Control.Event.editingEvents {
-      if controlEvents.rawValue & event.rawValue == event.rawValue {
-        _ = self.actions[event]?.map { $0(sender: self, event: controlEvents) }
-      }
-    }
+    kTriggers.filter { $0.rawValue & controlEvents.rawValue == $0.rawValue }
+             .forEach { self.actions[$0]?.forEach { $0(sender: self, event: controlEvents) } }
   }
 }
 
