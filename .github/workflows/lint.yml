@@ -1,7 +1,11 @@
 name: lint
 
 on:
-  pull_request_target:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**/*.swift'
 
 jobs:
   lint:
@@ -9,8 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
     - uses: seanmiddleditch/gha-setup-vsdevenv@master
 
     - name: Install Swift 5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
@@ -37,10 +39,7 @@ jobs:
         tag: swift-format-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
         fileName: swift-format.exe
         out-file-path: C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\
-    # - uses: wearerequired/lint-action@v1.9
-    #   with:
-    #     swift_format_official: true
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+
     - uses: compnerd/swift-format-linter-action@main
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
