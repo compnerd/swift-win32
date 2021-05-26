@@ -55,7 +55,7 @@ jobs:
       run: swift build -v
 
     - name: Run tests
-      run: swift test -v -Xswiftc -DENABLE_TESTING -enable-code-coverage
+      run: swift test -v -Xswiftc -DENABLE_TESTING --enable-code-coverage
 
     - name: Process Coverage
       run: |
