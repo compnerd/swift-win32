@@ -1,12 +1,12 @@
 name: coverage
 
 on:
-  # push:
-  #   branches:
-  #      - main
-  #   paths:
-  #     - '**/*.swift'
-  #     - '!Examples/**/*.swift'
+  push:
+    branches:
+       - main
+    paths:
+      - '**/*.swift'
+      - '!Examples/**/*.swift'
   workflow_dispatch:
 
 jobs:
@@ -47,20 +47,21 @@ jobs:
         New-Item -Path C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\lib\clang\12.0.0\lib\x86_64-unknown-windows-msvc -ItemType Directory
         Invoke-WebRequest -Uri "https://artprodeus21.artifacts.visualstudio.com/A8fd008a0-56bc-482c-ba46-67f9425510be/3133d6ab-80a8-4996-ac4f-03df25cd3224/_apis/artifact/cGlwZWxpbmVhcnRpZmFjdDovL2NvbXBuZXJkL3Byb2plY3RJZC8zMTMzZDZhYi04MGE4LTQ5OTYtYWM0Zi0wM2RmMjVjZDMyMjQvYnVpbGRJZC81MTM4NS9hcnRpZmFjdE5hbWUvdG9vbGNoYWluLXdpbmRvd3MteDY00/content?format=file&subPath=%2FLibrary%2FDeveloper%2FToolchains%2Funknown-Asserts-development.xctoolchain%2Fusr%2Flib%2Fclang%2F12.0.0%2Flib%2Fx86_64-unknown-windows-msvc%2Fclang_rt.profile.lib" -OutFile C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\lib\clang\12.0.0\lib\x86_64-unknown-windows-msvc\clang_rt.profile.lib
         # Workaround for the toolchain issue
-        New-Item -Path C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\clang\lib\windows
+        New-Item -Path C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\clang\lib -ItemType Directory
+        New-Item -Path C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\clang\lib\windows -ItemType Directory
         Invoke-WebRequest -Uri "https://artprodeus21.artifacts.visualstudio.com/A8fd008a0-56bc-482c-ba46-67f9425510be/3133d6ab-80a8-4996-ac4f-03df25cd3224/_apis/artifact/cGlwZWxpbmVhcnRpZmFjdDovL2NvbXBuZXJkL3Byb2plY3RJZC8zMTMzZDZhYi04MGE4LTQ5OTYtYWM0Zi0wM2RmMjVjZDMyMjQvYnVpbGRJZC81MTM4NS9hcnRpZmFjdE5hbWUvdG9vbGNoYWluLXdpbmRvd3MteDY00/content?format=file&subPath=%2FLibrary%2FDeveloper%2FToolchains%2Funknown-Asserts-development.xctoolchain%2Fusr%2Flib%2Fclang%2F12.0.0%2Flib%2Fx86_64-unknown-windows-msvc%2Fclang_rt.profile.lib" -OutFile C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\clang\lib\windows\clang_rt.profile-x86_64.lib
 
     - name: Build
       run: swift build -v
 
     - name: Run tests
-      run: swift test -v -Xswiftc -DENABLE_TESTING -enable-code-coverage
+      run: swift test -v -Xswiftc -DENABLE_TESTING --enable-code-coverage
 
     - name: Process Coverage
       run: |
-        llvm-cov export -format lcov -ignore-filename-regex ".build|Tests|Examples" -instr-profile .build\x86_64-unknown-windows-msvc\debug\codecov\default.profdata .build\x86_64-unknown-windows-msvc\debug\SwiftWin32PackageTests.xctest > $env:Temp\coverage.lcov
+        llvm-cov export -format lcov -ignore-filename-regex ".build|Tests|Examples" -instr-profile .build\x86_64-unknown-windows-msvc\debug\codecov\default.profdata .build\x86_64-unknown-windows-msvc\debug\SwiftWin32PackageTests.xctest > coverage.lcov
 
     - uses: codecov/codecov-action@v1.5.0
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        files: $env:Temp\coverage.lcov
+        files: coverage.lcov
