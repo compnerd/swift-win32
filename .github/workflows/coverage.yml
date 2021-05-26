@@ -1,12 +1,12 @@
 name: coverage
 
 on:
-  # push:
-  #   branches:
-  #      - main
-  #   paths:
-  #     - '**/*.swift'
-  #     - '!Examples/**/*.swift'
+  push:
+    branches:
+       - main
+    paths:
+      - '**/*.swift'
+      - '!Examples/**/*.swift'
   workflow_dispatch:
 
 jobs:
