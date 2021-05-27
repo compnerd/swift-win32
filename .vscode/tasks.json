@@ -21,7 +21,7 @@
             "command": "swift",
             "args": [
                 "build",
-                "-c", "debug"
+                "-c", "debug",
             ],
             "group": {
                 "kind": "build",
@@ -31,30 +31,38 @@
                 "options": {
                     "shell": {
                         "executable": "C:\\WINDOWS\\System32\\cmd.exe",
-                        "args": ["/d", "/c"]
+                        "args": [
+                            "/d",
+                            "/c",
+                        ]
                     }
                 }
             }
         },
         {
             "label": "Build (Release)",
+            "type": "shell",
             "command": "swift",
             "args": [
                 "build",
-                "-c", "release"
+                "-c", "release",
             ],
             "group": "build",
             "windows": {
                 "options": {
                     "shell": {
                         "executable": "C:\\WINDOWS\\System32\\cmd.exe",
-                        "args": ["/d", "/c"]
+                        "args": [
+                            "/d",
+                            "/c",
+                        ]
                     }
                 }
             }
         },
         {
             "label": "Test (Debug)",
+            "type": "shell",
             "command": "swift",
             "args": [
                 "test",
@@ -69,14 +77,18 @@
                 "options": {
                     "shell": {
                         "executable": "C:\\WINDOWS\\System32\\cmd.exe",
-                        "args": ["/d", "/c"]
+                        "args": [
+                            "/d",
+                            "/c",
+                        ]
                     }
                 }
-            }
+            },
         },
         {
             "label": "Test (Release)",
             "command": "swift",
+            "type": "shell",
             "args": [
                 "test",
                 "-c", "release",
@@ -87,7 +99,10 @@
                 "options": {
                     "shell": {
                         "executable": "C:\\WINDOWS\\System32\\cmd.exe",
-                        "args": ["/d", "/c"]
+                        "args": [
+                            "/d",
+                            "/c",
+                        ]
                     }
                 }
             }
