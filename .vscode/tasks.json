@@ -1,0 +1,96 @@
+// See https://go.microsoft.com/fwlink/?LinkId=733558
+// for the documentation about the tasks.json format
+{
+    "version": "2.0.0",
+    "problemMatcher": {
+        "owner": "swift",
+        "fileLocation": "autoDetect",
+        "pattern": {
+            "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+        }
+    },
+    "tasks": [
+        {
+            "label": "Build (Debug)",
+            "type": "shell",
+            "command": "swift",
+            "args": [
+                "build",
+                "-c", "debug"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "C:\\WINDOWS\\System32\\cmd.exe",
+                        "args": ["/d", "/c"]
+                    }
+                }
+            }
+        },
+        {
+            "label": "Build (Release)",
+            "command": "swift",
+            "args": [
+                "build",
+                "-c", "release"
+            ],
+            "group": "build",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "C:\\WINDOWS\\System32\\cmd.exe",
+                        "args": ["/d", "/c"]
+                    }
+                }
+            }
+        },
+        {
+            "label": "Test (Debug)",
+            "command": "swift",
+            "args": [
+                "test",
+                "-c", "debug",
+                "-Xswiftc", "-DENABLE_TESTING",
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "C:\\WINDOWS\\System32\\cmd.exe",
+                        "args": ["/d", "/c"]
+                    }
+                }
+            }
+        },
+        {
+            "label": "Test (Release)",
+            "command": "swift",
+            "args": [
+                "test",
+                "-c", "release",
+                "-Xswiftc", "-DENABLE_TESTING",
+            ],
+            "group": "test",
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "C:\\WINDOWS\\System32\\cmd.exe",
+                        "args": ["/d", "/c"]
+                    }
+                }
+            }
+        }
+    ]
+}
