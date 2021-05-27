@@ -3,3 +3,5 @@ comment:
   behavior: new
 ignore:
   - "Examples/**/*"
+  - "Tests/**/*"
+  - "Packages/**/*"
