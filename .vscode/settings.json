@@ -1,0 +1,9 @@
+{
+  "cmake.configureOnOpen": false,
+  "files.exclude": {
+    ".git": true,
+    ".build": true,
+    ".*.sw?": true,
+    "**/.DS_Store": true
+  }
+}
