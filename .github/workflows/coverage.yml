@@ -8,6 +8,13 @@ on:
       - '**/*.swift'
       - '.github/workflows/coverage.yml'
       - '!Examples/**/*.swift'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**/*.swift'
+      - '.github/workflows/coverage.yml'
+      - '!Examples/**/*.swift'
   workflow_dispatch:
 
 jobs:
