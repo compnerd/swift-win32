@@ -18,8 +18,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - tag: 5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
-            branch: swift-5.5-branch
+          - branch: swift-5.5-branch
+            tag: 5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
 
     steps:
     - uses: actions/checkout@v2

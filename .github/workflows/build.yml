@@ -14,12 +14,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - tag: 5.4-RELEASE
-            branch: swift-5.4-release
-          - tag: 5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
-            branch: swift-5.5-branch
-          - tag: DEVELOPMENT-SNAPSHOT-2021-04-26-a
-            branch: development
+          - branch: swift-5.4-release
+            tag: 5.4-RELEASE
+
+          - branch: swift-5.5-branch
+            tag: 5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
+
+          - branch: development
+            tag: DEVELOPMENT-SNAPSHOT-2021-04-26-a
 
     steps:
     - uses: actions/checkout@v2
