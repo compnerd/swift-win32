@@ -1,6 +1,11 @@
 comment:
-  layout: "diff, files"
+  layout: "diff,files"
   behavior: new
+coverage:
+  status:
+    project: true
+    patch: true
+    changes: true
 ignore:
   - "Examples/**/*"
   - "Tests/**/*"
