@@ -111,6 +111,29 @@
       },
     },
     {
+      "label": "Test (Coverage)",
+      "command": "swift",
+      "type": "shell",
+      "args": [
+        "test",
+        "-c", "debug",
+        "-Xswiftc", "-DENABLE_TESTING",
+        "--enable-code-coverage",
+      ],
+      "group": "test",
+      "windows": {
+        "options": {
+          "shell": {
+            "executable": "C:\\WINDOWS\\System32\\cmd.exe",
+            "args": [
+              "/d",
+              "/c",
+            ]
+          }
+        }
+      }
+    }
+    {
       "label": "Test (Release)",
       "command": "swift",
       "type": "shell",
