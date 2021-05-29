@@ -6,102 +6,102 @@ import XCTest
 
 final class ViewControllerTests: XCTestCase {
   func testLazyViewLoading() {
-    let sut = ViewController()
+    let vc = ViewController()
 
-    XCTAssertNil(sut.viewIfLoaded)
-    XCTAssertFalse(sut.isViewLoaded)
+    XCTAssertNil(vc.viewIfLoaded)
+    XCTAssertFalse(vc.isViewLoaded)
 
-    _ = sut.view
+    _ = vc.view
 
-    XCTAssertNotNil(sut.viewIfLoaded)
-    XCTAssertTrue(sut.isViewLoaded)
+    XCTAssertNotNil(vc.viewIfLoaded)
+    XCTAssertTrue(vc.isViewLoaded)
   }
 
   func testManualViewLoading() {
-    let sut = ViewController()
+    let vc = ViewController()
 
-    XCTAssertNil(sut.viewIfLoaded)
-    XCTAssertFalse(sut.isViewLoaded)
+    XCTAssertNil(vc.viewIfLoaded)
+    XCTAssertFalse(vc.isViewLoaded)
 
-    sut.loadViewIfNeeded()
+    vc.loadViewIfNeeded()
 
-    XCTAssertNotNil(sut.viewIfLoaded)
-    XCTAssertTrue(sut.isViewLoaded)
+    XCTAssertNotNil(vc.viewIfLoaded)
+    XCTAssertTrue(vc.isViewLoaded)
   }
 
   func testTitleGetterAndSetter() {
-    let sut = ViewController()
+    let vc = ViewController()
 
-    // XCTAssertNil(sut.title) // This is currently failing, but the initial value of `title` should be `nil`
+    // XCTAssertNil(vc.title) // This is currently failing, but the initial value of `title` should be `nil`
 
-    sut.title = "Title"
+    vc.title = "Title"
 
-    XCTAssertEqual(sut.title, "Title")
+    XCTAssertEqual(vc.title, "Title")
   }
 
   func testValueOfDisablesAutomaticKeyboardDismissal() {
-    let sut = MockViewController()
+    let vc = MockViewController()
 
-    sut.modalPresentationStyleGetter = {
+    vc.modalPresentationStyleGetter = {
       return .automatic
     }
 
-    XCTAssertFalse(sut.disablesAutomaticKeyboardDismissal)
+    XCTAssertFalse(vc.disablesAutomaticKeyboardDismissal)
 
-    sut.modalPresentationStyleGetter = {
+    vc.modalPresentationStyleGetter = {
       return .formSheet
     }
 
-    XCTAssertTrue(sut.disablesAutomaticKeyboardDismissal)
+    XCTAssertTrue(vc.disablesAutomaticKeyboardDismissal)
   }
 
   func testNextResponder() {
     let expectedResult = View(frame: .zero)
 
-    let sut = ViewController()
+    let vc = ViewController()
 
-    XCTAssertNil(sut.next)
+    XCTAssertNil(vc.next)
 
-    expectedResult.addSubview(sut.view)
+    expectedResult.addSubview(vc.view)
 
-    XCTAssert(sut.next === expectedResult)
+    XCTAssert(vc.next === expectedResult)
   }
 
   func testViewDidLoadMethodCalledAfterLazyViewLoad() {
-    let sut = MockViewController()
+    let vc = MockViewController()
 
     let expectation = self.expectation(description: "viewDidLoad should be called")
 
-    sut.viewDidLoadBlock = {
+    vc.viewDidLoadBlock = {
       expectation.fulfill()
     }
 
-    _ = sut.view
+    _ = vc.view
 
     wait(for: [expectation], timeout: 0.1)
   }
 
   func testViewDidLoadMethodCalledAfterManualViewLoad() {
-    let sut = MockViewController()
+    let vc = MockViewController()
 
     let expectation = self.expectation(description: "viewDidLoad should be called")
 
-    sut.viewDidLoadBlock = {
+    vc.viewDidLoadBlock = {
       expectation.fulfill()
     }
 
-    sut.loadViewIfNeeded()
+    vc.loadViewIfNeeded()
 
     wait(for: [expectation], timeout: 0.1)
   }
 
   func testViewDidLoadMethodNotCalledIfViewNotLoaded() {
-    let sut = MockViewController()
+    let vc = MockViewController()
 
     let expectation = self.expectation(description: "viewDidLoad should not be called")
     expectation.isInverted = true
 
-    sut.viewDidLoadBlock = {
+    vc.viewDidLoadBlock = {
       expectation.fulfill()
     }
 
