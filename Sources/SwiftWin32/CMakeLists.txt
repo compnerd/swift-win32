@@ -153,8 +153,6 @@ target_sources(SwiftWin32 PRIVATE
   Support/WinSDK+Extensions.swift)
 target_sources(SwiftWin32 PRIVATE
   Support/WindowMessage.swift)
-target_compile_options(SwiftWin32 PRIVATE
-  "SHELL:-Xfrontend -validate-tbd-against-ir=none")
 target_link_libraries(SwiftWin32 PUBLIC
   ComCtl32
   User32)
