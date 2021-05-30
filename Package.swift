@@ -32,7 +32,6 @@ let SwiftWin32 = Package(
       ],
       swiftSettings: [
         .define("WITH_SWIFT_LOG"),
-        .unsafeFlags(["-Xfrontend", "-validate-tbd-against-ir=none"]),
       ],
       linkerSettings: [
         .linkedLibrary("User32"),
