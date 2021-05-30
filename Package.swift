@@ -32,10 +32,6 @@ let SwiftWin32 = Package(
       ],
       swiftSettings: [
         .define("WITH_SWIFT_LOG"),
-      ],
-      linkerSettings: [
-        .linkedLibrary("User32"),
-        .linkedLibrary("ComCtl32"),
       ]
     ),
     .target(
