@@ -1,9 +1,5 @@
-/**
- * Copyright © 2021 Saleem Abdulrasool <compnerd@compnerd.org>
- * All rights reserved.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- **/
+// Copyright © 2021 Saleem Abdulrasool <compnerd@compnerd.org>
+// SPDX-License-Identifier: BSD-3-Clause
 
 /// A view type that compares itself against its previous value and prevents its
 /// child updating if its new value is the same as its old value.
