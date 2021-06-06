@@ -85,6 +85,10 @@ let SwiftWin32 = Package(
         ]),
       ]
     ),
+    .target(
+      name: "TestUtilities",
+      path: "Tests/Utilities"
+    ),
     .testTarget(
       name: "AutoLayoutTests",
       dependencies: ["SwiftWin32"]
@@ -95,7 +99,7 @@ let SwiftWin32 = Package(
     ),
     .testTarget(
       name: "UICoreTests",
-      dependencies: ["SwiftWin32"]
+      dependencies: ["SwiftWin32", "TestUtilities"]
     )
   ]
 )
