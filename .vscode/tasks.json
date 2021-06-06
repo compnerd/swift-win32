@@ -132,7 +132,7 @@
           }
         }
       }
-    }
+    },
     {
       "label": "Test (Release)",
       "command": "swift",
