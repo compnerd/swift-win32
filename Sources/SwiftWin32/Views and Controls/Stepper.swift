@@ -19,14 +19,10 @@ import WinSDK
 private let SwiftStepperWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lParam) in
   switch uMsg {
   case UINT(WM_HSCROLL):
-    guard let hSender = HWND(bitPattern: UInt(lParam)) else { break }
-
-    let lpInstance = GetWindowLongPtrW(hSender, GWLP_USERDATA)
-    if lpInstance == 0 { break }
-
-    if let stepper = unsafeBitCast(lpInstance, to: AnyObject.self) as? Stepper {
+    if let stepper = UserData(from: HWND(bitPattern: UInt(lParam))) as Stepper? {
       stepper.sendActions(for: .valueChanged)
     }
+
   default:
     break
   }
@@ -64,10 +60,19 @@ public class Stepper: Control {
 
   // MARK - Configuring the Stepper
 
-  public var isContinuous: Bool { fatalError("not yet implemented") }
-  public var autorepeat: Bool { fatalError("not yet implemented") }
+  /// A boolean value that determines whether to send value changes during user
+  /// interaction or after user interaction ends.
+  public var isContinuous: Bool = true {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
 
-  /// A Boolean value that determines whether the stepper can wrap its value to
+  /// A boolean value that determines whether to repeatedly change the stepper's
+  /// value as the user presses and holds a stepper button.
+  public var autorepeat: Bool = true {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
+
+  /// A boolean value that determines whether the stepper can wrap its value to
   /// the minimum or maximum value when incrementing and decrementing the value.
   public var wraps: Bool {
     get { self.GWL_STYLE & UDS_WRAP == UDS_WRAP }
@@ -152,6 +157,8 @@ public class Stepper: Control {
       _ = SendMessageW(self.hWnd, UINT(UDM_SETPOS32), 0, LPARAM(DWORD(newValue)))
     }
   }
+
+  // MARK -
 
   public init(frame: Rect) {
     super.init(frame: frame, class: Stepper.class, style: Stepper.style,
