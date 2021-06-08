@@ -1,7 +1,6 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
-import WinSDK
 import class Foundation.NSUUID
 
 extension Menu {
@@ -250,8 +249,10 @@ extension Menu.Identifier {
 }
 
 
+// MARK - Options for configuring a menu's appearance.
+
 extension Menu {
-  // MARK - Options for configuring a menu's appearance.
+  /// Options for configuring a menu's appearance.
   public struct Options: OptionSet {
     public typealias RawValue = UInt
 
@@ -295,7 +296,7 @@ public class Menu: MenuElement {
   // MARK - Accessing the Child Elements
 
   /// The contents of the menu.
-  public let children: [MenuElement]
+  public private(set) var children: [MenuElement]
 
   /// Creates a new menu with the same configuration as the current menu, but
   /// with a new set of child elements.
@@ -306,22 +307,8 @@ public class Menu: MenuElement {
   // MARK - Getting the Menu Details
 
   /// The unique identifier for the current menu.
-  public let identifier: Menu.Identifier
+  public private(set) var identifier: Menu.Identifier
 
   /// The configuration options for the current menu.
-  public let options: Menu.Options
-}
-
-internal struct Win32Menu {
-  internal let hMenu: MenuHandle
-
-  private let items: [Win32MenuElement]
-
-  internal init(_ hMenu: MenuHandle, items: [MenuElement]) {
-    self.hMenu = hMenu
-    self.items = items.map { Win32MenuElement($0) }
-    for (index, child) in self.items.enumerated() {
-      InsertMenuItemW(hMenu.value, UINT(index), true, &child.info)
-    }
-  }
+  public private(set) var options: Menu.Options
 }

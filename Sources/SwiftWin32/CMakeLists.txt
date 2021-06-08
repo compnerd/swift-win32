@@ -140,6 +140,7 @@ target_sources(SwiftWin32 PRIVATE
 target_sources(SwiftWin32 PRIVATE
   Platform/BatteryMonitor.swift
   Platform/Error.swift
+  Platform/Win32+Menu.swift
   Platform/Win32+PropertyWrappers.swift
   Platform/WindowClass.swift
   Platform/WindowsHandle.swift)
