@@ -16,7 +16,7 @@ public protocol MenuBuilder {
 
   /// Gets the command for the specified selector and property list.
   func command(for action: @escaping (_: AnyObject?) -> Void,
-                                      propertyList: Any?) -> Command?
+               propertyList: Any?) -> Command?
 
   // MARK - Inserting Child Menus
 
@@ -57,7 +57,7 @@ public protocol MenuBuilder {
 
 extension MenuBuilder {
   func command(for action: @escaping (_: AnyObject?) -> Void,
-                                      propertyList: Any?) -> Command? {
+               propertyList: Any?) -> Command? {
     return nil
   }
 }
