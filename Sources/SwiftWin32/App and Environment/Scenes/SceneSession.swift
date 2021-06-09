@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 extension SceneSession {
+  /// Constants that indicate the possible roles for a scene.
   public struct Role: Equatable, Hashable, RawRepresentable {
     public typealias RawValue = String
 
@@ -27,7 +28,7 @@ extension SceneSession.Role {
 }
 
 public class SceneSession {
-  /// Getting the Scene Information
+  // MARK - Getting the Scene Information
 
   /// The scene associated with the current session.
   public internal(set) weak var scene: Scene?
@@ -35,14 +36,14 @@ public class SceneSession {
   /// The role played by the scene's content.
   public let role: SceneSession.Role
 
-  /// Getting the Scene Configuration Details
+  // MARK - Getting the Scene Configuration Details
 
   /// The configuration data for creating the secene.
   // This is mutable as the configuration is only finalized after the deleate
   // has formed the final configuration.
   public internal(set) var configuration: SceneConfiguration
 
-  /// Identifying the Scene
+  // MARK - Identifying the Scene
 
   /// A unique identifier that persists for the lifetime of the session
   public let persistentIdentifier: String
