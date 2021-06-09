@@ -1,6 +1,8 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+import class Foundation.NSNotification
+
 open class Responder {
   // MARK - Managing the Responder Chain
 
