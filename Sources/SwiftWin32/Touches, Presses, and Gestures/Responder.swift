@@ -1,6 +1,8 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+import class Foundation.NSNotification
+
 open class Responder {
   // MARK - Managing the Responder Chain
 
@@ -51,5 +53,72 @@ open class Responder {
   /// Informs the responder when a system event (such as a system alert) cancels
   /// a touch sequence.
   public func touchesCancelled(_ touches: Set<Touch>, with event: Event?) {
+  }
+
+  /// Tells the responder that updated values were received for previously
+  /// estimated properties or that an update is no longer expected.
+  public func touchesEstimatedPropertiesUpdated(_ touches: Set<Touch>) {
+  }
+
+  // MARK - Constants
+
+  /// A user info key to retrieve the animation curve that the system uses to
+  /// animate the keyboard onto or off the screen.
+  public class var keyboardAnimationCurveUserInfoKey: String {
+    "UIResponderKeyboardAnimationCurveUserInfoKey"
+  }
+
+  /// A user info key to retrieve the duration of the keyboard animation in
+  /// seconds.
+  public class var keyboardAnimationDurationUserInfoKey: String {
+    "UIResponderKeyboardAnimationDurationUserInfoKey"
+  }
+
+  /// A user info key to retrieve the keyboard’s frame at the beginning of its
+  /// animation.
+  public class var keyboardFrameBeginUserInfoKey: String {
+    "UIResponderKeyboardFrameBeginUserInfoKey"
+  }
+
+  /// A user info key to retrieve the keyboard’s frame at the end of its
+  /// animation.
+  public class var keyboardFrameEndUserInfoKey: String {
+    "UIResponderKeyboardFrameEndUserInfoKey"
+  }
+
+  /// A user info key to retrieve a boolean value that indicates whether the
+  /// keyboard belongs to the current app.
+  public class var keyboardIsLocalUserInfoKey: String {
+    "UIResponderKeyboardIsLocalUserInfoKey"
+  }
+
+  /// Posted immediately after a change in the keyboard’s frame.
+  public class var keyboardDidChangeFrameNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIResponderKeyboardDidChangeFrameNotification")
+  }
+
+  /// Posted immediately after the dismissal of the keyboard.
+  public class var keyboardDidHideNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIResponderKeyboardDidHideNotification")
+  }
+
+  /// Posted immediately after the display of the keyboard.
+  public class var keyboardDidShowNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIRespnderKeyboardDidShowNotification")
+  }
+
+  /// Posted immediately prior to a change in the keyboard’s frame.
+  public class var keyboardWillChangeFrameNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIReponderKeyboardWillChnageFrameNotification")
+  }
+
+  /// Posted immediately prior to the dismissal of the keyboard.
+  public class var keyboardWillHideNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIResponderKeyboardWillHideNotification")
+  }
+
+  /// Posted immediately prior to the display of the keyboard.
+  public class var keyboardWillShowNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIResponderKeyboardWillShowNotification")
   }
 }
