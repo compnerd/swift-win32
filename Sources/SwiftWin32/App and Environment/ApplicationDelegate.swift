@@ -123,10 +123,19 @@ public protocol ApplicationDelegate: AnyObject, _TriviallyConstructible {
   /// Informs the delegate that the application is about to terminate.
   func applicationWillTerminate(_ application: Application)
 
-  /// Responding to Environment Changes
+  // MARK - Responding to Environment Changes
+
+  /// Tells the delegate that protected files are available now.
   func applicationProtectedDataDidBecomeAavailable(_ application: Application)
+
+  /// Tells the delegate that the protected files are about to become
+  /// unavailable.
   func applicationProtectedDataWillBecomeUnavailable(_ application: Application)
+
+  /// Tells the delegate when the app receives a memory warning from the system.
   func applicationDidRecieveMemoryWarning(_ application: Application)
+
+  /// Tells the delegate when there is a significant change in the time.
   func applicationSignificantTimeChange(_ application: Application)
 
   // MARK - Configuring and Discarding Scenes
@@ -142,17 +151,22 @@ public protocol ApplicationDelegate: AnyObject, _TriviallyConstructible {
                    didDiscardSceneSessions sceneSessions: Set<SceneSession>)
 }
 
-public extension ApplicationDelegate {
-  func application(_ application: Application,
-                   willFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?)
+extension ApplicationDelegate {
+  public func application(_ application: Application,
+                          willFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?)
       -> Bool {
     return true
   }
 
-  func application(_ application: Application,
-                   didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?)
+  public func application(_ application: Application,
+                          didFinishLaunchingWithOptions options: [Application.LaunchOptionsKey:Any]?)
       -> Bool {
     return true
+  }
+
+  /// A notification that posts immediately after the app finishes launching.
+  public static var didFinishLaunchingNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIApplicationDidFinishLaunchingNotification")
   }
 }
 
@@ -171,6 +185,33 @@ extension ApplicationDelegate {
 
   public func applicationWillTerminate(_: Application) {
   }
+
+  /// A notification that posts when the app becomes active.
+  public static var didBecomeActiveNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIApplicationDidBecomeActiveNotification")
+  }
+
+  /// A notification that posts when the app is no longer active and loses
+  /// focus.
+  public static var willResignActiveNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIApplicationWillResignActiveNotification")
+  }
+
+  /// A notification that posts when the app enters the background.
+  public static var didEnterBackgroundNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIApplicationDidEnterBackgroundNotification")
+  }
+
+  /// A notification that posts shortly before an app leaves the background
+  /// state on its way to becoming the active app.
+  public static var willEnterForegroundNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIApplicationWillEnterForegroundNotification")
+  }
+
+  /// A notification that posts when the app is about to terminate.
+  public static var willTerminateNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIApplicationWillTerminateNotification")
+  }
 }
 
 extension ApplicationDelegate {
@@ -184,6 +225,31 @@ extension ApplicationDelegate {
   }
 
   public func applicationSignificantTimeChange(_ application: Application) {
+  }
+
+  /// A notification that posts when the protected files become available for
+  /// your code to access.
+  public static var protectedDataDidBecomeAvailableNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIApplicationProtectedDataDidBecomeAvailableNotification")
+  }
+
+  /// A notification that posts shortly before protected files are locked down
+  /// and become inaccessible.
+  public static var protectedDataWillBecomeUnavailableNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIApplicationProtectedDataWillBecomeUnavailableNotification")
+  }
+
+  /// A notification that posts when the app receives a warning from the
+  /// operating system about low memory availability.
+  public static var didReceiveMemoryWarningNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIApplicationDidReceiveMemoryWarningNotification")
+  }
+
+  /// A notification that posts when there is a significant change in time, for
+  /// example, change to a new day (midnight), carrier time update, and change
+  /// to or from daylight savings time.
+  public static var significantTimeChangeNotification: NSNotification.Name {
+    NSNotification.Name(rawValue: "UIApplicationSignificantTimeChangeNotification")
   }
 }
 
@@ -201,29 +267,5 @@ extension ApplicationDelegate {
         scene.delegate?.sceneDidDisconnect(scene)
       }
     }
-  }
-}
-
-extension ApplicationDelegate {
-  public static var didFinishLaunchingNotification: NSNotification.Name {
-    NSNotification.Name(rawValue: "UIApplicationDidFinishLaunchingNotification")
-  }
-}
-
-extension ApplicationDelegate {
-  public static var didBecomeActiveNotification: NSNotification.Name {
-    NSNotification.Name(rawValue: "UIApplicationDidBecomeActiveNotification")
-  }
-  public static var didEnterBackgroundNotification: NSNotification.Name {
-    NSNotification.Name(rawValue: "UIApplicationDidEnterBackgroundNotification")
-  }
-  public static var willEnterForegroundNotification: NSNotification.Name {
-    NSNotification.Name(rawValue: "UIApplicationWillEnterForegroundNotification")
-  }
-  public static var willResignActiveNotification: NSNotification.Name {
-    NSNotification.Name(rawValue: "UIApplicationWillResignActiveNotification")
-  }
-  public static var willTerminateNotification: NSNotification.Name {
-    NSNotification.Name(rawValue: "UIApplicationWillTerminateNotification")
   }
 }
