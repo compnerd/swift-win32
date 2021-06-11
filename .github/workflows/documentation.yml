@@ -19,7 +19,7 @@ jobs:
       matrix:
         include:
           - branch: swift-5.5-branch
-            tag: 5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
+            tag: 5.5-DEVELOPMENT-SNAPSHOT-2021-05-09-a
             swift-doc: 1.0.0-rc.1
 
     steps:
