@@ -3,22 +3,24 @@
 
 /// The centralised point of control and coordination for running applications.
 open class Application: Responder {
-  /// Getting the Application Instance
+  internal var information: Information?
+
+  // MARK - Getting the Application Instance
 
   /// Returns the singleton application instance.
   public static var shared: Application = Application()
 
-  /// Managing the Application's Behaviour
+  // MARK - Managing the Application's Behaviour
 
   /// The delegate of the application object.
   public var delegate: ApplicationDelegate?
 
-  /// Getting the Application State
+  // MARK - Getting the Application State
 
   /// The applications current state or that of its most active scene.
   public internal(set) var state: Application.State
 
-  /// Getting Scene Information
+  // MARK - Getting Scene Information
 
   /// A boolean indicating whether the application may display multiple scenes.
   public var supportsMultipleScenes: Bool {
@@ -32,9 +34,13 @@ open class Application: Responder {
   /// system.
   public internal(set) var openSessions: Set<SceneSession> = []
 
-  /// Getting App Windows
-  public internal(set) var keyWindow: Window?
+  // MARK - Getting Application Windows
+
+  /// The application’s visible and hidden windows.
   public internal(set) var windows: [Window]
+
+  /// The application's key window.
+  public internal(set) var keyWindow: Window?
 
   override public required init() {
     self.state = .active
@@ -42,7 +48,8 @@ open class Application: Responder {
     super.init()
   }
 
-  // Responder Chain
+  // MARK - Responder Chain Overrides
+
   override public var next: Responder? {
     // The next responder is the application delegate, but only if the
     // application delegate is an instance of `Responder` and is not a `View`,
@@ -54,8 +61,6 @@ open class Application: Responder {
     }
     return nil
   }
-
-  internal var information: Information?
 }
 
 extension Application {
