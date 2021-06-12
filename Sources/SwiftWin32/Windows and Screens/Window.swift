@@ -100,6 +100,8 @@ private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSu
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
 }
 
+/// The backdrop for your application’s user interface and the object that
+/// dispatches events to your views.
 public class Window: View {
   private static let `class`: WindowClass =
       WindowClass(hInst: GetModuleHandleW(nil), name: "Swift.Window",
@@ -118,7 +120,7 @@ public class Window: View {
     Application.shared.windows.append(self)
   }
 
-  /// Creating a Window
+  // MARK - Creating a Window
 
   /// Creates a Window and associates it with the specified scene object.
   public init(windowScene: WindowScene) {
@@ -130,6 +132,8 @@ public class Window: View {
     super.init(frame: frame, class: Window.class, style: Window.style)
     _ = SetWindowSubclass(hWnd, SwiftWindowProc, UINT_PTR(0),
                           unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
+
+    // TODO(compnerd) honour self.canResizeToFitContent
     if let restrictions = windowScene.sizeRestrictions,
         restrictions.minimumSize == restrictions.maximumSize {
       self.GWL_STYLE &= ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX)
@@ -138,33 +142,45 @@ public class Window: View {
     windowScene.windows.append(self)
   }
 
-  /// Configuring the Window
+  // MARK - Configuring the Window
 
   /// The root view controller for the window.
   public var rootViewController: ViewController? {
     didSet { self.rootViewController?.view = self }
   }
 
-  // TODO(compnerd) handle set
   /// The position of the window in the z-axis.
-  public private(set) var windowLevel: Window.Level = .normal
+  public var windowLevel: Window.Level = .normal {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
 
-  // TODO(compnerd) remove this in favour of scene management interface;
-  // windowScene provides the scene associated with the window, and the scene is
-  // attached to a window.
+  /// The screen on which the window is displayed.
+  @available(*, deprecated, message: "use windowScene.scene")
   public var screen: Screen {
     let hMonitor: HMONITOR =
         MonitorFromWindow(hWnd, DWORD(MONITOR_DEFAULTTOPRIMARY))
     return Screen.screens.filter { $0 == hMonitor }.first!
   }
 
-  /// Making Windows Key
+  /// A boolean value that indicates whether the window's constraint-based
+  /// content determines its size.
+  public var canResizeToFitContent: Bool = false {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
 
-  /// A boolean value that indicates whether the window is the key window for the
-  /// application.
-  var isKeyWindow: Bool {
+  // MARK - Making Windows Key
+
+  /// A boolean value that indicates whether the window is the key window for
+  /// the application.
+  public var isKeyWindow: Bool {
     guard let keyWindow = Application.shared.keyWindow else { return false }
     return self.hWnd == keyWindow.hWnd
+  }
+
+  /// A boolean value that indicates whether the window can become the key
+  /// window.
+  public var canBecomeKey: Bool = true {
+    didSet { fatalError("\(#function) not yet implemented") }
   }
 
   /// Shows the window and makes it the key window.
@@ -175,6 +191,8 @@ public class Window: View {
 
   /// Makes the receiver the key window.
   public func makeKey() {
+    guard self.canBecomeKey else { return }
+
     Application.shared.keyWindow?.resignKey()
     Application.shared.keyWindow = self
     Application.shared.keyWindow?.becomeKey()
@@ -194,16 +212,15 @@ public class Window: View {
                                     object: self)
   }
 
-  /// Getting Related Objects
+  // MARK - Getting Related Objects
 
   /// The scene containing the window.
   public weak var windowScene: WindowScene? {
     didSet { fatalError("\(#function) not yet implemented") }
   }
-}
 
-/// Responding to Window-Related Notifications
-extension Window {
+  // MARK - Responding to Window-Related Notifications
+
   /// Posted whn a `Window` object becomes visible.
   public class var didBecomeVisibleNotification: NSNotification.Name {
     NSNotification.Name(rawValue: "UIWindowDidBecomeVisibleNotification")
