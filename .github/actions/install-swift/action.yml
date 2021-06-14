@@ -14,17 +14,22 @@ runs:
   steps:
     - name: Install Swift ${{ inputs.tag }}
       run: |
+        function Update-EnvironmentVariables {
+          foreach ($level in "Machine", "User") {
+            [Environment]::GetEnvironmentVariables($level).GetEnumerator() | % {
+              if ($_.Name -Match 'Path$') {
+                $_.Value = ($((Get-Content "Env:$($_.Name)") + ";$($_.Value)") -Split ';' | Select -Unique) -Join ';'
+              }
+              $_
+            } | Set-Content -Path { "Env:$($_.Name)" }
+          }
+        }
+
         Install-Binary -Url "https://swift.org/builds/${{ inputs.branch }}/windows10/swift-${{ inputs.tag }}/swift-${{ inputs.tag }}-windows10.exe" -Name "installer.exe" -ArgumentList ("-q")
-      shell: pwsh
-    - name: Set Environment Variables
-      run: |
-        echo "SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        echo "DEVELOPER_DIR=C:\Library\Developer" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-      shell: pwsh
-    - name: Adjust Paths
-      run: |
-        echo "C:\Library\Swift-development\bin;C:\Library\icu-67\usr\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-        echo "C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        Update-EnvironmentVariables
+
+        echo "$env:Path" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
+        Get-ChildItem Env: | % { echo "$($_.Name)=$($_.Value)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append }
       shell: pwsh
     - name: Install Supporting Files
       run: |

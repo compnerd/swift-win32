@@ -44,7 +44,7 @@ jobs:
 
     - name: Process Coverage
       run: |
-        llvm-cov export -format lcov -ignore-filename-regex ".build|Tests|Examples" -instr-profile .build\x86_64-unknown-windows-msvc\debug\codecov\default.profdata .build\x86_64-unknown-windows-msvc\debug\SwiftWin32PackageTests.xctest > coverage.lcov
+        $env:DEVELOPER_DIR\Toolchains\unknown-Asserts-development.xctcoolchain\usr\bin\llvm-cov.exe export -format lcov -ignore-filename-regex ".build|Tests|Examples" -instr-profile .build\x86_64-unknown-windows-msvc\debug\codecov\default.profdata .build\x86_64-unknown-windows-msvc\debug\SwiftWin32PackageTests.xctest > coverage.lcov
 
     - uses: codecov/codecov-action@v1.5.0
       with:
