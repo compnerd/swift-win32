@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - '**/*.swift'
+      - '.github/workflows/build.yml'
 
 jobs:
   build:
