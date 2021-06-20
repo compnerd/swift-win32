@@ -283,13 +283,14 @@ extension Menu.Options {
 
 /// A container for grouping related menu elements in an application menu or
 /// contextual menu.
-public class Menu: MenuElement {
+open class Menu: MenuElement {
   // MARK - Creating a Menu Object
 
   /// Creates a new menu with the specified values.
-  public init(title: String = "", image: Image? = nil,
-              identifier: Menu.Identifier? = nil, options: Menu.Options = [],
-              children: [MenuElement] = []) {
+  public /*convenience*/ init(title: String = "", image: Image? = nil,
+                              identifier: Menu.Identifier? = nil,
+                              options: Menu.Options = [],
+                              children: [MenuElement] = []) {
     self.children = children
     self.identifier = identifier ?? .generated
     self.options = options
@@ -303,17 +304,17 @@ public class Menu: MenuElement {
 
   /// Creates a new menu with the same configuration as the current menu, but
   /// with a new set of child elements.
-  public func replacingChildren(_ newChildren: [MenuElement]) -> Menu {
+  open func replacingChildren(_ newChildren: [MenuElement]) -> Menu {
     fatalError("\(#function) not yet implemented")
   }
 
   // MARK - Getting the Menu Details
 
   /// The unique identifier for the current menu.
-  public private(set) var identifier: Menu.Identifier
+  open private(set) var identifier: Menu.Identifier
 
   /// The configuration options for the current menu.
-  public private(set) var options: Menu.Options
+  open private(set) var options: Menu.Options
 }
 
 extension Menu: Equatable {
