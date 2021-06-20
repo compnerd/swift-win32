@@ -30,9 +30,6 @@ let SwiftWin32 = Package(
       exclude: [
         "CMakeLists.txt",
       ],
-      swiftSettings: [
-        .define("WITH_SWIFT_LOG"),
-      ],
       linkerSettings: [
         .linkedLibrary("User32"),
         .linkedLibrary("ComCtl32"),

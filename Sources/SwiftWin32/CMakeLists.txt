@@ -164,14 +164,8 @@ target_link_libraries(SwiftWin32 PUBLIC
 target_link_libraries(SwiftWin32 PUBLIC
   $<$<NOT:$<PLATFORM_ID:Darwin>>:dispatch>
   $<$<NOT:$<PLATFORM_ID:Darwin>>:Foundation>)
-if(WITH_SWIFT_LOG)
-  target_compile_definitions(SwiftWin32 PRIVATE
-    WITH_SWIFT_LOG)
-  if(TARGET SwiftLog::Logging)
-    target_link_libraries(SwiftWin32 PUBLIC
-      SwiftLog::Logging)
-  endif()
-endif()
+target_link_libraries(SwiftWin32 PRIVATE
+  Logging)
 set_target_properties(SwiftWin32 PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY}
   INTERFACE_LINK_DIRECTORIES $<TARGET_LINKER_FILE_DIR:SwiftWin32>)

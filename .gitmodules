@@ -4,3 +4,6 @@
 [submodule "Packages/SwiftCOM"]
 	path = Packages/SwiftCOM
 	url = https://github.com/compnerd/swift-com
+[submodule "Packages/swift-log"]
+	path = Packages/swift-log
+	url = https://github.com/apple/swift-log
