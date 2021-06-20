@@ -109,13 +109,14 @@ open class Press {
 
 extension Press: Equatable {
   public static func ==(_ lhs: Press, _ rhs: Press) -> Bool {
-    return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    // FIXME(compnerd) is this the correct check for equality?
+    return lhs === rhs
   }
 }
 
 extension Press: Hashable {
   public func hash(into hasher: inout Hasher) {
-    // FIXME(compnerd) figure out the correct hashing function
+    // FIXME(compnerd) is this the correct hashing?
     hasher.combine(self.type)
     hasher.combine(self.phase)
     hasher.combine(self.force)
