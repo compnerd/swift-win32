@@ -312,3 +312,16 @@ public class Menu: MenuElement {
   /// The configuration options for the current menu.
   public private(set) var options: Menu.Options
 }
+
+extension Menu: Equatable {
+  public static func ==(_ lhs: Menu, _ rhs: Menu) -> Bool {
+    // FIXME(compnerd) is this the correct check for equality?
+    return lhs === rhs
+  }
+}
+extension Menu: Hashable {
+  public func hash(into hasher: inout Hasher) {
+    // FIXME(compnerd) is this the correct hashing?
+    hasher.combine(ObjectIdentifier(self))
+  }
+}
