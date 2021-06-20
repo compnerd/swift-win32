@@ -299,7 +299,7 @@ public class Menu: MenuElement {
   // MARK - Accessing the Child Elements
 
   /// The contents of the menu.
-  public private(set) var children: [MenuElement]
+  public internal(set) var children: [MenuElement]
 
   /// Creates a new menu with the same configuration as the current menu, but
   /// with a new set of child elements.
