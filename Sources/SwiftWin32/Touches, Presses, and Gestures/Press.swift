@@ -3,53 +3,7 @@
 
 import struct Foundation.TimeInterval
 
-/// An object that represents the presence or movement of a button press on the
-/// screen for a particular event.
-public class Press {
-  internal init(type: Press.PressType, phase: Press.Phase, force: Double,
-                timestamp: TimeInterval) {
-    self.type = type
-    self.phase = phase
-    self.force = force
-    self.timestamp = timestamp
-  }
-
-  // MARK - Getting a Press Object’s Gesture Recognizers
-
-  /// The force of the button press.
-  public private(set) var force: Double
-
-  /// The gesture recognizers that are receiving the press.
-  public private(set) var gestureRecognizers: [GestureRecognizer]?
-
-  // MARK - Responding to Press Events
-
-  /// A `Responder` object.
-  public private(set) var responder: Responder?
-
-  // MARK - Getting the Press’s Location
-
-  /// The window in which the press initially occurred.
-  public private(set) var window: Window?
-
-  // MARK - Getting Press Attributes
-
-  /// The key pressed or released on a physical keyboard.
-#if false
-  public private(set) var key: Key?
-#endif
-
-  /// The type of the specified press.
-  public private(set) var type: Press.PressType
-
-  /// The current press phase of the object.
-  public private(set) var phase: Press.Phase
-
-  /// The time when the press occurred or when it was last mutated.
-  public private(set) var timestamp: TimeInterval
-
-  // MARK - Constants
-
+extension Press {
   /// The phases of a button press.
   public enum Phase: Int {
     /// A physical button was pressed.
@@ -67,7 +21,9 @@ public class Press {
     /// The system canceled tracking for the button.
     case cancelled
   }
+}
 
+extension Press {
   /// Constants that represent buttons that a user can press.
   public enum PressType: Int {
     // MARK - Navigation
@@ -100,5 +56,69 @@ public class Press {
 
     /// A constant that represents the menu button.
     case menu = 6
+  }
+}
+
+/// An object that represents the presence or movement of a button press on the
+/// screen for a particular event.
+open class Press {
+  // MARK - Getting a Press Object’s Gesture Recognizers
+
+  /// The force of the button press.
+  open private(set) var force: Double
+
+  /// The gesture recognizers that are receiving the press.
+  open private(set) var gestureRecognizers: [GestureRecognizer]?
+
+  // MARK - Responding to Press Events
+
+  /// A `Responder` object.
+  open private(set) var responder: Responder?
+
+  // MARK - Getting the Press’s Location
+
+  /// The window in which the press initially occurred.
+  open private(set) var window: Window?
+
+  // MARK - Getting Press Attributes
+
+  /// The key pressed or released on a physical keyboard.
+#if false
+  open private(set) var key: Key?
+#endif
+
+  /// The type of the specified press.
+  open private(set) var type: Press.PressType
+
+  /// The current press phase of the object.
+  open private(set) var phase: Press.Phase
+
+  /// The time when the press occurred or when it was last mutated.
+  open private(set) var timestamp: TimeInterval
+
+  // MARK -
+
+  internal init(type: Press.PressType, phase: Press.Phase, force: Double,
+                timestamp: TimeInterval) {
+    self.type = type
+    self.phase = phase
+    self.force = force
+    self.timestamp = timestamp
+  }
+}
+
+extension Press: Equatable {
+  public static func ==(_ lhs: Press, _ rhs: Press) -> Bool {
+    return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+  }
+}
+
+extension Press: Hashable {
+  public func hash(into hasher: inout Hasher) {
+    // FIXME(compnerd) figure out the correct hashing function
+    hasher.combine(self.type)
+    hasher.combine(self.phase)
+    hasher.combine(self.force)
+    hasher.combine(self.timestamp)
   }
 }
