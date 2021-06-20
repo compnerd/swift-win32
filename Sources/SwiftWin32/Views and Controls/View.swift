@@ -942,6 +942,6 @@ extension View: Equatable {
 
 extension View: TraitEnvironment {
   public var traitCollection: TraitCollection {
-    return self.window?.screen.traitCollection ?? TraitCollection.current
+    return self.window?.windowScene?.screen.traitCollection ?? TraitCollection.current
   }
 }
