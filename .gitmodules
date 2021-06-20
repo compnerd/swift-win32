@@ -7,3 +7,6 @@
 [submodule "Packages/swift-log"]
 	path = Packages/swift-log
 	url = https://github.com/apple/swift-log
+[submodule "Packages/swift-collections"]
+	path = Packages/swift-collections
+	url = https://github.com/apple/swift-collections

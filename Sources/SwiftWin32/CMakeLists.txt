@@ -165,7 +165,8 @@ target_link_libraries(SwiftWin32 PUBLIC
   $<$<NOT:$<PLATFORM_ID:Darwin>>:dispatch>
   $<$<NOT:$<PLATFORM_ID:Darwin>>:Foundation>)
 target_link_libraries(SwiftWin32 PRIVATE
-  Logging)
+  Logging
+  OrderedCollections)
 set_target_properties(SwiftWin32 PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY}
   INTERFACE_LINK_DIRECTORIES $<TARGET_LINKER_FILE_DIR:SwiftWin32>)
