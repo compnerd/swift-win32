@@ -29,5 +29,10 @@ set_target_properties(SwiftCOM PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 _install_target(SwiftCOM)
 
+file(GLOB LOGGING_SOURCES
+     ${PROJECT_SOURCE_DIR}/Packages/swift-log/Sources/Logging/*.swift)
+add_library(Logging STATIC
+  ${LOGGING_SOURCES})
+
 add_subdirectory(SwiftWin32)
 add_subdirectory(SwiftWin32UI)
