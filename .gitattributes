@@ -1,2 +1,3 @@
 *.swift text eol=lf
 *.md text eol=lf
+.gitmodules text eol=lf

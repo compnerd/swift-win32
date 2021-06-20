@@ -8,7 +8,7 @@ SPDX-License-Identifier: BSD-3-Clause
 cmake_minimum_required(VERSION 3.16.0)
 
 project(SwiftWin32
-  LANGUAGES Swift)
+  LANGUAGES C Swift)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/Modules)
 
@@ -43,8 +43,15 @@ execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
   OUTPUT_VARIABLE SWIFT_LOG_GIT_REVISION
   ERROR_QUIET
   OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Packages/swift-collections"
+  OUTPUT_VARIABLE COLLECTIONS_GIT_REVISION
+  ERROR_QUIET
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 include(SwiftSupport)
+
+add_subdirectory(Packages/swift-collections)
 
 add_subdirectory(Sources)
 add_subdirectory(Examples)
@@ -53,5 +60,7 @@ message("-- Building with sub-modules:")
 message("--   Cassowary rG${CASSOWARY_GIT_REVISION}")
 message("--   Swift/COM rG${SWIFT_COM_GIT_REVISION}")
 message("--   swift-log rG${SWIFT_LOG_GIT_REVISION}")
+message("--   Collections rG${COLLECTIONS_GIT_REVISION}")
+
 export(TARGETS SwiftCOM SwiftWin32
   FILE SwiftWin32Config.cmake)
