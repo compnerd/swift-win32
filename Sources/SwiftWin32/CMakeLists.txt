@@ -90,6 +90,8 @@ target_sources(SwiftWin32 PRIVATE
   "Text Display and Fonts/FontMetrics.swift")
 target_sources(SwiftWin32 PRIVATE
   "Touches, Presses, and Gestures/Event.swift"
+  "Touches, Presses, and Gestures/GestureRecognizer.swift"
+  "Touches, Presses, and Gestures/GestureRecognizerDelegate.swift"
   "Touches, Presses, and Gestures/Responder.swift"
   "Touches, Presses, and Gestures/Touch.swift")
 target_sources(SwiftWin32 PRIVATE
