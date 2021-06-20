@@ -65,13 +65,73 @@ extension Event {
   }
 }
 
-public class Event {
+/// An object that describes a single user interaction with your app.
+open class Event {
+  // MARK - Getting the Touches for an Event
+
+  /// Returns all touches associated with the event.
+  open private(set) var allTouches: Set<Touch>?
+
+  /// Returns the touch objects from the event that belong to the specified
+  /// given view.
+  open func touches(for view: View) -> Set<Touch>? {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Returns the touch objects from the event that belong to the specified
+  /// window.
+  open func touches(for window: Window) -> Set<Touch>? {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Returns all of the touches associated with the specified main touch.
+  open func coalescedTouches(for touch: Touch) -> [Touch]? {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Returns an array of touches that are predicted to occur for the specified
+  /// touch.
+  open func predictedTouches(for touch: Touch) -> [Touch]? {
+    fatalError("\(#function) not yet implemented")
+  }
+
   // MARK - Getting Event Attributes
 
   /// The time when the event occurred.
-  public var timestamp: TimeInterval
+  open private(set) var timestamp: TimeInterval
 
-  internal init(timestamp: TimeInterval) {
+  // MARK - Getting the Event Type
+
+  /// Returns the type of the event.
+  open private(set) var type: Event.EventType
+
+  /// Returns the subtype of the event.
+  open private(set) var subtype: Event.EventSubtype
+
+  // MARK - Getting the Touches for a Gesture Recognizer
+
+  /// Returns the touch objects that are being delivered to the specified
+  /// gesture recognizer.
+  open func touches(for gesture: GestureRecognizer) -> Set<Touch>? {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  ///
+  open private(set) var buttonMask: Event.ButtonMask
+
+  // MARK -
+
+  ///
+  open private(set) var modifierFlags: KeyModifierFlags
+
+  // MARK -
+
+  internal init(type: Event.EventType, subtype: Event.EventSubtype,
+                timestamp: TimeInterval) {
+    self.type = type
+    self.subtype = subtype
     self.timestamp = timestamp
+    self.buttonMask = []
+    self.modifierFlags = []
   }
 }
