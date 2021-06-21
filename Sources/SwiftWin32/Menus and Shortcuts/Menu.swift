@@ -322,6 +322,8 @@ extension Menu: Equatable {
 extension Menu: Hashable {
   public func hash(into hasher: inout Hasher) {
     // FIXME(compnerd) is this the correct hashing?
-    hasher.combine(ObjectIdentifier(self))
+    hasher.combine(self.children)
+    hasher.combine(self.identifier)
+    hasher.combine(self.options)
   }
 }
