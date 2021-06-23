@@ -264,6 +264,9 @@ extension Menu {
   }
 }
 
+extension Menu.Options: Hashable {
+}
+
 extension Menu.Options {
   /// An option indicating the menu displays inline with its parent menu instead
   /// of displaying as a submenu.
@@ -322,7 +325,7 @@ extension Menu: Equatable {
 extension Menu: Hashable {
   public func hash(into hasher: inout Hasher) {
     // FIXME(compnerd) is this the correct hashing?
-    hasher.combine(self.children)
+    hasher.combine(self.children.count)
     hasher.combine(self.identifier)
     hasher.combine(self.options)
   }
