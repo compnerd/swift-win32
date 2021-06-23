@@ -4,17 +4,19 @@
 extension ContextMenuInteraction {
   /// Constants that describe the appearance of the menu.
   public enum Appearance: Int {
-  /// No menu appearance.
-  case unknown
+    /// No menu appearance.
+    case unknown
 
-  /// A modal menu with an optional preview.
-  case rich
+    /// A modal menu with an optional preview.
+    case rich
 
-  /// A nonmodal, compact menu with no preview.
-  case compact
+    /// A nonmodal, compact menu with no preview.
+    case compact
   }
 }
 
+/// An interaction object that you use to display relevant actions for your
+/// content.
 public class ContextMenuInteraction: Interaction {
   // MARK - Creating a Context Menu Interaction Object
 
@@ -30,9 +32,10 @@ public class ContextMenuInteraction: Interaction {
   /// and responds to interaction-related events.
   public private(set) weak var delegate: ContextMenuInteractionDelegate?
 
-  public private(set) var view: View? = nil
+  public private(set) weak var view: View?
 
-  public func willMove(to view: View?) { }
+  public func willMove(to view: View?) {
+  }
 
   public func didMove(to view: View?) {
     self.view = view
