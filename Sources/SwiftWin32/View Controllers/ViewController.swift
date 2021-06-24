@@ -125,7 +125,7 @@ public class ViewController: Responder {
 
   /// Notifies the view controller that its view was removed from a view
   /// hierarchy.
-  public func viweDidDisappear(_ animated: Bool) {
+  public func viewDidDisappear(_ animated: Bool) {
   }
 
   /// A boolean value indicating whether the view controller is being dismissed.
