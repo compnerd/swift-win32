@@ -44,7 +44,7 @@ copy Examples\UICatalog\Info.plist .build\x86_64-unknown-windows-msvc\debug\
 .build\x86_64-unknown-windows-msvc\debug\UICatalog.exe
 ```
 
-In order to get access to the manifest tool (`mt`), the build and testing should occur in a "x64 Native Tools Command Prompt for VS2019"
+In order to get access to the manifest tool (`mt`), the build and testing should occur in a [x64 Native Tools Command Prompt for VS2019](https://docs.microsoft.com/en-us/cpp/build/how-to-enable-a-64-bit-visual-cpp-toolset-on-the-command-line?view=msvc-160)
 
 ## Testing
 
