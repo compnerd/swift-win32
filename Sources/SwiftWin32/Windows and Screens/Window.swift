@@ -216,7 +216,12 @@ public class Window: View {
 
   /// The scene containing the window.
   public weak var windowScene: WindowScene? {
-    didSet { fatalError("\(#function) not yet implemented") }
+    willSet {
+      self.windowScene?.windows.remove(object: self)
+    }
+    didSet {
+      self.windowScene?.windows.append(self)
+    }
   }
 
   // MARK - Responding to Window-Related Notifications

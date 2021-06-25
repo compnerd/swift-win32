@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 import XCTest
-import SwiftWin32
+@testable import SwiftWin32
 
 final class ViewTests: XCTestCase {
   func testConvertSameParent() {
@@ -13,7 +13,7 @@ final class ViewTests: XCTestCase {
 
     let password: View =
         View(frame: Rect(x: 4.0, y: 113.0, width: 254.0, height: 17.0))
-     
+
     window.addSubview(password)
     window.addSubview(textfield)
 
@@ -60,7 +60,7 @@ final class ViewTests: XCTestCase {
     XCTAssertEqual(point.x, 80.12346855145998, accuracy: accuracy)
     XCTAssertEqual(point.y, -140.97315764408575, accuracy: accuracy)
 
-    
+
     let inputRect = Rect(origin: Point(x: 45, y: 115), size: Size(width: 13, height: 14))
     var rect = grandChild.convert(inputRect, to: childB)
     XCTAssertEqual(rect.origin.x, 123.17714789769627, accuracy: accuracy)
@@ -112,7 +112,7 @@ final class ViewTests: XCTestCase {
     point = grandChild.convert(inputPoint, from: childA)
     XCTAssertEqual(point.x, -129.11445551798738, accuracy: accuracy)
     XCTAssertEqual(point.y, 98.14414561159256, accuracy: accuracy)
-    
+
     let inputRect = Rect(origin: Point(x: 45, y: 115), size: Size(width: 13, height: 14))
     var rect = grandChild.convert(inputRect, to: childB)
     XCTAssertEqual(rect.origin.x, 123.17714789769627, accuracy: accuracy)
@@ -133,9 +133,31 @@ final class ViewTests: XCTestCase {
     XCTAssertEqual(rect.size.height, 2.0132111355644327, accuracy: accuracy)
   }
 
+  func testViewTraitCollection() {
+    let window: Window =
+        Window(frame: Rect(x: 0.0, y: 0.0, width: 640, height: 480))
+
+    let view: View = View(frame: .zero)
+    XCTAssertTrue(view.traitCollection === TraitCollection.current)
+
+    window.addSubview(view)
+    XCTAssertTrue(view.traitCollection === TraitCollection.current)
+
+    let session: SceneSession =
+        SceneSession(identifier: UUID().uuidString, role: .windowApplication)
+    let scene: WindowScene =
+        WindowScene(session: session,
+                    connectionOptions: Scene.ConnectionOptions())
+
+    window.windowScene = scene
+    // FIXME(compnerd) the view.window is not setup properly
+    // XCTAssertTrue(view.traitCollection === scene.screen.traitCollection)
+  }
+
   static var allTests = [
     ("testConvertSameParent", testConvertSameParent),
     ("testConvertWithRotationsAndBounds", testConvertWithRotationsAndBounds),
     ("testConvertWithAllTransformsAndBounds", testConvertWithAllTransformsAndBounds),
+    ("testViewTraitCollection", testViewTraitCollection),
   ]
 }
