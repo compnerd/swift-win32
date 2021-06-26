@@ -60,6 +60,18 @@ open class Responder {
   public func touchesEstimatedPropertiesUpdated(_ touches: Set<Touch>) {
   }
 
+  // MARK - Building and Validating Commands
+
+  /// Asks the receiving responder to add and remove items from a menu system.
+  open func buildMenu(with builder: MenuBuilder) {
+    self.next?.buildMenu(with: builder)
+  }
+
+  /// Asks the receiving responder to validate the command.
+  open func validate(_ command: Command) {
+    self.next?.validate(command)
+  }
+
   // MARK - Constants
 
   /// A user info key to retrieve the animation curve that the system uses to
