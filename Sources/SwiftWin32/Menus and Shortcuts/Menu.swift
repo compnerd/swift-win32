@@ -159,7 +159,7 @@ extension Menu.Identifier {
 
   /// The Transformations menu.
   public static var transformations: Menu.Identifier {
-    Menu.Identifier(rawValue: "org.compnerd.swift-win32.menu.transoformations")
+    Menu.Identifier(rawValue: "org.compnerd.swift-win32.menu.transformations")
   }
 
   /// The Speech menu.
