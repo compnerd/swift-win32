@@ -280,6 +280,39 @@ public class ViewController: Responder {
   public func didMove(toParent viewController: ViewController?) {
   }
 
+  // MARK - Managing Child View Controllers in a Custom Controller
+
+  /// An array of view controllers that are children of the current view
+  /// controller.
+  public private(set) var children: [ViewController] = []
+
+  /// Adds the specified view controller as a child of the current view
+  /// controller.
+  public func addChild(_ controller: ViewController) {
+    self.children.append(controller)
+    controller.parent = self
+  }
+
+  /// Removes the view controller from its parent.
+  public func removeFromParent() {
+    self.parent?.children.remove(object: self)
+    self.parent = nil
+  }
+
+  // MARK - Getting Other Related View Controllers
+
+  /// The view controller that presented this view controller.
+  public private(set) var presentingViewController: ViewController?
+
+  /// The view controller that presented this view controller.
+  public private(set) var presentedViewController: ViewController?
+
+  /// The view controller that presented this view controller.
+  public private(set) var parent: ViewController? {
+    willSet { self.willMove(toParent: newValue) }
+    didSet { self.didMove(toParent: self.parent) }
+  }
+
   // MARK -
 
   override public init() {
@@ -288,7 +321,18 @@ public class ViewController: Responder {
   // MARK - Responder Chain
 
   override public var next: Responder? {
-    return view?.superview
+    // If the view controller's view is the root view of a window, the next
+    // responder is the Window object.
+    if self.view is Window { return view }
+    // If the view controller is presented by another view controller, the next
+    // responder is the presenting view controller.
+    return self.presentingViewController
+  }
+}
+
+extension ViewController: Equatable {
+  public static func ==(_ lhs: ViewController, _ rhs: ViewController) -> Bool {
+    return lhs === rhs
   }
 }
 

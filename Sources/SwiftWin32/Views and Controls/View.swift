@@ -921,8 +921,13 @@ public class View: Responder {
   // MARK - Responder Chain
 
   public override var next: Responder? {
-    if let parent = self.superview { return parent }
-    return nil
+    // If the view is the root view of a `ViewController`, the next responder is
+    // the view controller; otherwise, the next responder is the view's
+    // superview.
+
+    // FIXME(compnerd) how do we determine if we are the root view of a view
+    // controller?
+    return self.superview
   }
 
   // MARK - Trait Environment
