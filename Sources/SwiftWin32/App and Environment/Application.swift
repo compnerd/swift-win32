@@ -44,6 +44,9 @@ open class Application: Responder {
 
   // Responder Chain
   override public var next: Responder? {
+    // The next responder is the application delegate, but only if the
+    // application delegate is an instance of `Responder` and is not a `View`,
+    // `ViewController`, or the `Application` object itself.
     if let responder = self.delegate as? Responder,
        !(self.delegate is View), !(self.delegate is ViewController),
        !(self.delegate === self) {

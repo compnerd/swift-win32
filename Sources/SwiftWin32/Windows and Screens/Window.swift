@@ -254,6 +254,13 @@ public class Window: View {
   public class var didResignKeyNotification: NSNotification.Name {
     NSNotification.Name(rawValue: "UIWindowDidResignKeyNotification")
   }
+
+  // MARK - Responder Chain
+
+  override public var next: Responder? {
+    // The window's next responder is the `Application` object.
+    Application.shared
+  }
 }
 
 extension Window {
