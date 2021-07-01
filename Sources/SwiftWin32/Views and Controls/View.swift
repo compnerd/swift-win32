@@ -23,26 +23,25 @@ private let SwiftViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubc
       break
     }
 
-    let x = LOWORD(lParam), y = HIWORD(lParam)
-
     // Clear any existing menu.
-    view.menu = nil
+    view.hMenu = nil
 
+    let x = LOWORD(lParam), y = HIWORD(lParam)
     if let actions = interaction.delegate?
                         .contextMenuInteraction(interaction,
                                                 configurationForMenuAtLocation: Point(x: x, y: y))?
                         .actionProvider?([]) {
-      // TODO: handle a possible failure in `CreatePopupMenu`
-      view.menu = Win32Menu(MenuHandle(owning: CreatePopupMenu()),
-                            items: actions.children)
-      _ = TrackPopupMenu(view.menu?.hMenu.value, UINT(TPM_RIGHTBUTTON),
-                        Int32(x), Int32(y), 0, view.hWnd, nil)
     }
+    let position: Point = interaction.location(in: view)
+    _ = TrackPopupMenu(view.hMenu?.value, UINT(TPM_RIGHTBUTTON),
+                       Int32(x), Int32(y), 0, view.hWnd, nil)
 
     return 0
+
   case UINT(WM_COMMAND):
     // TODO: handle menu actions
     break
+
   default:
     break
   }
@@ -238,7 +237,7 @@ public class View: Responder {
     }
   }
 
-  internal var menu: Win32Menu? = nil
+  internal var hMenu: MenuHandle?
 
   // MARK - Creating a View Object
 
