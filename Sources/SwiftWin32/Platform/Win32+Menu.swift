@@ -13,7 +13,7 @@ internal final class _MenuBuilder: MenuSystem {
   private var menus: OrderedSet<Menu>
 
   internal init?(for view: View) {
-    self.hMenu = MenuHandle(owning: CreateMenu())
+    self.hMenu = MenuHandle(owning: view is Window ? CreateMenu() : CreatePopupMenu())
     if self.hMenu.value == nil {
       log.warning("CreateMenu: \(Error(win32: GetLastError()))")
       return nil
@@ -22,8 +22,42 @@ internal final class _MenuBuilder: MenuSystem {
     self.menus = []
   }
 
+  private func append<T: Collection>(_ menus: T, to hMenu: MenuHandle)
+      where T.Element: MenuElement {
+    for (index, child) in menus.enumerated() {
+      let hImage: BitmapHandle? =
+          BitmapHandle(from: child.image?.bitmap)
+
+      var hSubmenu: MenuHandle?
+      if let submenu = child as? Menu {
+        hSubmenu = MenuHandle(referencing: CreatePopupMenu())
+        if hSubmenu?.value == nil {
+          log.warning("CreateMenu: \(Error(win32: GetLastError()))")
+          continue
+        }
+        append(submenu.children, to: hSubmenu!)
+      }
+
+      var wide = child.title.wide
+      var info = wide.withUnsafeMutableBufferPointer {
+        MENUITEMINFOW(cbSize: UINT(MemoryLayout<MENUITEMINFOW>.size),
+                      fMask: UINT(MIIM_FTYPE | MIIM_STATE | MIIM_ID | MIIM_STRING | MIIM_SUBMENU | MIIM_DATA | MIIM_BITMAP),
+                      fType: UINT(MFT_STRING), fState: UINT(MFS_ENABLED), wID: UInt32.random(in: .min ... .max),
+                      hSubMenu: hSubmenu?.value, hbmpChecked: nil, hbmpUnchecked: nil, dwItemData: 0,
+                      dwTypeData: $0.baseAddress, cch: UINT(child.title.count), hbmpItem: hImage?.value)
+      }
+      InsertMenuItemW(hMenu.value, UINT(index), true, &info)
+    }
+  }
+
   override func setNeedsRebuild() {
-    // TODO(compnerd) create the actual menus
+    // Remove the old submenus from the menu:
+    for index in (0..<GetMenuItemCount(self.hMenu.value)).reversed() {
+      DeleteMenu(self.hMenu.value, UINT(index), UINT(MF_BYPOSITION))
+    }
+
+    // Create the new submenus and add them to the root menu:
+    append(self.menus, to: self.hMenu)
   }
 }
 
