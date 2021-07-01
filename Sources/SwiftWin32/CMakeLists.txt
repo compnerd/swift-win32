@@ -24,6 +24,8 @@ target_sources(SwiftWin32 PRIVATE
   UI/Interaction.swift
   UI/SceneSizeRestrictions.swift)
 target_sources(SwiftWin32 PRIVATE
+  "App Extensions/InputViewController.swift")
+target_sources(SwiftWin32 PRIVATE
   "Animation and Haptics/View Controller Transitions/ViewControllerTransitionCoordinator.swift"
   "Animation and Haptics/View Controller Transitions/ViewControllerTransitionCoordinatorContext.swift")
 target_sources(SwiftWin32 PRIVATE
@@ -93,7 +95,9 @@ target_sources(SwiftWin32 PRIVATE
   "Touches, Presses, and Gestures/GestureRecognizer.swift"
   "Touches, Presses, and Gestures/GestureRecognizerDelegate.swift"
   "Touches, Presses, and Gestures/Responder.swift"
-  "Touches, Presses, and Gestures/Touch.swift")
+  "Touches, Presses, and Gestures/Touch.swift"
+  "Touches, Presses, and Gestures/Press.swift"
+  "Touches, Presses, and Gestures/PressesEvent.swift")
 target_sources(SwiftWin32 PRIVATE
   "View Controllers/ContentContainer.swift"
   "View Controllers/ViewController.swift")
