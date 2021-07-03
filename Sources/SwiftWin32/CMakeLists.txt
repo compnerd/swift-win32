@@ -148,6 +148,8 @@ target_sources(SwiftWin32 PRIVATE
   Platform/Win32+PropertyWrappers.swift
   Platform/WindowClass.swift
   Platform/WindowsHandle.swift)
+set_source_files_properties(Support/Error.swift PROPERTIES
+  COMPILE_DEFINITIONS _CRT_SECURE_NO_WARNINGS)
 target_sources(SwiftWin32 PRIVATE
   Support/Array+Extensions.swift
   Support/IndexPath+UIExtensions.swift
