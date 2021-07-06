@@ -37,6 +37,7 @@ file(GLOB LOGGING_SOURCES
 if(Swift_COMPILER_VERSION VERSION_LESS 5.5)
   add_library(Logging SHARED
     ${LOGGING_SOURCES})
+  _install_target(Logging)
 else()
   add_library(Logging STATIC
     ${LOGGING_SOURCES})
