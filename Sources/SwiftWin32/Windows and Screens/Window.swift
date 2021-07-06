@@ -144,9 +144,18 @@ public class Window: View {
 
   // MARK - Configuring the Window
 
+  internal var hWindowMenu: MenuHandle?
+
   /// The root view controller for the window.
   public var rootViewController: ViewController? {
-    didSet { self.rootViewController?.view = self }
+    didSet {
+      self.rootViewController?.view = self
+
+      if let builder = _MenuBuilder(for: self) {
+        self.rootViewController?.buildMenu(with: builder)
+        builder.setNeedsRebuild()
+      }
+    }
   }
 
   /// The position of the window in the z-axis.

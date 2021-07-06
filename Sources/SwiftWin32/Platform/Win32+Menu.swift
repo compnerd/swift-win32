@@ -58,6 +58,11 @@ internal final class _MenuBuilder: MenuSystem {
 
     // Create the new submenus and add them to the root menu:
     append(self.menus, to: self.hMenu)
+
+    if let window = view as? Window {
+      window.hWindowMenu = self.hMenu
+      SetMenu(window.hWnd, window.hWindowMenu?.value)
+    }
   }
 }
 
