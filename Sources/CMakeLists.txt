@@ -31,8 +31,16 @@ _install_target(SwiftCOM)
 
 file(GLOB LOGGING_SOURCES
      ${PROJECT_SOURCE_DIR}/Packages/swift-log/Sources/Logging/*.swift)
-add_library(Logging STATIC
-  ${LOGGING_SOURCES})
+# FIXME(compnerd) 5.5 does not officially support static libraries on Windows
+# either.  The support requires a version strictly greater than 5.5.  Once the
+# branch is introduced, adjust this accordingly.
+if(Swift_COMPILER_VERSION VERSION_LESS 5.5)
+  add_library(Logging SHARED
+    ${LOGGING_SOURCES})
+else()
+  add_library(Logging STATIC
+    ${LOGGING_SOURCES})
+endif()
 
 add_subdirectory(SwiftWin32)
 add_subdirectory(SwiftWin32UI)
