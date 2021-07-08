@@ -62,5 +62,10 @@ message("--   Swift/COM rG${SWIFT_COM_GIT_REVISION}")
 message("--   swift-log rG${SWIFT_LOG_GIT_REVISION}")
 message("--   Collections rG${COLLECTIONS_GIT_REVISION}")
 
-export(TARGETS SwiftCOM SwiftWin32
-  FILE SwiftWin32Config.cmake)
+if(Swift_COMPILER_VERSION VERSION_LESS 5.5)
+  export(TARGETS Logging SwiftCOM SwiftWin32
+    FILE SwiftWin32Config.cmake)
+else()
+  export(TARGETS SwiftCOM SwiftWin32
+    FILE SwiftWin32Config.cmake)
+endif()
