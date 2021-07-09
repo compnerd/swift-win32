@@ -60,6 +60,7 @@ extension Color.Representation: Hashable {
   }
 }
 
+/// An object that stores color data and sometimes opacity.
 public struct Color {
   private let value: Representation
 
@@ -90,6 +91,134 @@ public struct Color {
   public init(dynamicProvider block: @escaping (TraitCollection) -> Color) {
     self.value = .func(block)
   }
+
+  // MARK - Getting the Color Information
+
+  /// Returns the components that form the color in the HSB color space.
+  ///
+  /// If the color is in a compatible color space, it converts into the HSB
+  /// color space, and its components return to your application. If the color
+  /// isn’t in a compatible color space, the parameters don’t change.
+  public func getHue(_ hue: UnsafeMutablePointer<Double>?,
+                     saturation: UnsafeMutablePointer<Double>?,
+                     brightness: UnsafeMutablePointer<Double>?,
+                     alpha: UnsafeMutablePointer<Double>?) -> Bool {
+    switch self.value {
+    case .gray:
+      fatalError("cannot convert Gray to HSBA")
+    case .rgba(let r, let g, let b, let a):
+      func rgb2hsb(_ r: Double, _ g: Double, _ b: Double)
+          -> (Double, Double, Double) {
+        let V = max(r, g, b)
+        let m = min(r, g, b)
+        let delta = V - m
+
+        var hue: Double
+        if V == 0.0 { hue = 0.0 }
+        else if V == r { hue = (g - b) / delta }
+        else if V == g { hue = 2.0 + (b - r) / delta }
+        else if V == b { hue = 4.0 + (r - g) / delta }
+        else { fatalError("maximum must be one of the values") }
+
+        hue = ucrt.fmodl(hue + 6.0, 6.0)
+        return (hue == 0.0 ? 1.0 : hue / 6.0, V, V == 0.0 ? 0.0 : delta / V)
+      }
+
+      let (h, s, b) = rgb2hsb(r, g, b)
+
+      hue?.pointee = h
+      brightness?.pointee = s
+      saturation?.pointee = b
+      alpha?.pointee = a
+      return true
+    case .hsba(let h, let s, let b, let a):
+      hue?.pointee = h
+      saturation?.pointee = s
+      brightness?.pointee = b
+      alpha?.pointee = a
+      return true
+    case .func:
+      return resolvedColor(with: TraitCollection.current)
+          .getHue(hue, saturation: saturation, brightness: brightness,
+                  alpha: alpha)
+    }
+  }
+
+  /// Returns the components that form the color in the RGB color space.
+  ///
+  /// If the color is in a compatible color space, it converts into RGB format
+  /// and its components return to your application. If the color isn’t in a
+  /// compatible color space, the parameters don’t change.
+  public func getRed(_ red: UnsafeMutablePointer<Double>?,
+                     green: UnsafeMutablePointer<Double>?,
+                     blue: UnsafeMutablePointer<Double>?,
+                     alpha: UnsafeMutablePointer<Double>?) -> Bool {
+    switch self.value {
+    case .gray:
+      fatalError("cannot convert Gray to RGBA")
+    case .rgba(let r, let g, let b, let a):
+      red?.pointee = r
+      green?.pointee = g
+      blue?.pointee = b
+      alpha?.pointee = a
+      return true
+    case .hsba(let h, let s, let b, let a):
+      func f(_ n: Double) -> Double {
+        let k = ucrt.fmod(n + (6.0 * h), 6.0)
+        return b - b * s * max(0, min(k, 4 - k, 1))
+      }
+      red?.pointee = f(5.0)
+      green?.pointee = f(3.0)
+      blue?.pointee = f(1.0)
+      alpha?.pointee = a
+      return true
+    case .func:
+      return resolvedColor(with: TraitCollection.current)
+          .getRed(red, green: green, blue: blue, alpha: alpha)
+    }
+  }
+
+  /// Returns the grayscale components of the color.
+  ///
+  /// If the color is in a compatible color space, it converts into grayscale
+  /// format and its returned to your application. If the color isn’t in a
+  /// compatible color space, the parameters don’t change.
+  public func getWhite(_ white: UnsafeMutablePointer<Double>?,
+                       alpha: UnsafeMutablePointer<Double>?) -> Bool {
+    switch self.value {
+    case .gray(let w, let a):
+      white?.pointee = w
+      alpha?.pointee = a
+      return true
+    case .rgba(let r, let g, let b, let a):
+      // The weighted or luminosity method uses the weighted average of the
+      // channels based on the wavelength of the channel.
+      // The constants here are from ITU-R BT.601-7.
+      white?.pointee = r * 0.299 + g * 0.587 + b * 0.114
+      alpha?.pointee = a
+      return true
+    case .hsba(let h, let s, let b, let a):
+      func f(_ n: Double) -> Double {
+        let k = ucrt.fmod(n + (6.0 * h), 6.0)
+        return b - b * s * max(0, min(k, 4 - k, 1))
+      }
+      white?.pointee = f(5.0) * 0.299 + f(3.0) * 0.587 + f(1.0) * 0.114
+      alpha?.pointee = a
+      return true
+    case .func:
+      return resolvedColor(with: TraitCollection.current)
+          .getWhite(white, alpha: alpha)
+    }
+  }
+
+  // MARK - Resolving a Dynamically Generated Color
+
+  /// Returns the version of the current color that results from the specified
+  /// traits.
+  public func resolvedColor(with traitCollection: TraitCollection) -> Color {
+    guard case let .func(body) = self.value else { return self }
+    return body(traitCollection)
+  }
 }
 
 extension COLORREF {
@@ -115,8 +244,8 @@ extension Color {
       return WinSDK.COLORREF(red: f(5.0), green: f(3.0), blue: f(1.0))
     case .gray(let w, _):
       return WinSDK.COLORREF(red: w * 255.0, green: w * 255.0, blue: w * 255.0)
-    case .func(let body):
-      return body(TraitCollection.current).COLORREF
+    case .func:
+      return self.resolvedColor(with: TraitCollection.current).COLORREF
     }
   }
 }
@@ -150,14 +279,14 @@ extension Color {
 }
 
 extension Color {
-  internal init(red: Int, green: Int, blue: Int,
-                alpha: Double = 1.0) {
+  internal init(red: Int, green: Int, blue: Int, alpha: Double = 1.0) {
     self.init(red: Double(red) / 255.0, green: Double(green) / 255.0,
               blue: Double(blue) / 255.0, alpha: Double(alpha))
   }
 }
 
 // MARK - Standard Colors
+
 extension Color {
   // MARK - Adaptable Colors
 
