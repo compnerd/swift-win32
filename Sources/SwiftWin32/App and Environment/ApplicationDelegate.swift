@@ -111,7 +111,7 @@ public protocol ApplicationDelegate: AnyObject, _TriviallyConstructible {
   /// Informs the delegate that the application has become active.
   func applicationDidBecomeActive(_ application: Application)
 
-  /// Informs the delgate that the application is about to become inactive.
+  /// Informs the delegate that the application is about to become inactive.
   func applicationWillResignActive(_ application: Application)
 
   /// Informs the delegate that the application is now in the background.
@@ -126,14 +126,14 @@ public protocol ApplicationDelegate: AnyObject, _TriviallyConstructible {
   // MARK - Responding to Environment Changes
 
   /// Tells the delegate that protected files are available now.
-  func applicationProtectedDataDidBecomeAavailable(_ application: Application)
+  func applicationProtectedDataDidBecomeAvailable(_ application: Application)
 
   /// Tells the delegate that the protected files are about to become
   /// unavailable.
   func applicationProtectedDataWillBecomeUnavailable(_ application: Application)
 
   /// Tells the delegate when the app receives a memory warning from the system.
-  func applicationDidRecieveMemoryWarning(_ application: Application)
+  func applicationDidReceiveMemoryWarning(_ application: Application)
 
   /// Tells the delegate when there is a significant change in the time.
   func applicationSignificantTimeChange(_ application: Application)
@@ -215,13 +215,13 @@ extension ApplicationDelegate {
 }
 
 extension ApplicationDelegate {
-  public func applicationProtectedDataDidBecomeAavailable(_ application: Application) {
+  public func applicationProtectedDataDidBecomeAvailable(_ application: Application) {
   }
 
   public func applicationProtectedDataWillBecomeUnavailable(_ application: Application) {
   }
 
-  public func applicationDidRecieveMemoryWarning(_ application: Application) {
+  public func applicationDidReceiveMemoryWarning(_ application: Application) {
   }
 
   public func applicationSignificantTimeChange(_ application: Application) {
