@@ -4,7 +4,7 @@
 import XCTest
 import SwiftWin32
 
-final class BarItemTests : XCTestCase {
+final class BarItemTests: XCTestCase {
   func testDefaultState() {
     let item = BarItem()
     XCTAssertNil(item.title)
