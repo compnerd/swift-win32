@@ -15,7 +15,7 @@ final class BarItemTests : XCTestCase {
     XCTAssertEqual(item.landscapeImageInsets, .zero)
     XCTAssertEqual(item.largeContentSizeImageInsets, .zero)
     XCTAssertTrue(item.isEnabled)
-    XCTAssertEqual(item.id, 0)
+    XCTAssertEqual(item.tag, 0)
   }
 
   static var allTests = [
