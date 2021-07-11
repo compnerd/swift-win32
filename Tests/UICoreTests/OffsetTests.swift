@@ -25,7 +25,7 @@ final class OffsetTests: XCTestCase {
   func testOffsetStringRoundtrip() {
     let offset: Offset = Offset(horizontal: 1, vertical: 2)
     let string: String = Offset.string(for: offset)
-    XCTAssertEqual(string, "{1.0000000000000, 2.0000000000000}")
+    XCTAssertEqual(string, "{1, 2}")
     XCTAssertEqual(offset, Offset.offset(for: string))
   }
 
