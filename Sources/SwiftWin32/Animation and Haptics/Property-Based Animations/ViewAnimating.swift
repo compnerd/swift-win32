@@ -1,5 +1,5 @@
 // Copyright © 2021 Saleem Abdulrasool <compnerd@compnerd.org>
-// All rights reserved.
+// SPDX-License-Identifier: BSD-3-Clause
 
 /// Constants indicating positions within the animation.
 public enum ViewAnimatingPosition: Int {
