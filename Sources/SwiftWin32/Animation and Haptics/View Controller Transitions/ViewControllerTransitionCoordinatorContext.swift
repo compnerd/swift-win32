@@ -3,55 +3,6 @@
 
 import struct Foundation.TimeInterval
 
-/// The keys you use to identify the view controllers involved in a transition.
-public struct TransitionContextViewControllerKey: Equatable, Hashable, RawRepresentable {
-  public typealias RawValue = String
-
-  public let rawValue: RawValue
-
-  public init(rawValue: RawValue) {
-    self.rawValue = rawValue
-  }
-}
-
-/// The keys you use to identify the views involved in a transition.
-public struct TransitionContextViewKey: Equatable, Hashable, RawRepresentable {
-  public typealias RawValue = String
-
-  public let rawValue: RawValue
-
-  public init(rawValue: RawValue) {
-    self.rawValue = rawValue
-  }
-}
-
-extension TransitionContextViewControllerKey {
-  /// A key that identifies the view controller that is visible at the beginning
-  /// of the transition, or at the end of a canceled transition.
-  public static var from: TransitionContextViewControllerKey {
-    TransitionContextViewControllerKey(rawValue: "UITransitionContextFromViewController")
-  }
-
-  /// A key that identifies the view controller that is visible at the end of a
-  /// completed transition.
-  public static var to: TransitionContextViewControllerKey {
-    TransitionContextViewControllerKey(rawValue: "UITransitionContextToViewController")
-  }
-}
-
-extension TransitionContextViewKey {
-  /// A key that identifies the view shown at the beginning of the transition,
-  /// or at the end of a canceled transition.
-  public static var from: TransitionContextViewKey {
-    TransitionContextViewKey(rawValue: "UITransitionContextFromView")
-  }
-
-  /// A key that identifies the view shown at the end of a completed transition.
-  public static var to: TransitionContextViewKey {
-    TransitionContextViewKey(rawValue: "UITransitionContextToView")
-  }
-}
-
 /// Modal presentation styles available when presenting view controllers.
 public enum ModalPresentationStyle: Int {
   /// The default presentation style chosen by the system.
