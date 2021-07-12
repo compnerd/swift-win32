@@ -26,6 +26,7 @@ target_sources(SwiftWin32 PRIVATE
 target_sources(SwiftWin32 PRIVATE
   "App Extensions/InputViewController.swift")
 target_sources(SwiftWin32 PRIVATE
+  "Animation and Haptics/ViewControllerContextTransitioning.swift"
   "Animation and Haptics/View Controller Transitions/ViewControllerTransitionCoordinator.swift"
   "Animation and Haptics/View Controller Transitions/ViewControllerTransitionCoordinatorContext.swift")
 target_sources(SwiftWin32 PRIVATE
