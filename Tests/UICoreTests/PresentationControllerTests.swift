@@ -10,7 +10,7 @@ final class PresentationControllerTests: XCTestCase {
     let presentingViewController: ViewController = ViewController()
     let controller: PresentationController =
         PresentationController(presentedViewController: presentedViewController,
-                               presentingViewController: presentingViewController)
+                               presenting: presentingViewController)
 
     XCTAssertNil(controller.delegate)
     XCTAssertTrue(controller.presentingViewController === presentingViewController)
