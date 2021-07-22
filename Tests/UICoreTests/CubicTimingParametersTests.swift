@@ -9,7 +9,6 @@ final class CubicTimingParametersTests: XCTestCase {
     let parameters1: CubicTimingParameters = CubicTimingParameters()
     XCTAssertEqual(parameters1.animationCurve, .linear)
     XCTAssertEqual(parameters1.controlPoint1, .zero)
-    XCTAssertEqual(parameters1.controlPoint1, Point(x: 1, y: 1))
 
     let parameters2: CubicTimingParameters =
         CubicTimingParameters(animationCurve: .linear)
