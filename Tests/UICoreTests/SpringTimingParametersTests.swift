@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 import XCTest
-import SwiftWin32
+@testable import SwiftWin32
 
 final class SpringTimingParametersTests: XCTestCase {
   func testDefaultState() {
