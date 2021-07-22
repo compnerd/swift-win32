@@ -4,7 +4,7 @@
 import XCTest
 import SwiftWin32
 
-final class SpringTimingParameters: XCTestCase {
+final class SpringTimingParametersTests: XCTestCase {
   func testDefaultState() {
     let parameters1: SpringTimingParameters = SpringTimingParameters()
     XCTAssertEqual(parameters1.initialVelocity, .zero)
