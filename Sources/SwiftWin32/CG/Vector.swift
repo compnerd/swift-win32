@@ -6,7 +6,9 @@ public struct Vector {
   // MARK - Special Values
 
   /// The vector whose components are both zero.
-  static let zero: Vector = Vector(dx: 0.0, dy: 0.0)
+  public static var zero: Vector {
+    Vector(dx: 0.0, dy: 0.0)
+  }
 
   /// Creates a vector whose components are both zero.
   public init() {

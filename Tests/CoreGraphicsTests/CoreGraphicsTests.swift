@@ -280,6 +280,20 @@ final class CoreGraphicsTests: XCTestCase {
     XCTAssertTrue(null1 == null2)
   }
 
+  func testVectorConstructors() {
+    let v1: Vector = Vector()
+    XCTAssertEqual(v1, .zero)
+
+    let v2: Vector = Vector(dx: 0.0 as Float, dy: 0.0 as Float)
+    XCTAssertEqual(v2, .zero)
+
+    let v3: Vector = Vector(dx: 0.0 as Double, dy: 0.0 as Double)
+    XCTAssertEqual(v3, .zero)
+
+    let v4: Vector = Vector(dx: 0, dy: 0)
+    XCTAssertEqual(v4, .zero)
+  }
+
   static var allTests = [
     ("testAffineTransformIdentity", testAffineTransformIdentity),
     ("testAffineTransformIdentityIsIdentity", testAffineTransformIdentityIsIdentity),
@@ -296,5 +310,6 @@ final class CoreGraphicsTests: XCTestCase {
     ("testRectUnion", testRectUnion),
     ("testRectContains", testRectContains),
     ("testRectNonstandardEquality", testRectNonstandardEquality),
+    ("testVectorConstructors", testVectorConstructors)
   ]
 }
