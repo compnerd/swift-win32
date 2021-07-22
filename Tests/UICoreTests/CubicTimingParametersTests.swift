@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 import XCTest
-import SwiftWin32
+@testable import SwiftWin32
 
 final class CubicTimingParametersTests: XCTestCase {
   func testDefaultState() {
@@ -12,8 +12,8 @@ final class CubicTimingParametersTests: XCTestCase {
     XCTAssertEqual(parameters1.controlPoint1, Point(x: 1, y: 1))
 
     let parameters2: CubicTimingParameters =
-        CubicTimingParameters(animationCurve: .builtin)
-    XCTAssertEqual(parameters2.animationCurve, .builtin)
+        CubicTimingParameters(animationCurve: .linear)
+    XCTAssertEqual(parameters2.animationCurve, .linear)
     XCTAssertEqual(parameters2.controlPoint1, .zero)
     XCTAssertEqual(parameters2.controlPoint2, .zero)
 
