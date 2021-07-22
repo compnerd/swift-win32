@@ -15,7 +15,7 @@ final class SpringTimingParametersTests: XCTestCase {
 
     let parameters3: SpringTimingParameters =
         SpringTimingParameters(mass: 0.0, stiffness: 0.0, damping: 0.0,
-                               initialVelocity: 0.0)
+                               initialVelocity: .zero)
     XCTAssertEqual(parameters3.initialVelocity, .zero)
   }
 
