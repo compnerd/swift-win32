@@ -31,7 +31,7 @@ public class SpringTimingParameters {
   ///
   /// The damping ratio for the spring is computed from the formula:
   /// `damping / (2 * sqrt (stiffness * mass))`.
-  public init(mass: Double, stiffnes: Double, damping: Double,
+  public init(mass: Double, stiffness: Double, damping: Double,
               initialVelocity velocity: Vector) {
     self.initialVelocity = velocity
   }
