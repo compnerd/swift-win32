@@ -4,7 +4,7 @@
 import XCTest
 import SwiftWin32
 
-final class CubicTimingParameters: XCTestCase {
+final class CubicTimingParametersTests: XCTestCase {
   func testDefaultState() {
     let parameters1: CubicTimingParameters = CubicTimingParameters()
     XCTAssertEqual(parameters2.animationCurve, .linear)
