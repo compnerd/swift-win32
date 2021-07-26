@@ -3,6 +3,8 @@
 
 import WinSDK
 import class Foundation.NSNotification
+import struct Foundation.NSExceptionName
+import struct Foundation.TimeInterval
 
 /// Transition styles available when presenting view controllers.
 public enum ModalTransitionStyle: Int {
@@ -83,7 +85,7 @@ extension RectEdge {
 }
 
 /// An object that manages a view hierarchy for your application.
-public class ViewController: Responder {
+open class ViewController: Responder {
   // MARK - Managing the View
 
   /// The view that the controller manages.
@@ -106,7 +108,7 @@ public class ViewController: Responder {
   /// automatically, you can use `isViewLoaded` to determine if the view is
   /// currently in memory. Unlike this property, `isViewLoaded` doesn't force
   /// the loading of the view if it's not currently in memory.
-  public var view: View! {
+  open var view: View! {
     get {
       loadViewIfNeeded()
       return self.viewIfLoaded
@@ -121,14 +123,14 @@ public class ViewController: Responder {
   /// If the view controller's view has already been loaded, this property
   /// contains that view. If the view has not yet been loaded, this property is
   /// set to `nil`.
-  public private(set) var viewIfLoaded: View?
+  open private(set) var viewIfLoaded: View?
 
   /// Indicates if the view is loaded into memory.
   ///
   /// The value of this property is `true` when the view is in memory or `false`
   /// when it is not. Accessing this property does not attempt to load the view
   /// if it is not currently in memory.
-  public var isViewLoaded: Bool {
+  open var isViewLoaded: Bool {
     return self.viewIfLoaded == nil ? false : true
   }
 
@@ -146,7 +148,7 @@ public class ViewController: Responder {
   ///
   /// If you want to perform any additional initialization of your views, do so
   /// in the `viewDidLoad()` method.
-  public func loadView() {
+  open func loadView() {
     self.view = View(frame: .zero)
   }
 
@@ -154,14 +156,14 @@ public class ViewController: Responder {
   ///
   /// This method is called after the view controller has loaded its view
   /// hierarchy into memory.
-  public func viewDidLoad() {
+  open func viewDidLoad() {
   }
 
   /// Loads the controller's view if it has not yet been loaded.
   ///
   /// Calling this method loads the view controller's, creating the view as
   /// needed based on the established rules.
-  public func loadViewIfNeeded() {
+  open func loadViewIfNeeded() {
     guard !self.isViewLoaded else { return }
     self.loadView()
     self.viewDidLoad()
@@ -172,7 +174,7 @@ public class ViewController: Responder {
   /// Set the title to a human-readable string that describes the view. If the
   /// view controller has a valid navigation item or tab-bar item, assigning a
   /// value to this property updates the title text of those objects.
-  public var title: String? {
+  open var title: String? {
     get {
       let szLength: Int32 = GetWindowTextLengthW(view.hWnd)
       let buffer: [WCHAR] = Array<WCHAR>(unsafeUninitializedCapacity: Int(szLength) + 1) {
@@ -190,9 +192,8 @@ public class ViewController: Responder {
   /// situations. Changing the value of this property while the view controller
   /// is being displayed in a popover animates the size change; however, the
   /// change is not animated if you specify a width or height of 0.0.
-  public var preferredContentSize: Size {
-    get { fatalError("\(#function) not yet implemented") }
-    set { fatalError("\(#function) not yet implemented") }
+  open var preferredContentSize: Size = .zero {
+    didSet { fatalError("\(#function) not yet implemented") }
   }
 
   // MARK - Responding to View Related Events
@@ -207,7 +208,7 @@ public class ViewController: Responder {
   /// method to change the orientation or style of the status bar to coordinate
   /// with the orientation or style of the view being presented. If you override
   /// this method, you must call `super` at some point in your implementation.
-  public func viewWillAppear(_ animated: Bool) {
+  open func viewWillAppear(_ animated: Bool) {
   }
 
   /// Notifies the view controller that its view was added to a view hierarchy.
@@ -220,7 +221,7 @@ public class ViewController: Responder {
   ///   If a view controller is presented by a view controller inside of a
   ///   popover, this method is not invoked on the presenting view controller
   ///   after the presented controller is dismissed.
-  public func viewDidAppear(_ animated: Bool) {
+  open func viewDidAppear(_ animated: Bool) {
   }
 
   /// Notifies the view controller that its view is about to be removed from a
@@ -237,7 +238,7 @@ public class ViewController: Responder {
   /// `viewDidAppear(_:)` method when the view was first presented. If you
   /// override this method, you must call `super` at some point in your
   /// implementation.
-  public func viewWillDisappear(_ animated: Bool) {
+  open func viewWillDisappear(_ animated: Bool) {
   }
 
   /// Notifies the view controller that its view was removed from a view
@@ -246,22 +247,22 @@ public class ViewController: Responder {
   /// You can override this method to perform additional tasks associated with
   /// dismissing or hiding the view. If you override this method, you must call
   /// `super` at some point in your implementation.
-  public func viewDidDisappear(_ animated: Bool) {
+  open func viewDidDisappear(_ animated: Bool) {
   }
 
   /// A boolean value indicating whether the view controller is being dismissed.
-  public private(set) var isBeingDismissed: Bool = false
+  open private(set) var isBeingDismissed: Bool = false
 
   /// A boolean value indicating whether the view controller is being presented.
-  public private(set) var isBeingPresented: Bool = false
+  open private(set) var isBeingPresented: Bool = false
 
   /// A boolean value indicating whether the view controller is being removed
   /// from a parent view controller.
-  public private(set) var isMovingFromParent: Bool = false
+  open private(set) var isMovingFromParent: Bool = false
 
   /// A boolean value indicating whether the view controller is being moved to a
   /// parent view controller.
-  public private(set) var isMovingToParent: Bool = false
+  open private(set) var isMovingToParent: Bool = false
 
   // MARK - Extending the View's Safe Area
 
@@ -276,7 +277,7 @@ public class ViewController: Responder {
   /// You might use this property to extend the safe area to include custom
   /// content in your interface. For example, a drawing app might use this
   /// property to avoid displaying content underneath tool palettes.
-  public var additionalSafeAreaInsets: EdgeInsets = .zero {
+  open var additionalSafeAreaInsets: EdgeInsets = .zero {
     didSet { self.viewSafeAreaInsetsDidChange() }
   }
 
@@ -288,7 +289,7 @@ public class ViewController: Responder {
   /// bars or when you modify the additional safe area insets of your view
   /// controller. The framework also calls this method immediately before your
   /// view appears onscreen.
-  public func viewSafeAreaInsetsDidChange() {
+  open func viewSafeAreaInsetsDidChange() {
   }
 
   // MARK - Managing the View's Margins
@@ -305,7 +306,7 @@ public class ViewController: Responder {
   /// solely from its `directionalLayoutMargins` property. Setting the margins
   /// in that property to 0 allows you to eliminate the view's margins
   /// altogether.
-  public var viewRespectsSystemMinimumLayoutMargins: Bool = true
+  open var viewRespectsSystemMinimumLayoutMargins: Bool = true
 
   /// The minimum layout margins for the view controller's root view.
   ///
@@ -322,7 +323,7 @@ public class ViewController: Responder {
   /// whichever values are greater. For example, if the value for one system
   /// minimum margin is 20 points and you specify a value of 10 for the same
   /// margin on the view, the view uses the value 20 for the margin.
-  public private(set) var systemMinimumLayoutMargins: DirectionalEdgeInsets = .zero {
+  open private(set) var systemMinimumLayoutMargins: DirectionalEdgeInsets = .zero {
     didSet { self.viewLayoutMarginsDidChange() }
   }
 
@@ -331,7 +332,7 @@ public class ViewController: Responder {
   ///
   /// Use this method to update the position of content based on the new margin
   /// values.
-  public func viewLayoutMarginsDidChange() {
+  open func viewLayoutMarginsDidChange() {
   }
 
   // MARK - Configuring the View's Layout Behavior
@@ -351,13 +352,13 @@ public class ViewController: Responder {
   /// system provides a default background so that translucent bars have an
   /// appropriate appearance. The window’s root view controller does not react
   /// to this property.
-  public var edgesForExtendedLayout: RectEdge = .all
+  open var edgesForExtendedLayout: RectEdge = .all
 
   /// A boolean value indicating whether or not the extended layout includes
   /// opaque bars.
   ///
   /// The default value of this property is `false`.
-  public var extendedLayoutIncludesOpaqueBars: Bool = false
+  open var extendedLayoutIncludesOpaqueBars: Bool = false
 
   /// Notifies the view controller that its view is about to layout its
   /// subviews.
@@ -366,7 +367,7 @@ public class ViewController: Responder {
   /// subviews. Your view controller can override this method to make changes
   /// before the view lays out its subviews. The default implementation of this
   /// method does nothing.
-  public func viewWillLayoutSubviews() {
+  open func viewWillLayoutSubviews() {
   }
 
   /// Notifes the view controller that its view has just laid out its subviews.
@@ -380,7 +381,7 @@ public class ViewController: Responder {
   /// Your view controller can override this method to make changes after the
   /// view lays out its subviews. The default implementation of this method does
   /// nothing.
-  public func viewDidLayoutSubviews() {
+  open func viewDidLayoutSubviews() {
   }
 
   /// Called when the view controller's view needs to update its constraints.
@@ -415,7 +416,7 @@ public class ViewController: Responder {
   /// - Important
   ///   Call `super.updateViewConstraints()` as the final step in your
   ///   implementation.
-  public func updateViewConstraints() {
+  open func updateViewConstraints() {
     fatalError("\(#function) not yet implemented")
   }
 
@@ -423,7 +424,7 @@ public class ViewController: Responder {
 
   /// A boolean value that indicates whether the view controller's contents
   /// should autorotate.
-  public private(set) var shouldAutorotate: Bool = true
+  open private(set) var shouldAutorotate: Bool = true
 
   /// The interface orientations that the view controller supports.
   ///
@@ -450,7 +451,7 @@ public class ViewController: Responder {
   /// your view controller because multitasking apps must support all
   /// orientations. You can opt out of multitasking by enablin by not declaring
   /// support for all possible orientations within the `Info.plist` file.
-  public private(set) var supportedInterfaceOrientations: InterfaceOrientationMask = .allButUpsideDown
+  open private(set) var supportedInterfaceOrientations: InterfaceOrientationMask = .all
 
   /// The interface orientation to use when presenting the view controller.
   ///
@@ -464,7 +465,7 @@ public class ViewController: Responder {
   /// rotated to another supported rotation). If you do not implement this
   /// method, the system presents the view controller using the current
   /// orientation of the status bar.
-  public private(set) var preferredInterfaceOrientationForPresentation: InterfaceOrientation = .portrait
+  open private(set) var preferredInterfaceOrientationForPresentation: InterfaceOrientation = .portrait
 
   /// Attempts to rotate all windows to the orientation of the device.
   ///
@@ -472,7 +473,7 @@ public class ViewController: Responder {
   /// what interface orientations are supported. If your view controller does
   /// this, when those conditions change, your app should call this class
   /// method. The system immediately attempts to rotate to the new orientation.
-  public class func attemptRotationToDeviceOrientation() {
+  open class func attemptRotationToDeviceOrientation() {
   }
 
   // MARK - Presenting a View Controller
@@ -502,7 +503,7 @@ public class ViewController: Responder {
   /// in a primary context. For example, a container view controller might use
   /// this method to replace its primary child. Your implementation should adapt
   /// its behavior for both regular and compact environments.
-  public func show(_ viewController: ViewController, sender: Any?) {
+  open func show(_ viewController: ViewController, sender: Any?) {
   }
 
   /// Presents a view controller in a secondary (or detail) context.
@@ -530,8 +531,8 @@ public class ViewController: Responder {
   /// in a secondary context. For example, a container view controller might use
   /// this method to replace its secondary child. Your implementation should
   /// adapt its behavior for both regular and compact environments.
-  public func showDetailViewController(_ viewController: ViewController,
-                                       sender: Any?) {
+  open func showDetailViewController(_ viewController: ViewController,
+                                     sender: Any?) {
   }
 
   /// Presents a view controller modally.
@@ -563,8 +564,8 @@ public class ViewController: Responder {
   ///
   /// The completion handler is called after the `viewDidAppear(_:)` method is
   /// called on the presented view controller.
-  public func present(_ viewController: ViewController, animated flag: Bool,
-                      completion: (() -> Void)? = nil) {
+  open func present(_ viewController: ViewController, animated flag: Bool,
+                    completion: (() -> Void)? = nil) {
   }
 
   /// Dismisses the view controller that was presented modally by the view
@@ -590,7 +591,7 @@ public class ViewController: Responder {
   ///
   /// The completion handler is called after the `viewDidDisappear(_:)` method
   /// is called on the presented view controller.
-  public func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+  open func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
   }
 
   /// The presentation style for modal view controllers.
@@ -610,7 +611,7 @@ public class ViewController: Responder {
   /// The default value is `ModalPresentationStyle.automatic`. For a list of
   /// presentation styles and their compatibility with the various transition
   /// styles, see `ModalPresentationStyle`.
-  public var modalPresentationStyle: ModalPresentationStyle = .automatic {
+  open var modalPresentationStyle: ModalPresentationStyle = .automatic {
     didSet { fatalError("\(#function) not yet implemented") }
   }
 
@@ -625,7 +626,9 @@ public class ViewController: Responder {
   /// For a list of possible transition styles, and their compatibility with the
   /// available presentation styles, see the `ModalTransitionStyle` constant
   /// descriptions.
-  public var modalTransitionStyle: ModalTransitionStyle = .coverVertical
+  open var modalTransitionStyle: ModalTransitionStyle = .coverVertical {
+    didSet { fatalError("\(#function) not yet implemented") }
+  }
 
   /// A boolean value indicating whether the view controller enforces a modal
   /// behavior.
@@ -634,7 +637,7 @@ public class ViewController: Responder {
   /// the framework ignores events outside the view controller's bounds and
   /// prevents the interactive dismissal of the view controller while it is
   /// onscreen.
-  public var isModalInPresentation: Bool = false {
+  open var isModalInPresentation: Bool = false {
     didSet { fatalError("\(#function) not yet implemented") }
   }
 
@@ -656,7 +659,7 @@ public class ViewController: Responder {
   /// The default value for this property is `false`. Some system-provided view
   /// controllers, such as `NavigationController`, change the default value to
   /// `true`.
-  public var definesPresentationContext: Bool = false {
+  open var definesPresentationContext: Bool = false {
     didSet { fatalError("\(#function) not yet implemented") }
   }
 
@@ -670,7 +673,7 @@ public class ViewController: Responder {
   /// the presented view controller. When the value of this property is `false`,
   /// the framework uses the transition style of the presented view controller.
   /// The default value of this property is `false`.
-  public var providesPresentationContextTransitionStyle: Bool = false {
+  open var providesPresentationContextTransitionStyle: Bool = false {
     didSet { fatalError("\(#function) not yet implemented") }
   }
 
@@ -692,7 +695,7 @@ public class ViewController: Responder {
   /// `ModalPresentationStyle.formSheet` and returns `false` for other
   /// presentation styles. Thus, the system normally does not allow the keyboard
   /// to be dismissed for modal forms.
-  var disablesAutomaticKeyboardDismissal: Bool {
+  open var disablesAutomaticKeyboardDismissal: Bool {
     return self.modalPresentationStyle == .formSheet
   }
 
@@ -708,17 +711,137 @@ public class ViewController: Responder {
     NSNotification.Name(rawValue: "UIViewControllerShowDetailTargetDidChangeNotification")
   }
 
-  // MARK - Responding to Containment Events
+  // MARK - Adding a Custom Transition or Presentation
 
-  /// Called just before the view controller is added or removed from a
-  /// container view controller.
-  public func willMove(toParent viewController: ViewController?) {
+  /// The delegate object that provides transition animator, interactive
+  /// controller, and custom presentation controller objects.
+  ///
+  /// When the view controller's `modalPresentationStyle` property is
+  /// `ModalPresentationStyle.custom`, the framework uses the object in this
+  /// property to facilitate transitions and presentations for the view
+  /// controller. The transitioning delegate object is a custom object that you
+  /// provide and that conforms to the `ViewControllerTransitioningDelegate`
+  /// protocol. Its job is to vend the animator objects used to animate this
+  /// view controller's view onscreen and an optional presentation controller to
+  /// provide any additional chrome and animations.
+  open weak var transitioningDelegate: ViewControllerTransitioningDelegate?
+
+  /// Returns the active transition coordinator object.
+  ///
+  /// When a presentation or dismissal is in progress, this method returns the
+  /// transition coordinator object associated with that transition. If there is
+  /// no in-progress transition associated with the current view controller, the
+  /// framework checks the view controller's ancestors for a transition
+  /// coordinator object and returns that object if it exists. You can use this
+  /// object to create additional animations and synchronize them with the
+  /// transition animations.
+  ///
+  /// Container view controllers can override this method but in most cases
+  /// should not need to. If you do override this method, first call `super` to
+  /// see if there is an appropriate transition coordinator to return, and, if
+  /// there is, return it.
+  ///
+  /// For more information about the role of transition coordinators, see
+  /// `ViewControllerTransitionCoordinator`.
+  public private(set) var transitionCoordinator: ViewControllerTransitionCoordinator?
+
+  /// Returns the view controller that responds to the action.
+  ///
+  /// This method returns the current view controller if that view controller
+  /// overrides the method indicated by the action parameter. If the current
+  /// view controller does not override that method, the framework walks up the
+  /// view hierarchy and returns the first view controller that does override
+  /// it. If no view controller handles the action, this method returns `nil`.
+  ///
+  /// A view controller can selectively respond to an action by returning an
+  /// appropriate value from its `canPerformAction(_:withSender:)` method.
+  open func targetViewController<Target: AnyObject>(forAction action: (Target) -> () -> Void,
+                                                    sender: Any?) -> ViewController? {
+    fatalError("\(#function) not yet implemented")
   }
 
-  /// Called after the view controller is added or removed from a container view
+  open func targetViewController<Target: AnyObject>(forAction action: (Target) -> (_: Any?) -> Void,
+                                                    sender: Any?) -> ViewController? {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// The presentation controller that’s managing the current view controller.
+  ///
+  /// If the view controller is managed by a presentation controller, this
+  /// property contains that object. This property is `nil` if the view
+  /// controller isn't managed by a presentation controller.
+  ///
+  /// If you've not yet presented the current view controller, accessing this
+  /// property creates a presentation controller based on the current value in
+  /// the `modalPresentationStyle` property. Always set the value of that
+  /// property before accessing any presentation controllers.
+  open private(set) var presentationController: PresentationController?
+
+  /// The nearest popover presentation controller that is managing the current
+  /// view controller.
+  ///
+  /// If the view controller or one of its ancestors is managed by a popover
+  /// presentation controller, this property contains that object. This property
+  /// is `nil` if the view controller is not managed by a popover presentation
   /// controller.
-  public func didMove(toParent viewController: ViewController?) {
+  ///
+  /// If you created the view controller but have not yet presented it,
+  /// accessing this property creates a popover presentation controller when the
+  /// value in the `modalPresentationStyle` property is
+  /// `ModalPresentationStyle.popover`. If the modal presentation style is a
+  /// different value, this property is `nil`.
+  open private(set) var popoverPresentationController: PopoverPresentationController?
+
+  /// A boolean value that indicates whether an item that previously was
+  /// focused should again become focused when the item's view controller
+  /// becomes visible and focusable.
+  ///
+  /// When the value of this property is `true`, the item that was last focused
+  /// automatically becomes focused when its view controller becomes visible and
+  /// focusable. For example, if an item in the view controller is focused and a
+  /// second view controller is presented, the original item becomes focused
+  /// again when the second view controller is dismissed. The default value of
+  /// this property is `true`.
+  open var restoresFocusAfterTransition: Bool = true {
+    didSet { fatalError("\(#function) not yet implemented") }
   }
+
+  // MARK - Adapting to Environment Changes
+
+  /// Called when a split view controller transitions to a compact-width size
+  /// class.
+  ///
+  /// This method provides default behavior when you do not overwrite the
+  /// `splitViewController(_:collapseSecondary:onto:)` method. The primary view
+  /// controller associated with the split view controller is displayed.
+  public func collapseSecondaryViewController(_ secondaryViewController: ViewController,
+                                              for splitViewController: SplitViewController) {
+  }
+
+  /// Called when a split view controller transitions to a regular-width size
+  /// class.
+  ///
+  /// This method provides default behavior when you do not overwrite the
+  /// `splitViewController(_:separateSecondaryFrom:)` method. The previous
+  /// secondary view controller is returned.
+  public func separateSecondaryViewController(for splitViewController: SplitViewController)
+      -> ViewController? {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  // MARK - Adjusting the Interface Style
+
+  /// The user interface style adopted by the view controller and all of its
+  /// children.
+  ///
+  /// Use this property to force the view controller to always adopt a light or
+  /// dark interface style. The default value of this property is
+  /// `UserInterfaceStyle.unspecified`, which causes the view controller to
+  /// inherit the interface style from the system or a parent view controller.
+  /// If you assign a different value, the new style applies to the view
+  /// controller, its entire view hierarchy, and any embedded child view
+  /// controllers.
+  open var overrideUserInterfaceStyle: UserInterfaceStyle = .unspecified
 
   // MARK - Managing Child View Controllers in a Custom Controller
 
@@ -728,7 +851,7 @@ public class ViewController: Responder {
   /// This property does not include any presented view controllers. This
   /// property is only intended to be read by an implementation of a custom
   /// container view controller.
-  public private(set) var children: [ViewController] = []
+  open private(set) var children: [ViewController] = []
 
   /// Adds the specified view controller as a child of the current view
   /// controller.
@@ -743,7 +866,7 @@ public class ViewController: Responder {
   /// This method is only intended to be called by an implementation of a custom
   /// container view controller. If you override this method, you must call
   /// `super` in your implementation.
-  public func addChild(_ controller: ViewController) {
+  open func addChild(_ controller: ViewController) {
     self.children.append(controller)
     controller.parent = self
   }
@@ -753,9 +876,136 @@ public class ViewController: Responder {
   /// This method is only intended to be called by an implementation of a custom
   /// container view controller. If you override this method, you must call
   /// `super` in your implementation.
-  public func removeFromParent() {
+  open func removeFromParent() {
     self.parent?.children.remove(object: self)
     self.parent = nil
+  }
+
+  /// Transitions between two of the view controller's child view controllers.
+  ///
+  /// This method adds the second view controller's view to the view hierarchy
+  /// and then performs the animations defined in your animations block. After
+  /// the animation completes, it removes the first view controller's view from
+  /// the view hierarchy.
+  ///
+  /// This method is only intended to be called by an implementation of a custom
+  /// container view controller. If you override this method, you must call
+  /// `super` in your implementation.
+  open func transition(from fromViewController: ViewController,
+                       to toViewController: ViewController,
+                       duration: TimeInterval,
+                       options: View.AnimationOptions = [],
+                       animations: (() -> Void)?,
+                       completion: ((Bool) -> Void)? = nil) {
+  }
+
+  /// Returns a boolean value indicating whether appearance methods are
+  /// forwarded to child view controllers.
+  ///
+  /// This method is called to determine whether to automatically forward
+  /// appearance-related containment callbacks to child view controllers.
+  ///
+  /// The default implementation returns `true`. Subclasses of the
+  /// `ViewController` class that implement containment logic may override this
+  /// method to control how these methods are forwarded. If you override this
+  /// method and return `false`, you are responsible for telling the child when
+  /// its views are going to appear or disappear. You do this by calling the
+  /// child view controller's `beginAppearanceTransition(_:animated:)` and
+  /// `endAppearanceTransition()` methods.
+  open private(set) var shouldAutomaticallyForwardAppearanceMethods: Bool = true
+
+  /// Tells a child controller its appearance is about to change.
+  ///
+  /// If you are implementing a custom container controller, use this method to
+  /// tell the child that its views are about to appear or disappear. Do not
+  /// invoke `viewWillAppear(_:)`, `viewWillDisappear(_:)`, `viewDidAppear(_:)`,
+  /// or `viewDidDisappear(_:)` directly.
+  open func beginAppearanceTransition(_ isAppearing: Bool, animated: Bool) {
+  }
+
+  /// Tells a child controller its appearance has changed.
+  ///
+  /// If you are implementing a custom container controller, use this method to
+  /// tell the child that the view transition is complete.
+  open func endAppearanceTransition() {
+  }
+
+  /// Changes the traits assigned to the specified child view controller.
+  ///
+  /// Usually, traits are passed unmodified from the parent view controller to
+  /// its child view controllers. When implementing a custom container view
+  /// controller, you can use this method to change the traits of any embedded
+  /// child view controllers to something more appropriate for your layout.
+  /// Making such a change alters other view controller behaviors associated
+  /// with that child. For example, modal presentations behave differently in a
+  /// horizontally compact versus horizontally regular environment. You might
+  /// also make such a change to force the same set of traits on the child view
+  /// controller regardless of the actual trait environment.
+  open func setOverrideTraitCollection(_ collection: TraitCollection?,
+                                       forChild childViewController: ViewController) {
+  }
+
+  /// Retrieves the trait collection for a child view controller.
+  ///
+  /// Use this method to retrieve the trait collection for a child view
+  /// controller. You can then modify the trait collection for the designated
+  /// child view controller and set it using the
+  /// `setOverrideTraitCollection(_:forChild:)` method.
+  open func overrideTraitCollection(forChild childViewController: ViewController)
+      -> TraitCollection? {
+  }
+
+  /// Raised if the view controller hierarchy is inconsistent with the view
+  /// hierarchy.
+  ///
+  /// When a view controller's view is added to the view hierarchy, the system
+  /// walks up the view hierarchy to find the first parent view that has a view
+  /// controller. That view controller must be the parent of the view controller
+  /// whose view is being added. Otherwise, this exception is raised. This
+  /// consistency check is also performed when a view controller is added as a
+  /// child by calling the `addChild(_:)` method.
+  ///
+  /// It is also allowed for a view controller that has no parent to add its
+  /// view to the view hierarchy. This is generally not recommended, but is
+  /// useful in some special cases.
+  public class var hierarchyInconsistencyException: NSExceptionName {
+    NSExceptionName(rawValue: "UIViewControllerHierarchyInconsistencyException")
+  }
+
+  // MARK - Responding to Containment Events
+
+  /// Called just before the view controller is added or removed from a
+  /// container view controller.
+  ///
+  /// Your view controller can override this method when it needs to know that
+  /// it has been added to a container.
+  ///
+  /// If you are implementing your own container view controller, it must call
+  /// the `willMove(toParent:)` method of the child view controller before
+  /// calling the `removeFromParent()` method, passing in a parent value of
+  /// `nil`.
+  ///
+  /// When your custom container calls the `addChild(_:)` method, it
+  /// automatically calls the `willMove(toParent:)` method of the view
+  /// controller to be added as a child before adding it.
+  open func willMove(toParent parent: ViewController?) {
+  }
+
+  /// Called after the view controller is added or removed from a container view
+  /// controller.
+  ///
+  /// Your view controller can override this method when it wants to react to
+  /// being added to a container.
+  ///
+  /// If you are implementing your own container view controller, it must call
+  /// the `didMove(toParent:)` method of the child view controller after the
+  /// transition to the new controller is complete or, if there is no
+  /// transition, immediately after calling the `addChild(_:)` method.
+  ///
+  /// The `removeFromParent()` method automatically calls the
+  /// `didMove(toParent:)` method of the child view controller after it removes
+  /// the child.
+  open func didMove(toParent parent: ViewController?) {
   }
 
   // MARK - Getting Other Related View Controllers
@@ -769,7 +1019,7 @@ public class ViewController: Responder {
   /// one of its ancestors was, this property contains the view controller that
   /// presented the ancestor. If neither the current view controller or any of
   /// its ancestors were presented modally, the value in this property is `nil`.
-  public private(set) var presentingViewController: ViewController?
+  open private(set) var presentingViewController: ViewController?
 
   /// The view controller that presented this view controller.
   ///
@@ -779,7 +1029,7 @@ public class ViewController: Responder {
   /// controller that it presented. If the current view controller did not
   /// present another view controller modally, the value in this property is
   /// `nil`.
-  public private(set) var presentedViewController: ViewController?
+  open private(set) var presentedViewController: ViewController?
 
   /// The view controller that presented this view controller.
   ///
@@ -789,9 +1039,309 @@ public class ViewController: Responder {
   ///
   /// Use the `presentingViewController` property to access the presenting view
   /// controller.
-  public private(set) var parent: ViewController? {
+  open private(set) weak var parent: ViewController? {
     willSet { self.willMove(toParent: newValue) }
     didSet { self.didMove(toParent: self.parent) }
+  }
+
+  /// The nearest ancestor in the view controller hierarchy that is a split view
+  /// controller.
+  ///
+  /// If the view controller or one of its ancestors is a child of a split view
+  /// controller, this property contains the owning split view controller. This
+  /// property is `nil` if the view controller is not embedded inside a split
+  /// view controller.
+  public private(set) var splitViewController: SplitViewController?
+
+  /// The nearest ancestor in the view controller hierarchy that is a navigation
+  /// controller.
+  ///
+  /// If the view controller or one of its ancestors is a child of a navigation
+  /// controller, this property contains the owning navigation controller. This
+  /// property is `nil` if the view controller is not embedded inside a
+  /// navigation controller.
+  public private(set) var navigationController: NavigationController?
+
+  /// The nearest ancestor in the view controller hierarchy that is a tab bar
+  /// controller.
+  ///
+  /// If the view controller or one of its ancestors is a child of a tab bar
+  /// controller, this property contains the owning tab bar controller. This
+  /// property is `nil` if the view controller is not embedded inside a tab bar
+  /// controller.
+  public private(set) var tabBarController: TabBarController?
+
+  // MARK - Configuring a Navigation Interface
+
+  /// The navigation item used to represent the view controller in a parent's
+  /// navigation bar.
+  ///
+  /// This is a unique instance of `NavigationItem` created to represent the
+  /// view controller when it is pushed onto a navigation controller. The first
+  /// time the property is accessed, the `NavigationItem` object is created.
+  // Therefore, you should not access this property if you are not using a
+  /// navigation controller to display the view controller. To ensure the
+  /// navigation item is configured, you can either override this property and
+  /// add code to create the bar button items when first accessed or create the
+  /// items in your view controller's initialization code.
+  ///
+  /// Avoid tying the creation of bar button items in your navigation item to
+  /// the creation of your view controller's view. The navigation item of a view
+  /// controller may be retrieved independently of the view controller's view.
+  /// For example, when pushing two view controllers onto a navigation stack,
+  /// the topmost view controller becomes visible, but the other view
+  /// controller's navigation item may be retrieved in order to present its back
+  /// button.
+  ///
+  /// The default behavior is to create a navigation item that displays the view
+  /// controller's title.
+  public private(set) var navigationItem: NavigationItem
+
+  /// A boolean value indicating whether the toolbar at the bottom of the screen
+  /// is hidden when the view controller is pushed on to a navigation
+  /// controller.
+  ///
+  /// A view controller added as a child of a navigation controller can display
+  /// an optional toolbar at the bottom of the screen. The value of this
+  /// property on the topmost view controller determines whether the toolbar is
+  /// visible. If the value of this property is `true`, the toolbar is hidden.
+  /// If the value of this property is `false`, the bar is visible.
+  public var hidesBottomBarWhenPushed: Bool
+
+  /// Sets the toolbar items to be displayed along with the view controller.
+  ///
+  /// View controllers that are managed by a navigation controller can use this
+  /// method to specify toolbar items for the navigation controller's built-in
+  /// toolbar. You can set the toolbar items for your view controller before
+  /// your view controller is displayed or after it is already visible.
+  public func setToolbarItems(_ toolbarItems: [BarButtonItem]?,
+                              animated: Bool) {
+  }
+
+  /// The toolbar items associated with the view controller.
+  ///
+  /// This property contains an array of `BarButtonItem` objects and works in
+  /// conjunction with a `NavigationController` object. If this view controller
+  /// is embedded inside a navigation controller interface, and the navigation
+  /// controller displays a toolbar, this property identifies the items to
+  /// display in that toolbar.
+  ///
+  /// You can set the value of this property explicitly or use the
+  /// `setToolbarItems(_:animated:)` method to animate changes to the visible
+  /// set of toolbar items.
+  public var toolbarItems: [BarButtonItem]?
+
+  // MARK - Configuring Tab Bar Content
+
+  /// The tab bar item that represents the view controller when added to a tab
+  /// bar controller.
+  ///
+  /// This is a unique instance of `TabBarItem` created to represent the view
+  /// controller when it is a child of a tab bar controller. The first time the
+  /// property is accessed, the `TabBarItem` is created. Therefore, you should
+  /// not access this property if you are not using a tab bar controller to
+  /// display the view controller. To ensure the tab bar item is configured, you
+  /// can either override this property and add code to create the bar button
+  /// items when first accessed or create the items in your view controller's
+  /// initialization code.
+  ///
+  /// The default value is a tab bar item that displays the view controller's
+  /// title.
+  public var tabBarItem: TabBarItem!
+
+  // MARK - Coordinating with System Gestures
+
+  /// The screen edges for which you want your gestures to take precedence over
+  /// the system gestures.
+  ///
+  /// Normally, the screen-edge gestures defined by the system take precedence
+  /// over any gesture recognizers that you define. The system uses its gestures
+  /// to implement system level behaviors.
+  ///
+  /// Whenever possible, you should allow the system gestures to take
+  /// precedence. However, immersive apps can use this property to allow
+  /// app-defined gestures to take precedence over the system gestures. You do
+  /// that by overriding this property and returning the screen edges for which
+  /// your gestures should take precedence.
+  ///
+  /// If you change the edges preferred by your view controller, update the
+  /// value of this property and call the
+  /// `setNeedsUpdateOfScreenEdgesDeferringSystemGestures()` method to notify
+  /// the system that the edges have changed.
+  open private(set) var preferredScreenEdgesDeferringSystemGestures: RectEdge
+
+  /// Returns the child view controller that should be queried to see if its
+  /// gestures should take precedence.
+  ///
+  /// When implementing a container view controller, override this method if one
+  /// of your child view controllers defines screen-edge gestures that should
+  /// take precedence over the system gestures. The framework then uses the
+  /// `preferredScreenEdgesDeferringSystemGestures` property of the returned
+  /// child view controller to determine which screen edges have competing
+  /// gesture recognizers.
+  open private(set) var childForScreenEdgesDeferringSystemGestures: ViewController?
+
+  /// Call this method when you change the screen edges that you use for
+  /// deferring system gestures.
+  ///
+  /// Calling this method causes the framework to requst your view controller's
+  /// preferred edges from the `preferredScreenEdgesDeferringSystemGestures`
+  /// property and `childForScreenEdgesDeferringSystemGestures` method.
+  open func setNeedsUpdateOfScreenEdgesDeferringSystemGestures() {
+  }
+
+  /// Returns a boolean indicating whether the system is allowed to hide the
+  /// visual indicator for returning to the home screen.
+  ///
+  /// `true` if your view controller lets the system determine when to hide the
+  /// indicator, or `false` if you want the indicator shown at all times. The
+  /// default implementation of this method returns `false`.
+  open private(set) var prefersHomeIndicatorAutoHidden: Bool = false
+
+  /// Returns the child view controller that is consulted about its preference
+  /// for displaying a visual indicator for returning to the home screen.
+  ///
+  /// When implementing a container view controller, override this method if you
+  /// want one your child view controllers to determine whether to display the
+  /// visual indicator. If you do, the system calls the
+  /// `prefersHomeIndicatorAutoHidden` method of the returned view controller.
+  /// If the method returns `nil`, the system calls the
+  /// `prefersHomeIndicatorAutoHidden` method of the current view controller.
+  open private(set) var childForHomeIndicatorAutoHidden: ViewController?
+
+  /// Notifies the framework that your view controller updated its preference
+  /// regarding the visual indicator for returning to the home screen.
+  ///
+  /// When you change the value returned by your view controller's
+  /// `prefersHomeIndicatorAutoHidden` or `childForHomeIndicatorAutoHidden`
+  /// method, call this method to let the framework know that it should call
+  /// those methods again.
+  open func setNeedsUpdateOfHomeIndicatorAutoHidden() {
+  }
+
+  // MARK - Managing Pointer Lock State
+
+  /// A boolean value that indicates whether the view controller prefers to lock
+  /// the pointer to a specific scene.
+  ///
+  /// The default is `false`. Setting this property to true indicates the view
+  /// controller’s preference to lock the pointer, although the system may not
+  /// honor the request. Use `isLocked` to determine the current pointer lock
+  /// state. For the system to consider locking the pointer:
+  ///
+  /// - The scene must be full screen, not in Split View or Slide Over, with no
+  ///   other apps in Slide Over.
+  /// - The scene must be in the `Scene.ActivationState.foregroundActive` state.
+  /// - The app must be in the foreground, and the window that contains the
+  ///   scene ordered to the front.
+  ///
+  /// - Note
+  ///   Bringing an app to the foreground doesn't immediately enable pointer
+  ///   lock. To enable pointer lock, the user must click in the window. To exit
+  ///   pointer lock, users can use alt-tab to switch to another app, or using
+  ///   hyper-tilde.
+  ///
+  /// The system continuously monitors the state and when the app no longer
+  /// satisfies the requirements, it disables the pointer lock. When the lock
+  /// state changes, the system posts `didChangeNotification`.
+  ///
+  /// If you change the value of `prefersPointerLocked`, call
+  /// `setNeedsUpdateOfPrefersPointerLocked()`.
+  open private(set) var prefersPointerLocked: Bool = false
+
+  /// Indicates that the view controller changed the pointer lock preference.
+  open func setNeedsUpdateOfPrefersPointerLocked() {
+  }
+
+  /// A child view controller to query for the pointer lock preference.
+  ///
+  /// Call `setNeedsUpdateOfPrefersPointerLocked()` if the child view controller
+  /// that the system needs to query for the pointer lock preference changes.
+  open private(set) var childViewControllerForPointerLock: ViewController?
+
+  // MARK - Accessing the Available Key Commands
+
+  /// A boolean value indicating whether the view controller performs
+  /// menu-related actions.
+  ///
+  /// The default value of this property is `true`, which causes the view
+  /// controller to handle actions passed along the responder chain by modally
+  /// presented view controllers. If the app includes the
+  /// `ViewControllerPerformsActionsWhilePresentingModally` key in its
+  /// `Info.plist` file, the default value matches the value of that key
+  /// instead.
+  ///
+  /// A presenting view controller might not want to handle actions in one of
+  /// its modally presented child view controllers. Overriding this property and
+  /// returning false causes the framework to ignore this view controller when
+  /// searching for a target to handle actions.
+  open private(set) var performsActionsWhilePresentingModally: Bool = true
+
+  /// Associates the specified keyboard shortcut with the view controller.
+  ///
+  /// This method lets you easily add key commands to the view controller
+  /// without overriding the `keyCommands` property. The key commands you add to
+  /// a view controller are applied to the active responder chain. When the user
+  /// performs a key command, the framework searches the responder chain
+  /// (starting with the first responder) for an object capable of handling the
+  /// specified action.
+  open func addKeyCommand(_ keyCommand: KeyCommand) {
+  }
+
+  /// Removes the key command from the view controller.
+  ///
+  /// This method lets you easily remove key commands without overriding the
+  /// `keyCommands` property.
+  open func removeKeyCommand(_ keyCommand: KeyCommand) {
+  }
+
+  // MARK - Adding Editing Behaviors to Your View Controller
+
+  /// A boolean value indicating whether the view controller currently allows
+  /// the user to edit the view contents.
+  ///
+  /// If `true`, the view controller currently allows editing; otherwise,
+  /// `false`.
+  ///
+  /// If the view is editable and the associated navigation controller contains
+  /// an edit-done button, then a Done button is displayed; otherwise, an Edit
+  /// button is displayed. Clicking either button toggles the state of this
+  /// property. Add an edit-done button by setting the custom left or right view
+  /// of the navigation item to the value returned by the editButtonItem method.
+  /// Set the `isEditing` property to the initial state of your view. Use the
+  /// `setEditing(_:animated:)` method as an action method to animate the
+  /// transition of this state if the view is already displayed.
+  open var isEditing: Bool = false
+
+  /// Sets whether the view controller shows an editable view.
+  ///
+  /// Subclasses that use an edit-done button must override this method to
+  /// change their view to an editable state if `isEditing` is `true` and a
+  /// non-editable state if it is `false`. This method should invoke `super`'s
+  /// implementation before updating its view.
+  open func setEditing(_ editing: Bool, animated: Bool) {
+  }
+
+  /// Returns a bar button item that toggles its title and associated state
+  /// between Edit and Done.
+  ///
+  /// If one of the custom views of the navigationItem property is set to the
+  /// returned object, the associated navigation bar displays an Edit button if
+  /// `isEditing` is `false` and a Done button if `isEditing` is `true`. The
+  /// default button action invokes the `setEditing(_:animated:)` method.
+  open private(set) var editButtonItem: BarButtonItem
+
+  // MARK - Handling Memory Warnings
+
+  /// Sent to the view controller when the app receives a memory warning.
+  ///
+  /// Your app never calls this method directly. Instead, this method is called
+  /// when the system determines that the amount of available memory is low.
+  ///
+  /// You can override this method to release any additional memory used by your
+  /// view controller. If you do, your implementation of this method must call
+  /// the `super` implementation at some point.
+  open func didReceiveMemoryWarning() {
   }
 
   // MARK -
