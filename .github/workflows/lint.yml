@@ -33,6 +33,6 @@ jobs:
         fileName: swift-format.exe
         out-file-path: C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\
 
-    - uses: compnerd/swift-format-linter-action@main
+    - uses: compnerd/swift-format-linter-action@cleanup
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
