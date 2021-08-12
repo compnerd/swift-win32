@@ -3,6 +3,8 @@
 
 import WinSDK
 import class Foundation.NSNotification
+import struct Foundation.NSExceptionName
+import struct Foundation.TimeInterval
 
 /// Transition styles available when presenting view controllers.
 public enum ModalTransitionStyle: Int {
@@ -708,6 +710,99 @@ public class ViewController: Responder {
     NSNotification.Name(rawValue: "UIViewControllerShowDetailTargetDidChangeNotification")
   }
 
+  // MARK - Adding a Custom Transition or Presentation
+
+  /// The delegate object that provides transition animator, interactive
+  /// controller, and custom presentation controller objects.
+  ///
+  /// When the view controller's `modalPresentationStyle` property is
+  /// `ModalPresentationStyle.custom`, the framework uses the object in this
+  /// property to facilitate transitions and presentations for the view
+  /// controller. The transitioning delegate object is a custom object that you
+  /// provide and that conforms to the `ViewControllerTransitioningDelegate`
+  /// protocol. Its job is to vend the animator objects used to animate this
+  /// view controller's view onscreen and an optional presentation controller
+  /// to provide any additional chrome and animations.
+  public weak var transitioningDelegate: ViewControllerTransitioningDelegate?
+
+  /// Returns the active transition coordinator object.
+  ///
+  /// When a presentation or dismissal is in progress, this method returns the
+  /// transition coordinator object associated with that transition. If there is
+  /// no in-progress transition associated with the current view controller,
+  /// the framework checks the view controller's ancestors for a transition
+  /// coordinator object and returns that object if it exists. You can use this
+  /// object to create additional animations and synchronize them with the
+  /// transition animations.
+  ///
+  /// Container view controllers can override this method but in most cases
+  /// should not need to. If you do override this method, first call `super` to
+  /// see if there is an appropriate transition coordinator to return, and, if
+  /// there is, return it.
+  ///
+  /// For more information about the role of transition coordinators, see
+  /// `ViewControllerTransitionCoordinator`.
+  public private(set) var transitionCoordinator: ViewControllerTransitionCoordinator?
+
+  /// Returns the view controller that responds to the action.
+  ///
+  /// This method returns the current view controller if that view controller
+  /// overrides the method indicated by the action parameter. If the current
+  /// view controller does not override that method, the framework walks up the
+  /// view hierarchy and returns the first view controller that does override
+  /// it. If no view controller handles the action, this method returns `nil`.
+  ///
+  /// A view controller can selectively respond to an action by returning an
+  /// appropriate value from its `canPerformAction(_:withSender:)` method.
+  public func targetViewController<Target: AnyObject>(forAction action: (Target) -> () -> Void,
+                                                      sender: Any?) -> ViewController? {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  public func targetViewController<Target: AnyObject>(forAction action: (Target) -> (_: Any?) -> Void,
+                                                      sender: Any?) -> ViewController? {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// The presentation controller that's managing the current view controller.
+  ///
+  /// If the view controller is managed by a presentation controller, this
+  /// property contains that object. This property is `nil` if the view
+  /// controller isn't managed by a presentation controller.
+  ///
+  /// If you've not yet presented the current view controller, accessing this
+  /// property creates a presentation controller based on the current value in
+  /// the `modalPresentationStyle` property. Always set the value of that
+  /// property before accessing any presentation controllers.
+  public private(set) var presentationController: PresentationController?
+
+  /// The nearest popover presentation controller that is managing the current view controller.
+  ///
+  /// If the view controller or one of its ancestors is managed by a popover
+  /// presentation controller, this property contains that object. This property
+  /// is `nil` if the view controller is not managed by a popover presentation
+  /// controller.
+  ///
+  /// If you created the view controller but have not yet presented it, accessing
+  /// this property creates a popover presentation controller when the value in
+  /// the `modalPresentationStyle` property is `ModalPresentationStyle.popover`.
+  /// If the modal presentation style is a different value, this property is `nil`.
+#if false
+  public private(set) var popoverPresentationController: PopoverPresentationController?
+#endif
+
+  /// A boolean value that indicates whether an item that previously was focused
+  /// should again become focused when the item's view controller becomes
+  /// visible and focusable.
+  ///
+  /// When the value of this property is true, the item that was last focused
+  /// automatically becomes focused when its view controller becomes visible and
+  /// focusable. For example, if an item in the view controller is focused and a
+  /// second view controller is presented, the original item becomes focused
+  /// again when the second view controller is dismissed. The default value of
+  /// this property is `true`.
+  public var restoresFocusAfterTransition: Bool = true
+
   // MARK - Responding to Containment Events
 
   /// Called just before the view controller is added or removed from a
@@ -756,6 +851,101 @@ public class ViewController: Responder {
   public func removeFromParent() {
     self.parent?.children.remove(object: self)
     self.parent = nil
+  }
+
+  /// Transitions between two of the view controller's child view controllers.
+  ///
+  /// This method adds the second view controller's view to the view hierarchy
+  /// and then performs the animations defined in your animations block. After
+  /// the animation completes, it removes the first view controller's view from
+  /// the view hierarchy.
+  ///
+  /// This method is only intended to be called by an implementation of a custom
+  /// container view controller. If you override this method, you must call
+  /// `super` in your implementation.
+  public func transition(from source: ViewController,
+                         to destination: ViewController, duration: TimeInterval,
+                         options: View.AnimationOptions = [],
+                         animations: (() -> Void)?,
+                         completion: ((Bool) -> Void)? = nil) {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Returns a boolean value indicating whether appearance methods are
+  /// forwarded to child view controllers.
+  ///
+  /// This method is called to determine whether to automatically forward
+  /// appearance-related containment callbacks to child view controllers.
+  ///
+  /// The default implementation returns true. Subclasses of the `ViewController`
+  /// class that implement containment logic may override this method to control
+  /// how these methods are forwarded. If you override this method and return
+  /// `false`, you are responsible for telling the child when its views are going
+  /// to appear or disappear. You do this by calling the child view controller's
+  /// `beginAppearanceTransition(_:animated:)` and `endAppearanceTransition()`
+  /// methods.
+  public private(set) var shouldAutomaticallyForwardAppearanceMethods: Bool = true
+
+  /// Tells a child controller its appearance is about to change.
+  ///
+  /// If you are implementing a custom container controller, use this method to
+  /// tell the child that its views are about to appear or disappear. Do not
+  /// invoke `viewWillAppear(_:)`, `viewWillDisappear(_:)`, `viewDidAppear(_:)`,
+  /// or `viewDidDisappear(_:)` directly.
+  public func beginAppearanceTransition(_ isAppearing: Bool, animated: Bool) {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Tells a child controller its appearance has changed.
+  ///
+  /// If you are implementing a custom container controller, use this method to
+  /// tell the child that the view transition is complete.
+  public func endAppearanceTransition() {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Changes the traits assigned to the specified child view controller.
+  ///
+  /// Usually, traits are passed unmodified from the parent view controller to
+  /// its child view controllers. When implementing a custom container view
+  /// controller, you can use this method to change the traits of any embedded
+  /// child view controllers to something more appropriate for your layout.
+  /// Making such a change alters other view controller behaviors associated
+  /// with that child. For example, modal presentations behave differently in a
+  /// horizontally compact versus horizontally regular environment. You might
+  /// also make such a change to force the same set of traits on the child view
+  /// controller regardless of the actual trait environment.
+  public func setOverrideTraitCollection(_ collection: TraitCollection?,
+                                         forChild childViewController: ViewController) {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Retrieves the trait collection for a child view controller.
+  ///
+  /// Use this method to retrieve the trait collection for a child view
+  /// controller. You can then modify the trait collection for the designated
+  /// child view controller and set it using the
+  /// `setOverrideTraitCollection(_:forChild:)` method.
+  public func overrideTraitCollection(forChild childViewController: ViewController)
+      -> TraitCollection? {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Raised if the view controller hierarchy is inconsistent with the view
+  /// hierarchy.
+  ///
+  /// When a view controller's view is added to the view hierarchy, the system
+  /// walks up the view hierarchy to find the first parent view that has a view
+  /// controller. That view controller must be the parent of the view controller
+  /// whose view is being added. Otherwise, this exception is raised. This
+  /// consistency check is also performed when a view controller is added as a
+  /// child by calling the `addChild(_:)` method.
+  ///
+  /// It is also allowed for a view controller that has no parent to add its
+  /// view to the view hierarchy. This is generally not recommended, but is
+  /// useful in some special cases.
+  public class var hierarchyInconsistencyException: NSExceptionName {
+    NSExceptionName(rawValue: "UIViewControllerHierarchyInconsistencyException")
   }
 
   // MARK - Getting Other Related View Controllers
@@ -842,5 +1032,32 @@ extension ViewController: ContentContainer {
   /// Notifies the container that a child view controller was resized using auto
   /// layout.
   public func systemLayoutFittingSizeDidChange(forChildContentContainer container: ContentContainer) {
+  }
+}
+
+extension ViewController: TraitEnvironment {
+  public var traitCollection: TraitCollection {
+    // The first item in the chain provides the base trait collection.
+    var traits: TraitCollection =
+        self.parent?.traitCollection
+          ?? self.view.superview?.traitCollection
+          ?? (self.view as? Window)?.traitCollection
+          ?? TraitCollection()
+
+    // The parent view controller may provide overrides for the controller.
+    if let overrides = self.parent?.overrideTraitCollection(forChild: self) {
+      traits = TraitCollection(traitsFrom: [traits, overrides])
+    }
+
+    // The presentation controller may further override the traits.
+    if let overrides = self.presentationController?.overrideTraitCollection {
+      traits = TraitCollection(traitsFrom: [traits, overrides])
+    }
+
+    return traits
+  }
+
+  public func traitCollectionDidChange(_ previousTraitCollection: TraitCollection?) {
+    // extension point for derived types
   }
 }

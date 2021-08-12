@@ -242,6 +242,10 @@ private func GetCurrentDisplayGamut() -> DisplayGamut {
 }
 
 public class TraitCollection {
+  /// Creates an empty trait collection.
+  internal init() {
+  }
+
   // MARK -  Creating a Trait Collection
 
   /// Creates a trait collection that consists of traits merged from a specified
