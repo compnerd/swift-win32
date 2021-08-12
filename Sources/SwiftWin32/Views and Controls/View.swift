@@ -598,7 +598,7 @@ public class View: Responder {
   }
 
   /// Informs the view that its window object changed.
-  public func diMoveToWindow() {
+  public func didMoveToWindow() {
   }
 
   // MARK - Configuring Content Margins
