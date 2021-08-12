@@ -24,48 +24,47 @@ target_sources(SwiftWin32 PRIVATE
   UI/Interaction.swift
   UI/SceneSizeRestrictions.swift)
 target_sources(SwiftWin32 PRIVATE
-  "App Extensions/InputViewController.swift")
-target_sources(SwiftWin32 PRIVATE
+  "App Extensions/InputViewController.swift"
   "Animation and Haptics/ViewControllerContextTransitioning.swift"
+  "Animation and Haptics/Property-Based Animations/CubicTimingParameters.swift"
+  "Animation and Haptics/Property-Based Animations/SpringTimingParameters.swift"
+  "Animation and Haptics/Property-Based Animations/TimingCurveProvider.swift"
+  "Animation and Haptics/Property-Based Animations/ViewAnimating.swift"
+  "Animation and Haptics/Property-Based Animations/ViewImplicitlyAnimating.swift"
+  "Animation and Haptics/View Controller Transitions/ViewControllerAnimatedTransitioning.swift"
+  "Animation and Haptics/View Controller Transitions/ViewControllerInteractiveTransitioning.swift"
   "Animation and Haptics/View Controller Transitions/ViewControllerTransitionCoordinator.swift"
-  "Animation and Haptics/View Controller Transitions/ViewControllerTransitionCoordinatorContext.swift")
-target_sources(SwiftWin32 PRIVATE
+  "Animation and Haptics/View Controller Transitions/ViewControllerTransitionCoordinatorContext.swift"
+  "Animation and Haptics/View Controller Transitions/ViewControllerTransitioningDelegate.swift"
+  "App and Environment/AdaptivePresentationControllerDelegate.swift"
   "App and Environment/Application.swift"
   "App and Environment/ApplicationDelegate.swift"
   "App and Environment/ApplicationMain.swift"
   "App and Environment/Device.swift"
   "App and Environment/TraitCollection.swift"
-  "App and Environment/TraitEnvironment.swift")
-target_sources(SwiftWin32 PRIVATE
+  "App and Environment/TraitEnvironment.swift"
   "App and Environment/Scenes/Scene.swift"
   "App and Environment/Scenes/SceneConfiguration.swift"
   "App and Environment/Scenes/SceneDelegate.swift"
   "App and Environment/Scenes/SceneSession.swift"
   "App and Environment/Scenes/WindowScene.swift"
-  "App and Environment/Scenes/WindowSceneDelegate.swift")
-target_sources(SwiftWin32 PRIVATE
+  "App and Environment/Scenes/WindowSceneDelegate.swift"
   "Appearance Customization/Configurations/BackgroundConfiguration.swift"
   "Appearance Customization/Configurations/CellConfigurationState.swift"
   "Appearance Customization/Configurations/ConfigurationColorTransformer.swift"
   "Appearance Customization/Configurations/ConfigurationState.swift"
-  "Appearance Customization/Configurations/ConfigurationStateCustomKey.swift")
-target_sources(SwiftWin32 PRIVATE
-  "Drag and Drop/SpringLoadedInteractionContext.swift")
-target_sources(SwiftWin32 PRIVATE
+  "Appearance Customization/Configurations/ConfigurationStateCustomKey.swift"
+  "Drag and Drop/SpringLoadedInteractionContext.swift"
   "Drawing/BezierPath.swift"
-  "Drawing/Color.swift")
-target_sources(SwiftWin32 PRIVATE
+  "Drawing/Color.swift"
   "Focus-Based Navigation/FocusAnimationCoordinator.swift"
   "Focus-Based Navigation/FocusEnvironment.swift"
   "Focus-Based Navigation/FocusItem.swift"
   "Focus-Based Navigation/FocusItemContainer.swift"
   "Focus-Based Navigation/FocusMovementHint.swift"
-  "Focus-Based Navigation/FocusUpdateContext.swift")
-target_sources(SwiftWin32 PRIVATE
-  "Images and PDF/Image.swift")
-target_sources(SwiftWin32 PRIVATE
-  "Keyboards and Input/TextInputTraits.swift")
-target_sources(SwiftWin32 PRIVATE
+  "Focus-Based Navigation/FocusUpdateContext.swift"
+  "Images and PDF/Image.swift"
+  "Keyboards and Input/TextInputTraits.swift"
   "Menus and Shortcuts/Action.swift"
   "Menus and Shortcuts/Command.swift"
   "Menus and Shortcuts/ContextMenuConfiguration.swift"
@@ -79,30 +78,26 @@ target_sources(SwiftWin32 PRIVATE
   "Menus and Shortcuts/MenuSystem.swift"
   "Menus and Shortcuts/PreviewParameters.swift"
   "Menus and Shortcuts/PreviewTarget.swift"
-  "Menus and Shortcuts/TargetedPreview.swift")
-target_sources(SwiftWin32 PRIVATE
+  "Menus and Shortcuts/TargetedPreview.swift"
   "Pointer Interactions/PointerInteraction.swift"
   "Pointer Interactions/PointerInteractionAnimating.swift"
   "Pointer Interactions/PointerInteractionDelegate.swift"
   "Pointer Interactions/PointerRegion.swift"
   "Pointer Interactions/PointerRegionRequest.swift"
-  "Pointer Interactions/PointerStyle.swift")
-target_sources(SwiftWin32 PRIVATE
+  "Pointer Interactions/PointerStyle.swift"
   "Text Display and Fonts/Font.swift"
   "Text Display and Fonts/FontDescriptor.swift"
-  "Text Display and Fonts/FontMetrics.swift")
-target_sources(SwiftWin32 PRIVATE
+  "Text Display and Fonts/FontMetrics.swift"
   "Touches, Presses, and Gestures/Event.swift"
   "Touches, Presses, and Gestures/GestureRecognizer.swift"
   "Touches, Presses, and Gestures/GestureRecognizerDelegate.swift"
   "Touches, Presses, and Gestures/Responder.swift"
   "Touches, Presses, and Gestures/Touch.swift"
   "Touches, Presses, and Gestures/Press.swift"
-  "Touches, Presses, and Gestures/PressesEvent.swift")
-target_sources(SwiftWin32 PRIVATE
+  "Touches, Presses, and Gestures/PressesEvent.swift"
   "View Controllers/ContentContainer.swift"
-  "View Controllers/ViewController.swift")
-target_sources(SwiftWin32 PRIVATE
+  "View Controllers/PresentationController.swift"
+  "View Controllers/ViewController.swift"
   "Views and Controls/Axis.swift"
   "Views and Controls/Button.swift"
   "Views and Controls/Control.swift"
@@ -119,16 +114,14 @@ target_sources(SwiftWin32 PRIVATE
   "Views and Controls/TextField.swift"
   "Views and Controls/TextView.swift"
   "Views and Controls/View.swift"
-  "Views and Controls/VisualEffect.swift")
-target_sources(SwiftWin32 PRIVATE
+  "Views and Controls/VisualEffect.swift"
   "Views and Controls/Table Views/ContextualAction.swift"
   "Views and Controls/Table Views/SwipeActionsConfiguration.swift"
   "Views and Controls/Table Views/TableView.swift"
   "Views and Controls/Table Views/TableViewCell.swift"
   "Views and Controls/Table Views/TableViewDataSource.swift"
   "Views and Controls/Table Views/TableViewDelegate.swift"
-  "Views and Controls/Table Views/TableViewFocusUpdateContext.swift")
-target_sources(SwiftWin32 PRIVATE
+  "Views and Controls/Table Views/TableViewFocusUpdateContext.swift"
   "Windows and Screens/AlertAction.swift"
   "Windows and Screens/AlertController.swift"
   "Windows and Screens/CoordinateSpace.swift"
