@@ -523,7 +523,7 @@ public class TraitCollection {
   ///
   /// The `Image.Configuration` object in this property contains the same traits
   /// as the current trait collection.
-  public private(set) var imageConfiguration: Image.Configuration {
+  public var imageConfiguration: Image.Configuration {
     fatalError("\(#function) not yet implemented")
   }
 
