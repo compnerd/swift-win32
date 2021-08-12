@@ -51,13 +51,35 @@ public enum UserInterfaceActiveAppearance: Int {
   case inactive
 }
 
+/// Constants that indicate the interface type for the device or an object that
+/// has a trait environment, such as a view and view controller.
 public enum UserInterfaceIdiom: Int {
+  /// An unspecified idiom.
   case unspecified
+
+  /// An interface designed for a phone.
   case phone
+
+  @available(*, deprecated, message: "Use UserInterfaceIdiom.tablet")
   case pad
+
+  /// An interface designed for a TV.
   case tv
+
+  /// An interface designed for a car display.
   case car
+
+  @available(*, deprecated, message: "Use UserInterfaceIdiom.desktop")
   case mac
+
+  /// An interface designed for a tablet.
+  case tablet
+
+  /// An interface designed for a desktop or laptop.
+  case desktop
+
+  /// An interface designed for a AR/VR device.
+  case headset
 }
 
 public enum UserInterfaceLevel: Int {
