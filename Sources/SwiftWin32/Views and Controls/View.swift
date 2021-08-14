@@ -135,6 +135,177 @@ extension View {
 }
 
 extension View {
+  /// Options for animating views using block objects.
+  public struct AnimationOptions: OptionSet {
+    public typealias RawValue = UInt
+
+    public let rawValue: RawValue
+
+    public init(rawValue: RawValue) {
+      self.rawValue = rawValue
+    }
+  }
+}
+
+extension View.AnimationOptions {
+  /// Lay out subviews at commit time so that they are animated along with their
+  /// parent.
+  public static var layoutSubviews: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 0)
+  }
+
+  /// Allow the user to interact with views while they are being animated.
+  public static var allowUserInteraction: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 1)
+  }
+
+  /// Start the animation from the current setting associated with an already
+  /// in-flight animation.
+  ///
+  /// If this key is not present, all in-flight animations are allowed to finish
+  /// before the new animation is started. If another animation is not in
+  /// flight, this key has no effect.
+  public static var beginFromCurrentState: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 2)
+  }
+
+  /// Repeat the animation indefinitely.
+  public static var `repeat`: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 3)
+  }
+
+  /// Run the animation backwards and forwards (must be combined with the repeat
+  /// option).
+  public static var autoreverse: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 4)
+  }
+
+  /// Force the animation to use the original duration value specified when the
+  /// animation was submitted.
+  public static var overrideInheritedDuration: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 5)
+  }
+
+  /// Force the animation to use the original curve value specified when the
+  /// animation was submitted.
+  ///
+  /// If this key is not present, the animation inherits the curve of the
+  /// in-flight animation, if any.
+  public static var overrideInheritedCurve: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 6)
+  }
+
+  /// Animate the views by changing the property values dynamically and
+  /// redrawing the view.
+  public static var allowAnimatedContent: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 7)
+  }
+
+  /// Hide or show views during a view transition.
+  ///
+  /// When present, this key causes views to be hidden or shown (instead of
+  /// removed or added) when performing a view transition. Both views must
+  /// already be present in the parent view's hierarchy when using this key. If
+  /// this key is not present, the to-view in a transition is added to, and the
+  /// from-view is removed from, the parent view's list of subviews.
+  public static var showHideTransitionViews: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 8)
+  }
+
+  /// The option to not inherit the animation type or any options.
+  public static var overrideInheritedOptions: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 9)
+  }
+
+  /// Specify an ease-in ease-out curve, which causes the animation to begin
+  /// slowly, accelerate through the middle of its duration, and then slow again
+  /// before completing.
+  public static var curveEaseInOut: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 0 << 16)
+  }
+
+  /// An ease-in curve causes the animation to begin slowly, and then speed up
+  /// as it progresses.
+  public static var curveEaseIn: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 16)
+  }
+
+  /// An ease-out curve causes the animation to begin quickly, and then slow as
+  /// it completes.
+  public static var curveEaseOut: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 2 << 16)
+  }
+
+  /// A linear animation curve causes an animation to occur evenly over its
+  /// duration.
+  public static var curveLinear: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 3 << 16)
+  }
+
+  internal static var transitionNone: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 0 << 20)
+  }
+
+  /// A transition that flips a view around its vertical axis from left to right
+  /// (the left side of the view moves toward the front and right side toward
+  /// the back).
+  public static var transitionFlipFromLeft: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 1 << 20)
+  }
+
+  /// A transition that flips a view around its vertical axis from right to left
+  /// (the right side of the view moves toward the front and left side toward
+  /// the back).
+  public static var transitionFlipFromRight: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 2 << 20)
+  }
+
+  /// A transition that curls a view up from the bottom.
+  public static var transitionCurlUp: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 3 << 20)
+  }
+
+  /// A transition that curls a view down from the top.
+  public static var transitionCurlDown: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 4 << 20)
+  }
+
+  /// A transition that dissolves from one view to the next.
+  public static var transitionCrossDissolve: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 5 << 20)
+  }
+
+  /// A transition that flips a view around its horizontal axis from top to
+  /// bottom (the top side of the view moves toward the front and the bottom
+  /// side toward the back).
+  public static var transitionFlipFromTop: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 6 << 20)
+  }
+
+  internal static var preferredFramesPersSecondDefault: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 0 << 24)
+  }
+
+  /// A frame rate of 30 frames per second.
+  ///
+  /// Specify this value to request a preferred frame rate. It's recommended
+  /// that you use the default value unless you have identified a specific need
+  /// for an explicit rate.
+  public static var preferredFramesPerSecond30: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 7 << 24)
+  }
+
+  /// A frame rate of 60 frames per second.
+  ///
+  /// Specify this value to request a preferred frame rate. It's recommended
+  /// that you use the default value unless you have identified a specific need
+  /// for an explicit rate.
+  public static var preferredFramesPerSecond60: View.AnimationOptions {
+    View.AnimationOptions(rawValue: 3 << 24)
+  }
+}
+
+extension View {
   /// Options for automatic view resizing.
   public struct AutoresizingMask: OptionSet {
     public let rawValue: UInt
