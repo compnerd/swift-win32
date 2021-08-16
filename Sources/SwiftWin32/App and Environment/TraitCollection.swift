@@ -42,20 +42,20 @@ public enum UserInterfaceStyle: Int {
 /// Constants that indicate whether the user interface has an active appearance.
 public enum UserInterfaceActiveAppearance: Int {
   /// The interface has an unspecified appearance.
-  case unspecified
-
-  /// The interface has an active appearance.
-  case active
+  case unspecified = -1
 
   /// The interface has an inactive appearance.
   case inactive
+
+  /// The interface has an active appearance.
+  case active
 }
 
 /// Constants that indicate the interface type for the device or an object that
 /// has a trait environment, such as a view and view controller.
 public enum UserInterfaceIdiom: Int {
   /// An unspecified idiom.
-  case unspecified
+  case unspecified = -1
 
   /// An interface designed for a phone.
   case phone
@@ -66,14 +66,17 @@ public enum UserInterfaceIdiom: Int {
   /// An interface designed for a TV.
   case tv
 
-  /// An interface designed for a car display.
-  case car
+  @available(*, deprecated, message: "Use UserInterfaceIdiom.car")
+  case carPlay
 
   @available(*, deprecated, renamed: "UserInterfaceIdiom.desktop")
   case mac
 
   /// An interface designed for a tablet.
   case tablet
+
+  /// An interface designed for a car display.
+  case car
 
   /// An interface designed for a desktop or laptop.
   case desktop
@@ -82,36 +85,72 @@ public enum UserInterfaceIdiom: Int {
   case headset
 }
 
+/// Constants that indicate the visual level for content in the window.
 public enum UserInterfaceLevel: Int {
-  case unspecified
+  /// An unspecified interface level.
+  ///
+  /// Choose this option when you want to follow the inherited level.
+  case unspecified = -1
+
+  /// The level for your window's main content.
   case base
+
+  /// The level for content visually above your window's main content.
   case elevated
 }
 
+/// Constants that indicate the layout direction associated with the current
+/// environment.
 public enum TraitEnvironmentLayoutDirection: Int {
-  case unspecified
+  /// An unknown layout direction.
+  case unspecified = -1
+
+  /// A left-to-right layout direction.
   case leftToRight
+
+  /// A right-to-left layout direction.
   case rightToLeft
 }
 
+/// Constants that indicate the accessibility contrast setting.
 public enum AccessibilityContrast: Int {
-  case unspecified
+  /// An unspecified contrast.
+  case unspecified = -1
+
+  /// A normal contrast level.
   case normal
+
+  /// A high contrast level.
   case high
 }
 
+/// The font weight to apply to text.
+///
+/// The legibility weight reflects the value of the Bold Text display setting.
 public enum LegibilityWeight: Int {
-  case unspecified
+  /// An unspecified text weight.
+  case unspecified = -1
+
+  /// A regular font weight.
   case regular
+
+  /// A bold font weight.
   case bold
 }
 
+/// Keys that indicate the availability of 3D Touch on a device.
 public enum ForceTouchCapability: Int {
+  /// The availability of 3D Touch is unknown.
+  ///
+  /// A view has this trait after you create it but before you add it your
+  /// application's view hierarchy.
   case unspecified
+
+  /// 3D Touch is available on the device.
   case available
+
+  /// 3D Touch is not available on the device.
   case unavailable
-
-
 }
 
 private func GetCurrentColorScheme() -> UserInterfaceStyle {
