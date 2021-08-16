@@ -110,70 +110,8 @@ public enum ForceTouchCapability: Int {
   case unspecified
   case available
   case unavailable
-}
 
-public struct ContentSizeCategory: Equatable, Hashable, RawRepresentable {
-  public typealias RawValue = String
 
-  public var rawValue: RawValue
-
-  public init(rawValue: RawValue) {
-    self.rawValue = rawValue
-  }
-}
-
-extension ContentSizeCategory {
-  public static var unspecified: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "_UICTContentSizeCategoryUnspecified")
-  }
-
-  public static var extraSmall: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryXS")
-  }
-
-  public static var small: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryS")
-  }
-
-  public static var medium: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryM")
-  }
-
-  public static var large: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryL")
-  }
-
-  public static var extraLarge: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryXL")
-  }
-
-  public static var extraExtraLarge: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryXXL")
-  }
-
-  public static var extraExtraExtraLarge: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryXXXL")
-  }
-
-  public static var accessibilityMedium: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryAccessibilityM")
-  }
-
-  public static var accessibilityLarge: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryAccessibilityL")
-  }
-
-  public static var accessibilityExtraLarge: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryAccessibilityXL")
-  }
-
-  public static var accessibilityExtraExtraLarge: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryAccessibilityXXL")
-  }
-
-  public static var accessibilityExtraExtraExtraLarge: ContentSizeCategory {
-    ContentSizeCategory(rawValue: "UICTContentSizeCategoryAccessibilityXXXL")
-  }
 }
 
 private func GetCurrentColorScheme() -> UserInterfaceStyle {
