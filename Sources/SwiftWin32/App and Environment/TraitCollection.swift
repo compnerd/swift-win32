@@ -198,7 +198,7 @@ private func GetCurrentColorScheme() -> UserInterfaceStyle {
 }
 
 private func GetCurrentDeviceFamily() -> UserInterfaceIdiom {
-  return GetSystemMetrics(SM_TABLETPC) == 0 ? .unspecified : .pad
+  return GetSystemMetrics(SM_TABLETPC) == 0 ? .unspecified : .tablet
 }
 
 private func GetCurrentAccessibilityContrast() -> AccessibilityContrast {
