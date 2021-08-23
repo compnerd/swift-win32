@@ -919,6 +919,79 @@ public class View: Responder {
     set { fatalError("\(#function) not yet implemented") }
   }
 
+  // MARK - Laying Out Subviews
+
+  /// Lays out subviews.
+  ///
+  /// The default implementation uses any constraints you have set to determine
+  /// the size and position of any subviews.
+  ///
+  /// Subclasses can override this method as needed to perform more precise
+  /// layout of their subviews. You should override this method only if the
+  /// autoresizing and constraint-based behaviors of the subviews do not offer
+  /// the behavior you want. You can use your implementation to set the frame
+  /// rectangles of your subviews directly.
+  ///
+  /// You should not call this method directly. If you want to force a layout
+  /// update, call the `setNeedsLayout()` method instead to do so prior to the
+  /// next drawing update. If you want to update the layout of your views
+  /// immediately, call the `layoutIfNeeded()` method.
+  public func layoutSubviews() {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Invalidates the current layout of the receiver and triggers a layout
+  /// update during the next update cycle.
+  ///
+  /// Call this method on your application's main thread when you want to adjust
+  /// the layout of a view's subviews. This method makes a note of the request
+  /// and returns immediately. Because this method does not force an immediate
+  /// update, but instead waits for the next update cycle, you can use it to
+  /// invalidate the layout of multiple views before any of those views are
+  /// updated. This behavior allows you to consolidate all of your layout
+  /// updates to one update cycle, which is usually better for performance.
+  public func setNeedsLayout() {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// Lays out the subviews immediately, if layout updates are pending.
+  ///
+  /// Use this method to force the view to update its layout immediately. When
+  /// using Auto Layout, the layout engine updates the position of views as
+  /// needed to satisfy changes in constraints. Using the view that receives the
+  /// message as the root view, this method lays out the view subtree starting
+  /// at the root. If no layout updates are pending, this method exits without
+  /// modifying the layout or calling any layout-related callbacks.
+  public func layoutIfNeeded() {
+    fatalError("\(#function) not yet implemented")
+  }
+
+  /// A boolean value that indicates whether the receiver depends on the
+  /// constraint-based layout system.
+  ///
+  /// Custom views should override this to return true if they cannot layout
+  /// correctly using autoresizing.
+  public class var requiresConstraintBasedLayout: Bool { false }
+
+  /// A boolean value that determines whether the view's autoresizing mask is
+  /// translated into Auto Layout constraints.
+  ///
+  /// If this property's value is `true`, the system creates a set of
+  /// constraints that duplicate the behavior specified by the view's
+  /// autoresizing mask. This also lets you modify the view's size and location
+  /// using the view's `frame`, `bounds`, or `center` properties, allowing you
+  /// to create a static, frame-based layout within Auto Layout.
+  ///
+  /// Note that the autoresizing mask constraints fully specify the view's size
+  /// and position; therefore, you cannot add additional constraints to modify
+  /// this size or position without introducing conflicts. If you want to use
+  /// Auto Layout to dynamically calculate the size and position of your view,
+  /// you must set this property to `false`, and then provide a non ambiguous,
+  /// nonconflicting set of constraints for the view.
+  ///
+  /// By default, the property is set to `true`.
+  public var translatesAutoresizingMaskIntoConstraints: Bool = true
+
   // MARK - Adding and Removing Interactions
 
   /// Adds an interaction to the view.
