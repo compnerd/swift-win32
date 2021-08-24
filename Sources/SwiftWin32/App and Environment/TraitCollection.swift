@@ -60,7 +60,7 @@ public enum UserInterfaceIdiom: Int {
   /// An interface designed for a phone.
   case phone
 
-  @available(*, deprecated, message: "Use UserInterfaceIdiom.tablet")
+  @available(*, deprecated, renamed: "UserInterfaceIdiom.tablet")
   case pad
 
   /// An interface designed for a TV.
@@ -69,7 +69,7 @@ public enum UserInterfaceIdiom: Int {
   /// An interface designed for a car display.
   case car
 
-  @available(*, deprecated, message: "Use UserInterfaceIdiom.desktop")
+  @available(*, deprecated, renamed: "UserInterfaceIdiom.desktop")
   case mac
 
   /// An interface designed for a tablet.
