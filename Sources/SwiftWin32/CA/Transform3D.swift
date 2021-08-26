@@ -100,3 +100,17 @@ public struct Transform3D {
   /// The entry at position 4,4 in the matrix.
   var m44: Double
 }
+
+extension Transform3D {
+  /// The identity transform.
+  ///   [1, 0, 0, 0]
+  ///   [0, 1, 0, 0]
+  ///   [0, 0, 1, 0]
+  ///   [0, 0, 0, 1]
+  public static var identity: Transform3D {
+    Transform3D(m11: 1, m12: 0, m13: 0, m14: 0,
+                m21: 0, m22: 1, m23: 0, m24: 0,
+                m31: 0, m32: 0, m33: 1, m34: 0,
+                m41: 0, m42: 0, m43: 0, m44: 1)
+  }
+}
