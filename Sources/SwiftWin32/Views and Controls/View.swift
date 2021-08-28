@@ -378,6 +378,24 @@ extension View {
   }
 }
 
+extension View {
+  /// The tint adjustment mode for the view.
+  public enum TintAdjustmentMode: Int {
+    /// The tint adjustment mode of the view is the same as its superview's tint
+    /// adjustment mode (or `ViewTintAdjustmentModeNormal` if the view has no
+    /// superview).
+    case automatic
+
+    /// The view's tintColor property returns the completely unmodified tint
+    /// color of the view.
+    case normal
+
+    /// The view's `tintColor` property returns a desaturated, dimmed version
+    /// of the view's original tint color.
+    case dimmed
+  }
+}
+
 /// An object that manages the content for a rectangular area on the screen.
 public class View: Responder {
   private static let `class`: WindowClass =
