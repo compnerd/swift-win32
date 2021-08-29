@@ -1,0 +1,28 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "Default",
+      "displayName": "Release Build (Ninja)",
+      "description": "Defaults",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/.build/x86_64-unknown-windows-msvc/Release",
+      "cacheVariables": {
+        "BUILD_SHARED_LIBS": "YES",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_Swift_FLAGS": "-sdk $env{SDKROOT}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Default",
+      "configurePreset": "Default"
+    }
+  ]
+}
