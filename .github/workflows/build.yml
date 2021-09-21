@@ -22,7 +22,7 @@ jobs:
             tag: 5.5-DEVELOPMENT-SNAPSHOT-2021-07-03-a
 
           - branch: development
-            tag: DEVELOPMENT-SNAPSHOT-2021-06-12-a
+            tag: DEVELOPMENT-SNAPSHOT-2021-08-29-a
 
     steps:
     - uses: actions/checkout@v2
