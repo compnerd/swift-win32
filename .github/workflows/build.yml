@@ -15,8 +15,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - branch: swift-5.4.2-release
-            tag: 5.4.2-RELEASE
+          - branch: swift-5.4.3-release
+            tag: 5.4.3-RELEASE
 
           - branch: swift-5.5-branch
             tag: 5.5-DEVELOPMENT-SNAPSHOT-2021-07-03-a
