@@ -39,6 +39,23 @@ let SwiftWin32 = Package(
       ]
     ),
     .target(
+      name: "TestUtilities",
+      path: "Tests/Utilities"
+    ),
+    .testTarget(
+      name: "AutoLayoutTests",
+      dependencies: ["SwiftWin32"]
+    ),
+    .testTarget(
+      name: "CoreGraphicsTests",
+      dependencies: ["SwiftWin32"]
+    ),
+    .testTarget(
+      name: "UICoreTests",
+      dependencies: ["SwiftWin32", "TestUtilities"]
+    ),
+
+    .target(
       name: "SwiftWin32UI",
       dependencies: [
         "SwiftWin32",
@@ -48,6 +65,7 @@ let SwiftWin32 = Package(
         "CMakeLists.txt",
       ]
     ),
+
     .executableTarget(
       name: "Calculator",
       dependencies: [
@@ -65,6 +83,7 @@ let SwiftWin32 = Package(
         ]),
       ]
     ),
+
     .executableTarget(
       name: "UICatalog",
       dependencies: [
@@ -85,21 +104,5 @@ let SwiftWin32 = Package(
         ]),
       ]
     ),
-    .target(
-      name: "TestUtilities",
-      path: "Tests/Utilities"
-    ),
-    .testTarget(
-      name: "AutoLayoutTests",
-      dependencies: ["SwiftWin32"]
-    ),
-    .testTarget(
-      name: "CoreGraphicsTests",
-      dependencies: ["SwiftWin32"]
-    ),
-    .testTarget(
-      name: "UICoreTests",
-      dependencies: ["SwiftWin32", "TestUtilities"]
-    )
   ]
 )
