@@ -24,14 +24,13 @@ jobs:
           - branch: development
             tag: DEVELOPMENT-SNAPSHOT-2021-06-12-a
 
-    steps:
-    - uses: actions/checkout@v2
-    - uses: seanmiddleditch/gha-setup-vsdevenv@master
-    - name: Install Swift
-      uses: ./.github/actions/install-swift
+    steps:    
+    - uses: compnerd/gha-setup-swift@main
       with:
         tag: ${{ matrix.tag }}
         branch: ${{ matrix.branch }}
+
+    - uses: actions/checkout@v2
 
     - name: Build
       run: swift build -v
