@@ -11,27 +11,16 @@ jobs:
   lint:
     runs-on: windows-latest
 
-    strategy:
-      matrix:
-        include:
-          - branch: swift-5.5-branch
-            tag: 5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
-
     steps:
-    - uses: actions/checkout@v2
-    - uses: seanmiddleditch/gha-setup-vsdevenv@master
-    - name: Install Swift
-      uses: ./.github/actions/install-swift
+    - uses: compnerd/gha-setup-swift@main
       with:
-        tag: ${{ matrix.tag }}
-        branch: ${{ matrix.branch }}
+        branch: swift-5.5-release
+        tag: 5.5-RELEASE
+    - name: Install swift-format
+      run: |
+        Install-Binary -Url "https://github.com/compnerd/swift-build/releases/download/swift-format-5.5-RELEASE/swift-format.msi" -Name "swift-format.msi" -ArgumentList ("-q")
 
-    - uses: robinraju/release-downloader@v1
-      with:
-        repository: compnerd/swift-build
-        tag: swift-format-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a
-        fileName: swift-format.exe
-        out-file-path: C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\
+    - uses: actions/checkout@v2
 
     - uses: compnerd/swift-format-linter-action@main
       with:
