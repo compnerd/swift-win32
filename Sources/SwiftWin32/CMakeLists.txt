@@ -144,6 +144,7 @@ target_sources(SwiftWin32 PRIVATE
   Platform/WindowsHandle.swift)
 target_sources(SwiftWin32 PRIVATE
   Support/Array+Extensions.swift
+  Support/Date+Extensions.swift
   Support/IndexPath+UIExtensions.swift
   Support/Logging.swift
   Support/Rect+UIExtensions.swift
