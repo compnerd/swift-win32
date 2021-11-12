@@ -17,8 +17,8 @@ let SwiftWin32 = Package(
     .package(url: "https://github.com/apple/swift-collections.git",
              .branch("main")),
     .package(url: "https://github.com/compnerd/cassowary.git", .branch("main")),
-    .package(name: "SwiftCOM", url: "https://github.com/compnerd/swift-com.git",
-             .revision("ebbc617d3b7ba3a2023988a74bebd118deea4cc5")),
+    // .package(name: "SwiftCOM", url: "https://github.com/compnerd/swift-com.git",
+    //         .revision("ebbc617d3b7ba3a2023988a74bebd118deea4cc5")),
   ],
   targets: [
     .target(
@@ -27,7 +27,7 @@ let SwiftWin32 = Package(
         .product(name: "Logging", package: "swift-log"),
         .product(name: "OrderedCollections", package: "swift-collections"),
         .product(name: "cassowary", package: "cassowary"),
-        .product(name: "SwiftCOM", package: "SwiftCOM"),
+        // .product(name: "SwiftCOM", package: "SwiftCOM"),
       ],
       path: "Sources/SwiftWin32",
       exclude: [
