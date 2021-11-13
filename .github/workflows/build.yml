@@ -13,23 +13,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - run: |
-        function Update-EnvironmentVariables {
-          foreach ($level in "Machine", "User") {
-            [Environment]::GetEnvironmentVariables($level).GetEnumerator() | % {
-              # For Path variables, append the new values, if they're not already in there
-              if ($_.Name -Match 'Path$') {
-                $_.Value = ($((Get-Content "Env:$($_.Name)") + ";$($_.Value)") -Split ';' | Select -Unique) -Join ';'
-              }
-              $_
-            } | Set-Content -Path { "Env:$($_.Name)" }
-          }
-        }
-        Install-Binary -Url "https://uc42f305e2de591577e5f46b530a.dl.dropboxusercontent.com/cd/0/get/BZ7WJJ6XBtsjAig9fW7LbVs98yREQzFFAimyLLynM2sBWqPLI0hBmxuSm-Pm3EnwqjP0PHiUw7r9PPKpjOtjn_hpWco3HOwnyLAsEaYNtGLYHeGUi9d_dR11UCJFTNwMp1iRPTFjV7lHVvgbjo9I9gMT/file?_download_id=2421528206380867442339773771834555249352029662655681449425773109756&_notify_domain=www.dropbox.com&dl=1" -Name "installer.exe" -ArgumentList ("-q")
-        Update-EnvironmentVariables
-        # Reset Path and environment
-        echo "$env:Path" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
-        Get-ChildItem Env: | % { echo "$($_.Name)=$($_.Value)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append }
+    - uses: compnerd/gha-setup-swift@main
+      with:
+        branch: development
+        tag: DEVELOPMENT-SNAPSHOT-2021-11-01-a
 
     - uses: actions/checkout@v2
 
