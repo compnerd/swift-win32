@@ -16,17 +16,17 @@ jobs:
     - uses: compnerd/gha-setup-swift@main
       with:
         branch: development
-        tag: DEVELOPMENT-SNAPSHOT-2021-11-01-a
+        tag: DEVELOPMENT-SNAPSHOT-2021-08-29-a
 
     - uses: actions/checkout@v2
 
-    - name: Start SSH session
-      uses: luchihoratiu/debug-via-ssh@main
-      with:
-        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-        SSH_PASS: ${{ secrets.SSH_PASS }}
-      env:
-        UserName: runneradmin
+    #- name: Start SSH session
+    #  uses: luchihoratiu/debug-via-ssh@main
+    #  with:
+    #    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+    #    SSH_PASS: ${{ secrets.SSH_PASS }}
+    #  env:
+    #    UserName: runneradmin
 
     #- name: Setup tmate session
     #  uses: mxschmitt/action-tmate@v3
