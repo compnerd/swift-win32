@@ -37,7 +37,7 @@ jobs:
         curl.exe -sL "https://artprodeus21.artifacts.visualstudio.com/A8fd008a0-56bc-482c-ba46-67f9425510be/3133d6ab-80a8-4996-ac4f-03df25cd3224/_apis/artifact/cGlwZWxpbmVhcnRpZmFjdDovL2NvbXBuZXJkL3Byb2plY3RJZC8zMTMzZDZhYi04MGE4LTQ5OTYtYWM0Zi0wM2RmMjVjZDMyMjQvYnVpbGRJZC81NDc3Ni9hcnRpZmFjdE5hbWUvZGV2dG9vbHMtd2luZG93cy14NjQ1/content?format=file&subPath=%2FLibrary%2FDeveloper%2FToolchains%2Funknown-Asserts-development.xctoolchain%2Fusr%2Fbin%2FPackageRegistry.dll" -o "C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\PackageRegistry.dll"
 
     - name: Resolve
-      run: swift package resolve --very-verbose 
+      run: swift package -v resolve 
 
     - name: Build
       run: swift build -v
