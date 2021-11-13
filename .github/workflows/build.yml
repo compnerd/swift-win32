@@ -16,7 +16,7 @@ jobs:
     - uses: compnerd/gha-setup-swift@main
       with:
         branch: development
-        tag: DEVELOPMENT-SNAPSHOT-2021-08-22-a
+        tag: DEVELOPMENT-SNAPSHOT-2021-08-28-a
 
     - uses: actions/checkout@v2
 
@@ -31,8 +31,8 @@ jobs:
     #- name: Setup tmate session
     #  uses: mxschmitt/action-tmate@v3
 
-    - name: Resolve
-      run: swift package -v resolve --very-verbose -j 1
+    #- name: Resolve
+    #  run: swift package -v resolve --very-verbose -j 1
 
     - name: Build
       run: swift build -v
