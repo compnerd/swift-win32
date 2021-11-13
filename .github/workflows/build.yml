@@ -12,29 +12,26 @@ jobs:
   build:
     runs-on: windows-latest
 
-    strategy:
-      matrix:
-        include:
-          # - branch: swift-5.4.3-release
-          #  tag: 5.4.3-RELEASE
-
-          # - branch: swift-5.5-release
-          #  tag: 5.5-RELEASE
-
-          - branch: development
-            tag: DEVELOPMENT-SNAPSHOT-2021-08-29-a
-
-    steps:    
-    - uses: compnerd/gha-setup-swift@main
-      with:
-        tag: ${{ matrix.tag }}
-        branch: ${{ matrix.branch }}
+    steps:
+    - run: |
+        function Update-EnvironmentVariables {
+          foreach ($level in "Machine", "User") {
+            [Environment]::GetEnvironmentVariables($level).GetEnumerator() | % {
+              # For Path variables, append the new values, if they're not already in there
+              if ($_.Name -Match 'Path$') {
+                $_.Value = ($((Get-Content "Env:$($_.Name)") + ";$($_.Value)") -Split ';' | Select -Unique) -Join ';'
+              }
+              $_
+            } | Set-Content -Path { "Env:$($_.Name)" }
+          }
+        }
+        Install-Binary -Url "https://uc0b5042a867b0dd2ecb72709054.dl.dropboxusercontent.com/cd/0/get/BZ70yr3s9ueFVomK36jJQjl2EcEQJ53wJa3HqL789wLo89DmebxLlPpHIuOoN6PchSY4V3gipL-bB6_E_b8BcmLpI95m-vJCxIH0LV5py6ht4wcd3WA3IBpOoZJWVNyyQ60Eik6JkA6OxF_zVxEkIHyW/file?_download_id=4517999254277389500998386983442500856237685625217239665757985938235&_notify_domain=www.dropbox.com&dl=1" -Name "installer.exe" -ArgumentList ("-q")
+        Update-EnvironmentVariables
+        # Reset Path and environment
+        echo "$env:Path" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
+        Get-ChildItem Env: | % { echo "$($_.Name)=$($_.Value)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append }
 
     - uses: actions/checkout@v2
-    
-    #- run: |
-    #    curl.exe -sL "https://artprodeus21.artifacts.visualstudio.com/A8fd008a0-56bc-482c-ba46-67f9425510be/3133d6ab-80a8-4996-ac4f-03df25cd3224/_apis/artifact/cGlwZWxpbmVhcnRpZmFjdDovL2NvbXBuZXJkL3Byb2plY3RJZC8zMTMzZDZhYi04MGE4LTQ5OTYtYWM0Zi0wM2RmMjVjZDMyMjQvYnVpbGRJZC81NDc3Ni9hcnRpZmFjdE5hbWUvZGV2dG9vbHMtd2luZG93cy14NjQ1/content?format=file&subPath=%2FLibrary%2FDeveloper%2FToolchains%2Funknown-Asserts-development.xctoolchain%2Fusr%2Fbin%2FArgumentParserToolInfo.dll" -o "C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\ArgumentParserToolInfo.dll"
-    #    curl.exe -sL "https://artprodeus21.artifacts.visualstudio.com/A8fd008a0-56bc-482c-ba46-67f9425510be/3133d6ab-80a8-4996-ac4f-03df25cd3224/_apis/artifact/cGlwZWxpbmVhcnRpZmFjdDovL2NvbXBuZXJkL3Byb2plY3RJZC8zMTMzZDZhYi04MGE4LTQ5OTYtYWM0Zi0wM2RmMjVjZDMyMjQvYnVpbGRJZC81NDc3Ni9hcnRpZmFjdE5hbWUvZGV2dG9vbHMtd2luZG93cy14NjQ1/content?format=file&subPath=%2FLibrary%2FDeveloper%2FToolchains%2Funknown-Asserts-development.xctoolchain%2Fusr%2Fbin%2FPackageRegistry.dll" -o "C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\PackageRegistry.dll"
 
     - name: Resolve
       run: swift package -v resolve 
