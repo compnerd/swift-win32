@@ -20,14 +20,14 @@ jobs:
 
     - uses: actions/checkout@v2
 
-    #- name: Start SSH session
-    #  uses: luchihoratiu/debug-via-ssh@main
-    #  with:
-    #    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-    #    SSH_PASS: ${{ secrets.SSH_PASS }}
+    - name: Start SSH session
+      uses: luchihoratiu/debug-via-ssh@main
+      with:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        SSH_PASS: ${{ secrets.SSH_PASS }}
         
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
+    #- name: Setup tmate session
+    #  uses: mxschmitt/action-tmate@v3
 
     - name: Resolve
       run: swift package -v resolve --very-verbose -j 1
