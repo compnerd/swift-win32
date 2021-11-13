@@ -34,7 +34,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Resolve
-      run: swift package -v resolve 
+      run: swift package -v resolve --very-verbose -j 1
 
     - name: Build
       run: swift build -v
