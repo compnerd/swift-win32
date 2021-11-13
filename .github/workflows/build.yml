@@ -16,7 +16,7 @@ jobs:
     - uses: compnerd/gha-setup-swift@main
       with:
         branch: development
-        tag: DEVELOPMENT-SNAPSHOT-2021-08-03-a
+        tag: DEVELOPMENT-SNAPSHOT-2021-07-24-a
 
     - uses: actions/checkout@v2
 
