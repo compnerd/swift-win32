@@ -31,7 +31,7 @@ jobs:
             } | Set-Content -Path { "Env:$($_.Name)" }
           }
         }
-        Install-Binary -Url "https://uceee1bf865d4ef205c5bc2e84f0.dl.dropboxusercontent.com/cd/0/get/BaH2CfQFQslGT8l7CLhfJbMO1hPS5kSWpT-M2YnoApnO2SWyaDspCJP7RrPX5j24CPgg-K2GjNoixqQj7LMSxOlLmsM-1m441GhH135b8lwCP-hmfQLNIpwdL20d9HKZHbrXkwbBFZt0fae9hVs4__YV/file?_download_id=60388281517063379675825986238182383354194012728977422629797734348&_notify_domain=www.dropbox.com&dl=1" -Name "installer.exe" -ArgumentList ("-q")
+        Install-Binary -Url "https://ucb32efa0f4d017d4caf4232e579.dl.dropboxusercontent.com/cd/0/get/BaEaxRE71-uuCQr7xqn5CIec4HP8nY0sjCTy3bPa_iam6T4YRxqvVxGtedG5Rp4byJAp9tCWgmV7zoDOIz1e86UDbXCCYr2A4H1x2ikzdWEwmyHp3jvfuUuD-dMJapiK4-MSGAeXNfSuqsvugtREeuf0/file?_download_id=3423486131254958362903569492810266122110282387155364230260921148&_notify_domain=www.dropbox.com&dl=1" -Name "installer.exe" -ArgumentList ("-q")
         Update-EnvironmentVariables
         # Reset Path and environment
         echo "$env:Path" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
