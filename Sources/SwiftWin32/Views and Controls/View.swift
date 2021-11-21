@@ -556,7 +556,7 @@ public class View: Responder {
     }
   }
 
-  /// The bounds rectangle, which describes the view’s location and size in its
+  /// The bounds rectangle, which describes the view's location and size in its
   /// own coordinate system.
   public var bounds: Rect {
     didSet {
