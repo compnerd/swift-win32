@@ -47,7 +47,7 @@ public class DatePicker: Control {
   public func setDate(_ date: Date, animated: Bool) {
     assert(!animated, "not yet implemented")
 
-    var ftSystemTime: FILETIME =
+    let ftSystemTime: FILETIME =
         FILETIME(timeIntervalSince1970: date.timeIntervalSince1970)
     let stSystemTime: SYSTEMTIME = SYSTEMTIME(ftSystemTime)
 
