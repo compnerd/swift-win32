@@ -126,6 +126,7 @@ private class Calculator {
     var operand = self.state[keyPath: self.state.operand] as Decimal
     operand *= 10
     operand += Decimal(input)
+    self.state[keyPath: self.state.operand] = operand as NSDecimalNumber
 
     self.txtResult.text = operand.description
   }
