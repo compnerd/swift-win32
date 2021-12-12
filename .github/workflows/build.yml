@@ -23,7 +23,7 @@ jobs:
             tag: 5.5-RELEASE
 
           - branch: development
-            tag: DEVELOPMENT-SNAPSHOT-2021-11-20-a
+            tag: DEVELOPMENT-SNAPSHOT-2021-12-06-a
 
     steps:    
     - uses: compnerd/gha-setup-swift@main
