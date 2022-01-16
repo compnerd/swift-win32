@@ -4,14 +4,14 @@
 /// The spring-loaded interaction states that determine the style of the
 /// interaction view.
 public enum SpringLoadedInteractionEffectState: Int {
-/// An interaction state that indicates that the view was spring loaded.
-case activated
-/// An interaction state that indicates that spring loading is about to start.
-case activating
-/// An interaction state that indicates that spring loading is not engaged.
-case inactive
-/// An interaction state that indicates that spring loading is available.
-case possible
+  /// An interaction state that indicates that the view was spring loaded.
+  case activated
+  /// An interaction state that indicates that spring loading is about to start.
+  case activating
+  /// An interaction state that indicates that spring loading is not engaged.
+  case inactive
+  /// An interaction state that indicates that spring loading is available.
+  case possible
 }
 
 /// The interface an object implements to provide information about a
