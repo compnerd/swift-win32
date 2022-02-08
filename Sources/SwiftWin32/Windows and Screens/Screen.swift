@@ -40,9 +40,9 @@ public final class Screen {
       var info: MONITORINFOEXW = MONITORINFOEXW()
       info.cbSize = DWORD(MemoryLayout<MONITORINFOEXW>.size)
       if (withUnsafeMutablePointer(to: &info) {
-        $0.withMemoryRebound(to: MONITORINFO.self, capacity: 1) {
-          GetMonitorInfoW(hMonitor, $0)
-        }
+        let pMemoryInfo: UnsafeMutablePointer<MONITORINFO> =
+            UnsafeMutableRawPointer($0).assumingMemoryBound(to: MONITORINFO.self)
+        GetMonitorInfoW(hMonitor, pMemoryInfo)
       }) == false { return false }
 
       let szDevice: String = withUnsafePointer(to: &info.szDevice) {
