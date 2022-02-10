@@ -30,20 +30,20 @@ jobs:
             tag: DEVELOPMENT-SNAPSHOT-2021-12-06-a
 
     steps:    
-    - uses: compnerd/gha-setup-swift@main
+    - uses: compnerd/gha-setup-swift@compnerd/multi-vs2022
       with:
         tag: ${{ matrix.tag }}
         branch: ${{ matrix.branch }}
 
     - uses: actions/checkout@v2
 
-    - name: Setup SSH session
-      uses: luchihoratiu/debug-via-ssh@main
-      with:
-        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-        SSH_PASS: ${{ secrets.SSH_PASS }}
-      env:
-        UserName: runneradmin
+    #- name: Setup SSH session
+    #  uses: luchihoratiu/debug-via-ssh@main
+    #  with:
+    #    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+    #    SSH_PASS: ${{ secrets.SSH_PASS }}
+    #  env:
+    #    UserName: runneradmin
 
     - name: Build
       run: swift build -v
