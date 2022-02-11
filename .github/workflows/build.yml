@@ -20,7 +20,7 @@ jobs:
             tag: 5.4.3-RELEASE
 
           - branch: swift-5.5.3-release
-            tag: 5.5-RELEASE
+            tag: 5.5.3-RELEASE
 
           - branch: swift-5.6-branch
             tag: 5.6-DEVELOPMENT-SNAPSHOT-2022-01-11-a
