@@ -42,7 +42,7 @@ public final class Screen {
       if (withUnsafeMutablePointer(to: &info) {
         let pMemoryInfo: UnsafeMutablePointer<MONITORINFO> =
             UnsafeMutableRawPointer($0).assumingMemoryBound(to: MONITORINFO.self)
-        GetMonitorInfoW(hMonitor, pMemoryInfo)
+        return GetMonitorInfoW(hMonitor, pMemoryInfo)
       }) == false { return false }
 
       let szDevice: String = withUnsafePointer(to: &info.szDevice) {
