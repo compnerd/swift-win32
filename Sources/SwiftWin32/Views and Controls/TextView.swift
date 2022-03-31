@@ -37,13 +37,13 @@ public class TextView: View {
     // Disable compatibility with the original Rich Edit and use the extended
     // text limit.
     _ = SendMessageW(self.hWnd, UINT(EM_EXLIMITTEXT),
-                     WPARAM(0), LPARAM(bitPattern: UInt64(bitPattern: -1)))
+                     WPARAM(0), LPARAM(UInt(bitPattern: -1)))
   }
 
   public func scrollRangeToVisible(_ range: NSRange) {
     SendMessageW(hWnd, UINT(EM_SETSEL), WPARAM(range.location),
                  LPARAM(range.location + range.length))
-    SendMessageW(hWnd, UINT(EM_SETSEL), UInt64(bitPattern: -1), -1)
+    SendMessageW(hWnd, UINT(EM_SETSEL), WPARAM(bitPattern: -1), -1)
     SendMessageW(hWnd, UINT(EM_SCROLLCARET), 0, 0)
   }
 

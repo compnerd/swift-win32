@@ -216,8 +216,8 @@ public func ApplicationMain(_ argc: Int32,
     // to execute, we wait until a new message is placed in the thread's message
     // queue or the timer must fire, otherwise we proceed to the next iteration
     // of mainLoop, using 0 as the wait timeout.
-    _ = WaitMessage(DWORD(exactly: limitDate?.timeIntervalSinceNow ?? 0 * 1000)
-                        ?? DWORD.max)
+    _ = WaitMessage(UINT(exactly: limitDate?.timeIntervalSinceNow ?? 0 * 1000)
+                        ?? UINT.max)
   }
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
