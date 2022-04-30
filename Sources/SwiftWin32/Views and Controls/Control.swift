@@ -262,27 +262,27 @@ extension Control.Event {
 
   /// All touch events.
   public static var allTouchEvents: Control.Event {
-    Control.Event(rawValue: 0x00000fff)
+    Control.Event(rawValue: RawValue(bitPattern: 0x00000fff))
   }
 
   /// All editing touches for `TextField` objects.
   public static var allEditingEvents: Control.Event {
-    Control.Event(rawValue: 0x000f0000)
+    Control.Event(rawValue: RawValue(bitPattern: 0x000f0000))
   }
 
   /// A range of control-event values available for application use.
   public static var applicationReserved: Control.Event {
-    Control.Event(rawValue: 0x0f000000)
+    Control.Event(rawValue: RawValue(bitPattern: 0x0f000000))
   }
 
   /// A range of control-event values reserved for internal framework use.
   public static var systemReserved: Control.Event {
-    Control.Event(rawValue: 0xf0000000)
+    Control.Event(rawValue: RawValue(bitPattern: 0xf0000000))
   }
 
   /// All events, including system events.
   public static var allEvents: Control.Event {
-    Control.Event(rawValue: 0xffffffff)
+    Control.Event(rawValue: RawValue(bitPattern: 0xffffffff))
   }
 }
 

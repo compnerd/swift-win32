@@ -25,7 +25,7 @@ private let SwiftPickerViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPa
     switch lpDrawItem.pointee.itemAction {
     case UINT(ODA_SELECT):
       _ = DrawFocusRect(lpDrawItem.pointee.hDC, &lpDrawItem.pointee.rcItem)
-      if lpDrawItem.pointee.itemState & DWORD(ODS_SELECTED) == DWORD(ODS_SELECTED) {
+      if DWORD(lpDrawItem.pointee.itemState) & DWORD(ODS_SELECTED) == DWORD(ODS_SELECTED) {
         // If the item is selected, we have drawn the focus rectangle and the
         // operation is complete.
         return LRESULT(1)
@@ -38,8 +38,8 @@ private let SwiftPickerViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPa
       if let view = unsafeBitCast(lpDrawItem.pointee.itemData,
                                   to: AnyObject.self) as? View {
         let rctRect: RECT = lpDrawItem.pointee.rcItem
-        _ = SetWindowPos(view.hWnd, nil, rctRect.left, rctRect.top, 0, 0,
-                         UINT(SWP_NOSIZE))
+        _ = SetWindowPos(view.hWnd, nil, CInt(rctRect.left), CInt(rctRect.top),
+                         0, 0, UINT(SWP_NOSIZE))
         // Setting `isHidden` is necessary for Views generated after initial
         // call to `Window.makeKeyAndVisible()`
         if IsWindowVisible(GetParent(view.hWnd)) && !IsWindowVisible(view.hWnd) {
@@ -117,8 +117,8 @@ private let SwiftPickerViewWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lPa
         DeviceContextHandle(owning: GetDC(view.hWnd))
     let hBitmap: BitmapHandle =
         BitmapHandle(owning: CreateCompatibleBitmap(hDCItem.value,
-                                                    rcClient.right - rcClient.left,
-                                                    rcClient.bottom - rcClient.top))
+                                                    CInt(rcClient.right - rcClient.left),
+                                                    CInt(rcClient.bottom - rcClient.top)))
 
     let hDCMemory: DeviceContextHandle =
         DeviceContextHandle(owning: CreateCompatibleDC(nil))
@@ -133,10 +133,10 @@ private let SwiftPickerViewWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lPa
     let hDC: DeviceContextHandle =
         DeviceContextHandle(owning: GetDC(hWnd))
 
-    _ = BitBlt(hDC.value, cbiInfo.rcItem.left, cbiInfo.rcItem.top,
-               cbiInfo.rcItem.right - cbiInfo.rcItem.left,
-               cbiInfo.rcItem.bottom - cbiInfo.rcItem.top, hDCMemory.value,
-               0, 0, UINT(SRCCOPY))
+    _ = BitBlt(hDC.value, CInt(cbiInfo.rcItem.left), CInt(cbiInfo.rcItem.top),
+               CInt(cbiInfo.rcItem.right - cbiInfo.rcItem.left),
+               CInt(cbiInfo.rcItem.bottom - cbiInfo.rcItem.top),
+               hDCMemory.value, 0, 0, DWORD(SRCCOPY))
 
     return lResult
 
