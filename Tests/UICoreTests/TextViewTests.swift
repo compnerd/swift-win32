@@ -6,13 +6,17 @@ import WinSDK
 @testable import SwiftWin32
 
 final class TextViewTests: XCTestCase {
+  static var hModule: HMODULE?
+
   override class func setUp() {
-    let hModule: HMODULE = "Msftedit.dll".withCString(encodedAs: UTF16.self) {
+    TextViewTests.hModule = "Msftedit.dll".withCString(encodedAs: UTF16.self) {
       LoadLibraryW($0)
     }
   }
 
-  func testConstruct() {
+  func testConstruct() throws {
+    try XCTSkipIf(TextViewTests.hModule == nil, "Msftedit.dll not loaded")
+
     let view: TextView = TextView(frame: .zero)
     XCTAssertNotEqual(view.hWnd, INVALID_HANDLE_VALUE)
   }
