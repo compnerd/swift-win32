@@ -129,8 +129,6 @@ target_sources(SwiftWin32 PRIVATE
   "Windows and Screens/Screen.swift"
   "Windows and Screens/Window.swift")
 target_sources(SwiftWin32 PRIVATE
-  CA/Transform3D.swift)
-target_sources(SwiftWin32 PRIVATE
   CG/AffineTransform.swift
   CG/Point.swift
   CG/Rect.swift
@@ -157,6 +155,15 @@ target_sources(SwiftWin32 PRIVATE
   Support/WinSDK+UIExtensions.swift)
 target_sources(SwiftWin32 PRIVATE
   Support/WindowMessage.swift)
+if(CMAKE_Swift_COMPILER_VERSION VERSION_LESS 5.7.0)
+  target_sources(SwiftWin32 PRIVATE
+    CoreAnimation/Transform3D.swift)
+else()
+  add_library(CoreAnimation STATIC
+    CoreAnimation/Transform3D.swift)
+  target_link_libraries(SwiftWin32 PRIVATE
+    CoreAnimation)
+endif()
 target_link_libraries(SwiftWin32 PUBLIC
   ComCtl32
   User32)
@@ -173,4 +180,7 @@ set_target_properties(SwiftWin32 PROPERTIES
   INTERFACE_LINK_DIRECTORIES $<TARGET_LINKER_FILE_DIR:SwiftWin32>)
 
 
+if(CMAKE_Swift_COMPILER_VERSION VERSION_GREATER_EQUAL 5.7.0)
+  _install_target(CoreAnimation)
+endif()
 _install_target(SwiftWin32)

@@ -2,6 +2,25 @@
 
 import PackageDescription
 
+#if swift(>=5.7)
+let ExcludedPaths: [String] = [
+  "CoreAnimation"
+]
+let SplitDependencies: [Target.Dependency] = [
+  "CoreAnimation"
+]
+let SplitTargets: [Target] = [
+  .target(
+    name: "CoreAnimation",
+    path: "Sources/SwiftWin32/CoreAnimation"
+  ),
+]
+#else
+let ExcludedPaths: [String] = []
+let SplitDependencies: [Target.Dependency] = []
+let SplitTargets: [Target] = []
+#endif
+
 let SwiftWin32 = Package(
   name: "SwiftWin32",
   products: [
@@ -20,17 +39,17 @@ let SwiftWin32 = Package(
     .package(name: "SwiftCOM", url: "https://github.com/compnerd/swift-com.git",
              .revision("ebbc617d3b7ba3a2023988a74bebd118deea4cc5")),
   ],
-  targets: [
+  targets: SplitTargets + [
     .target(
       name: "SwiftWin32",
-      dependencies: [
+      dependencies: SplitDependencies + [
         .product(name: "Logging", package: "swift-log"),
         .product(name: "OrderedCollections", package: "swift-collections"),
         .product(name: "cassowary", package: "cassowary"),
         .product(name: "SwiftCOM", package: "SwiftCOM"),
       ],
       path: "Sources/SwiftWin32",
-      exclude: [
+      exclude: ExcludedPaths + [
         "CMakeLists.txt",
       ],
       linkerSettings: [
