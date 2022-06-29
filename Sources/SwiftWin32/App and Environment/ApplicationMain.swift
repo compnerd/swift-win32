@@ -28,14 +28,6 @@ private let pApplicationStateChangeRoutine: PAPPSTATE_CHANGE_ROUTINE = { (quiesc
   }
 }
 
-// Waits for a message on the message queue, returning when either a message has
-// arrived or the timeout specified has expired.
-private func WaitMessage(_ dwMilliseconds: UINT) -> Bool {
-  let uIDEvent = WinSDK.SetTimer(nil, 0, dwMilliseconds, nil)
-  defer { WinSDK.KillTimer(nil, uIDEvent) }
-  return WinSDK.WaitMessage()
-}
-
 @discardableResult
 public func ApplicationMain(_ argc: Int32,
                             _ argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>,
@@ -200,24 +192,24 @@ public func ApplicationMain(_ argc: Int32,
       DispatchMessageW(&msg)
     }
 
-    var limitDate: Date? = nil
+    var time: Date? = nil
     repeat {
       // Execute Foundation.RunLoop once and determine the next time the timer
       // fires.  At this point handle all Foundation.RunLoop timers, sources and
       // Dispatch.DispatchQueue.main tasks
-      limitDate = RunLoop.main.limitDate(forMode: .default)
+      time = RunLoop.main.limitDate(forMode: .default)
 
       // If Foundation.RunLoop doesn't contain any timers or the timers should
       // not be running right now, we interrupt the current loop or otherwise
       // continue to the next iteration.
-    } while (limitDate?.timeIntervalSinceNow ?? -1) <= 0
+    } while (time?.timeIntervalSinceNow ?? -1) <= 0
 
-    // Yield control to other threads.  If Foundation.RunLoop contains a timer
-    // to execute, we wait until a new message is placed in the thread's message
-    // queue or the timer must fire, otherwise we proceed to the next iteration
-    // of mainLoop, using 0 as the wait timeout.
-    _ = WaitMessage(DWORD(exactly: limitDate?.timeIntervalSinceNow ?? 0 * 1000)
-                        ?? DWORD.max)
+    // Yield control to the system until the earlier of a requisite timer
+    // expiration or a message is posted to the runloop.
+    _ = MsgWaitForMultipleObjects(0, nil, false,
+                                  DWORD(exactly: time?.timeIntervalSinceNow ?? -1)
+                                      ?? INFINITE,
+                                  QS_ALLINPUT | DWORD(QS_KEY) | QS_MOUSE | DWORD(QS_RAWINPUT))
   }
 
   Application.shared.delegate?.applicationWillTerminate(Application.shared)
