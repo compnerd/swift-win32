@@ -33,7 +33,7 @@ jobs:
             tag: DEVELOPMENT-SNAPSHOT-2022-07-18-a
 
     steps:    
-    - uses: compnerd/gha-setup-swift@main
+    - uses: compnerd/gha-setup-swift@compnerd/vcruntime
       with:
         tag: ${{ matrix.tag }}
         branch: ${{ matrix.branch }}
