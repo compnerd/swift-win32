@@ -41,7 +41,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Build
-      run: swift build -v
+      run: swift build -v -Xmanifest -use-ld=link
 
     - name: Run tests
       run: swift test -v -Xswiftc -DENABLE_TESTING
