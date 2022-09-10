@@ -19,18 +19,23 @@ jobs:
         include:
           - branch: swift-5.4.3-release
             tag: 5.4.3-RELEASE
+            options: '-Xmanifest -use-ld=link -Xswiftc -use-ld=link'
 
           - branch: swift-5.5.3-release
             tag: 5.5.3-RELEASE
+            options: '-Xmanifest -use-ld=link -Xswiftc -use-ld=link'
 
           - branch: swift-5.6.1-release
             tag: 5.6.1-RELEASE
+            options: ''
 
           - branch: swift-5.7-branch
             tag: 5.7-DEVELOPMENT-SNAPSHOT-2022-07-05-a
+            options: ''
 
           - branch: development
             tag: DEVELOPMENT-SNAPSHOT-2022-07-20-a
+            options: ''
 
     steps:    
     - uses: compnerd/gha-setup-swift@main
@@ -41,7 +46,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Build
-      run: swift build -v
+      run: swift build -v ${{ matrix.options }}
 
     - name: Run tests
-      run: swift test -v -Xswiftc -DENABLE_TESTING
+      run: swift test -v -Xswiftc -DENABLE_TESTING ${{ matrix.options }}
