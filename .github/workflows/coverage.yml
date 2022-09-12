@@ -25,7 +25,7 @@ jobs:
       matrix:
         include:
           - branch: development
-            tag: DEVELOPMENT-SNAPSHOT-2021-05-25-a
+            tag: DEVELOPMENT-SNAPSHOT-2022-07-20-a
 
     steps:
     - uses: actions/checkout@v2
