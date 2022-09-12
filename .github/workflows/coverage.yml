@@ -30,8 +30,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: seanmiddleditch/gha-setup-vsdevenv@master
-    - name: Install Swift
-      uses: ./.github/actions/install-swift
+    - uses: compnerd/gha-setup-swift@main
       with:
         tag: ${{ matrix.tag }}
         branch: ${{ matrix.branch }}
