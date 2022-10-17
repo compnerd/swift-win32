@@ -34,7 +34,7 @@ let SwiftWin32 = Package(
     // new CRT module.
     .package(url: "https://github.com/apple/swift-log.git", .branch("main")),
     .package(url: "https://github.com/apple/swift-collections.git",
-             .branch("main")),
+             .upToNextMinor(from: "1.0.0")),
     .package(url: "https://github.com/compnerd/cassowary.git", .branch("main")),
     .package(name: "SwiftCOM", url: "https://github.com/compnerd/swift-com.git",
              .revision("ebbc617d3b7ba3a2023988a74bebd118deea4cc5")),
