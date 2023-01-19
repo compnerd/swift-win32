@@ -6,6 +6,7 @@ SPDX-License-Identifier: BSD-3-Clause
 #]]
 
 # Returns the architecture name in a variable
+# (Apple Silicon) ARM CPUs supported [x86_64]
 #
 # Usage:
 #   get_swift_host_arch(result_var_name)
@@ -29,6 +30,8 @@ function(get_swift_host_arch result_var_name)
     set("${result_var_name}" "armv7" PARENT_SCOPE)
   elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "armv7-a")
     set("${result_var_name}" "armv7" PARENT_SCOPE)
+  elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "ARM64")
+    set("${result_var_name}" "x86_64" PARENT_SCOPE)
   elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "AMD64")
     set("${result_var_name}" "x86_64" PARENT_SCOPE)
   elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "IA64")
