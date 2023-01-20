@@ -6,7 +6,6 @@ SPDX-License-Identifier: BSD-3-Clause
 #]]
 
 # Returns the architecture name in a variable
-# (Apple Silicon) ARM CPUs supported [x86_64]
 #
 # Usage:
 #   get_swift_host_arch(result_var_name)
