@@ -267,7 +267,6 @@ open class PresentationController {
   /// view controller's presentationController property.
   ///
   /// Use `adaptivePresentationStyle(for:)` instead.
-  @available(*, unavailable)
   open var adaptivePresentationStyle: ModalPresentationStyle = .none
 
   /// A boolean value indicating whether the presentation covers the entire
