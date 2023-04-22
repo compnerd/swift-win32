@@ -43,7 +43,7 @@ jobs:
         tag: ${{ matrix.tag }}
         branch: ${{ matrix.branch }}
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Build
       run: swift build -v ${{ matrix.options }}
