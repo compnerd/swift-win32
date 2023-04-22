@@ -37,6 +37,8 @@ jobs:
             tag: DEVELOPMENT-SNAPSHOT-2023-04-01-a
             options: ''
 
+    name: Swift ${{ matrix.tag }}
+
     steps:
     - uses: compnerd/gha-setup-swift@main
       with:
