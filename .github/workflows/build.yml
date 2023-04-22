@@ -34,7 +34,7 @@ jobs:
             options: ''
 
           - branch: development
-            tag: DEVELOPMENT-SNAPSHOT-2022-10-09-a
+            tag: DEVELOPMENT-SNAPSHOT-2023-04-01-a
             options: ''
 
     steps:
