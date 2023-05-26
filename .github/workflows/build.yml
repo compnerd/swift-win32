@@ -27,7 +27,7 @@ jobs:
 
           - branch: swift-5.6.3-release
             tag: 5.6.3-RELEASE
-            options: '-Xswiftc -sil-verify-none'
+            options: '-Xswiftc -Xfrontend -Xswiftc -sil-verify-none'
 
           - branch: swift-5.7.3-release
             tag: 5.7.3-RELEASE
