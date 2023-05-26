@@ -27,7 +27,7 @@ jobs:
 
           - branch: swift-5.6.3-release
             tag: 5.6.3-RELEASE
-            options: '-Xswiftc -gnone'
+            options: '-Xswiftc -threads -Xswiftc 1 -Xswiftc -j1 -Xswiftc -gnone'
 
           - branch: swift-5.7.3-release
             tag: 5.7.3-RELEASE
