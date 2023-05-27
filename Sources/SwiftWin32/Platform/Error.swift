@@ -47,7 +47,7 @@ extension Error: CustomStringConvertible {
 
       // MSDN indicates that the returned string can have a maximum of 94
       // characters, so allocate 95 characters.
-#if swift(>=5.6)
+#if swift(>=5.7)
       return withUnsafeTemporaryAllocation(of: wchar_t.self, capacity: 95) {
         let result: errno_t = _wcserror_s($0.baseAddress, $0.count, errno)
         guard result == 0 else { return short }
