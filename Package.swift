@@ -49,9 +49,7 @@ let SwiftWin32 = Package(
         .product(name: "SwiftCOM", package: "SwiftCOM"),
       ],
       path: "Sources/SwiftWin32",
-      exclude: ExcludedPaths + [
-        "CMakeLists.txt",
-      ],
+      exclude: ExcludedPaths + ["CMakeLists.txt"],
       linkerSettings: [
         .linkedLibrary("User32"),
         .linkedLibrary("ComCtl32"),
@@ -59,67 +57,37 @@ let SwiftWin32 = Package(
     ),
     .target(
       name: "SwiftWin32UI",
-      dependencies: [
-        "SwiftWin32",
-      ],
+      dependencies: ["SwiftWin32"],
       path: "Sources/SwiftWin32UI",
-      exclude: [
-        "CMakeLists.txt",
-      ]
+      exclude: ["CMakeLists.txt"]
     ),
     .executableTarget(
       name: "Calculator",
-      dependencies: [
-        "SwiftWin32",
-      ],
+      dependencies: ["SwiftWin32"],
       path: "Examples/Calculator",
       exclude: [
         "CMakeLists.txt",
         "Calculator.exe.manifest",
         "Info.plist",
       ],
-      swiftSettings: [
-        .unsafeFlags([
-          "-parse-as-library",
-        ]),
-      ]
+      swiftSettings: [.unsafeFlags(["-parse-as-library"])]
     ),
     .executableTarget(
       name: "UICatalog",
-      dependencies: [
-        "SwiftWin32",
-      ],
+      dependencies: ["SwiftWin32"],
       path: "Examples/UICatalog",
       exclude: [
         "CMakeLists.txt",
         "Info.plist",
         "UICatalog.exe.manifest",
       ],
-      resources: [
-        .copy("Assets/CoffeeCup.jpg"),
-      ],
-      swiftSettings: [
-        .unsafeFlags([
-          "-parse-as-library",
-        ]),
-      ]
+      resources: [.copy("Assets/CoffeeCup.jpg")],
+      swiftSettings: [.unsafeFlags(["-parse-as-library"])]
     ),
-    .target(
-      name: "TestUtilities",
-      path: "Tests/Utilities"
-    ),
-    .testTarget(
-      name: "AutoLayoutTests",
-      dependencies: ["SwiftWin32"]
-    ),
-    .testTarget(
-      name: "CoreGraphicsTests",
-      dependencies: ["SwiftWin32"]
-    ),
-    .testTarget(
-      name: "SupportTests",
-      dependencies: ["SwiftWin32"]
-    ),
+    .target(name: "TestUtilities", path: "Tests/Utilities"),
+    .testTarget(name: "AutoLayoutTests", dependencies: ["SwiftWin32"]),
+    .testTarget(name: "CoreGraphicsTests", dependencies: ["SwiftWin32"]),
+    .testTarget(name: "SupportTests", dependencies: ["SwiftWin32"]),
     .testTarget(
       name: "UICoreTests",
       dependencies: ["SwiftWin32", "TestUtilities"]
