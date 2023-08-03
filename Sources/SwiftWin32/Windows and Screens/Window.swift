@@ -150,6 +150,7 @@ public class Window: View {
   public var rootViewController: ViewController? {
     didSet {
       self.rootViewController?.view = self
+      self.rootViewController?.viewDidLoad()
 
       if let builder = _MenuBuilder(for: self) {
         self.rootViewController?.buildMenu(with: builder)
