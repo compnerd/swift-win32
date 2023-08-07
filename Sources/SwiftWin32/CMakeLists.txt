@@ -117,6 +117,7 @@ target_sources(SwiftWin32 PRIVATE
   "Views and Controls/Slider.swift"
   "Views and Controls/Stepper.swift"
   "Views and Controls/Switch.swift"
+  "Views and Controls/TextAlignment.swift"
   "Views and Controls/TextField.swift"
   "Views and Controls/TextView.swift"
   "Views and Controls/View.swift"
