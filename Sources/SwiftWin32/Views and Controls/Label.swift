@@ -46,6 +46,37 @@ public class Label: Control {
     }
   }
 
+  public var textAlignment: TextAlignment {
+    get {
+      switch GWL_STYLE & SS_TYPEMASK {
+      case SS_CENTER:
+        return .center
+      case SS_RIGHT:
+        return .right
+      case SS_LEFTNOWORDWRAP, SS_LEFT:
+        return .left
+      default:
+        fatalError("unknown alignment for WC_STATIC")
+      }
+    }
+
+    set {
+      var lAlignment = GWL_STYLE & ~SS_TYPEMASK
+      switch newValue {
+      case .left: lAlignment |= SS_LEFTNOWORDWRAP
+      case .right: lAlignment |= SS_RIGHT
+      case .center: lAlignment |= SS_CENTER
+      case .justified, .natural:
+        log.error("TextAlignment.\(newValue) is not supported")
+      }
+      GWL_STYLE = lAlignment
+      if !SetWindowPos(self.hWnd_, nil, 0, 0, 0, 0,
+                       UINT(SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_DRAWFRAME)) {
+        log.warning("SetWindowPos: \(Error(win32: GetLastError()))")
+      }
+    }
+  }
+
   public override var frame: Rect {
     didSet {
       let size = self.frame.size
