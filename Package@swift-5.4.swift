@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.4
 
 import PackageDescription
 
@@ -13,29 +13,24 @@ let SwiftWin32 = Package(
   dependencies: [
     // NOTE(compnerd) require main as no current release has support for the
     // new CRT module.
-    .package(url: "https://github.com/apple/swift-log.git", branch: "main"),
+    .package(url: "https://github.com/apple/swift-log.git", .branch("main")),
     .package(url: "https://github.com/apple/swift-collections.git",
              .upToNextMinor(from: "1.0.0")),
-    .package(url: "https://github.com/compnerd/cassowary.git", branch: "main"),
-    .package(url: "https://github.com/compnerd/swift-com.git",
-             revision: "ebbc617d3b7ba3a2023988a74bebd118deea4cc5"),
+    .package(url: "https://github.com/compnerd/cassowary.git", .branch("main")),
+    .package(name: "SwiftCOM", url: "https://github.com/compnerd/swift-com.git",
+             .revision("ebbc617d3b7ba3a2023988a74bebd118deea4cc5")),
   ],
   targets: [
     .target(
-      name: "CoreAnimation",
-      path: "Sources/SwiftWin32/CoreAnimation"
-    ),
-    .target(
       name: "SwiftWin32",
       dependencies: [
-        "CoreAnimation",
         .product(name: "Logging", package: "swift-log"),
         .product(name: "OrderedCollections", package: "swift-collections"),
         .product(name: "cassowary", package: "cassowary"),
-        .product(name: "SwiftCOM", package: "swift-com"),
+        .product(name: "SwiftCOM", package: "SwiftCOM"),
       ],
       path: "Sources/SwiftWin32",
-      exclude: ["CoreAnimation", "CMakeLists.txt"],
+      exclude: ["CMakeLists.txt"],
       linkerSettings: [
         .linkedLibrary("User32"),
         .linkedLibrary("ComCtl32"),
