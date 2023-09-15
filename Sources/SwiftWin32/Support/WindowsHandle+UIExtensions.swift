@@ -3,16 +3,27 @@
 
 import WinSDK
 
-extension HFONT__: HandleValue {
-  typealias HandleType = HFONT
-  internal static func release(_ hFont: HandleType?) {
-    if let hFont = hFont {
-      DeleteObject(hFont)
+extension HBITMAP__: HandleValue {
+  typealias HandleType = HBITMAP
+  internal static func release(_ hBitmap: HandleType?) {
+    if let hBitmap = hBitmap {
+      DeleteObject(hBitmap)
     }
   }
 }
 
-internal typealias FontHandle = ManagedHandle<HFONT__>
+internal typealias BitmapHandle = ManagedHandle<HBITMAP__>
+
+extension HBRUSH__: HandleValue {
+  typealias HandleType = HBRUSH
+  internal static func release(_ hBrush: HandleType?) {
+    if let hBrush = hBrush {
+      DeleteObject(hBrush)
+    }
+  }
+}
+
+internal typealias BrushHandle = ManagedHandle<HBRUSH__>
 
 extension HDC__: HandleValue {
   typealias HandleType = HDC
@@ -25,15 +36,16 @@ extension HDC__: HandleValue {
 
 internal typealias DeviceContextHandle = ManagedHandle<HDC__>
 
-extension HBITMAP__: HandleValue {
-  typealias HandleType = HBITMAP
-  internal static func release(_ hBitmap: HandleType?) {
-    if let hBitmap = hBitmap {
-      DeleteObject(hBitmap)
+extension HFONT__: HandleValue {
+  typealias HandleType = HFONT
+  internal static func release(_ hFont: HandleType?) {
+    if let hFont = hFont {
+      DeleteObject(hFont)
     }
   }
 }
-internal typealias BitmapHandle = ManagedHandle<HBITMAP__>
+
+internal typealias FontHandle = ManagedHandle<HFONT__>
 
 extension HMENU: HandleValue {
   typealias HandleType = HMENU
