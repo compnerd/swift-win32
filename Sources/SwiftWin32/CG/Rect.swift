@@ -1,8 +1,8 @@
 // Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
-@_implementationOnly import func CRT.floor
-@_implementationOnly import func CRT.ceil
+import CRT
+import WinSDK
 
 @inline(__always)
 private func __equals(_ lhs: Rect, _ rhs: Rect) -> Bool {
@@ -273,5 +273,19 @@ extension Rect: Equatable {
 extension Rect: CustomDebugStringConvertible {
   public var debugDescription: String {
     return "Rect(origin: \(origin), size: \(size))"
+  }
+}
+
+extension Rect {
+  internal func scaled(for dpi: UINT, style: WindowStyle) -> Rect {
+    let scale: Double = Double(dpi) / Double(USER_DEFAULT_SCREEN_DPI)
+
+    var r: RECT =
+        RECT(from: self.applying(AffineTransform(scaleX: scale, y: scale)))
+    if !AdjustWindowRectExForDpi(&r, style.base, false, style.extended, dpi) {
+      log.warning("AdjustWindowRectExForDpi: \(Error(win32: GetLastError()))")
+    }
+
+    return Rect(from: r)
   }
 }
