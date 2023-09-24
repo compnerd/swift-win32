@@ -60,17 +60,6 @@ private func ClientToWindow(size: inout Size, for style: WindowStyle) {
   size = Size(width: Double(r.right - r.left), height: Double(r.bottom - r.top))
 }
 
-private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) {
-  let scale: Double = Double(dpi) / Double(USER_DEFAULT_SCREEN_DPI)
-
-  var r: RECT =
-      RECT(from: rect.applying(AffineTransform(scaleX: scale, y: scale)))
-  if !AdjustWindowRectExForDpi(&r, style.base, false, style.extended, dpi) {
-    log.warning("AdjustWindowRectExForDpi: \(Error(win32: GetLastError()))")
-  }
-  rect = Rect(from: r)
-}
-
 private func WindowBasedTransform(for view: View?) -> AffineTransform {
   guard var view = view else { return .identity }
 
@@ -479,7 +468,7 @@ public class View: Responder {
     }
 
     // Scale window for DPI
-    ScaleClient(rect: &client, for: GetDpiForWindow(self.hWnd), style)
+    client = client.scaled(for: GetDpiForWindow(self.hWnd), style: style)
 
     // Resize and Position the Window
     SetWindowPos(self.hWnd, nil,
@@ -543,10 +532,10 @@ public class View: Responder {
   public var frame: Rect {
     didSet {
       // Scale window for DPI
-      var client: Rect = self.frame
-      ScaleClient(rect: &client, for: GetDpiForWindow(self.hWnd),
-                  WindowStyle(DWORD(bitPattern: self.GWL_STYLE),
-                              DWORD(bitPattern: self.GWL_EXSTYLE)))
+      let client: Rect =
+          self.frame.scaled(for: GetDpiForWindow(self.hWnd),
+                            style: WindowStyle(DWORD(bitPattern: self.GWL_STYLE),
+                                               DWORD(bitPattern: self.GWL_EXSTYLE)))
 
       // Resize and Position the Window
       _ = SetWindowPos(self.hWnd, nil,
@@ -703,8 +692,8 @@ public class View: Responder {
         WindowStyle(DWORD(bitPattern: view.GWL_STYLE),
                     DWORD(bitPattern: view.GWL_EXSTYLE))
 
-    var client: Rect = view.frame
-    ScaleClient(rect: &client, for: GetDpiForWindow(view.hWnd), style)
+    let client: Rect =
+        view.frame.scaled(for: GetDpiForWindow(view.hWnd), style: style)
 
     // Resize and Position the Window
     _ = SetWindowPos(view.hWnd, nil,
