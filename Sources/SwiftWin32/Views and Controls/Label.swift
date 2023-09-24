@@ -79,9 +79,10 @@ public class Label: Control {
 
   public override var frame: Rect {
     didSet {
-      let size = self.frame.size
+      let frame = self.frame.scaled(for: GetDpiForWindow(self.hWnd),
+                                    style: Label.style)
       _ = SetWindowPos(self.hWnd_, nil,
-                       0, 0, CInt(size.width), CInt(size.height),
+                       0, 0, CInt(frame.size.width), CInt(frame.size.height),
                        UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
     }
   }
@@ -91,7 +92,8 @@ public class Label: Control {
     _ = SetWindowSubclass(hWnd, SwiftLabelProc, UINT_PTR(1),
                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
 
-    let size = self.frame.size
+    let size = self.frame.scaled(for: GetDpiForWindow(self.hWnd),
+                                 style: Label.style).size
     self.hWnd_ = CreateWindowExW(0, WC_STATIC.wide, nil, DWORD(WS_CHILD),
                                  0, 0, CInt(size.width), CInt(size.height),
                                  self.hWnd, nil, GetModuleHandleW(nil), nil)!
