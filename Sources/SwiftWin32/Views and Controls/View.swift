@@ -38,6 +38,18 @@ private let SwiftViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubc
 
     return 0
 
+  case UINT(WM_ERASEBKGND):
+    guard let view = view, let brush = view.hbrBackground else{ break }
+
+    let hDC: DeviceContextHandle =
+        .init(referencing: HDC(bitPattern: UInt(wParam)))
+
+    var rc: RECT = RECT()
+    _ = GetClientRect(vie.hWnd, &rc)
+    _ = FillRect(hDC.value, &rc, hbrBackground.value)
+
+    return 1
+
   case UINT(WM_COMMAND):
     // TODO: handle menu actions
     break
@@ -499,8 +511,19 @@ public class View: Responder {
 
   // MARK - Configuring a View's Visual Appearance
 
+  internal var hbrBackground: BrushHandle?
+
   /// The view's background color.
-  public var backgroundColor: Color?
+  public var backgroundColor: Color? {
+    didSet {
+      switch self.backgroundColor {
+      case .some(let color):
+        self.hbrBackground = .init(owning: CreateSolidBrush(color.COLORREF))
+      case .none:
+        self.hbrBackground = nil
+      }
+    }
+  }
 
   /// A boolean that determines if the view is hidden.
   public var isHidden: Bool {
