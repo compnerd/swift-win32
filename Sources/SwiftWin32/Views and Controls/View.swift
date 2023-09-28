@@ -45,8 +45,8 @@ private let SwiftViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubc
         .init(referencing: HDC(bitPattern: UInt(wParam)))
 
     var rc: RECT = RECT()
-    _ = GetClientRect(vie.hWnd, &rc)
-    _ = FillRect(hDC.value, &rc, hbrBackground.value)
+    _ = GetClientRect(view.hWnd, &rc)
+    _ = FillRect(hDC.value, &rc, brush.value)
 
     return 1
 
