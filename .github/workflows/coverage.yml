@@ -45,7 +45,7 @@ jobs:
       run: |
         llvm-cov export -format lcov -ignore-filename-regex ".build|Tests|Examples" -instr-profile .build\x86_64-unknown-windows-msvc\debug\codecov\default.profdata .build\x86_64-unknown-windows-msvc\debug\SwiftWin32PackageTests.xctest > coverage.lcov
 
-    - uses: codecov/codecov-action@v1.5.0
+    - uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: coverage.lcov
