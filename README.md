@@ -28,6 +28,25 @@ ninja -C build SwiftWin32 UICatalog
 %CD%\build\bin\UICatalog.exe
 ```
 
+Following environment variables should be set/adjusted before run the above commands (the shown paths assume that you use compiler from the official swift installers from [swift.org](https://www.swift.org/download/)).
+
+- `SDKROOT`
+
+  This should be the path to the Windows Platform SDK from the Swift library.
+
+  Command Prompt: `set SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk;%PATH%`
+
+- `PATH`
+
+  The `PATH` environment variables needs to be extended that cmake can find the swift compiler. This is only required when this is not already the case. When you type `where swiftc` and see no path to swiftc the following command is required.
+
+  Command Prompt: `set PATH=C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%PATH%`
+
+- Visual Studio compiler toolchain
+
+  The cmake commands use the `mt` tool which require a fully bootstrapped compiler environment. You can create a command prompt by click on `x64 Native Tools Command Prompt for VS2019` from the Visual Studio 2019 installation in the Windows Start Menu or call `C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat` in the command prompt.
+
+
 ### Swift Package Manager
 
 Building this project with swift-package-manager is supported although CMake is recommended for ease.  The Swift Package Manager based build is required for code completion via SourceKit-LSP.  It also allows for the use of Swift/Win32 in other applications using SPM.  In order to use SPM to build this project additional post-build steps are required to use the demo applications.
