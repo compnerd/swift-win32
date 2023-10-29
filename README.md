@@ -28,23 +28,29 @@ ninja -C build SwiftWin32 UICatalog
 %CD%\build\bin\UICatalog.exe
 ```
 
-Following environment variables should be set/adjusted before run the above commands (the shown paths assume that you use compiler from the official swift installers from [swift.org](https://www.swift.org/download/)).
+Following environment should be set/adjusted before run the above commands (the shown paths assume that you use compiler from the official swift installers from [swift.org](https://www.swift.org/download/)).
+
+- Visual Studio compiler toolchain
+
+  The CMake commands use the `mt` tool which requires a Visual Studio compiler environment (Build Tools should be fine too).
+  e.g. if you have Visual Studio 2019 installed you can create a command prompt by click on `x64 Native Tools Command Prompt for VS2019` from the Visual Studio 2019 installation in the Windows Start Menu or call `C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat` in the command prompt.
+  
+  Higher versions of Visual Studio or the corresponding Build Tools should be fine too.
+
+  Another way of activating a Visual Studio environment is the tool [vswhere](https://github.com/microsoft/vswhere).
 
 - `SDKROOT`
 
-  This should be the path to the Windows Platform SDK from the Swift library.
+  This should be the path to the Windows Platform SDK from the Swift library. This should be already set by the official swift installer. If not set the env var.
 
   Command Prompt: `set SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk;%PATH%`
 
 - `PATH`
 
-  The `PATH` environment variables needs to be extended that cmake can find the swift compiler. This is only required when this is not already the case. When you type `where swiftc` and see no path to swiftc the following command is required.
+  The `PATH` environment variables needs to be extended that CMake can find the swift compiler. This is only required when this is not already the case. When you type `where swiftc` and see no path to swiftc the following command is required.
 
   Command Prompt: `set PATH=C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%PATH%`
 
-- Visual Studio compiler toolchain
-
-The CMake commands use the `mt` tool which requires a Visual Studio compiler environment. You can create a command prompt by click on `x64 Native Tools Command Prompt for VS2019` from the Visual Studio 2019 installation in the Windows Start Menu or call `C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat` in the command prompt.
 
 
 ### Swift Package Manager
