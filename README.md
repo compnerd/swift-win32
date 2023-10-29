@@ -45,11 +45,11 @@ Following environment should be set/adjusted before run the above commands (the 
 
   Command Prompt: `set SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk;%PATH%`
 
-- `PATH`
+- `Path`
 
-  The `PATH` environment variables needs to be extended that CMake can find the swift compiler. This is only required when this is not already the case. When you type `where swiftc` and see no path to swiftc the following command is required.
+  The `Path` environment variables needs to be extended that CMake can find the swift compiler. This is only required when this is not already the case. When you type `where swiftc` and see no path to swiftc the following command is required.
 
-  Command Prompt: `set PATH=C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%PATH%`
+  Command Prompt: `set Path=C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%Path%`
 
 
 
