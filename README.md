@@ -44,7 +44,7 @@ Following environment variables should be set/adjusted before run the above comm
 
 - Visual Studio compiler toolchain
 
-  The cmake commands use the `mt` tool which require a fully bootstrapped compiler environment. You can create a command prompt by click on `x64 Native Tools Command Prompt for VS2019` from the Visual Studio 2019 installation in the Windows Start Menu or call `C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat` in the command prompt.
+The CMake commands use the `mt` tool which requires a Visual Studio compiler environment. You can create a command prompt by click on `x64 Native Tools Command Prompt for VS2019` from the Visual Studio 2019 installation in the Windows Start Menu or call `C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat` in the command prompt.
 
 
 ### Swift Package Manager
