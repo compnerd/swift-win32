@@ -43,13 +43,31 @@ Following environment should be set/adjusted before run the above commands (the 
 
   This should be the path to the Windows Platform SDK from the Swift library. This should be already set by the official swift installer. If not set the env var.
 
-  Command Prompt: `set SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk;%PATH%`
+  \>= 5.10 `SDKROOT` needs to be `%LocalAppData%\Programs\Swift\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
+
+  < 5.10 `SDKROOT` needs to be `C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
+
+  Examples for < 5.10:
+
+  Command Prompt: `set SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
+
+  PowerShell: `$env:SDKROOT="C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk"`
 
 - `Path`
 
-  The `Path` environment variables needs to be extended to allow the Swift compiler to be found. This is only required when this is not already the case. When you type `where swiftc` and see no path to `swiftc` the following command is required.
+  The `Path` environment variables needs to be extended to allow the Swift compiler to be found.
+  This is only required when this is not already the case.
+  When you type `where swiftc` (`(Get-Command swiftc).Path` for PowerShell) and see no path to `swiftc` the following command is required.
+
+  \>= 5.10 the `Path` needs to extended with `%LocalAppData%\Programs\Swift\Runtimes\0.0.0\usr\bin;%LocalAppData%\Programs\Swift\Toolchains\0.0.0+Asserts\usr\bin`
+
+  < 5.10 the `Path` needs to be extended with `C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin`
+
+  Examples for < 5.10:
 
   Command Prompt: `set Path=C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%Path%`
+
+  PowerShell: `$env:Path="C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;$env:Path"`
 
 
 
