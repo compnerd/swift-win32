@@ -33,9 +33,9 @@ Following environment should be set/adjusted before run the above commands (the 
 - Visual Studio compiler toolchain
 
   The CMake commands use the `mt` tool which requires a Visual Studio compiler environment (Build Tools should be fine too).
-  e.g. if you have Visual Studio 2019 installed you can create a command prompt by click on `x64 Native Tools Command Prompt for VS2019` from the Visual Studio 2019 installation in the Windows Start Menu or call `C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat` in the command prompt.
+  e.g. if you have Visual Studio 2019 installed you can create a command prompt by click on `x64 Native Tools Command Prompt for VS2019` from the Visual Studio 2019 installation in the Windows Start Menu.
   
-  Higher versions of Visual Studio or the corresponding Build Tools should be fine too.
+  Newer versions of Visual Studio or the corresponding Build Tools should be fine too.
 
   Another way of activating a Visual Studio environment is the tool [vswhere](https://github.com/microsoft/vswhere).
 
@@ -45,13 +45,13 @@ Following environment should be set/adjusted before run the above commands (the 
 
   \>= 5.10 `SDKROOT` needs to be `%LocalAppData%\Programs\Swift\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
 
-  < 5.10 `SDKROOT` needs to be `C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
+  < 5.10 `SDKROOT` needs to be `%SystemDrive%\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
 
   Examples for < 5.10:
 
-  Command Prompt: `set SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
+  Command Prompt: `set SDKROOT=%SystemDrive%\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
 
-  PowerShell: `$env:SDKROOT="C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk"`
+  PowerShell: `$env:SDKROOT="%SystemDrive%\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk"`
 
 - `Path`
 
@@ -59,15 +59,15 @@ Following environment should be set/adjusted before run the above commands (the 
   This is only required when this is not already the case.
   When you type `where swiftc` (`(Get-Command swiftc).Path` for PowerShell) and see no path to `swiftc` the following command is required.
 
-  \>= 5.10 the `Path` needs to extended with `%LocalAppData%\Programs\Swift\Runtimes\0.0.0\usr\bin;%LocalAppData%\Programs\Swift\Toolchains\0.0.0+Asserts\usr\bin`
+  \>= 5.10 the `Path` needs to extended with `%LocalAppData%\Programs\Swift\Runtimes\5.9.0\usr\bin;%LocalAppData%\Programs\Swift\Toolchains\5.9.0+Asserts\usr\bin`
 
-  < 5.10 the `Path` needs to be extended with `C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin`
+  < 5.10 the `Path` needs to be extended with `%SystemDrive%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin`
 
   Examples for < 5.10:
 
-  Command Prompt: `set Path=C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%Path%`
+  Command Prompt: `set Path=%SystemDrive%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%Path%`
 
-  PowerShell: `$env:Path="C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;$env:Path"`
+  PowerShell: `$env:Path="%SystemDrive%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;$env:Path"`
 
 
 
