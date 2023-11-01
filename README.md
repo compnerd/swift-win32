@@ -28,7 +28,7 @@ ninja -C build SwiftWin32 UICatalog
 %CD%\build\bin\UICatalog.exe
 ```
 
-Following environment should be set/adjusted before run the above commands (the shown paths assume that you use compiler from the official swift installers from [swift.org](https://www.swift.org/download/)).
+Following environment variables should be set/adjusted before run the above commands (the shown paths assume that you use compiler from the official swift installers from [swift.org](https://www.swift.org/download/)).
 
 - Visual Studio compiler toolchain
 
