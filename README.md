@@ -47,7 +47,7 @@ Following environment should be set/adjusted before run the above commands (the 
 
 - `Path`
 
-  The `Path` environment variables needs to be extended that CMake can find the swift compiler. This is only required when this is not already the case. When you type `where swiftc` and see no path to swiftc the following command is required.
+  The `Path` environment variables needs to be extended to allow the Swift compiler to be found. This is only required when this is not already the case. When you type `where swiftc` and see no path to `swiftc` the following command is required.
 
   Command Prompt: `set Path=C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%Path%`
 
