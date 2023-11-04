@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:5.7
 
 import PackageDescription
 
@@ -38,9 +38,6 @@ let SwiftWin32: Package =
                     ],
                     path: "Sources/SwiftWin32",
                     exclude: ["CoreAnimation", "CMakeLists.txt"],
-                    swiftSettings: [
-                      .enableExperimentalFeature("AccessLevelOnImport"),
-                    ],
                     linkerSettings: [
                       .linkedLibrary("User32"),
                       .linkedLibrary("ComCtl32"),
