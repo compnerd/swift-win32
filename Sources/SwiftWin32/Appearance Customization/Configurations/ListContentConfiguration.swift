@@ -3,6 +3,10 @@
 
 import class Foundation.NSAttributedString
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 extension ListContentConfiguration {
   /// Properties that affect the list content configuration's image.
   public struct ImageProperties {

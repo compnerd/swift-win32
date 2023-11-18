@@ -4,6 +4,10 @@
 import WinSDK
 import SwiftCOM
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 extension BitmapHandle {
   internal convenience init?(from pBitmap: SwiftCOM.IWICBitmapSource?,
                              hWnd: HWND? = nil) {

@@ -1,6 +1,10 @@
 // Copyright © 2021 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 // Class constrain the callable to ensure that the value is heap allocated,
 // permitting us to perform pointer equality for the callback to serve as
 // identity.  Using COW, we can perform pointer equality on the types as a

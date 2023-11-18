@@ -3,9 +3,15 @@
 
 import XCTest
 
+#if swift(>=5.7)
+import CoreGraphics
+// NOTE: avoid conflict with Foundation.AffineTransform
+private typealias AffineTransform = CoreGraphics.AffineTransform
+#else
 import SwiftWin32
-
+// NOTE: avoid conflict with Foundation.AffineTransform
 private typealias AffineTransform = SwiftWin32.AffineTransform
+#endif
 
 final class CoreGraphicsTests: XCTestCase {
   func testAffineTransformIdentity() {

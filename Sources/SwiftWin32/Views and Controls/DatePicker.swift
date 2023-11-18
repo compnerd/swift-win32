@@ -5,6 +5,10 @@ import WinSDK
 
 import struct Foundation.Date
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 private let SwiftDatePickerProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let datepicker: DatePicker? =
       unsafeBitCast(dwRefData, to: AnyObject.self) as? DatePicker

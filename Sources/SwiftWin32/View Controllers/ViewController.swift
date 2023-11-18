@@ -6,6 +6,10 @@ import class Foundation.NSNotification
 import struct Foundation.NSExceptionName
 import struct Foundation.TimeInterval
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// Transition styles available when presenting view controllers.
 public enum ModalTransitionStyle: Int {
   ///

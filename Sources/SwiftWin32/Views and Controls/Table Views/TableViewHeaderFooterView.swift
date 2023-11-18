@@ -1,7 +1,11 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
- import WinSDK
+import WinSDK
+
+#if swift(>=5.7)
+import CoreGraphics
+#endif
 
 /// A reusable view that you place at the top or bottom of a table section to
 /// display additional information for that section.

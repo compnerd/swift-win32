@@ -3,6 +3,10 @@
 
 import WinSDK
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 extension TableViewCell {
   public enum CellStyle: Int {
   /// A simple style for a cell with a text label (black and left-aligned) and

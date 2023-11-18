@@ -3,6 +3,10 @@
 
 import WinSDK
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// A control that offers a binary choice, such as on/off.
 public class Switch: Control {
   private static let `class`: WindowClass = WindowClass(named: WC_BUTTON)

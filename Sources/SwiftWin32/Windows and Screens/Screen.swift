@@ -3,6 +3,10 @@
 
 import WinSDK
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 extension DEVICE_SCALE_FACTOR {
   internal var factor: Double {
     switch self {

@@ -1,6 +1,10 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// A set of methods for converting between different frames of reference on a
 /// screen.
 public protocol CoordinateSpace {

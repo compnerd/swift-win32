@@ -275,17 +275,3 @@ extension Rect: CustomDebugStringConvertible {
     return "Rect(origin: \(origin), size: \(size))"
   }
 }
-
-extension Rect {
-  internal func scaled(for dpi: UINT, style: WindowStyle) -> Rect {
-    let scale: Double = Double(dpi) / Double(USER_DEFAULT_SCREEN_DPI)
-
-    var r: RECT =
-        RECT(from: self.applying(AffineTransform(scaleX: scale, y: scale)))
-    if !AdjustWindowRectExForDpi(&r, style.base, false, style.extended, dpi) {
-      log.warning("AdjustWindowRectExForDpi: \(Error(win32: GetLastError()))")
-    }
-
-    return Rect(from: r)
-  }
-}

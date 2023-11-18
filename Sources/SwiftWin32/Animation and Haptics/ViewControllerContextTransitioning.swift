@@ -1,6 +1,10 @@
 // Copyright © 2021 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// The keys you use to identify the view controllers involved in a transition.
 public struct TransitionContextViewControllerKey: Equatable, Hashable, RawRepresentable {
   public typealias RawValue = String

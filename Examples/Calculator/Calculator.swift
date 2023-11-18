@@ -4,6 +4,10 @@
 import SwiftWin32
 import Foundation
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 private extension View {
   func addSubviews(_ views: [View]) {
     _ = views.map { self.addSubview($0) }

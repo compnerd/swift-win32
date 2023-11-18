@@ -135,12 +135,6 @@ target_sources(SwiftWin32 PRIVATE
   "Windows and Screens/Screen.swift"
   "Windows and Screens/Window.swift")
 target_sources(SwiftWin32 PRIVATE
-  CG/AffineTransform.swift
-  CG/Point.swift
-  CG/Rect.swift
-  CG/Size.swift
-  CG/Vector.swift)
-target_sources(SwiftWin32 PRIVATE
   Platform/BatteryMonitor.swift
   Platform/Error.swift
   Platform/Win32+Menu.swift
@@ -164,11 +158,26 @@ target_sources(SwiftWin32 PRIVATE
 if(CMAKE_Swift_COMPILER_VERSION VERSION_LESS 5.7.0)
   target_sources(SwiftWin32 PRIVATE
     CoreAnimation/Transform3D.swift)
+  target_sources(SwiftWin32 PRIVATE
+    CoreGraphics/AffineTransform.swift
+    CoreGraphics/Point.swift
+    CoreGraphics/Rect.swift
+    CoreGraphics/Size.swift
+    CoreGraphics/Vector.swift)
 else()
   add_library(CoreAnimation STATIC
     CoreAnimation/Transform3D.swift)
   target_link_libraries(SwiftWin32 PRIVATE
     CoreAnimation)
+
+  add_library(CoreGraphics STATIC
+    CoreGraphics/AffineTransform.swift
+    CoreGraphics/Point.swift
+    CoreGraphics/Rect.swift
+    CoreGraphics/Size.swift
+    CoreGraphics/Vector.swift)
+  target_link_libraries(SwiftWin32 PRIVATE
+    CoreGraphics)
 endif()
 target_link_libraries(SwiftWin32 PUBLIC
   ComCtl32
@@ -188,5 +197,6 @@ set_target_properties(SwiftWin32 PROPERTIES
 
 if(CMAKE_Swift_COMPILER_VERSION VERSION_GREATER_EQUAL 5.7.0)
   _install_target(CoreAnimation)
+  _install_target(CoreGraphics)
 endif()
 _install_target(SwiftWin32)

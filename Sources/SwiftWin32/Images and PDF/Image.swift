@@ -4,6 +4,10 @@
 import WinSDK
 import SwiftCOM
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 private let WICImagingFactory: SwiftCOM.IWICImagingFactory? =
     try? IWICImagingFactory.CreateInstance(class: CLSID_WICImagingFactory)
 
