@@ -3,6 +3,10 @@
 
 import WinSDK
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 public protocol TextFieldDelegate: AnyObject {
 }
 

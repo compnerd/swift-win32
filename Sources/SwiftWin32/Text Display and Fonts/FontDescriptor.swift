@@ -1,6 +1,10 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// A collection of attributes that describes a font.
 public class FontDescriptor {
   /// Constants that classify certain stylistic qualities of the font.

@@ -1,6 +1,10 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// The methods for providing the set of actions to perform on your content,
 /// and for customizing the preview of that content.
 public protocol ContextMenuInteractionDelegate: AnyObject {

@@ -3,6 +3,10 @@
 
 import struct Foundation.IndexPath
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// Methods for managing selections, configuring section headers and footers,
 /// deleting and reordering cells, and performing other actions in a table view.
 public protocol TableViewDelegate: AnyObject {

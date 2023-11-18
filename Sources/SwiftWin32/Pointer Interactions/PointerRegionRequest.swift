@@ -1,6 +1,10 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// An object to describe the pointer's location in the interaction's view.
 public class PointerRegionRequest {
   // MARK - Inspecting the Region Request

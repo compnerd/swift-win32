@@ -4,6 +4,10 @@
 import WinSDK
 import Foundation
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 // FIXME(compnerd) we would like this to derive from ScrollView
 public class TextView: View {
   private static let `class`: WindowClass = WindowClass(named: MSFTEDIT_CLASS)

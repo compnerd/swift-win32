@@ -3,6 +3,9 @@
 
 import XCTest
 import WinSDK
+#if swift(>=5.7)
+import CoreGraphics
+#endif
 @testable import SwiftWin32
 
 final class WindowTests: XCTestCase {

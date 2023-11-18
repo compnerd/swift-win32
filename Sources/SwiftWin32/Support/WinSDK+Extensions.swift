@@ -158,6 +158,16 @@ internal var WS_CAPTION: DWORD {
 }
 
 @_transparent
+internal var WS_CHILD: DWORD {
+  DWORD(WinSDK.WS_CHILD)
+}
+
+@_transparent
+internal var WS_CLIPSIBLINGS: DWORD {
+  DWORD(WinSDK.WS_CLIPSIBLINGS)
+}
+
+@_transparent
 internal var WS_HSCROLL: DWORD {
   DWORD(WinSDK.WS_HSCROLL)
 }
@@ -165,6 +175,11 @@ internal var WS_HSCROLL: DWORD {
 @_transparent
 internal var WS_TABSTOP: DWORD {
   DWORD(WinSDK.WS_TABSTOP)
+}
+
+@_transparent
+internal var WS_VISIBLE: DWORD {
+  DWORD(WinSDK.WS_VISIBLE)
 }
 
 @_transparent

@@ -3,6 +3,10 @@
 
 import WinSDK
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 extension View {
   internal func interaction<InteractionType: Interaction>() -> InteractionType? {
     // TODO: how do we handle overlapping entries in the `interactions` array?
@@ -644,7 +648,7 @@ public class View: Responder {
 
     // Update the Window style.
     self.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | WS_CAPTION)
-    self.GWL_STYLE &= ~WS_CHILD
+    self.GWL_STYLE &= ~LONG(WS_CHILD)
     // FIXME(compnerd) can this be avoided somehow?
     if self is TextField || self is TextView || self is TableView {
       self.GWL_STYLE |= WinSDK.WS_BORDER
@@ -696,7 +700,7 @@ public class View: Responder {
 
     // Update the window style.
     view.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | WS_CAPTION)
-    view.GWL_STYLE |= WS_CHILD
+    view.GWL_STYLE |= LONG(WS_CHILD)
     // FIXME(compnerd) can this be avoided somehow?
     if view is TextField || view is TextView || view is TableView {
       view.GWL_STYLE |= WinSDK.WS_BORDER

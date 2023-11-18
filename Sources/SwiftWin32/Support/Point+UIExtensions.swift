@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: BSD-3-Clause
 
 import WinSDK
+#if swift(>=5.7)
+import CoreGraphics
+#endif
 
 extension Point {
   internal init(from: POINT) {

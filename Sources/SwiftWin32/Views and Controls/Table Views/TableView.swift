@@ -4,6 +4,10 @@
 import WinSDK
 import struct Foundation.IndexPath
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 // Notification Proxy
 
 // When the Window is created, the initial parent is cached.  This cache cannot

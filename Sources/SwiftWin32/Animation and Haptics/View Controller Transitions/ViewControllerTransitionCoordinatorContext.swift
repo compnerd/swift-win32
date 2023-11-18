@@ -3,6 +3,10 @@
 
 import struct Foundation.TimeInterval
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// Modal presentation styles available when presenting view controllers.
 public enum ModalPresentationStyle: Int {
   /// The default presentation style chosen by the system.

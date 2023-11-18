@@ -3,6 +3,10 @@
 
 import WinSDK
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// A control for selecting a single value from a continuous range of values.
 public class Slider: Control {
   private static let `class`: WindowClass = WindowClass(named: TRACKBAR_CLASS)

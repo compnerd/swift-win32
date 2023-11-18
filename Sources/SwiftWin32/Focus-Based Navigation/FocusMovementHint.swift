@@ -3,6 +3,7 @@
 
 #if swift(>=5.7)
 import CoreAnimation
+import CoreGraphics
 #endif
 
 /// Provides movement hint information for the focused item.
