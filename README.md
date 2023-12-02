@@ -28,6 +28,49 @@ ninja -C build SwiftWin32 UICatalog
 %CD%\build\bin\UICatalog.exe
 ```
 
+Following environment variables should be set/adjusted before run the above commands (the shown paths assume that you use compiler from the official swift installers from [swift.org](https://www.swift.org/download/)).
+
+- Visual Studio compiler toolchain
+
+  The CMake commands use the `mt` tool which requires a Visual Studio compiler environment (Build Tools should be fine too).
+  e.g. if you have Visual Studio 2019 installed you can create a command prompt by click on `x64 Native Tools Command Prompt for VS2019` from the Visual Studio 2019 installation in the Windows Start Menu.
+  
+  Newer versions of Visual Studio or the corresponding Build Tools should be fine too.
+
+  Another way of activating a Visual Studio environment is the tool [vswhere](https://github.com/microsoft/vswhere).
+
+- `SDKROOT`
+
+  This should be the path to the Windows Platform SDK from the Swift library. This should be already set by the official swift installer. If not set the env var.
+
+  \>= 5.10 `SDKROOT` needs to be `%LocalAppData%\Programs\Swift\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
+
+  < 5.10 `SDKROOT` needs to be `%SystemDrive%\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
+
+  Examples for < 5.10:
+
+  Command Prompt: `set SDKROOT=%SystemDrive%\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk`
+
+  PowerShell: `$env:SDKROOT="%SystemDrive%\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk"`
+
+- `Path`
+
+  The `Path` environment variables needs to be extended to allow the Swift compiler to be found.
+  This is only required when this is not already the case.
+  When you type `where swiftc` (`(Get-Command swiftc).Path` for PowerShell) and see no path to `swiftc` the following command is required.
+
+  \>= 5.10 the `Path` needs to extended with `%LocalAppData%\Programs\Swift\Runtimes\5.9.0\usr\bin;%LocalAppData%\Programs\Swift\Toolchains\5.9.0+Asserts\usr\bin`
+
+  < 5.10 the `Path` needs to be extended with `%SystemDrive%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin`
+
+  Examples for < 5.10:
+
+  Command Prompt: `set Path=%SystemDrive%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%Path%`
+
+  PowerShell: `$env:Path="%SystemDrive%\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;$env:Path"`
+
+
+
 ### Swift Package Manager
 
 Building this project with swift-package-manager is supported although CMake is recommended for ease.  The Swift Package Manager based build is required for code completion via SourceKit-LSP.  It also allows for the use of Swift/Win32 in other applications using SPM.  In order to use SPM to build this project additional post-build steps are required to use the demo applications.
