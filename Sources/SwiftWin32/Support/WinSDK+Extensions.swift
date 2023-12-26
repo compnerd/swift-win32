@@ -148,6 +148,21 @@ internal var QS_ALLINPUT: DWORD {
 }
 
 @_transparent
+internal var TCS_BOTTOM: DWORD {
+  DWORD(WinSDK.TCS_BOTTOM)
+}
+
+@_transparent
+internal var TCS_FIXEDWIDTH: DWORD {
+  DWORD(WinSDK.TCS_FIXEDWIDTH)
+}
+
+@_transparent
+internal var TCS_FLATBUTTONS: DWORD {
+  DWORD(WinSDK.TCS_FLATBUTTONS)
+}
+
+@_transparent
 internal var WS_BORDER: DWORD {
   DWORD(WinSDK.WS_BORDER)
 }

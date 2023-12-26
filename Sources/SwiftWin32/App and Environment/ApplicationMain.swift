@@ -98,6 +98,7 @@ public func ApplicationMain(_ argc: Int32,
                    | DWORD(ICC_NATIVEFNTCTL_CLASS)
                    | DWORD(ICC_PROGRESS_CLASS)
                    | DWORD(ICC_STANDARD_CLASSES)
+                   | DWORD(ICC_TAB_CLASSES)
   var ICCE: INITCOMMONCONTROLSEX =
       INITCOMMONCONTROLSEX(dwSize: DWORD(MemoryLayout<INITCOMMONCONTROLSEX>.size),
                            dwICC: dwICC)
