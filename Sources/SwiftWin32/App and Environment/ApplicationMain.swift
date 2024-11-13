@@ -48,7 +48,7 @@ public func ApplicationMain(_ argc: Int32,
   // Setup the main application class.  The following order describes how the
   // user may actually configure the selected class:
   //
-  //    1. `application`: the parameter passd to `ApplicationMain(_:_:_:_:)`
+  //    1. `application`: the parameter passed to `ApplicationMain(_:_:_:_:)`
   //    2. `PrincipalClass`: the value configured in `Info.plist`
   //    3. `Application`: the default application class provided by Swift/Win32
   //
