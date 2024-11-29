@@ -41,6 +41,10 @@ jobs:
             tag: 5.9.1-RELEASE
             options: ''
 
+          - branch: swift-5.10.1-release
+            tag: 5.10.1-RELEASE
+            options: ''
+
           - branch: development
             tag: DEVELOPMENT-SNAPSHOT-2023-08-12-a
             options: ''
