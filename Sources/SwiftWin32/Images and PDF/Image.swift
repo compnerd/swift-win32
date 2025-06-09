@@ -9,7 +9,7 @@ import CoreGraphics
 #endif
 
 private let WICImagingFactory: SwiftCOM.IWICImagingFactory? =
-    try? IWICImagingFactory.CreateInstance(class: CLSID_WICImagingFactory)
+    try? IWICImagingFactory.CreateInstance(class: CLSID_WICImagingFactory2)
 
 extension Image {
   /// A configuration object that contains the traits that the system uses when
