@@ -50,8 +50,9 @@ jobs:
     steps:
     - uses: compnerd/gha-setup-swift@main
       with:
-        tag: ${{ matrix.tag }}
-        branch: ${{ matrix.branch }}
+        swift-build: ${{ matrix.tag }}
+        swift-version: ${{ matrix.branch }}
+        update-sdk-modules: true
 
     - uses: actions/checkout@v3
 
