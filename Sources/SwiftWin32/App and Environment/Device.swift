@@ -15,7 +15,7 @@ public struct Device {
     let value: [WCHAR] =
         Array<WCHAR>(unsafeUninitializedCapacity: Int(MAX_COMPUTERNAME_LENGTH) + 1) {
       var nSize: DWORD = DWORD($0.count)
-      $1 = GetComputerNameW($0.baseAddress!, &nSize) ? Int(nSize) : 0
+      $1 = GetComputerNameW($0.baseAddress!, &nSize) ? Int(nSize) + 1 : 0
     }
     return String(decodingCString: value, as: UTF16.self)
   }

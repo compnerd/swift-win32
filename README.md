@@ -28,6 +28,14 @@ ninja -C build SwiftWin32 UICatalog
 %CD%\build\bin\UICatalog.exe
 ```
 
+<details>
+  <summary>Required Environment Variables</summary>
+
+  The CMake build will automatically perform the application manifest merging via the `mt` tool, which is part of the Visual Studio build tools.  Ensure that you run the build under the `x64 Native Tools Command Prompt for VS2019` (or the appropriate shell for the version of Visual Studio).
+
+  The Swift installer will also add environment variables, ensure that you have restarted the terminal emulator after installing the toolchain to pick up the required environment variables.
+</details>
+
 ### Swift Package Manager
 
 Building this project with swift-package-manager is supported although CMake is recommended for ease.  The Swift Package Manager based build is required for code completion via SourceKit-LSP.  It also allows for the use of Swift/Win32 in other applications using SPM.  In order to use SPM to build this project additional post-build steps are required to use the demo applications.

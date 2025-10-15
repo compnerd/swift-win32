@@ -3,6 +3,10 @@
 
 import WinSDK
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 extension View {
   internal func interaction<InteractionType: Interaction>() -> InteractionType? {
     // TODO: how do we handle overlapping entries in the `interactions` array?
@@ -38,6 +42,18 @@ private let SwiftViewProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubc
 
     return 0
 
+  case UINT(WM_ERASEBKGND):
+    guard let view = view, let brush = view.hbrBackground else{ break }
+
+    let hDC: DeviceContextHandle =
+        .init(referencing: HDC(bitPattern: UInt(wParam)))
+
+    var rc: RECT = RECT()
+    _ = GetClientRect(view.hWnd, &rc)
+    _ = FillRect(hDC.value, &rc, brush.value)
+
+    return 1
+
   case UINT(WM_COMMAND):
     // TODO: handle menu actions
     break
@@ -58,17 +74,6 @@ private func ClientToWindow(size: inout Size, for style: WindowStyle) {
     log.warning("AdjustWindowRectExForDpi: \(Error(win32: GetLastError()))")
   }
   size = Size(width: Double(r.right - r.left), height: Double(r.bottom - r.top))
-}
-
-private func ScaleClient(rect: inout Rect, for dpi: UINT, _ style: WindowStyle) {
-  let scale: Double = Double(dpi) / Double(USER_DEFAULT_SCREEN_DPI)
-
-  var r: RECT =
-      RECT(from: rect.applying(AffineTransform(scaleX: scale, y: scale)))
-  if !AdjustWindowRectExForDpi(&r, style.base, false, style.extended, dpi) {
-    log.warning("AdjustWindowRectExForDpi: \(Error(win32: GetLastError()))")
-  }
-  rect = Rect(from: r)
 }
 
 private func WindowBasedTransform(for view: View?) -> AffineTransform {
@@ -479,7 +484,7 @@ public class View: Responder {
     }
 
     // Scale window for DPI
-    ScaleClient(rect: &client, for: GetDpiForWindow(self.hWnd), style)
+    client = client.scaled(for: GetDpiForWindow(self.hWnd), style: style)
 
     // Resize and Position the Window
     SetWindowPos(self.hWnd, nil,
@@ -510,8 +515,19 @@ public class View: Responder {
 
   // MARK - Configuring a View's Visual Appearance
 
+  internal var hbrBackground: BrushHandle?
+
   /// The view's background color.
-  public var backgroundColor: Color?
+  public var backgroundColor: Color? {
+    didSet {
+      switch self.backgroundColor {
+      case .some(let color):
+        self.hbrBackground = .init(owning: CreateSolidBrush(color.COLORREF))
+      case .none:
+        self.hbrBackground = nil
+      }
+    }
+  }
 
   /// A boolean that determines if the view is hidden.
   public var isHidden: Bool {
@@ -543,10 +559,10 @@ public class View: Responder {
   public var frame: Rect {
     didSet {
       // Scale window for DPI
-      var client: Rect = self.frame
-      ScaleClient(rect: &client, for: GetDpiForWindow(self.hWnd),
-                  WindowStyle(DWORD(bitPattern: self.GWL_STYLE),
-                              DWORD(bitPattern: self.GWL_EXSTYLE)))
+      let client: Rect =
+          self.frame.scaled(for: GetDpiForWindow(self.hWnd),
+                            style: WindowStyle(DWORD(bitPattern: self.GWL_STYLE),
+                                               DWORD(bitPattern: self.GWL_EXSTYLE)))
 
       // Resize and Position the Window
       _ = SetWindowPos(self.hWnd, nil,
@@ -632,7 +648,7 @@ public class View: Responder {
 
     // Update the Window style.
     self.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | WS_CAPTION)
-    self.GWL_STYLE &= ~WS_CHILD
+    self.GWL_STYLE &= ~LONG(WS_CHILD)
     // FIXME(compnerd) can this be avoided somehow?
     if self is TextField || self is TextView || self is TableView {
       self.GWL_STYLE |= WinSDK.WS_BORDER
@@ -684,7 +700,7 @@ public class View: Responder {
 
     // Update the window style.
     view.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | WS_CAPTION)
-    view.GWL_STYLE |= WS_CHILD
+    view.GWL_STYLE |= LONG(WS_CHILD)
     // FIXME(compnerd) can this be avoided somehow?
     if view is TextField || view is TextView || view is TableView {
       view.GWL_STYLE |= WinSDK.WS_BORDER
@@ -703,8 +719,8 @@ public class View: Responder {
         WindowStyle(DWORD(bitPattern: view.GWL_STYLE),
                     DWORD(bitPattern: view.GWL_EXSTYLE))
 
-    var client: Rect = view.frame
-    ScaleClient(rect: &client, for: GetDpiForWindow(view.hWnd), style)
+    let client: Rect =
+        view.frame.scaled(for: GetDpiForWindow(view.hWnd), style: style)
 
     // Resize and Position the Window
     _ = SetWindowPos(view.hWnd, nil,

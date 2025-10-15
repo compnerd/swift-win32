@@ -3,6 +3,10 @@
 
 import WinSDK
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 public protocol TextFieldDelegate: AnyObject {
 }
 
@@ -48,14 +52,6 @@ private let SwiftTextFieldProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uI
   }
 
   return DefSubclassProc(hWnd, uMsg, wParam, lParam)
-}
-
-public enum TextAlignment: Int {
-  case natural
-  case left
-  case right
-  case center
-  case justified
 }
 
 public class TextField: Control {

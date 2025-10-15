@@ -1,6 +1,10 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// A set of methods for adapting the contents of your view controllers to size
 /// and trait changes.
 public protocol ContentContainer {

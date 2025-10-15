@@ -99,6 +99,10 @@ target_sources(SwiftWin32 PRIVATE
   "View Controllers/PresentationController.swift"
   "View Controllers/ViewController.swift"
   "Views and Controls/Axis.swift"
+  "Views and Controls/BarItem.swift"
+  "Views and Controls/BarButtonItem.swift"
+  "Views and Controls/BarButtonItemGroup.swift"
+  "Views and Controls/BarPositioning.swift"
   "Views and Controls/Button.swift"
   "Views and Controls/Control.swift"
   "Views and Controls/DatePicker.swift"
@@ -107,11 +111,13 @@ target_sources(SwiftWin32 PRIVATE
   "Views and Controls/EdgeInsets.swift"
   "Views and Controls/ImageView.swift"
   "Views and Controls/Label.swift"
+  "Views and Controls/Offset.swift"
   "Views and Controls/PickerView.swift"
   "Views and Controls/ProgressView.swift"
   "Views and Controls/Slider.swift"
   "Views and Controls/Stepper.swift"
   "Views and Controls/Switch.swift"
+  "Views and Controls/TextAlignment.swift"
   "Views and Controls/TextField.swift"
   "Views and Controls/TextView.swift"
   "Views and Controls/View.swift"
@@ -128,14 +134,6 @@ target_sources(SwiftWin32 PRIVATE
   "Windows and Screens/CoordinateSpace.swift"
   "Windows and Screens/Screen.swift"
   "Windows and Screens/Window.swift")
-target_sources(SwiftWin32 PRIVATE
-  CA/Transform3D.swift)
-target_sources(SwiftWin32 PRIVATE
-  CG/AffineTransform.swift
-  CG/Point.swift
-  CG/Rect.swift
-  CG/Size.swift
-  CG/Vector.swift)
 target_sources(SwiftWin32 PRIVATE
   Platform/BatteryMonitor.swift
   Platform/Error.swift
@@ -157,6 +155,30 @@ target_sources(SwiftWin32 PRIVATE
   Support/WinSDK+UIExtensions.swift)
 target_sources(SwiftWin32 PRIVATE
   Support/WindowMessage.swift)
+if(CMAKE_Swift_COMPILER_VERSION VERSION_LESS 5.7.0)
+  target_sources(SwiftWin32 PRIVATE
+    CoreAnimation/Transform3D.swift)
+  target_sources(SwiftWin32 PRIVATE
+    CoreGraphics/AffineTransform.swift
+    CoreGraphics/Point.swift
+    CoreGraphics/Rect.swift
+    CoreGraphics/Size.swift
+    CoreGraphics/Vector.swift)
+else()
+  add_library(CoreAnimation STATIC
+    CoreAnimation/Transform3D.swift)
+  target_link_libraries(SwiftWin32 PRIVATE
+    CoreAnimation)
+
+  add_library(CoreGraphics STATIC
+    CoreGraphics/AffineTransform.swift
+    CoreGraphics/Point.swift
+    CoreGraphics/Rect.swift
+    CoreGraphics/Size.swift
+    CoreGraphics/Vector.swift)
+  target_link_libraries(SwiftWin32 PRIVATE
+    CoreGraphics)
+endif()
 target_link_libraries(SwiftWin32 PUBLIC
   ComCtl32
   User32)
@@ -173,4 +195,8 @@ set_target_properties(SwiftWin32 PROPERTIES
   INTERFACE_LINK_DIRECTORIES $<TARGET_LINKER_FILE_DIR:SwiftWin32>)
 
 
+if(CMAKE_Swift_COMPILER_VERSION VERSION_GREATER_EQUAL 5.7.0)
+  _install_target(CoreAnimation)
+  _install_target(CoreGraphics)
+endif()
 _install_target(SwiftWin32)

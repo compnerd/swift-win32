@@ -3,6 +3,10 @@
 
 import WinSDK
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 private let SwiftLabelProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let label: Label? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Label
 
@@ -26,8 +30,10 @@ public class Label: Control {
   public var text: String? {
     get {
       let szLength: Int32 = GetWindowTextLengthW(self.hWnd_)
+      guard szLength > 0 else { return nil }
+
       let buffer: [WCHAR] = Array<WCHAR>(unsafeUninitializedCapacity: Int(szLength) + 1) {
-        $1 = Int(GetWindowTextW(self.hWnd_, $0.baseAddress!, CInt($0.count)))
+        $1 = Int(GetWindowTextW(self.hWnd_, $0.baseAddress!, CInt($0.count))) + 1
       }
       return String(decodingCString: buffer, as: UTF16.self)
     }
@@ -44,11 +50,43 @@ public class Label: Control {
     }
   }
 
+  public var textAlignment: TextAlignment {
+    get {
+      switch GWL_STYLE & SS_TYPEMASK {
+      case SS_CENTER:
+        return .center
+      case SS_RIGHT:
+        return .right
+      case SS_LEFTNOWORDWRAP, SS_LEFT:
+        return .left
+      default:
+        fatalError("unknown alignment for WC_STATIC")
+      }
+    }
+
+    set {
+      var lAlignment = GWL_STYLE & ~SS_TYPEMASK
+      switch newValue {
+      case .left: lAlignment |= SS_LEFTNOWORDWRAP
+      case .right: lAlignment |= SS_RIGHT
+      case .center: lAlignment |= SS_CENTER
+      case .justified, .natural:
+        log.error("TextAlignment.\(newValue) is not supported")
+      }
+      GWL_STYLE = lAlignment
+      if !SetWindowPos(self.hWnd_, nil, 0, 0, 0, 0,
+                       UINT(SWP_NOACTIVATE | SWP_NOCOPYBITS | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_DRAWFRAME)) {
+        log.warning("SetWindowPos: \(Error(win32: GetLastError()))")
+      }
+    }
+  }
+
   public override var frame: Rect {
     didSet {
-      let size = self.frame.size
+      let frame = self.frame.scaled(for: GetDpiForWindow(self.hWnd),
+                                    style: Label.style)
       _ = SetWindowPos(self.hWnd_, nil,
-                       0, 0, CInt(size.width), CInt(size.height),
+                       0, 0, CInt(frame.size.width), CInt(frame.size.height),
                        UINT(SWP_NOZORDER | SWP_FRAMECHANGED))
     }
   }
@@ -58,7 +96,8 @@ public class Label: Control {
     _ = SetWindowSubclass(hWnd, SwiftLabelProc, UINT_PTR(1),
                          unsafeBitCast(self as AnyObject, to: DWORD_PTR.self))
 
-    let size = self.frame.size
+    let size = self.frame.scaled(for: GetDpiForWindow(self.hWnd),
+                                 style: Label.style).size
     self.hWnd_ = CreateWindowExW(0, WC_STATIC.wide, nil, DWORD(WS_CHILD),
                                  0, 0, CInt(size.width), CInt(size.height),
                                  self.hWnd, nil, GetModuleHandleW(nil), nil)!

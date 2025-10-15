@@ -5,6 +5,10 @@ import WinSDK
 import class Foundation.NSNotification
 import class Foundation.NotificationCenter
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 private let SwiftWindowProc: SUBCLASSPROC = { (hWnd, uMsg, wParam, lParam, uIdSubclass, dwRefData) in
   let window: Window? = unsafeBitCast(dwRefData, to: AnyObject.self) as? Window
 
@@ -150,6 +154,7 @@ public class Window: View {
   public var rootViewController: ViewController? {
     didSet {
       self.rootViewController?.view = self
+      self.rootViewController?.viewDidLoad()
 
       if let builder = _MenuBuilder(for: self) {
         self.rootViewController?.buildMenu(with: builder)

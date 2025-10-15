@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:5.7
 
 import PackageDescription
 
@@ -22,7 +22,7 @@ let SwiftWin32: Package =
             .package(url: "https://github.com/compnerd/cassowary.git",
                      branch: "main"),
             .package(url: "https://github.com/compnerd/swift-com.git",
-                     revision: "28ad4be2d142be022f0c16be4006f15f7ce34d8b"),
+                     revision: "ebbc617d3b7ba3a2023988a74bebd118deea4cc5"),
           ],
           targets: [
             .target(name: "CoreAnimation",
@@ -43,10 +43,7 @@ let SwiftWin32: Package =
                     exclude: [
                       "CoreAnimation",
                       "CoreGraphics",
-                      "CMakeLists.txt"
-                    ],
-                    swiftSettings: [
-                      .enableExperimentalFeature("AccessLevelOnImport"),
+                      "CMakeLists.txt",
                     ],
                     linkerSettings: [
                       .linkedLibrary("User32"),

@@ -1,8 +1,8 @@
 // Copyright © 2019 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
-@_implementationOnly import func CRT.floor
-@_implementationOnly import func CRT.ceil
+import CRT
+import WinSDK
 
 @inline(__always)
 private func __equals(_ lhs: Rect, _ rhs: Rect) -> Bool {

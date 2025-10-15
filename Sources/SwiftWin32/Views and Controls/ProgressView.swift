@@ -3,6 +3,10 @@
 
 import WinSDK
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 public class ProgressView: Control {
   private static let `class`: WindowClass = WindowClass(named: PROGRESS_CLASS)
   private static let style: WindowStyle = (base: WS_POPUP, extended: 0)

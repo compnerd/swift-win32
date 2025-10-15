@@ -1,6 +1,10 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// An object that specifies the container view to use for animations.
 public class PreviewTarget {
   /// Creating a Preview Target Object

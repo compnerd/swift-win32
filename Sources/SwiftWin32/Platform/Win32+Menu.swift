@@ -3,8 +3,12 @@
 
 import WinSDK
 
+#if swift(>=5.9)
+internal import OrderedCollections
+#else
 @_implementationOnly
 import OrderedCollections
+#endif
 
 internal final class _MenuBuilder: MenuSystem {
   internal private(set) var hMenu: MenuHandle

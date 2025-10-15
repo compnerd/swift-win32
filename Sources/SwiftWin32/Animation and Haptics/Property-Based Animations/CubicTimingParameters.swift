@@ -1,6 +1,10 @@
 // Copyright © 2021 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// The timing information for animations in the form of a cubic Bézier curve.
 public class CubicTimingParameters {
   // MARK - Initializing a Cubic Timing Parameters Object

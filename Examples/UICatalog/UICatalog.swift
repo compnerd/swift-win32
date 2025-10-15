@@ -8,6 +8,10 @@ import func WinSDK.MessageBoxW
 import let WinSDK.MB_OK
 import struct WinSDK.UINT
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 private extension Label {
   convenience init(frame: Rect, title: String) {
     self.init(frame: frame)

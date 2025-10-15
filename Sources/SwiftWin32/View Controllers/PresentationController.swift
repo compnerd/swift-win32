@@ -1,6 +1,10 @@
 // Copyright © 2021 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// An object that manages the transition animations and the presentation of
 /// view controllers onscreen.
 open class PresentationController {
@@ -267,7 +271,6 @@ open class PresentationController {
   /// view controller's presentationController property.
   ///
   /// Use `adaptivePresentationStyle(for:)` instead.
-  @available(*, unavailable)
   open var adaptivePresentationStyle: ModalPresentationStyle = .none
 
   /// A boolean value indicating whether the presentation covers the entire

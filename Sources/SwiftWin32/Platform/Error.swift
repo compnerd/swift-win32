@@ -45,12 +45,22 @@ extension Error: CustomStringConvertible {
     case .errno(let errno):
       short = "errno \(errno)"
 
-      // Short-circuit the formatting path as this does not do a `LocalAlloc`
-      // and does not use `FormatMessageW`.
-      guard let description = _wcserror(errno) else {
-        return short
+      // MSDN indicates that the returned string can have a maximum of 94
+      // characters, so allocate 95 characters.
+#if swift(>=5.7)
+      return withUnsafeTemporaryAllocation(of: wchar_t.self, capacity: 95) {
+        let result: errno_t = _wcserror_s($0.baseAddress, $0.count, errno)
+        guard result == 0 else { return short }
+        return "\(short) - \(String(decodingCString: $0.baseAddress!, as: UTF16.self))"
       }
-      return "\(short) - \(String(decodingCString: description, as: UTF16.self))"
+#else
+      let buffer: UnsafeMutablePointer<wchar_t> = .allocate(capacity: 95)
+      defer { buffer.deallocate() }
+
+      let result: errno_t = _wcserror_s(buffer, 95, errno)
+      guard result == 0 else { return short }
+      return "\(short) - \(String(decodingCString: buffer, as: UTF16.self))"
+#endif
 
     case .win32(let error):
       short = "Win32 Error \(error)"

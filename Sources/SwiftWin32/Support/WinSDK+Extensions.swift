@@ -140,6 +140,41 @@ internal var HWND_MESSAGE: HWND {
 }
 
 @_transparent
+internal var QS_MOUSE: DWORD {
+  DWORD(QS_MOUSEMOVE) | DWORD(QS_MOUSEBUTTON)
+}
+
+@_transparent
+internal var QS_INPUT: DWORD {
+  DWORD(QS_MOUSE) | DWORD(QS_KEY) | DWORD(QS_RAWINPUT) | DWORD(QS_TOUCH) | DWORD(QS_POINTER)
+}
+
+@_transparent
+internal var QS_ALLEVENTS: DWORD {
+  DWORD(QS_INPUT) | DWORD(QS_POSTMESSAGE) | DWORD(QS_TIMER) | DWORD(QS_PAINT) | DWORD(QS_HOTKEY)
+}
+
+@_transparent
+internal var QS_ALLINPUT: DWORD {
+  DWORD(QS_INPUT) | DWORD(QS_POSTMESSAGE) | DWORD(QS_TIMER) | DWORD(QS_PAINT) | DWORD(QS_HOTKEY) | DWORD(QS_SENDMESSAGE)
+}
+
+@_transparent
+internal var TCS_BOTTOM: DWORD {
+  DWORD(WinSDK.TCS_BOTTOM)
+}
+
+@_transparent
+internal var TCS_FIXEDWIDTH: DWORD {
+  DWORD(WinSDK.TCS_FIXEDWIDTH)
+}
+
+@_transparent
+internal var TCS_FLATBUTTONS: DWORD {
+  DWORD(WinSDK.TCS_FLATBUTTONS)
+}
+
+@_transparent
 internal var WS_BORDER: DWORD {
   DWORD(WinSDK.WS_BORDER)
 }
@@ -150,6 +185,16 @@ internal var WS_CAPTION: DWORD {
 }
 
 @_transparent
+internal var WS_CHILD: DWORD {
+  DWORD(WinSDK.WS_CHILD)
+}
+
+@_transparent
+internal var WS_CLIPSIBLINGS: DWORD {
+  DWORD(WinSDK.WS_CLIPSIBLINGS)
+}
+
+@_transparent
 internal var WS_HSCROLL: DWORD {
   DWORD(WinSDK.WS_HSCROLL)
 }
@@ -157,6 +202,11 @@ internal var WS_HSCROLL: DWORD {
 @_transparent
 internal var WS_TABSTOP: DWORD {
   DWORD(WinSDK.WS_TABSTOP)
+}
+
+@_transparent
+internal var WS_VISIBLE: DWORD {
+  DWORD(WinSDK.WS_VISIBLE)
 }
 
 @_transparent

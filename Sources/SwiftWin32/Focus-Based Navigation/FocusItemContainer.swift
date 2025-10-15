@@ -1,6 +1,10 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 /// The container responsible for providing geometric context to focus items
 /// within a given focus environment.
 public protocol FocusItemContainer {

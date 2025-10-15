@@ -1,6 +1,11 @@
 // Copyright © 2020 Saleem Abdulrasool <compnerd@compnerd.org>
 // SPDX-License-Identifier: BSD-3-Clause
 
+#if swift(>=5.7)
+import CoreAnimation
+import CoreGraphics
+#endif
+
 /// Provides movement hint information for the focused item.
 public class FocusMovementHint {
   // MARK -

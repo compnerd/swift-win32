@@ -4,6 +4,10 @@
 import WinSDK
 import Foundation
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 // FIXME(compnerd) we would like this to derive from ScrollView
 public class TextView: View {
   private static let `class`: WindowClass = WindowClass(named: MSFTEDIT_CLASS)
@@ -36,8 +40,7 @@ public class TextView: View {
 
     // Disable compatibility with the original Rich Edit and use the extended
     // text limit.
-    _ = SendMessageW(self.hWnd, UINT(EM_EXLIMITTEXT),
-                     WPARAM(0), LPARAM(UInt(bitPattern: -1)))
+    _ = SendMessageW(self.hWnd, UINT(EM_EXLIMITTEXT), WPARAM(0), LPARAM(-1))
   }
 
   public func scrollRangeToVisible(_ range: NSRange) {

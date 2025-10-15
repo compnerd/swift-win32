@@ -19,7 +19,7 @@ public struct _Win32WindowText {
       guard szLength > 0 else { return nil }
 
       let buffer: [WCHAR] = Array<WCHAR>(unsafeUninitializedCapacity: Int(szLength) + 1) {
-        $1 = Int(GetWindowTextW(view.hWnd, $0.baseAddress!, CInt($0.count)))
+        $1 = Int(GetWindowTextW(view.hWnd, $0.baseAddress!, CInt($0.count))) + 1
       }
       return String(decodingCString: buffer, as: UTF16.self)
     }

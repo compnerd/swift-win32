@@ -6,6 +6,10 @@ import WinSDK
 import struct Foundation.IndexPath
 import class Foundation.NSAttributedString
 
+#if swift(>=5.7)
+import CoreGraphics
+#endif
+
 // Notification Proxy
 
 // When the Window is created, the initial parent is cached.  This cache cannot
@@ -383,7 +387,7 @@ public class PickerView: View {
         _ = SetParent(view.hWnd, cbiInfo.hwndList)
 
         view.GWL_STYLE &= ~LONG(bitPattern: WS_POPUP | WS_CAPTION)
-        view.GWL_STYLE |= WS_CHILD
+        view.GWL_STYLE |= LONG(WS_CHILD)
         // FIXME(compnerd) can this be avoided somehow?
         if view is TextField || view is TextView || view is TableView {
           view.GWL_STYLE |= WinSDK.WS_BORDER

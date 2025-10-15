@@ -24,14 +24,13 @@ jobs:
     strategy:
       matrix:
         include:
-          - branch: development
-            tag: DEVELOPMENT-SNAPSHOT-2021-05-25-a
+          - branch: swift-5.9-release
+            tag: 5.9-RELEASE
 
     steps:
     - uses: actions/checkout@v2
     - uses: seanmiddleditch/gha-setup-vsdevenv@master
-    - name: Install Swift
-      uses: ./.github/actions/install-swift
+    - uses: compnerd/gha-setup-swift@main
       with:
         tag: ${{ matrix.tag }}
         branch: ${{ matrix.branch }}
@@ -46,7 +45,7 @@ jobs:
       run: |
         llvm-cov export -format lcov -ignore-filename-regex ".build|Tests|Examples" -instr-profile .build\x86_64-unknown-windows-msvc\debug\codecov\default.profdata .build\x86_64-unknown-windows-msvc\debug\SwiftWin32PackageTests.xctest > coverage.lcov
 
-    - uses: codecov/codecov-action@v1.5.0
+    - uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: coverage.lcov
