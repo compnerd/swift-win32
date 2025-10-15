@@ -21,19 +21,13 @@ jobs:
   coverage:
     runs-on: windows-latest
 
-    strategy:
-      matrix:
-        include:
-          - branch: swift-5.9-release
-            tag: 5.9-RELEASE
-
     steps:
     - uses: actions/checkout@v2
-    - uses: seanmiddleditch/gha-setup-vsdevenv@master
+
     - uses: compnerd/gha-setup-swift@main
       with:
-        tag: ${{ matrix.tag }}
-        branch: ${{ matrix.branch }}
+        swift-build: 6.2-RELEASE
+        swift-version: swift-6.2-release
 
     - name: Build
       run: swift build -v
