@@ -29,8 +29,8 @@ private let SwiftTableViewProxyWindowProc: WNDPROC = { (hWnd, uMsg, wParam, lPar
       if let view = unsafeBitCast(lpDrawItem.pointee.itemData,
                                   to: AnyObject.self) as? View {
         let rctRect: RECT = lpDrawItem.pointee.rcItem
-        _ = SetWindowPos(view.hWnd, nil, rctRect.left, rctRect.top, 0, 0,
-                         UINT(SWP_NOSIZE))
+        _ = SetWindowPos(view.hWnd, nil, CInt(rctRect.left), CInt(rctRect.top),
+                         0, 0, UINT(SWP_NOSIZE))
 
         // Setting `isHidden` is necessary for TableCells generated after
         // initial call to `Window.makeKeyAndVisible()`

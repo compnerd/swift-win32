@@ -58,7 +58,7 @@ private class StepperProxy {
 public class Stepper: Control {
   private static let `class`: WindowClass = WindowClass(named: UPDOWN_CLASS)
   private static let style: WindowStyle =
-      (base: UInt32(UDS_HORZ) | WS_POPUP | WS_TABSTOP, extended: 0)
+      (base: DWORD(UDS_HORZ) | WS_POPUP | WS_TABSTOP, extended: 0)
 
   private static var proxy: StepperProxy = StepperProxy()
 
@@ -79,10 +79,10 @@ public class Stepper: Control {
   /// A boolean value that determines whether the stepper can wrap its value to
   /// the minimum or maximum value when incrementing and decrementing the value.
   public var wraps: Bool {
-    get { self.GWL_STYLE & UDS_WRAP == UDS_WRAP }
+    get { self.GWL_STYLE & LONG(UDS_WRAP) == LONG(UDS_WRAP) }
     set {
-      self.GWL_STYLE = newValue ? self.GWL_STYLE | UDS_WRAP
-                                : self.GWL_STYLE & ~UDS_WRAP
+      self.GWL_STYLE = newValue ? self.GWL_STYLE | LONG(UDS_WRAP)
+                                : self.GWL_STYLE & ~LONG(UDS_WRAP)
     }
   }
 
@@ -141,7 +141,7 @@ public class Stepper: Control {
         SendMessageW(self.hWnd, UINT(UDM_GETACCEL),
                      WPARAM(1), LPARAM(UInt(bitPattern: $0)))
       }
-      value.nInc = DWORD(newValue)
+      value.nInc = UINT(newValue)
       _ = withUnsafeMutablePointer(to: &value) {
         SendMessageW(self.hWnd, UINT(UDM_SETACCEL),
                      WPARAM(1), LPARAM(UInt(bitPattern: $0)))

@@ -46,7 +46,7 @@ public class TextView: View {
   public func scrollRangeToVisible(_ range: NSRange) {
     SendMessageW(hWnd, UINT(EM_SETSEL), WPARAM(range.location),
                  LPARAM(range.location + range.length))
-    SendMessageW(hWnd, UINT(EM_SETSEL), UInt64(bitPattern: -1), -1)
+    SendMessageW(hWnd, UINT(EM_SETSEL), WPARAM(bitPattern: -1), -1)
     SendMessageW(hWnd, UINT(EM_SCROLLCARET), 0, 0)
   }
 
