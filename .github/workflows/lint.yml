@@ -14,11 +14,8 @@ jobs:
     steps:
     - uses: compnerd/gha-setup-swift@main
       with:
-        branch: swift-5.8-release
-        tag: 5.8-RELEASE
-    - name: Install swift-format
-      run: |
-        Install-Binary -Url "https://github.com/compnerd/swift-build/releases/download/swift-format-5.8-RELEASE/swift-format.msi" -Name "swift-format.msi" -ArgumentList ("-q")
+        swift-build: 6.2-RELEASE
+        swift-version: swift-6.2-release
 
     - uses: actions/checkout@v2
 
