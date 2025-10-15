@@ -46,7 +46,7 @@ jobs:
             options: ''
 
           - branch: development
-            tag: DEVELOPMENT-SNAPSHOT-2025-09-14-a
+            tag: DEVELOPMENT-SNAPSHOT-2025-09-21-a
             options: ''
 
     name: Swift ${{ matrix.tag }}
