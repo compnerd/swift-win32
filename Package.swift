@@ -22,7 +22,7 @@ let SwiftWin32: Package =
             .package(url: "https://github.com/compnerd/cassowary.git",
                      branch: "main"),
             .package(url: "https://github.com/compnerd/swift-com.git",
-                     revision: "28ad4be2d142be022f0c16be4006f15f7ce34d8b"),
+                     revision: "00438f801ed3ad378699af75bdbbe82c7983eea8"),
           ],
           targets: [
             .target(name: "CoreAnimation",
