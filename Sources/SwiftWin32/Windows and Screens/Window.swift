@@ -140,7 +140,8 @@ public class Window: View {
     // TODO(compnerd) honour self.canResizeToFitContent
     if let restrictions = windowScene.sizeRestrictions,
         restrictions.minimumSize == restrictions.maximumSize {
-      self.GWL_STYLE &= ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SIZEBOX)
+      self.GWL_STYLE &=
+          ~(LONG(WS_MINIMIZEBOX) | LONG(WS_MAXIMIZEBOX) | LONG(WS_SIZEBOX))
     }
 
     windowScene.windows.append(self)
@@ -300,10 +301,10 @@ extension Window.Level {
 
 extension Window {
   public var isMinimizable: Bool {
-    get { self.GWL_STYLE & WS_MINIMIZEBOX == WS_MINIMIZEBOX }
+    get { self.GWL_STYLE & LONG(WS_MINIMIZEBOX) == LONG(WS_MINIMIZEBOX) }
     set {
-      self.GWL_STYLE = newValue ? self.GWL_STYLE | WS_MINIMIZEBOX
-                                : self.GWL_STYLE & ~WS_MINIMIZEBOX
+      self.GWL_STYLE = newValue ? self.GWL_STYLE | LONG(WS_MINIMIZEBOX)
+                                : self.GWL_STYLE & ~LONG(WS_MINIMIZEBOX)
     }
   }
 }
