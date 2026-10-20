@@ -279,8 +279,7 @@ public class Font {
                                     DWORD(OUT_DEFAULT_PRECIS),
                                     DWORD(CLIP_DEFAULT_PRECIS),
                                     DWORD(DEFAULT_QUALITY),
-                                    DWORD(FF_DONTCARE << 2) |
-                                        DWORD(FIXED_PITCH),
+                                    DWORD(FF_DONTCARE << 2) | DWORD(FIXED_PITCH),
                                     nil))
   }
 
@@ -299,8 +298,7 @@ public class Font {
                                     DWORD(OUT_DEFAULT_PRECIS),
                                     DWORD(CLIP_DEFAULT_PRECIS),
                                     DWORD(DEFAULT_QUALITY),
-                                    DWORD(FF_DONTCARE << 2) |
-                                        DWORD(FIXED_PITCH),
+                                    DWORD(FF_DONTCARE << 2) | DWORD(FIXED_PITCH),
                                     nil))
   }
 

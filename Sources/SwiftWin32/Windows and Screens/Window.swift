@@ -140,8 +140,7 @@ public class Window: View {
     // TODO(compnerd) honour self.canResizeToFitContent
     if let restrictions = windowScene.sizeRestrictions,
         restrictions.minimumSize == restrictions.maximumSize {
-      self.GWL_STYLE &=
-          ~(LONG(WS_MINIMIZEBOX) | LONG(WS_MAXIMIZEBOX) | LONG(WS_SIZEBOX))
+      self.GWL_STYLE &= ~(LONG(WS_MINIMIZEBOX) | LONG(WS_MAXIMIZEBOX) | LONG(WS_SIZEBOX))
     }
 
     windowScene.windows.append(self)
