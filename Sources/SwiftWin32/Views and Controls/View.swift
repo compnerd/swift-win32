@@ -538,8 +538,8 @@ public class View: Responder {
         return true
       }
       _ = EnumChildWindows(self.hWnd, pEnumFunc,
-                           LPARAM(hidden ? SW_HIDE : SW_RESTORE))
-      ShowWindow(self.hWnd, hidden ? SW_HIDE : SW_RESTORE)
+                           LPARAM(hidden ? CInt(SW_HIDE) : CInt(SW_RESTORE)))
+      ShowWindow(self.hWnd, hidden ? CInt(SW_HIDE) : CInt(SW_RESTORE))
     }
   }
 
@@ -651,7 +651,7 @@ public class View: Responder {
     self.GWL_STYLE &= ~LONG(WS_CHILD)
     // FIXME(compnerd) can this be avoided somehow?
     if self is TextField || self is TextView || self is TableView {
-      self.GWL_STYLE |= WinSDK.WS_BORDER
+      self.GWL_STYLE |= LONG(bitPattern: WS_BORDER)
       self.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
     }
 
@@ -703,7 +703,7 @@ public class View: Responder {
     view.GWL_STYLE |= LONG(WS_CHILD)
     // FIXME(compnerd) can this be avoided somehow?
     if view is TextField || view is TextView || view is TableView {
-      view.GWL_STYLE |= WinSDK.WS_BORDER
+      view.GWL_STYLE |= LONG(bitPattern: WS_BORDER)
       view.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
     }
 
