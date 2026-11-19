@@ -36,7 +36,7 @@ public class TextView: View {
     super.init(frame: frame, class: TextView.class, style: TextView.style)
 
     // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance
-    self.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
+    self.GWL_EXSTYLE &= ~LONG(WS_EX_CLIENTEDGE)
 
     // Disable compatibility with the original Rich Edit and use the extended
     // text limit.

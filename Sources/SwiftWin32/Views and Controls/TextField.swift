@@ -118,7 +118,7 @@ public class TextField: Control {
     super.init(frame: frame, class: TextField.class, style: TextField.style)
 
     // Remove the `WS_EX_CLIENTEDGE` which gives it a flat appearance
-    self.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
+    self.GWL_EXSTYLE &= ~LONG(WS_EX_CLIENTEDGE)
 
     // Enable the advanced typography options unconditionally rather than only
     // in complex scripts and math mode.

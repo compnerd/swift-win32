@@ -391,7 +391,7 @@ public class PickerView: View {
         // FIXME(compnerd) can this be avoided somehow?
         if view is TextField || view is TextView || view is TableView {
           view.GWL_STYLE |= LONG(bitPattern: WS_BORDER)
-          view.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
+          view.GWL_EXSTYLE &= ~LONG(WS_EX_CLIENTEDGE)
         }
 
         _ = SetWindowPos(view.hWnd, nil, 0, 0, 0, 0,
