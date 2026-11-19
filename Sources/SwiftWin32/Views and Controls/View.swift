@@ -652,7 +652,7 @@ public class View: Responder {
     // FIXME(compnerd) can this be avoided somehow?
     if self is TextField || self is TextView || self is TableView {
       self.GWL_STYLE |= LONG(bitPattern: WS_BORDER)
-      self.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
+      self.GWL_EXSTYLE &= ~LONG(WS_EX_CLIENTEDGE)
     }
 
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
@@ -704,7 +704,7 @@ public class View: Responder {
     // FIXME(compnerd) can this be avoided somehow?
     if view is TextField || view is TextView || view is TableView {
       view.GWL_STYLE |= LONG(bitPattern: WS_BORDER)
-      view.GWL_EXSTYLE &= ~WS_EX_CLIENTEDGE
+      view.GWL_EXSTYLE &= ~LONG(WS_EX_CLIENTEDGE)
     }
 
     // We *must* call `SetWindowPos` after the `SetWindowLong` to have the
