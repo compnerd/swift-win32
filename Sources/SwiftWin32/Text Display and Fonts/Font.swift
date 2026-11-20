@@ -231,7 +231,7 @@ public class Font {
       log.error("GetObjectW: \(Error(win32: GetLastError()))")
       return self
     }
-    lfFont.lfHeight = PointToLogical(fontSize)
+    lfFont.lfHeight = LONG(PointToLogical(fontSize))
 
     return Font(owning: CreateFontIndirectW(&lfFont))
   }
@@ -407,7 +407,7 @@ public class Font {
       return 0.0
     }
 
-    return LogicalToPoint(lfFont.lfHeight)
+    return LogicalToPoint(Int32(lfFont.lfHeight))
   }
 
   /// The top y-coordinate, offset from the baseline, of the font's longest

@@ -3,6 +3,18 @@
 
 import WinSDK
 
+#if arch(i386) || arch(arm)
+@_transparent
+internal func GetWindowLongPtrW(_ hWnd: HWND, _ nIndex: CInt) -> LONG {
+  return GetWindowLongW(hWnd, nIndex)
+}
+
+@_transparent
+internal func SetWindowLongPtrW(_ hWnd: HWND, _ nIndex: CInt, _ dwNewLong: LONG) -> LONG {
+  return SetWindowLongW(hWnd, nIndex, dwNewLong)
+}
+#endif
+
 internal let IDC_ARROW: UnsafePointer<WCHAR> =
     UnsafePointer<WCHAR>(bitPattern: 32512)!
 
@@ -11,52 +23,52 @@ internal let IDC_ARROW: UnsafePointer<WCHAR> =
 // winreg.h
 @_transparent
 internal var HKEY_CLASSES_ROOT: HKEY? {
-  HKEY(bitPattern: 0x80000000)
+  HKEY(bitPattern: UInt(0x80000000))
 }
 
 @_transparent
 internal var HKEY_CURRENT_USER: HKEY? {
-  HKEY(bitPattern: 0x80000001)
+  HKEY(bitPattern: UInt(0x80000001))
 }
 
 @_transparent
 internal var HKEY_LOCAL_MACHINE: HKEY? {
-  HKEY(bitPattern: 0x80000002)
+  HKEY(bitPattern: UInt(0x80000002))
 }
 
 @_transparent
 internal var HKEY_USERS: HKEY? {
-  HKEY(bitPattern: 0x80000003)
+  HKEY(bitPattern: UInt(0x80000003))
 }
 
 @_transparent
 internal var HKEY_PERFORMANCE_DATA: HKEY? {
-  HKEY(bitPattern: 0x80000004)
+  HKEY(bitPattern: UInt(0x80000004))
 }
 
 @_transparent
 internal var HKEY_PERFORMANCE_TEXT: HKEY? {
-  HKEY(bitPattern: 0x80000050)
+  HKEY(bitPattern: UInt(0x80000050))
 }
 
 @_transparent
 internal var HKEY_PERFORMANCE_NLSTEXT: HKEY? {
-  HKEY(bitPattern: 0x80000060)
+  HKEY(bitPattern: UInt(0x80000060))
 }
 
 @_transparent
 internal var HKEY_CURRENT_CONFIG: HKEY? {
-  HKEY(bitPattern: 0x80000005)
+  HKEY(bitPattern: UInt(0x80000005))
 }
 
 @_transparent
 internal var HKEY_DYN_DATA: HKEY? {
-  HKEY(bitPattern: 0x80000006)
+  HKEY(bitPattern: UInt(0x80000006))
 }
 
 @_transparent
 internal var HKEY_CURRENT_USER_LOCAL_SETTINGS: HKEY? {
-  HKEY(bitPattern: 0x80000007)
+  HKEY(bitPattern: UInt(0x80000007))
 }
 
 #endif
